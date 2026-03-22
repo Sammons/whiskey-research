@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 420" style="background:#161b22;font-family:Georgia,serif">
 <rect width="780" height="420" fill="#161b22"/>
-<text x="390" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">pH-Dependent Ester Kinetics — Fischer Esterification at Different pH & Temperature</text>
+<text x="390" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">pH-Dependent Ester Kinetics — Fischer Esterification at Different pH &amp; Temperature</text>
 <line x1="80" y1="380" x2="550" y2="380" stroke="#30363d" stroke-width="0.5"/>
 <text x="75" y="383" fill="#8b949e" font-size="9" text-anchor="end">0%</text>
 <line x1="80" y1="298.75" x2="550" y2="298.75" stroke="#30363d" stroke-width="0.5"/>
@@ -43,6 +43,6 @@
 <text x="565" y="245" fill="#e6edf3" font-size="9" text-anchor="start">at native conditions.</text>
 <text x="565" y="270" fill="#8b949e" font-size="9" text-anchor="start">Rate = k₂·[H⁺]·[AcOH]·[EtOH]</text>
 <text x="565" y="285" fill="#8b949e" font-size="9" text-anchor="start">First-order in [H⁺]</text>
-<text x="565" y="300" fill="#8b949e" font-size="8" text-anchor="start">Goldschmidt & Udby 1910</text>
+<text x="565" y="300" fill="#8b949e" font-size="8" text-anchor="start">Goldschmidt &amp; Udby 1910</text>
 <text x="565" y="313" fill="#8b949e" font-size="8" text-anchor="start">Ea = 56 kJ/mol</text>
 </svg>

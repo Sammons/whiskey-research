@@ -1223,7 +1223,7 @@ fn sim_ph_ester_kinetics() -> String {
     let ph_plot = h - mt - mb;
 
     let mut svg = svg_header(w, h,
-        "pH-Dependent Ester Kinetics \u{2014} Fischer Esterification at Different pH & Temperature");
+        "pH-Dependent Ester Kinetics \u{2014} Fischer Esterification at Different pH &amp; Temperature");
 
     // Grid
     for frac in [0.0, 0.25, 0.5, 0.75, 1.0] {
@@ -1322,7 +1322,7 @@ fn sim_ph_ester_kinetics() -> String {
     svg += &label(lx, mt + 190.0, "at native conditions.", TEXT, 9, "start");
     svg += &label(lx, mt + 215.0, "Rate = k\u{2082}\u{b7}[H\u{207a}]\u{b7}[AcOH]\u{b7}[EtOH]", MUTED, 9, "start");
     svg += &label(lx, mt + 230.0, "First-order in [H\u{207a}]", MUTED, 9, "start");
-    svg += &label(lx, mt + 245.0, "Goldschmidt & Udby 1910", MUTED, 8, "start");
+    svg += &label(lx, mt + 245.0, "Goldschmidt &amp; Udby 1910", MUTED, 8, "start");
     svg += &label(lx, mt + 258.0, "Ea = 56 kJ/mol", MUTED, 8, "start");
 
     svg.push_str("</svg>");
@@ -1773,7 +1773,7 @@ fn sim_riboflavin_singlet_o2() -> String {
     svg += &label(lx, mt + 100.0,
         "k(phenol) = 1.5\u{d7}10\u{2077} M\u{207b}\u{00b9}s\u{207b}\u{00b9}", CYAN, 9, "start");
     svg += &label(lx, mt + 113.0,
-        "k(ethanol) < 10 M\u{207b}\u{00b9}s\u{207b}\u{00b9}", TEXT, 9, "start");
+        "k(ethanol) &lt; 10 M\u{207b}\u{00b9}s\u{207b}\u{00b9}", TEXT, 9, "start");
     svg += &label(lx, mt + 126.0,
         "\u{2192} >10\u{2076}\u{d7} phenol selectivity", GREEN, 9, "start");
     svg += &label(lx, mt + 146.0,
@@ -2236,7 +2236,7 @@ fn sim_pef_esterification() -> String {
     let w = 780.0;
     let h = 380.0;
     let mut svg = svg_header(w, h,
-        "PEF-Enhanced Fischer Esterification (Lin & Zeng 2012)");
+        "PEF-Enhanced Fischer Esterification (Lin &amp; Zeng 2012)");
 
     let ml = 80.0;
     let mt = 38.0;
