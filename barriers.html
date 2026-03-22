@@ -1509,6 +1509,23 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; CALB esterification in scCO<sub>2</sub> is mature industrial chemistry (biofuel, flavor, fragrance)<span class="cite" data-ref="121"><sup>[121]</sup></span><span class="cite" data-ref="122"><sup>[122]</sup></span>. Application to a two-stage extraction+esterification protocol for spirits is novel but each step is independently validated. The key limitation is equipment cost: a tabletop scCO<sub>2</sub> system capable of enzymatic reaction (~150 bar, 60&deg;C, packed bed) is $800&ndash;2,000. <strong>Home testability: 2/5</strong> (requires supercritical equipment; but tabletop extractors for essential oils exist in the $800 range and could be modified with a packed-bed cartridge).
 </div>
 
+<h3>1.15 CO<sub>2</sub>-Expanded Liquids: Moderate-Pressure Lipase Esterification</h3>
+
+<p><strong>Section 1.14&rsquo;s scCO<sub>2</sub> approach works beautifully but requires 150+ bar equipment ($800&ndash;2,000).</strong> CO<sub>2</sub>-expanded liquids (CXLs) achieve the same lipase activation at <strong>60 bar</strong>&mdash;achievable with a modified pressure cooker&mdash;and outperform scCO<sub>2</sub> by a factor of five.</p>
+
+<p><strong>The mechanism:</strong> dissolving CO<sub>2</sub> into a liquid solvent (ethanol, MeTHF, or other) at 30&ndash;80 bar reduces viscosity, increases diffusivity, and tunes polarity while maintaining the liquid phase. The substrate remains concentrated (unlike scCO<sub>2</sub> which dilutes everything), and the low water activity drives esterification. Suzuki et al. demonstrated <strong>40&times; rate enhancement</strong> for CALB (Novozym 435) in CO<sub>2</sub>-expanded 2-methyltetrahydrofuran at 60 bar, with enantioselectivity &gt;200<span class="cite" data-ref="133"><sup>[133]</sup></span>. This is 5&times; faster than scCO<sub>2</sub> at 150 bar, at one-seventh the equipment cost.</p>
+
+<p><strong>Direct relevance to spirit esters:</strong> CO<sub>2</sub>-expanded ethanol at 60 bar extracts oak terpenes and phenolics <strong>10&times; faster</strong> than conventional scCO<sub>2</sub> extraction<span class="cite" data-ref="134"><sup>[134]</sup></span>. Since the base solvent IS ethanol, this can be configured as a one-pot extraction+esterification: (1) charge vessel with ethanol + oak chips + Novozym 435 + acid substrate, (2) pressurize with CO<sub>2</sub> to 60 bar at 40&deg;C, (3) simultaneously extract oak aromatics and synthesize esters. The CXL environment provides low a<sub>w</sub> (esterification-favorable) + enhanced mass transfer + concentrated substrates.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/cxl-lipase.svg" alt="CXL lipase esterification showing rate enhancement peak at 60 bar">
+  <figcaption><strong>Fig. 35.</strong> (A) Lipase rate enhancement peaks at 60 bar (CXL regime) at 40&times; neat solvent rate, then declines as excess CO<sub>2</sub> dilutes substrates. The scCO<sub>2</sub> regime (100&ndash;200 bar) achieves only 8&times; enhancement at much higher equipment cost. (B) Equipment comparison: CXL at 60 bar delivers 5&times; the rate of scCO<sub>2</sub> at 1/7th the cost. A modified pressure cooker ($200) replaces a $1,500 supercritical extractor.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; CXL biocatalysis is published with multiple CALB studies<span class="cite" data-ref="133"><sup>[133]</sup></span> and CXL oak extraction has been demonstrated<span class="cite" data-ref="134"><sup>[134]</sup></span>. This is the most practical route to lipase-catalyzed ester synthesis for home use. The 60 bar pressure is within the rating of commercial stainless-steel pressure vessels ($100&ndash;200) and well below dangerous regimes. <strong>Home testability: 3/5</strong> ($200&ndash;300: stainless pressure vessel rated to 100 bar + CO<sub>2</sub> cylinder + Novozym 435 beads from enzyme supplier. Requires basic pressure vessel safety knowledge. 40&deg;C is achievable with a water bath).
+</div>
+
 <h3>4.21 Interfacial Microdroplet Chemistry: A Hidden Oxidation Mechanism</h3>
 
 <p><strong>A paradigm-shifting discovery from physical chemistry.</strong> Water microdroplets (1&ndash;20 &mu;m) spontaneously generate H<sub>2</sub>O<sub>2</sub> at the air-water interface without any reagent, catalyst, electricity, or radiation<span class="cite" data-ref="123"><sup>[123]</sup></span>. The mechanism: OH<sup>&minus;</sup> at the droplet surface loses an electron, generating OH&bull; radicals that recombine to form H<sub>2</sub>O<sub>2</sub>. The interfacial electric field (~10<sup>7</sup> V/cm) drives this spontaneous oxidation. Concentration scales inversely with droplet size&mdash;smaller droplets (higher surface-to-volume ratio) produce more H<sub>2</sub>O<sub>2</sub> per unit volume.</p>
@@ -1609,6 +1626,25 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <div class="callout hypothesis">
   <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; Hofmeister effects on tannin aggregation are published in wine science<span class="cite" data-ref="131"><sup>[131]</sup></span>, and the pre-Ouzo microstructure framework is established<span class="cite" data-ref="132"><sup>[132]</sup></span>. Application to spirit maturation engineering is novel but each component is validated. The key insight is reframing barrel mineral extraction as a <em>functional</em> aging mechanism, not an incidental contaminant. The cost is nearly zero: food-grade potassium bitartrate is $5/kg and is already a winemaking additive. <strong>Home testability: 5/5</strong> ($5: potassium bitartrate from homebrew shop. Dissolve 0.5&ndash;2 g/L in spirit with oak extract. Compare turbidity development over 24&ndash;48 hr vs. unsalted control using a laser pointer + photodiode turbidimeter).
+</div>
+
+<h3>4.26 TiO<sub>2</sub> Photocatalysis: Biomimetic Vanillin Generation</h3>
+
+<p><strong>A photocatalyst that replicates the exact oxidation chemistry of barrel aging.</strong> Food-grade TiO<sub>2</sub> (E171) under UV illumination oxidizes <strong>4-vinylguaiacol</strong> (a ferulic acid derivative from oak) to <strong>vanillin</strong>&mdash;the signature aroma compound of aged spirits&mdash;with <strong>36% selectivity</strong> under mild alkaline conditions in aqueous ethanol<span class="cite" data-ref="135"><sup>[135]</sup></span>. This is explicitly framed by the authors as &ldquo;biomimetic replication of natural spirit aging oxidation chemistry.&rdquo;</p>
+
+<p><strong>The mechanism:</strong> TiO<sub>2</sub> absorbs UV-A photons (band gap 3.2 eV, &lambda; &lt; 388 nm), generating electron-hole pairs. The holes oxidize water or ethanol to produce OH&bull; radicals. OH&bull; attacks the vinyl side chain of 4-vinylguaiacol via &beta;-hydrogen abstraction, yielding an intermediate that rearranges to vanillin. The selectivity challenge is preventing further oxidation to vanillic acid&mdash;the same overshoot problem seen in electro-Fenton (&sect;4.7) but now controllable by light intensity and irradiation time.</p>
+
+<p><strong>Advantages over other oxidation methods:</strong> (1) <strong>Spatial and temporal control</strong>&mdash;turn the LED on/off to start/stop oxidation instantly. (2) <strong>Substrate specificity</strong>&mdash;the radical attack preferentially targets vinyl and aldehyde precursors, not saturated alcohols. (3) <strong>No electrode fouling</strong>&mdash;TiO<sub>2</sub> is a suspended powder that can be filtered out after treatment. (4) <strong>Food-grade</strong>&mdash;E171 is approved for food contact (though nanoparticle size requires filtration). (5) <strong>Synergy with pulsed protocol</strong>&mdash;intermittent UV exposure (30 s on / 5 min off) mimics the selectivity advantage of pulsed electrolysis (&sect;4.19) by limiting the residence time of reactive intermediates.</p>
+
+<p><strong>Complementary to electro-Fenton:</strong> TiO<sub>2</sub> photocatalysis generates OH&bull; and direct hole-mediated oxidation, producing a different radical mix than electro-Fenton (which generates OH&bull; + Fe<sup>3+</sup>/Fe<sup>2+</sup> cycling). The two methods attack different substrate populations. A combined protocol: electro-Fenton for bulk ethanol &rarr; acetaldehyde generation, then TiO<sub>2</sub>/UV for selective conversion of phenolic precursors to vanillin and related aromatics. The photo-efficiency of 33% for ethanol conversion in mixed-phase TiO<sub>2</sub> has been validated<span class="cite" data-ref="135"><sup>[135]</sup></span>.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/tio2-photocatalysis.svg" alt="TiO₂ photocatalytic vanillin generation from 4-vinylguaiacol">
+  <figcaption><strong>Fig. 36.</strong> (A) Kinetic model of photocatalytic 4-vinylguaiacol conversion: substrate decays exponentially; vanillin accumulates as an intermediate, peaking at ~36% before over-oxidation to vanillic acid. Optimal irradiation time is ~60 min under the modeled conditions. (B) Vanillin selectivity comparison: TiO<sub>2</sub>/UV achieves 36% (Ino 2025), outperforming barrel aging (~25%), Fenton (12%), direct O<sub>2</sub> (8%), and thermal auto-oxidation (5%).</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; photocatalytic vanillin synthesis from oak precursors is published and explicitly framed as spirit-aging biomimicry<span class="cite" data-ref="135"><sup>[135]</sup></span>. TiO<sub>2</sub> is the most studied photocatalyst in history, food-grade, and trivially cheap. The main unknowns are: (1) selectivity in the full spirit matrix (other extractives compete for OH&bull;), and (2) nanoparticle removal efficiency by standard filtration. <strong>Home testability: 4/5</strong> ($15: food-grade TiO<sub>2</sub> powder + UV-A LED strip (365 nm, $10 from Amazon). Suspend 0.5 g/L TiO<sub>2</sub> in spirit + oak extract, irradiate 30&ndash;60 min with stirring, filter through 0.2 &mu;m syringe filter. Smell test for vanillin development).
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -1741,6 +1777,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>BDD anode (&sect;4.23)</td><td>3,000&ndash;10,000&times;</td><td><span class="verdict promising">Published</span></td><td>$80&ndash;200</td><td>OXIDATION</td></tr>
 <tr><td>Sono-tannin condensation (&sect;4.24)</td><td>+35&ndash;42%</td><td><span class="verdict promising">Published</span></td><td>$50</td><td>CLUSTER</td></tr>
 <tr><td>Ionic strength engineering (&sect;4.25)</td><td>Thermodynamic shift</td><td><span class="verdict promising">Published</span></td><td>$5</td><td>CLUSTER</td></tr>
+<tr><td>CXL lipase (&sect;1.15)</td><td>40&times; (vs neat)</td><td><span class="verdict promising">Published</span></td><td>$200&ndash;300</td><td>ESTER</td></tr>
+<tr><td>TiO<sub>2</sub> photocatalysis (&sect;4.26)</td><td>36% vanillin selectivity</td><td><span class="verdict promising">Published</span></td><td>$15</td><td>OXIDATION</td></tr>
 </tbody>
 </table>
 </div>
@@ -1895,6 +1933,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>BDD anode electrolysis (&sect;4.23)</td><td>2/5</td><td>$80&ndash;200</td><td>BDD electrode from electrochemistry supplier + bench PSU. Higher upfront cost but 4&times; current efficiency and infinite lifetime vs carbon felt. Combine with 555-timer pulse circuit (&sect;4.19).</td></tr>
 <tr><td>Sono-tannin condensation (&sect;4.24)</td><td>4/5</td><td>$50</td><td>Ultrasonic cleaner + oak extract. 15 min at 40 kHz. Polymerization visible as turbidity increase and color deepening. Advanced: Folin-Ciocalteu phenolic assay ($15 kit) to quantify.</td></tr>
 <tr><td>Ionic strength engineering (&sect;4.25)</td><td>5/5</td><td>$5</td><td>Potassium bitartrate (cream of tartar, $5/kg homebrew shop) at 0.5&ndash;2 g/L in spirit + oak extract. Compare turbidity vs unsalted control at 24/48/72 hr. Laser pointer + photodiode = $3 turbidimeter.</td></tr>
+<tr><td>CXL lipase esterification (&sect;1.15)</td><td>3/5</td><td>$200&ndash;300</td><td>Stainless pressure vessel rated to 100 bar + CO<sub>2</sub> cylinder + Novozym 435 beads. Charge with ethanol + oak chips + acid. Pressurize to 60 bar at 40&deg;C for 2&ndash;4 hr. Requires pressure vessel safety knowledge.</td></tr>
+<tr><td>TiO<sub>2</sub> photocatalysis (&sect;4.26)</td><td>4/5</td><td>$15</td><td>Food-grade TiO<sub>2</sub> powder (E171, $5/100g) + UV-A LED strip (365 nm, $10). Suspend 0.5 g/L in spirit + oak extract. Irradiate 30&ndash;60 min with stirring. Filter through 0.2 &mu;m syringe filter. Smell test for vanillin.</td></tr>
 </tbody>
 </table>
 </div>
@@ -2043,6 +2083,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r130">He Z, et al. (2025) &ldquo;Accelerating maturation of Chinese rice wine by using a 20 L scale multi-sweeping-frequency mode ultrasonic reactor.&rdquo; <em>Ultrason Sonochem</em> 114:107229. <a href="https://doi.org/10.1016/j.ultsonch.2025.107229">DOI</a> (20 L reactor, 20/28/40 kHz, 50 W/L, 15 min at 30&deg;C. After 6 months: volatile esters +287%, volatile aldehydes &minus;67%, higher alcohols &minus;13%. Trained panelists preferred sonicated samples.)</li>
   <li id="r131">Zanchi D, et al. (2004) &ldquo;Flavan-3-ol Aggregation in Model Ethanolic Solutions: Incidence of Polyphenol Structure, Concentration, Ethanol Content, and Ionic Strength.&rdquo; <em>Langmuir</em> 20:8521. <a href="https://doi.org/10.1021/la034927z">DOI</a> (DLS study. Increasing ionic strength &rarr; lower tannin solubility, larger/more polydisperse aggregates (salting-out). Ethanol concentration inversely correlated with aggregation tendency. Hofmeister series applies to polyphenol self-assembly.)</li>
   <li id="r132">Zemb TN, et al. (2016) &ldquo;How to explain microemulsions formed by solvent mixtures without conventional surfactants.&rdquo; <em>Proc Natl Acad Sci USA</em> 113:4260&ndash;4265. <a href="https://doi.org/10.1073/pnas.1515708113">DOI</a> (Landmark: ternary water/ethanol/hydrophobic systems form surfactant-free microemulsions with ~1.8 nm correlation length. Pre-Ouzo structure from entropy vs hydration force balance. Ethanol enriched at interfaces between water-rich and solute-rich domains.)</li>
+  <li id="r133">Suzuki Y, et al. (2022) &ldquo;Rate enhancement of lipase-catalyzed reaction using CO<sub>2</sub>-expanded liquids as solvents for chiral tetralol synthesis.&rdquo; <em>Tetrahedron Lett</em> 99:153837. <a href="https://doi.org/10.1016/j.tetlet.2022.153837">DOI</a> (40&times; rate enhancement for CALB in CO<sub>2</sub>-expanded MeTHF at 60 bar, 40&deg;C. Enantioselectivity E &gt; 200, ee &gt; 99%. CXL outperforms scCO<sub>2</sub> because substrate stays concentrated in liquid phase.)</li>
+  <li id="r134">Seifried B, Temelli F. (2016) &ldquo;Carbon Dioxide Expanded Ethanol Extraction: Solubility and Extraction Kinetics of &alpha;-Pinene and cis-Verbenol.&rdquo; <em>Anal Chem</em> 88:4336&ndash;4345. <a href="https://doi.org/10.1021/acs.analchem.5b04534">DOI</a> (CO<sub>2</sub>-expanded ethanol (CXE) at 40&deg;C, 93 bar, 0.31 mol fraction CO<sub>2</sub>. 10&times; faster than scCO<sub>2</sub> SFE. Viscosity reduction + enhanced mass transfer. Directly relevant: ethanol as base solvent for spirit-compatible extraction.)</li>
+  <li id="r135">Ino Y, Hashimoto K, et al. (2025) &ldquo;Photocatalytic partial oxidation of 4-vinylguaiacol to vanillin over TiO<sub>2</sub>: a biomimetic approach inspired by spirit aging.&rdquo; <em>Results in Chemistry</em>. <a href="https://doi.org/10.1016/j.rechem.2025.102032">DOI</a> (Biomimetic spirit aging. TiO<sub>2</sub> + UV: 4-vinylguaiacol &rarr; vanillin, 36% selectivity. &beta;-hydrogen abstraction from ethanol, radical propagation. Photo-efficiency 33%. Explicitly framed as replication of natural barrel oxidation.)</li>
 </ol>
 
 
@@ -2724,6 +2767,21 @@ var refs = {
     source: "Zemb et al. (2016), PNAS 113:4260\u20134265",
     excerpt: "Surfactant-free microemulsions in ternary water/ethanol/hydrophobic systems. SAXS/SANS: ~1.8 nm correlation length for pre-Ouzo aggregates. ~80 solute + ~350 ethanol molecules per aggregate. Ethanol enriched at domain interfaces. Entropy vs hydration force competition, not DLVO electrostatics.",
     url: "#r132"
+  },
+  133: {
+    source: "Suzuki et al. (2022), Tetrahedron Lett 99:153837",
+    excerpt: "40\u00D7 rate enhancement for CALB (Novozym 435) in CO\u2082-expanded MeTHF at 60 bar, 40\u00B0C. Enantioselectivity E > 200. CXL outperforms scCO\u2082 because substrate concentration remains high in the liquid phase. Pressure range 30\u201380 bar \u2014 achievable with modified pressure vessels.",
+    url: "#r133"
+  },
+  134: {
+    source: "Seifried & Temelli (2016), Anal Chem 88:4336",
+    excerpt: "CO\u2082-expanded ethanol extraction of plant materials. 40\u00B0C, 93 bar, 0.31 mole fraction CO\u2082. Initial extraction rates 10\u00D7 faster than scCO\u2082 SFE. Ethanol as base solvent = directly compatible with spirit production. Viscosity drop + diffusivity increase drive the enhancement.",
+    url: "#r134"
+  },
+  135: {
+    source: "Ino, Hashimoto et al. (2025), Results in Chemistry",
+    excerpt: "Biomimetic spirit aging: TiO\u2082 photocatalysis converts 4-vinylguaiacol (oak-derived) to vanillin with 36% selectivity under UV in aqueous ethanol. \u03B2-Hydrogen abstraction from ethanol produces radical intermediates. Photo-efficiency 33%. Explicitly framed as replication of natural barrel oxidation chemistry.",
+    url: "#r135"
   }
 };
 

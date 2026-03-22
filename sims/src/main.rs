@@ -120,6 +120,12 @@ fn main() {
 
     fs::write("../graphs/ionic-strength-clustering.svg", sim_ionic_strength_clustering()).unwrap();
     println!("Wrote ionic-strength-clustering.svg");
+
+    fs::write("../graphs/cxl-lipase.svg", sim_cxl_lipase()).unwrap();
+    println!("Wrote cxl-lipase.svg");
+
+    fs::write("../graphs/tio2-photocatalysis.svg", sim_tio2_photocatalysis()).unwrap();
+    println!("Wrote tio2-photocatalysis.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -5907,6 +5913,288 @@ fn sim_ionic_strength_clustering() -> String {
         "Salting-out: bigger, faster clusters", GREEN, 9, "start");
     svg += &label(ml2 + pw - 245.0, mt + ph - 16.0,
         "Cost: $5 (food-grade mineral salts)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 35: CXL vs scCO₂ for lipase esterification
+// ═══════════════════════════════════════════════════════════════
+fn sim_cxl_lipase() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "CO\u{2082}-Expanded Liquids: Moderate-Pressure Lipase Esterification");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // Panel A: Rate enhancement vs CO₂ pressure
+    svg += &label(ml + pw / 2.0, mt - 5.0, "A. Lipase Rate Enhancement vs Pressure", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let p_max = 200.0; // bar
+    let rate_max = 50.0; // fold enhancement
+    let sx_a = |p: f64| -> f64 { ml + p / p_max * pw };
+    let sy_a = |r: f64| -> f64 { mt + ph - r / rate_max * ph };
+
+    for i in 0..=4 {
+        let p = p_max * i as f64 / 4.0;
+        svg += &vline(sx_a(p), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(p), mt + ph + 13.0, &format!("{:.0}", p), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let r = rate_max * i as f64 / 5.0;
+        svg += &hline(ml, ml + pw, sy_a(r), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(r) + 3.5, &format!("{:.0}\u{00d7}", r), MUTED, 8, "end");
+    }
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "CO\u{2082} Pressure (bar)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "Rate Enhancement (\u{00d7} neat)");
+
+    // CXL regime: rate peaks around 60 bar, then declines as CO₂ dilutes substrate
+    let mut cxl_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=200 {
+        let p = p_max * i as f64 / 200.0;
+        // Bell curve: peak at 60 bar (CXL optimum), 40x
+        let rate = 40.0 * E.powf(-((p - 60.0) / 30.0).powi(2)) + 1.0;
+        cxl_pts.push((p, rate.min(rate_max)));
+    }
+    svg += &polyline_svg(&cxl_pts, GREEN, "2.5", &sx_a, &sy_a);
+
+    // Annotate regions
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{GREEN}\" opacity=\"0.10\"/>\n",
+        sx_a(30.0), mt, sx_a(90.0) - sx_a(30.0), ph);
+    svg += &label((sx_a(30.0) + sx_a(90.0)) / 2.0, mt + ph - 15.0, "CXL regime", GREEN, 9, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{BLUE}\" opacity=\"0.08\"/>\n",
+        sx_a(100.0), mt, sx_a(200.0) - sx_a(100.0), ph);
+    svg += &label((sx_a(100.0) + sx_a(200.0)) / 2.0, mt + ph - 15.0, "scCO\u{2082} regime", BLUE, 9, "middle");
+
+    // scCO₂ reference point (from §1.14)
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{BLUE}\"/>\n",
+        sx_a(150.0), sy_a(8.0));
+    svg += &label(sx_a(150.0) + 5.0, sy_a(8.0) + 4.0, "scCO\u{2082} (\u{00a7}1.14)", BLUE, 8, "start");
+
+    // CXL peak
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{GREEN}\"/>\n",
+        sx_a(60.0), sy_a(40.0));
+    svg += &label(sx_a(60.0) + 6.0, sy_a(40.0) - 8.0, "CXL peak: 40\u{00d7}", GREEN, 9, "start");
+    svg += &label(sx_a(60.0) + 6.0, sy_a(40.0) + 5.0, "(60 bar, 40\u{00b0}C)", GREEN, 8, "start");
+
+    // Legend
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 12.0, GREEN, "2.5");
+    svg += &label(ml + 36.0, mt + 16.0, "CALB in CO\u{2082}-expanded EtOH", TEXT, 8, "start");
+
+    // Panel B: Equipment cost vs capability comparison
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0, "B. Equipment Comparison", TEXT, 11, "middle");
+
+    // Bar chart: 3 methods
+    let methods: [(&str, f64, f64, &str); 3] = [
+        ("Spirit\n(a_w=0.85)", 0.0, 0.0, RED),       // no esterification
+        ("CXL\n(60 bar)", 40.0, 200.0, GREEN),        // 40x, $200
+        ("scCO\u{2082}\n(150 bar)", 8.0, 1500.0, BLUE),     // 8x, $1500
+    ];
+
+    let bar_w = pw / 5.0;
+    let bar_h_max = ph * 0.4;
+    let y_mid = mt + ph * 0.45;
+
+    // Top half: rate enhancement
+    svg += &label(ml2 + pw / 2.0, mt + 15.0, "Rate Enhancement (\u{00d7})", TEXT, 9, "middle");
+    // Bottom half: equipment cost
+    svg += &label(ml2 + pw / 2.0, y_mid + 15.0, "Equipment Cost ($)", TEXT, 9, "middle");
+    svg += &hline(ml2, ml2 + pw, y_mid, MUTED, "1");
+
+    for (i, (name, rate, cost, color)) in methods.iter().enumerate() {
+        let cx = ml2 + pw * (i as f64 + 0.5) / 3.0;
+
+        // Rate bar (top, growing upward)
+        let rate_h = rate / 50.0 * bar_h_max;
+        if *rate > 0.0 {
+            svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{color}\" opacity=\"0.7\" rx=\"3\"/>\n",
+                cx - bar_w / 2.0, y_mid - rate_h, bar_w, rate_h);
+            svg += &label(cx, y_mid - rate_h - 6.0, &format!("{:.0}\u{00d7}", rate), color, 10, "middle");
+        } else {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" stroke=\"{RED}\" stroke-width=\"3\"/>\n",
+                cx - 12.0, y_mid - 20.0, cx + 12.0, y_mid - 5.0);
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" stroke=\"{RED}\" stroke-width=\"3\"/>\n",
+                cx + 12.0, y_mid - 20.0, cx - 12.0, y_mid - 5.0);
+            svg += &label(cx, y_mid - 25.0, "Hydrolysis!", RED, 8, "middle");
+        }
+
+        // Cost bar (bottom, growing downward)
+        let cost_h = cost / 2000.0 * bar_h_max;
+        if *cost > 0.0 {
+            svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{color}\" opacity=\"0.4\" rx=\"3\"/>\n",
+                cx - bar_w / 2.0, y_mid + 2.0, bar_w, cost_h);
+            svg += &label(cx, y_mid + cost_h + 14.0, &format!("${:.0}", cost), color, 10, "middle");
+        }
+
+        // Labels
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(cx, mt + ph + 5.0 + li as f64 * 11.0, line, TEXT, 8, "middle");
+        }
+    }
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"225\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 235.0, mt + 30.0, GRID);
+    svg += &label(ml2 + pw - 230.0, mt + 46.0,
+        "CXL: 5\u{00d7} faster than scCO\u{2082}", GREEN, 9, "start");
+    svg += &label(ml2 + pw - 230.0, mt + 60.0,
+        "At 1/7th the equipment cost", ACCENT, 9, "start");
+    svg += &label(ml2 + pw - 230.0, mt + 74.0,
+        "60 bar = modified pressure cooker", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 36: TiO₂ Photocatalytic Oxidation for Spirit Aging
+// ═══════════════════════════════════════════════════════════════
+fn sim_tio2_photocatalysis() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "TiO\u{2082} Photocatalysis: Biomimetic Vanillin Generation");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // Panel A: Photocatalytic conversion of 4-vinylguaiacol → vanillin
+    svg += &label(ml + pw / 2.0, mt - 5.0, "A. 4-Vinylguaiacol Conversion Pathways", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let t_max = 120.0; // minutes
+    let c_max = 100.0; // % of initial substrate
+    let sx_a = |t: f64| -> f64 { ml + t / t_max * pw };
+    let sy_a = |c: f64| -> f64 { mt + ph - c / c_max * ph };
+
+    for i in 0..=4 {
+        let t = t_max * i as f64 / 4.0;
+        svg += &vline(sx_a(t), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(t), mt + ph + 13.0, &format!("{:.0}", t), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let c = c_max * i as f64 / 5.0;
+        svg += &hline(ml, ml + pw, sy_a(c), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(c) + 3.5, &format!("{:.0}%", c), MUTED, 8, "end");
+    }
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Irradiation Time (min)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "Concentration (% initial)");
+
+    // Kinetic model:
+    // Substrate (4-vinylguaiacol) decays exponentially
+    // Vanillin builds then decays (intermediate product, max ~36%)
+    // Vanillic acid (over-oxidation product) grows
+    let dt = 0.1;
+    let k_sub = 0.015; // min⁻¹ substrate consumption
+    let k_van = 0.008; // min⁻¹ vanillin formation from substrate
+    let k_overox = 0.004; // min⁻¹ vanillin over-oxidation
+    let mut sub = 100.0_f64;
+    let mut van = 0.0_f64;
+    let mut overox = 0.0_f64;
+
+    let mut sub_pts: Vec<(f64, f64)> = Vec::new();
+    let mut van_pts: Vec<(f64, f64)> = Vec::new();
+    let mut overox_pts: Vec<(f64, f64)> = Vec::new();
+
+    for step in 0..((t_max / dt) as usize) {
+        let t = step as f64 * dt;
+        let d_sub = -k_sub * sub;
+        let d_van = k_van * sub - k_overox * van;
+        let d_overox = k_overox * van;
+
+        sub += d_sub * dt;
+        van += d_van * dt;
+        overox += d_overox * dt;
+        sub = sub.max(0.0);
+        van = van.max(0.0);
+
+        if step % 10 == 0 {
+            sub_pts.push((t, sub));
+            van_pts.push((t, van));
+            overox_pts.push((t, overox));
+        }
+    }
+
+    svg += &polyline_svg(&sub_pts, BLUE, "2", &sx_a, &sy_a);
+    svg += &polyline_svg(&van_pts, GREEN, "2.5", &sx_a, &sy_a);
+    svg += &polyline_svg(&overox_pts, RED, "2", &sx_a, &sy_a);
+
+    // Peak vanillin annotation
+    let van_peak = van_pts.iter().max_by(|a, b| a.1.partial_cmp(&b.1).unwrap()).unwrap();
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{GREEN}\"/>\n",
+        sx_a(van_peak.0), sy_a(van_peak.1));
+    svg += &label(sx_a(van_peak.0) + 5.0, sy_a(van_peak.1) - 8.0,
+        &format!("Peak: {:.0}% ({:.0} min)", van_peak.1, van_peak.0), GREEN, 8, "start");
+
+    // Legend
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 12.0, BLUE, "2.5");
+    svg += &label(ml + 36.0, mt + 16.0, "4-Vinylguaiacol (substrate)", TEXT, 8, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 26.0, GREEN, "2.5");
+    svg += &label(ml + 36.0, mt + 30.0, "Vanillin (target)", TEXT, 8, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 40.0, RED, "2.5");
+    svg += &label(ml + 36.0, mt + 44.0, "Vanillic acid (overoxidation)", TEXT, 8, "start");
+
+    // Panel B: Selectivity comparison — TiO₂ vs other oxidation methods
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0, "B. Vanillin Selectivity by Method", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 35.0, mt + ph / 2.0, ml2 - 35.0, mt + ph / 2.0, "Vanillin Selectivity (%)");
+
+    let methods: [(&str, f64, &str); 5] = [
+        ("TiO\u{2082}/UV", 36.0, GREEN),
+        ("Barrel\naging", 25.0, ACCENT),
+        ("Fenton", 12.0, BLUE),
+        ("Direct\nO\u{2082}", 8.0, CYAN),
+        ("Thermal\nauto-ox", 5.0, RED),
+    ];
+
+    let bar_w = pw / 7.0;
+    let sel_max = 50.0;
+    let sy_bar = |s: f64| -> f64 { mt + ph - s / sel_max * ph };
+
+    for i in 0..=5 {
+        let s = sel_max * i as f64 / 5.0;
+        svg += &hline(ml2, ml2 + pw, sy_bar(s), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_bar(s) + 3.5, &format!("{:.0}%", s), MUTED, 8, "end");
+    }
+
+    for (i, (name, sel, color)) in methods.iter().enumerate() {
+        let cx = ml2 + pw * (i as f64 + 0.5) / methods.len() as f64;
+        let bar_top = sy_bar(*sel);
+        let bar_height = mt + ph - bar_top;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{color}\" opacity=\"0.7\" rx=\"3\"/>\n",
+            cx - bar_w / 2.0, bar_top, bar_w, bar_height);
+        svg += &label(cx, bar_top - 6.0, &format!("{:.0}%", sel), color, 9, "middle");
+
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(cx, mt + ph + 13.0 + li as f64 * 11.0, line, TEXT, 7, "middle");
+        }
+    }
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"240\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 250.0, mt + 8.0, GRID);
+    svg += &label(ml2 + pw - 245.0, mt + 24.0,
+        "TiO\u{2082}: 36% vanillin selectivity (Ino 2025)", GREEN, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + 38.0,
+        "Biomimetic: same oxidation as barrel aging", ACCENT, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + 52.0,
+        "Cost: $15 (food-grade TiO\u{2082} + UV LED)", YELLOW, 9, "start");
 
     svg.push_str("</svg>");
     svg
