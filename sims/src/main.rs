@@ -146,6 +146,7 @@ fn main() {
     fs::write("../graphs/scco2-dual-mode.svg", sim_scco2_dual_mode()).unwrap();
     fs::write("../graphs/cryo-enzymatic.svg", sim_cryo_enzymatic()).unwrap();
     fs::write("../graphs/plasma-fenton.svg", sim_plasma_fenton()).unwrap();
+    fs::write("../graphs/sono-micelle-lipase.svg", sim_sono_micelle_lipase()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -10050,6 +10051,187 @@ fn sim_plasma_fenton() -> String {
         "Plasma \u{2192} Fenton: trades peak intensity", GREEN, 8, "start");
     svg += &label(ml2 + 10.0, mb2 - 18.0,
         "for sustained bulk oxidation (hours vs min)", ACCENT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_sono_micelle_lipase() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 58 \u{2014} Sono-Micelle Lipase: Esterification at Full Spirit Strength");
+
+    // Panel A: Net ester rate vs water activity for three approaches
+    let ml1 = 70.0;
+    let mr1 = 340.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 320.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: Net Ester Rate vs Water Activity", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // X: Water activity 0 to 1.0
+    let sx1 = |a: f64| ml1 + a / 1.0 * pw1;
+    for a in [0.0, 0.2, 0.4, 0.6, 0.8, 1.0] {
+        let x = sx1(a);
+        svg += &vline(x, mb1, mb1 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb1 + 14.0, &format!("{:.1}", a), MUTED, 7, "middle");
+    }
+    svg += &label(ml1 + pw1 / 2.0, mb1 + 28.0, "Water activity (a\u{1d61})", MUTED, 8, "middle");
+
+    // Y: Net ester rate -100 to +100
+    let mid_y = mt1 + ph1 / 2.0;
+    let sy1 = |r: f64| mid_y - r / 100.0 * (ph1 / 2.0);
+
+    // Zero line
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mid_y, mr1, mid_y, MUTED);
+
+    for v in [-100, -50, 0, 50, 100] {
+        let y = sy1(v as f64);
+        svg += &hline(ml1 - 3.0, ml1, y, MUTED, "0.5");
+        let lbl = if v > 0 { format!("+{}", v) } else { format!("{}", v) };
+        svg += &label(ml1 - 6.0, y + 3.0, &lbl, MUTED, 7, "end");
+    }
+    svg += &label(ml1 - 32.0, mt1 + ph1 / 4.0, "Synthesis", GREEN, 7, "middle");
+    svg += &label(ml1 - 32.0, mt1 + 3.0 * ph1 / 4.0, "Hydrolysis", RED, 7, "middle");
+
+    // Zone shading
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.06\"/>\n", ml1, mt1, pw1, ph1 / 2.0, GREEN);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.06\"/>\n", ml1, mid_y, pw1, ph1 / 2.0, RED);
+
+    // Spirit zone shading
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.08\"/>\n",
+        sx1(0.80), mt1, sx1(0.95) - sx1(0.80), ph1, YELLOW);
+    svg += &label(sx1(0.875), mt1 + 12.0, "Spirit", YELLOW, 7, "middle");
+    svg += &label(sx1(0.875), mt1 + 24.0, "zone", YELLOW, 7, "middle");
+
+    // Curve 1: Standard CALB (switches at aw=0.35)
+    let std_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let aw = i as f64 / 100.0;
+        let rate = 100.0 * (0.35 - aw) / 0.35; // linear crossover at 0.35
+        (sx1(aw), sy1(rate.max(-100.0).min(100.0)))
+    }).collect();
+    svg += &polyline_svg(&std_pts, BLUE, "2", &|x| x, &|y| y);
+
+    // Curve 2: CXL-CALB (only works at low aw, higher rate)
+    let cxl_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let aw = i as f64 / 100.0;
+        let rate = if aw < 0.30 {
+            80.0 * (0.30 - aw) / 0.30
+        } else {
+            -60.0 * (aw - 0.30) / 0.70
+        };
+        (sx1(aw), sy1(rate.max(-100.0).min(100.0)))
+    }).collect();
+    svg += &polyline_svg(&cxl_pts, PURPLE, "1.5", &|x| x, &|y| y);
+
+    // Curve 3: Sono-micelle CALB (positive even at high aw!)
+    let micelle_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let aw = i as f64 / 100.0;
+        // Micelle sequestration maintains positive rate up to aw~0.95
+        let rate = 70.0 * (1.0 - (aw / 1.05).powf(4.0));
+        (sx1(aw), sy1(rate.max(-100.0).min(100.0)))
+    }).collect();
+    svg += &polyline_svg(&micelle_pts, GREEN, "2.5", &|x| x, &|y| y);
+
+    // Legend
+    let ly1 = mt1 + 5.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"175\" height=\"46\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml1 + 5.0, ly1, GRID);
+    let leg1 = [
+        (BLUE, "Standard CALB"),
+        (PURPLE, "CXL-CALB (\u{00a7}4.34)"),
+        (GREEN, "Sono-micelle CALB (novel)"),
+    ];
+    for (i, (c, txt)) in leg1.iter().enumerate() {
+        let iy = ly1 + 13.0 + i as f64 * 13.0;
+        svg += &hline(ml1 + 10.0, ml1 + 25.0, iy, c, "2");
+        svg += &label(ml1 + 29.0, iy + 3.0, txt, TEXT, 7, "start");
+    }
+
+    // Panel B: Sono-enzymatic conversion enhancement
+    let ml2 = 390.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 320.0;
+    let mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: Sono-Enzymatic Enhancement", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    // Bar chart: metrics with/without ultrasound
+    let metrics: [(&str, f64, f64, &str); 4] = [
+        ("Conversion (%)", 64.0, 82.0, "+27.4%"),
+        ("Vmax (rel.)", 1.0, 2.85, "2.85\u{00d7}"),
+        ("Activity loss (%)", 43.3, 11.3, "4\u{00d7} better"),
+        ("Ea (kJ/mol)", 7.64, 22.5, "Regime shift"),
+    ];
+
+    let bar_h = 50.0;
+    let bar_gap = 15.0;
+    let total_h = metrics.len() as f64 * (bar_h + bar_gap) - bar_gap;
+    let bars_top = mt2 + (ph2 - total_h) / 2.0;
+    let bars_x = ml2 + 90.0;
+    let bars_w = pw2 - 100.0;
+
+    for (i, (name, no_us, with_us, annotation)) in metrics.iter().enumerate() {
+        let y = bars_top + i as f64 * (bar_h + bar_gap);
+
+        // Label
+        svg += &label(bars_x - 5.0, y + bar_h / 2.0 - 4.0, name, TEXT, 7, "end");
+
+        // Normalize to max of the pair
+        let max_val = no_us.max(*with_us);
+        let scale = bars_w / max_val;
+
+        // No-US bar (top half)
+        let bw1 = no_us * scale;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            rx=\"2\" fill=\"{}\" opacity=\"0.5\"/>\n",
+            bars_x, y, bw1, bar_h / 2.0 - 2.0, MUTED);
+        svg += &label(bars_x + bw1 + 4.0, y + bar_h / 4.0 + 2.0,
+            &format!("{:.1}", no_us), MUTED, 7, "start");
+
+        // With-US bar (bottom half)
+        let bw2 = with_us * scale;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            rx=\"2\" fill=\"{}\" opacity=\"0.7\"/>\n",
+            bars_x, y + bar_h / 2.0 + 1.0, bw2, bar_h / 2.0 - 2.0, GREEN);
+        svg += &label(bars_x + bw2 + 4.0, y + 3.0 * bar_h / 4.0 + 2.0,
+            &format!("{:.1} ({})", with_us, annotation), GREEN, 7, "start");
+    }
+
+    // Legend for bars
+    let ly2 = mt2 + 5.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"130\" height=\"33\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        mr2 - 135.0, ly2, GRID);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"12\" height=\"8\" fill=\"{}\" opacity=\"0.5\"/>\n",
+        mr2 - 130.0, ly2 + 7.0, MUTED);
+    svg += &label(mr2 - 114.0, ly2 + 15.0, "Without ultrasound", TEXT, 7, "start");
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"12\" height=\"8\" fill=\"{}\" opacity=\"0.7\"/>\n",
+        mr2 - 130.0, ly2 + 20.0, GREEN);
+    svg += &label(mr2 - 114.0, ly2 + 28.0, "With 20 kHz US", TEXT, 7, "start");
+
+    // Insight
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml2 + 5.0, mb2 - 50.0, pw2 - 10.0, GRID);
+    svg += &label(ml2 + 10.0, mb2 - 32.0,
+        "Nanomicelles: ester synthesis at spirit a\u{1d61}", GREEN, 8, "start");
+    svg += &label(ml2 + 10.0, mb2 - 18.0,
+        "No dehydration, no pressure, no freezing needed", ACCENT, 8, "start");
 
     svg.push_str("</svg>");
     svg

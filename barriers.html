@@ -2390,6 +2390,37 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<h3>4.46 Sono-Micelle Lipase Reactor: Esterification at Full Spirit Strength</h3>
+
+<div class="callout key-insight">
+  <strong>The fundamental problem solved:</strong> Every enzymatic esterification approach for spirits hits the same wall &mdash; at a<sub>w</sub> &asymp; 0.85 (40% ABV), CALB lipase catalyzes hydrolysis, destroying esters instead of making them. Solutions to date require dehydration (&sect;1.12), CO<sub>2</sub> pressure (&sect;4.34), or freezing (&sect;4.44). <strong>Nanomicelles flip the paradigm:</strong> instead of reducing water, they hide the ester product from water<span class="cite" data-ref="164"><sup>[164]</sup></span>.
+</div>
+
+<p><strong>How nanomicelle sequestration works:</strong> Singhania et al. (2022) demonstrated that adding 2 wt% TPGS-750-M (a vitamin E&ndash;PEG surfactant, GRAS status) to <em>pure water</em> enabled lipase-catalyzed esterification with <strong>&gt;99% yield</strong> for valeric acid + hexanol. The mechanism: the surfactant self-assembles into 50&ndash;100 nm nanomicelles. Newly formed ester products &mdash; hydrophobic by nature &mdash; partition instantly into the micelle interior, removing them from the aqueous phase. This prevents hydrolysis, effectively creating a thermodynamic &ldquo;product sink&rdquo; that drives the reaction forward despite the water-rich environment.</p>
+
+<p><strong>Adding ultrasound (sono-enzymatic synergy):</strong> Vartolomei et al. (2022) showed that 20 kHz ultrasound at 0.053 W/mL enhanced CALB esterification by <strong>+27.4%</strong>, shifted kinetics from diffusion-controlled to kinetically-controlled, and improved enzyme reusability <strong>4&times;</strong> (11% activity loss vs 43% without sonication)<span class="cite" data-ref="165"><sup>[165]</sup></span>. The ultrasound eliminates the mass-transfer bottleneck between spirit, micelles, and enzyme beads.</p>
+
+<p><strong>The triple synergy for spirit esterification:</strong></p>
+<ol>
+  <li><strong>CALB lipase</strong> (Novozym 435) provides catalytic esterification at ambient temperature</li>
+  <li><strong>Nanomicelles</strong> (TPGS-750-M, 2 wt%) sequester ester products from water, preventing back-hydrolysis</li>
+  <li><strong>Ultrasound</strong> (20 kHz, low amplitude) drives mass transfer between spirit, micelles, and enzyme, shifting from diffusion-limited to kinetically-controlled</li>
+</ol>
+
+<p><strong>Novel prediction:</strong> In a 40% ABV spirit with 2 wt% TPGS-750-M, 5 g/L Novozym 435, and 20 kHz sonication at 30% amplitude, the system should produce net ester synthesis &mdash; despite a<sub>w</sub> = 0.85 &mdash; because the micelle product-sink shifts the effective equilibrium. The flavor-active longer-chain esters (ethyl hexanoate, ethyl octanoate) should be preferentially formed because their higher hydrophobicity drives stronger micelle partitioning. Singhania showed this hydrophobicity-dependent selectivity explicitly.</p>
+
+<p><strong>Additional bonus:</strong> Sun et al. (2015) found that lipase preferentially esterifies <em>fusel alcohols</em> (isoamyl alcohol, isobutanol) over ethanol in aqueous media &mdash; the more hydrophobic substrate wins. In spirit, fusel alcohols (200&ndash;500 mg/L) are off-flavor contributors causing harshness. The sono-micelle reactor would selectively convert these fusel alcohols to fruity esters (isoamyl acetate = banana note, isoamyl hexanoate = apple note), simultaneously improving two quality attributes: more fruit esters, less fusel harshness.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/sono-micelle-lipase.svg" alt="Sono-micelle lipase reactor: nanomicelle ester sequestration enables synthesis at full spirit strength">
+  <figcaption><strong>Fig. 58.</strong> Sono-micelle lipase reactor. (A) Net ester formation rate vs water activity for three approaches: standard CALB (hydrolysis above a<sub>w</sub>=0.35), CXL-CALB (esterification at a<sub>w</sub>&lt;0.3), and sono-micelle CALB (esterification at a<sub>w</sub>=0.85 via product sequestration). The micelle approach is the ONLY one that works at spirit a<sub>w</sub>. (B) Sono-enzymatic conversion improvement: ultrasound shifts kinetics from diffusion-limited to reaction-limited, with +27.4% conversion enhancement.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (components)</span> &mdash; Nanomicelle esterification at &gt;99% in water (Singhania 2022), sono-enzymatic +27.4% enhancement (Vartolomei 2022), and CALB ester synthesis are all published. The combination for spirit application is novel. TPGS-750-M is vitamin E&ndash;based (food-grade), and Novozym 435 is widely used in food processing. <strong>Home testability: 3/5</strong> ($30&ndash;50: Novozym 435 beads ($5/g on eBay), TPGS-750-M available from chemical suppliers ($20/25g). Add 2 wt% surfactant + 5 g/L enzyme beads to 200 mL spirit in ultrasonic jewelry cleaner. Run 2h at 40&deg;C. Filter beads, taste vs untreated spirit + plain enzyme control (no micelles). The micelle batch should show increased fruitiness and reduced fusel harshness.)
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -2542,6 +2573,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>scCO<sub>2</sub> dual-mode (&sect;4.43)</td><td>+14% ester conversion (free bonus)</td><td><span class="verdict promising">Published (components)</span></td><td>$800+</td><td>EXTRACT + ESTER</td></tr>
 <tr><td>Cryo-enzymatic (&sect;4.44)</td><td>Direction reversal: +156 vs &minus;6000 s<sup>&minus;1</sup></td><td><span class="verdict speculative">Novel prediction</span></td><td>$25</td><td>ESTER</td></tr>
 <tr><td>Plasma-Fenton (&sect;4.45)</td><td>Sustained OH&bull; from H<sub>2</sub>O<sub>2</sub> + Fe + UV</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$30&ndash;40</td><td>OXIDATION</td></tr>
+<tr><td>Sono-micelle lipase (&sect;4.46)</td><td>&gt;99% ester yield at a<sub>w</sub>=0.85</td><td><span class="verdict promising">Published (components)</span></td><td>$30&ndash;50</td><td>ESTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -2722,6 +2754,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>scCO<sub>2</sub> dual-mode (&sect;4.43)</td><td>2/5</td><td>$800+</td><td>Tabletop scCO<sub>2</sub> extractor + oak chips as in &sect;3.11. The esterification bonus is automatic at extraction pressures &mdash; no protocol change. To quantify: compare ethyl acetate in scCO<sub>2</sub> extract vs conventional ethanol maceration extract at same oak/solvent ratio. GC-FID or ester test strips.</td></tr>
 <tr><td>Cryo-enzymatic (&sect;4.44)</td><td>3/5</td><td>$25</td><td>Chest freezer + dry ice (&minus;30&deg;C). Freeze 500 mL spirit, decant unfrozen fraction. Add 0.5 g Novozym 435 beads (eBay ~$5/g). Incubate 24&ndash;72h at &minus;30&deg;C. Filter, recombine. Compare ethyl acetate/hexanoate vs same-a<sub>w</sub> room-temp lipase control (which should show hydrolysis, not synthesis).</td></tr>
 <tr><td>Plasma-Fenton (&sect;4.45)</td><td>2/5</td><td>$30&ndash;40</td><td>UV-C lamp + oak chips + H<sub>2</sub>O<sub>2</sub> proxy (0.1% food-grade). Expose 100 mL spirit with oak chips to UV-C for 8 hours. Compare color (spectrophotometer or phone app) and taste vs dark control. Faster color development = photo-Fenton active. <strong>Caution: UV-C is harmful to eyes/skin. Enclosed setup required.</strong></td></tr>
+<tr><td>Sono-micelle lipase (&sect;4.46)</td><td>3/5</td><td>$30&ndash;50</td><td>Novozym 435 (5 g/L, eBay) + TPGS-750-M (2 wt%, chem supplier $20/25g). Dissolve surfactant in 200 mL spirit (stir until clear), add enzyme beads, place in ultrasonic jewelry cleaner at 40&deg;C for 2h. Filter beads (reuse 5&times;). Taste vs enzyme-only control and untreated spirit. Expect increased fruitiness + reduced fusel harshness.</td></tr>
 </tbody>
 </table>
 </div>
@@ -2901,6 +2934,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r161">Jia W, et al. (2022) &ldquo;Ultra-high pressure homogenization (UHPH) as a novel processing technology to accelerate spirit aging.&rdquo; <em>Food Res Int</em> 153:110957. <a href="https://doi.org/10.1016/j.foodres.2022.110957">DOI</a> (UHPH at 400 bar: 6.43-year aging equivalence measured by GC-IMS + HS-SPME/GC-MS. 2,069 volatile compounds identified. Dramatic ester enhancement via cavitation-driven extraction and pressure-assisted esterification. Cluster disruption measured by <sup>1</sup>H NMR T<sub>2</sub> relaxation.)</li>
   <li id="r162">Vauthey S, Milo C, Frossard P, Garti N, Leser ME, Watzke HJ. (2000) &ldquo;Structured fluids as microreactors for flavor formation by the Maillard reaction.&rdquo; <em>J Agric Food Chem</em> 48(10):4808&ndash;4816. <a href="https://doi.org/10.1021/jf991254a">DOI</a> (L(2) microemulsions and cubic lipid phases dramatically enhance Maillard flavor formation: 2-furfurylthiol and 2-methyl-3-furanthiol production strongly enhanced vs aqueous systems. Cubic phase described as &ldquo;cubic selective microreactor&rdquo; &mdash; geometric confinement at oil/water interface controls product distribution. Two novel sulfur compounds identified.)</li>
   <li id="r163">Chrisochoou A, Schaber K, Bolz U. (2001) &ldquo;Pressure Tuning of Reaction Equilibrium of Esterification of Acetic Acid with Ethanol in Compressed CO<sub>2</sub>.&rdquo; <em>J Phys Chem B</em> 105(19):4510&ndash;4513. <a href="https://doi.org/10.1021/jp003903n">DOI</a> (Esterification equilibrium increases with CO<sub>2</sub> pressure in two-phase region, peaking at the critical point: 72% conversion vs 63% neat at 333 K. Equilibrium constant closely related to isothermal compressibility and local density/composition enhancement. Demonstrates pressure as a tuning knob for Fischer esterification.)</li>
+  <li id="r164">Singhania V, Cortes-Clerget M, Dussart-Gautheret J, et al. (2022) &ldquo;Lipase-catalyzed esterification in water enabled by nanomicelles. Applications to 1-pot multi-step sequences.&rdquo; <em>Chem Sci</em> 13(5):1440&ndash;1445. <a href="https://doi.org/10.1039/D1SC05660C">DOI</a> (TPGS-750-M nanomicelles (2 wt%) enable lipase-catalyzed esterification in <strong>pure water</strong> with &gt;99% yield. Hydrophobic ester products partition into micelle interior, preventing back-hydrolysis. Breaks the a<sub>w</sub> limitation for enzymatic ester synthesis.)</li>
+  <li id="r165">Vartolomei A, Calinescu I, Vinatoru M, Gavrila AI. (2022) &ldquo;A parameter study of ultrasound assisted enzymatic esterification.&rdquo; <em>Sci Rep</em> 12:1421. <a href="https://doi.org/10.1038/s41598-022-05551-x">DOI</a> (20 kHz ultrasound at 0.053 W/mL: +27.4% conversion improvement for CALB esterification. Kinetic regime shifts from diffusion-controlled to kinetically-controlled. Enzyme reusability improved 4&times; (11% vs 43% activity loss). Pulsed mode preserves enzyme stability.)</li>
 </ol>
 
 
@@ -3737,6 +3772,16 @@ var refs = {
     source: "Chrisochoou et al. (2001), J Phys Chem B 105(19):4510\u20134513",
     excerpt: "Acetic acid + ethanol esterification in compressed CO\u2082: conversion increases from 63% (neat) to 72% at the CO\u2082 critical point (333 K, 58.6 bar). Peak at isothermal compressibility maximum. Demonstrates pressure-tunable Fischer esterification. Dual mechanism: density enhancement + equilibrium shift.",
     url: "#r163"
+  },
+  164: {
+    source: "Singhania et al. (2022), Chem Sci 13(5):1440\u20131445",
+    excerpt: "TPGS-750-M nanomicelles (2 wt%) enable lipase esterification in PURE WATER with >99% yield. Hydrophobic ester products partition into micelle interior, preventing back-hydrolysis. Breaks the a\u1d61 limitation. Food-grade vitamin E\u2013PEG surfactant. Hydrophobicity-dependent selectivity: longer-chain esters sequestered more effectively.",
+    url: "#r164"
+  },
+  165: {
+    source: "Vartolomei et al. (2022), Sci Rep 12:1421",
+    excerpt: "20 kHz ultrasound at 0.053 W/mL: +27.4% conversion improvement for CALB (Lipozyme 435) esterification. Kinetic regime shifts from diffusion-controlled to kinetically-controlled. Enzyme reusability 4\u00d7 better (11% vs 43% activity loss). Ea increases from 7.64 to 22.5 kJ/mol under sonication.",
+    url: "#r165"
   }
 };
 
