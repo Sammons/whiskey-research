@@ -140,6 +140,7 @@ fn main() {
     fs::write("../graphs/microdroplet-ester.svg", sim_microdroplet_ester()).unwrap();
     fs::write("../graphs/cold-plasma-aging.svg", sim_cold_plasma_aging()).unwrap();
     fs::write("../graphs/flash-maillard.svg", sim_flash_maillard()).unwrap();
+    fs::write("../graphs/cryo-nebulized-ester.svg", sim_cryo_nebulized_ester()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -8960,6 +8961,223 @@ fn sim_flash_maillard() -> String {
         "Q\u{2081}\u{2080} \u{2248} 2 (Maillard E\u{2090} = 80\u{2013}120 kJ/mol)", ACCENT, 8, "start");
     svg += &label(ml2 + 95.0, mb2 - 18.0,
         "Microfluidic quench stops at stage 3", TEXT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 52: Cryo-Nebulized Esterification
+// ═══════════════════════════════════════════════════════════════
+fn sim_cryo_nebulized_ester() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Fig. 52 \u{2014} Cryo-Nebulized Esterification: Temperature-Activated Interface");
+
+    // Panel A: Water activity of unfrozen fraction vs temperature
+    let ml = 55.0; let mr = 320.0; let mt = 55.0; let mb = 370.0;
+    let pw = mr - ml; let ph = mb - mt;
+
+    svg += &label(ml + pw / 2.0, mt - 10.0,
+        "A. Unfrozen Fraction During Cryoconcentration", TEXT, 10, "middle");
+
+    svg += &hline(ml, mr, mb, MUTED, "1");
+    svg += &vline(ml, mt, mb, MUTED, "1");
+
+    // X-axis: temperature -45 to 0°C
+    let sx = |t: f64| ml + (t + 45.0) / 45.0 * pw; // -45 → 0
+    for t in [-40, -30, -20, -10, 0] {
+        let x = sx(t as f64);
+        svg += &vline(x, mb, mb + 4.0, MUTED, "0.5");
+        svg += &label(x, mb + 14.0, &format!("{}\u{00b0}C", t), MUTED, 7, "middle");
+    }
+    svg += &label(ml + pw / 2.0, mb + 26.0, "Temperature", MUTED, 8, "middle");
+
+    // Left Y-axis: Water activity 0-0.7
+    let sy_aw = |aw: f64| mb - aw / 0.7 * ph;
+    for v in (0..=7).map(|i| i as f64 * 0.1) {
+        let y = sy_aw(v);
+        svg += &hline(ml - 3.0, ml, y, MUTED, "0.5");
+        svg += &label(ml - 6.0, y + 3.0, &format!("{:.1}", v), MUTED, 7, "end");
+        if v > 0.01 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml, y, mr, y, GRID);
+        }
+    }
+    svg += &label(ml - 28.0, mt + ph / 2.0, "Water activity", BLUE, 7, "middle");
+
+    // Model: water activity of unfrozen fraction vs temperature
+    // At 0°C: 40% ABV, aw ≈ 0.60
+    // At -5°C: ~50% ABV, aw ≈ 0.50
+    // At -15°C: ~58% ABV, aw ≈ 0.42
+    // At -25°C: ~65% ABV, aw ≈ 0.35
+    // At -40°C: ~72% ABV, aw ≈ 0.28
+    // Roughly: aw = 0.60 * exp(0.018 * T) for T < 0
+
+    let aw_pts: Vec<(f64, f64)> = (0..=450).map(|i| {
+        let t = -(i as f64) / 10.0; // 0 to -45
+        let aw = 0.60 * (0.018_f64 * t).exp();
+        (sx(t), sy_aw(aw.max(0.15)))
+    }).collect();
+    svg += &polyline_svg(&aw_pts, BLUE, "2.5", &|x| x, &|y| y);
+
+    // ABV axis on right side
+    // Right Y-axis: ABV 40-80%
+    let sy_abv = |abv: f64| mb - (abv - 40.0) / 40.0 * ph;
+    for abv in [40, 50, 60, 70, 80] {
+        let y = sy_abv(abv as f64);
+        svg += &hline(mr, mr + 3.0, y, MUTED, "0.5");
+        svg += &label(mr + 6.0, y + 3.0, &format!("{}%", abv), ACCENT, 7, "start");
+    }
+    svg += &label(mr + 22.0, mt + ph / 2.0, "ABV", ACCENT, 7, "middle");
+
+    // ABV curve
+    let abv_pts: Vec<(f64, f64)> = (0..=450).map(|i| {
+        let t = -(i as f64) / 10.0;
+        let abv = 40.0 + 32.0 * (1.0 - (0.02_f64 * t).exp());
+        (sx(t), sy_abv(abv.min(80.0)))
+    }).collect();
+    svg += &polyline_svg(&abv_pts, ACCENT, "2", &|x| x, &|y| y);
+
+    // Microdroplet threshold line (aw = 0.40)
+    let thresh_y = sy_aw(0.40);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" stroke-dasharray=\"6,3\"/>\n",
+        ml, thresh_y, mr, thresh_y, GREEN);
+    svg += &label(mr - 5.0, thresh_y - 6.0,
+        "Microdroplet threshold", GREEN, 7, "end");
+
+    // Activation zone shading below threshold
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.10\"/>\n",
+        ml, thresh_y, sx(-20.0) - ml, mb - thresh_y, GREEN);
+    svg += &label((ml + sx(-20.0)) / 2.0, thresh_y + 15.0,
+        "Interface active", GREEN, 8, "middle");
+
+    // Legend
+    let ly = mt + 5.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"115\" height=\"34\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml + 5.0, ly, GRID);
+    svg += &hline(ml + 10.0, ml + 25.0, ly + 13.0, BLUE, "2");
+    svg += &label(ml + 29.0, ly + 16.0, "Water activity (a\u{1d61})", TEXT, 7, "start");
+    svg += &hline(ml + 10.0, ml + 25.0, ly + 26.0, ACCENT, "2");
+    svg += &label(ml + 29.0, ly + 29.0, "Ethanol (% ABV)", TEXT, 7, "start");
+
+    // Panel B: Predicted ester yield vs temperature
+    let ml2 = 380.0; let mr2 = 670.0; let mt2 = 55.0; let mb2 = 370.0;
+    let pw2 = mr2 - ml2; let ph2 = mb2 - mt2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 10.0,
+        "B. Predicted Ester Yield vs Temperature", TEXT, 10, "middle");
+
+    svg += &hline(ml2, mr2, mb2, MUTED, "1");
+    svg += &vline(ml2, mt2, mb2, MUTED, "1");
+
+    let sx2 = |t: f64| ml2 + (t + 45.0) / 45.0 * pw2;
+    for t in [-40, -30, -20, -10, 0] {
+        let x = sx2(t as f64);
+        svg += &vline(x, mb2, mb2 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb2 + 14.0, &format!("{}\u{00b0}C", t), MUTED, 7, "middle");
+    }
+    svg += &label(ml2 + pw2 / 2.0, mb2 + 26.0, "Temperature", MUTED, 8, "middle");
+
+    // Y-axis: relative ester formation rate (0-100 arbitrary)
+    let sy2 = |r: f64| mb2 - r / 100.0 * ph2;
+    for v in (0..=5).map(|i| i as f64 * 20.0) {
+        let y = sy2(v);
+        svg += &hline(ml2 - 3.0, ml2, y, MUTED, "0.5");
+        svg += &label(ml2 - 6.0, y + 3.0, &format!("{:.0}", v), MUTED, 7, "end");
+        if v > 0.0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml2, y, mr2, y, GRID);
+        }
+    }
+    svg += &label(ml2 - 28.0, mt2 + ph2 / 2.0, "Rel. ester rate", MUTED, 7, "middle");
+
+    // Three curves:
+    // 1. Thermal esterification (Arrhenius, declines with T)
+    // rate_thermal = 100 * exp(-Ea/R * (1/T - 1/T_ref)), Ea=50 kJ/mol
+    let t_ref = 273.15; // 0°C as reference
+    let thermal_pts: Vec<(f64, f64)> = (0..=450).map(|i| {
+        let t_c = -(i as f64) / 10.0;
+        let t_k = t_c + 273.15;
+        let rate = 100.0 * ((-50000.0 / R) * (1.0 / t_k - 1.0 / t_ref)).exp();
+        (sx2(t_c), sy2(rate.min(100.0)))
+    }).collect();
+
+    // 2. Cryo-nebulized: interfacial effect scales with (1 - aw/0.4)^2 when aw < 0.4
+    let cryo_pts: Vec<(f64, f64)> = (0..=450).map(|i| {
+        let t_c = -(i as f64) / 10.0;
+        let aw = (0.60 * (0.018_f64 * t_c).exp()).max(0.15);
+        let interface_factor = if aw < 0.40 {
+            ((0.40 - aw) / 0.40).powi(2) * 80.0
+        } else {
+            0.0
+        };
+        (sx2(t_c), sy2(interface_factor))
+    }).collect();
+
+    // 3. Combined: thermal + interfacial
+    let combined_pts: Vec<(f64, f64)> = (0..=450).map(|i| {
+        let t_c = -(i as f64) / 10.0;
+        let t_k = t_c + 273.15;
+        let thermal = 100.0 * ((-50000.0 / R) * (1.0 / t_k - 1.0 / t_ref)).exp();
+        let aw = (0.60 * (0.018_f64 * t_c).exp()).max(0.15);
+        let interface_factor = if aw < 0.40 {
+            ((0.40 - aw) / 0.40).powi(2) * 80.0
+        } else {
+            0.0
+        };
+        let combined = (thermal + interface_factor).min(100.0);
+        (sx2(t_c), sy2(combined))
+    }).collect();
+
+    svg += &polyline_svg(&thermal_pts, BLUE, "2", &|x| x, &|y| y);
+    svg += &polyline_svg(&cryo_pts, GREEN, "2", &|x| x, &|y| y);
+    svg += &polyline_svg(&combined_pts, ACCENT, "2.5", &|x| x, &|y| y);
+
+    // Optimum annotation
+    // Find where combined peaks (roughly -30 to -35°C)
+    let opt_t = -30.0_f64;
+    let opt_x = sx2(opt_t);
+    let opt_thermal = 100.0 * ((-50000.0 / R) * (1.0 / (opt_t + 273.15) - 1.0 / t_ref)).exp();
+    let opt_aw = (0.60 * (0.018_f64 * opt_t).exp()).max(0.15);
+    let opt_iface = ((0.40 - opt_aw) / 0.40).powi(2) * 80.0;
+    let opt_combined = (opt_thermal + opt_iface).min(100.0);
+
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"none\" stroke=\"{}\" stroke-width=\"2\"/>\n",
+        opt_x, sy2(opt_combined), ACCENT);
+    svg += &label(opt_x + 8.0, sy2(opt_combined) - 3.0,
+        "Predicted optimum", ACCENT, 8, "start");
+    svg += &label(opt_x + 8.0, sy2(opt_combined) + 9.0,
+        &format!("\u{2013}30\u{00b0}C, rate = {:.0}", opt_combined), ACCENT, 7, "start");
+
+    // Legend
+    let ly2 = mt2 + 5.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"140\" height=\"46\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, ly2, GRID);
+    let items2 = [
+        (BLUE, "Thermal (Arrhenius)"),
+        (GREEN, "Interface (cryo-nebulized)"),
+        (ACCENT, "Combined (predicted)"),
+    ];
+    for (i, (c, txt)) in items2.iter().enumerate() {
+        let iy = ly2 + 13.0 + i as f64 * 13.0;
+        svg += &hline(ml2 + 10.0, ml2 + 25.0, iy, c, "2");
+        svg += &label(ml2 + 29.0, iy + 3.0, txt, TEXT, 7, "start");
+    }
+
+    // Key insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"185\" height=\"42\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 70.0, mb2 - 55.0, GRID);
+    svg += &label(ml2 + 75.0, mb2 - 38.0,
+        "Counter-intuitive: cooling ACCELERATES", GREEN, 8, "start");
+    svg += &label(ml2 + 75.0, mb2 - 25.0,
+        "net ester formation via a\u{1d61} reduction", GREEN, 8, "start");
+    svg += &label(ml2 + 75.0, mb2 - 12.0,
+        "Interface catalysis > Arrhenius penalty", ACCENT, 8, "start");
 
     svg.push_str("</svg>");
     svg

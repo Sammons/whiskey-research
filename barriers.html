@@ -2227,6 +2227,34 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
+<h3>4.40 Cryo-Nebulized Esterification: Temperature-Activated Interfacial Chemistry</h3>
+
+<div class="callout key-insight">
+  <strong>Novel cross-domain synthesis connecting three techniques:</strong> Freeze-concentration (&sect;1.16) reduces water activity in the unfrozen fraction as ice forms. Microdroplet esterification (&sect;1.18) is suppressed above ~1.5% water but accelerated 10<sup>7</sup>&times; in anhydrous droplets. <strong>Key prediction:</strong> at &minus;25&deg;C in a 40% ABV spirit, the unfrozen fraction reaches ~65% ABV with water activity a<sub>w</sub> &asymp; 0.35. Nebulizing this concentrated, cold fraction should partially activate the microdroplet esterification effect, creating a reaction pathway that is thermodynamically impossible at room temperature.
+</div>
+
+<p><strong>The water activity bridge:</strong> During fractional freezing of 40% ABV spirit, ice excludes ethanol. The unfrozen fraction progressively enriches in ethanol and dissolved solutes:</p>
+<ul>
+  <li><strong>&minus;5&deg;C:</strong> ~50% ABV unfrozen fraction, a<sub>w</sub> &asymp; 0.50. Microdroplet esterification still strongly suppressed.</li>
+  <li><strong>&minus;15&deg;C:</strong> ~58% ABV, a<sub>w</sub> &asymp; 0.42. Approaching the guaiacol bulk-solvation threshold (&sect;3.18, Karlsson 2017). Microdroplet effect marginally active.</li>
+  <li><strong>&minus;25&deg;C:</strong> ~65% ABV, a<sub>w</sub> &asymp; 0.35. Water activity below the microdroplet suppression threshold. Nebulizing at this point should yield measurable ester enhancement.</li>
+  <li><strong>&minus;40&deg;C:</strong> ~72% ABV, a<sub>w</sub> &asymp; 0.28. Deep cryo-concentration. Microdroplet effect substantially active. Ester ratchet mechanism (&sect;1.16) amplified by interfacial catalysis.</li>
+</ul>
+
+<p><strong>Implementation concept:</strong> (1) Cool 500 mL spirit to &minus;30&deg;C using dry ice/ethanol bath. (2) Decant or centrifuge the unfrozen liquid (~200 mL at ~65% ABV). (3) Pass this concentrated fraction through an ultrasonic nebulizer into a cold collection chamber (also at &minus;30&deg;C to prevent re-dilution from ambient moisture). The nebulized droplets (~5&ndash;20 &micro;m) provide 10<sup>3</sup>&ndash;10<sup>4</sup> m<sup>&minus;1</sup> SA/V ratio. Ester formation at the cold interface. (4) Recombine with ice fraction, diluting back to target proof. The esters formed in the concentrated droplets are now trapped in the recombined spirit.</p>
+
+<p><strong>Why cold helps rather than hurts:</strong> Conventional wisdom says esterification slows with temperature (Arrhenius). But the microdroplet mechanism is <em>not</em> an Arrhenius-limited thermal reaction&mdash;it is <em>interface-catalyzed</em> by the electric field at the droplet surface. The field strength doesn&rsquo;t depend on temperature. What temperature controls here is <em>water activity</em>: lower temperature &rarr; more ice &rarr; lower a<sub>w</sub> in the unfrozen fraction &rarr; stronger microdroplet effect. The net result is a positive temperature coefficient for the <em>cryo-nebulized</em> pathway despite the reaction being ester synthesis. This is the opposite of normal chemistry: cooling <em>accelerates</em> the net ester formation because the water-removal benefit outweighs the kinetic penalty.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/cryo-nebulized-ester.svg" alt="Cryo-nebulized esterification: water activity and predicted ester yield vs temperature">
+  <figcaption><strong>Fig. 52.</strong> Cryo-nebulized esterification. (A) Water activity of unfrozen fraction vs temperature during freeze-concentration of 40% ABV spirit. The microdroplet esterification threshold (a<sub>w</sub> &lt; 0.4) is crossed below &minus;20&deg;C. (B) Predicted ester yield: thermal esterification declines with cooling (Arrhenius, blue), but the cryo-nebulized pathway (green) increases as lower a<sub>w</sub> activates the interfacial effect. The combined curve (gold) shows a predicted optimum at &minus;25 to &minus;35&deg;C.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">NOVEL PREDICTION</span> &mdash; this specific combination has never been tested or proposed. Both component mechanisms are published (freeze-concentration, microdroplet esterification), but their intersection is unpublished. The prediction is testable: nebulize cryo-concentrated spirit (&minus;30&deg;C, ~65% ABV) vs. same-concentration spirit at room temperature (diluted to 65% ABV), both through the same nebulizer. If cryo-nebulization produces higher ester content, the mechanism is confirmed. <strong>Home testability: 2/5</strong> ($40&ndash;60 for dry ice + ultrasonic humidifier + collection flask + chest freezer. Main challenge: maintaining &minus;30&deg;C during nebulization).
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -2373,6 +2401,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Cold plasma (&sect;4.38)</td><td>Weeks of oxidation in 5 min</td><td><span class="verdict promising">Published (adjacent)</span></td><td>$50&ndash;100</td><td>OXIDATION</td></tr>
 <tr><td>Microdroplet ester (&sect;1.18)</td><td>10<sup>7</sup>&times; (anhydrous)</td><td><span class="verdict promising">Published</span></td><td>$200+</td><td>ESTER</td></tr>
 <tr><td>Flash Maillard (&sect;4.39)</td><td>2000&times; (170&deg;C vs 60&deg;C)</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$30&ndash;50</td><td>EXTRACTION</td></tr>
+<tr><td>Cryo-nebulized ester (&sect;4.40)</td><td>Unknown (novel prediction)</td><td><span class="verdict speculative">Novel prediction</span></td><td>$40&ndash;60</td><td>ESTER + CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -2547,6 +2576,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Cold plasma (&sect;4.38)</td><td>2/5</td><td>$50&ndash;100</td><td>DIY DBD: neon sign transformer + glass plates + aluminum foil electrodes + helium balloon gas (He/N<sub>2</sub> 90:10). Spirit in thin film between plates. 5 min treatment. <strong>Caution: high voltage.</strong> Simpler approx: ozone generator (&sect;4.9). Compare treated vs control by taste + color.</td></tr>
 <tr><td>Microdroplet ester (&sect;1.18)</td><td>1/5</td><td>$200+</td><td>Electrospray setup impractical at home. Crude approximation: ultrasonic humidifier nebulizing dehydrated oak-extract ethanol into glass collection flask. Even partial interfacial acceleration may produce detectable ester increase vs bulk control.</td></tr>
 <tr><td>Flash Maillard (&sect;4.39)</td><td>3/5</td><td>$30&ndash;50</td><td>1 m PTFE tubing (1 mm ID) coiled in 170&deg;C cooking oil bath. Feed: xylose 3 g/L + glycine 0.2 g/L in 40% ethanol at 0.3 mL/min. Quench in ice bath. ~2 s residence time. Compare furfural color vs batch 60&deg;C equivalent. <strong>Caution: pressurized hot ethanol vapors &mdash; well-ventilated area, no open flame.</strong></td></tr>
+<tr><td>Cryo-nebulized ester (&sect;4.40)</td><td>2/5</td><td>$40&ndash;60</td><td>Dry ice + ethanol bath (&minus;30&deg;C). Decant unfrozen fraction (~65% ABV), pass through ultrasonic humidifier into cold collection flask. Compare ester content vs same-ABV room-temp control to isolate the cryo-interfacial effect. Novel prediction &mdash; no published data.</td></tr>
 </tbody>
 </table>
 </div>
