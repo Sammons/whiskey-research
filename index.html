@@ -1160,17 +1160,137 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
   <strong>This two-stage approach maximizes recovery AND quality:</strong> Stage 1 captures everything (thermodynamically favorable at low ABV). Stage 2 separates with thermal gentleness (preserving delicate volatiles). The biochemist's equivalent of a two-step purification&mdash;crude extraction followed by gentle chromatography.
 </div>
 
-<h3>7.5 Entrainer-Assisted Flavor Enrichment</h3>
+<h3>7.5 Salt-Effect Distillation: Breaking the Azeotrope with Dissolved Salts</h3>
 
-<p>In industrial chemistry, entrainers modify azeotropic behavior.<span class="cite" data-ref="26"><sup>[26]</sup></span> For food-grade spirits, potential entrainers include:</p>
+<p>A classical technique from industrial separation that is underexplored in craft distilling: adding dissolved salts to the pot charge to shift or eliminate the ethanol-water azeotrope. The foundational work is Furter's series of reviews spanning 1967&ndash;1993.<span class="cite" data-ref="28"><sup>[28]</sup></span><span class="cite" data-ref="29"><sup>[29]</sup></span></p>
+
+<h4>Mechanism: The Salting-Out Effect</h4>
+
+<p>Dissolved ions preferentially hydrate water molecules through strong ion-dipole interactions, effectively sequestering water in the liquid phase. This reduces water's effective mole fraction in the vapor and increases ethanol's activity coefficient, making ethanol relatively more volatile. The quantitative relationship follows the Setschenow equation:<span class="cite" data-ref="26"><sup>[26]</sup></span></p>
+
+<div class="equation">
+log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub>salt</sub>
+</div>
+
+<p>where k<sub>s</sub> is the salt-specific Setschenow constant and c<sub>salt</sub> is salt concentration. The net result: the VLE curve shifts to favor ethanol in the vapor at every liquid composition. With sufficient salt concentration, the azeotrope point moves or disappears entirely.</p>
+
+<h4>Salt Effectiveness Ranking (Food-Safe Options)</h4>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Salt</th><th>Formula</th><th>van't Hoff i</th><th>Azeotrope Effect</th><th>GRAS Status</th></tr>
+</thead>
+<tbody>
+<tr><td>Calcium chloride</td><td>CaCl<sub>2</sub></td><td>3</td><td>Breaks azeotrope at saturation; most studied</td><td>21 CFR 184.1193</td></tr>
+<tr><td>Potassium acetate</td><td>CH<sub>3</sub>COOK</td><td>2</td><td>Breaks azeotrope; up to 3&times; relative volatility increase</td><td>21 CFR 184.1631</td></tr>
+<tr><td>Potassium carbonate</td><td>K<sub>2</sub>CO<sub>3</sub></td><td>3</td><td>Phase-splits into two layers at high concentration; ethanol layer near-anhydrous</td><td>21 CFR 184.1619</td></tr>
+<tr><td>Sodium chloride</td><td>NaCl</td><td>2</td><td>Does <em>not</em> break azeotrope, but improves separation efficiency</td><td>21 CFR 182.1</td></tr>
+<tr><td>Potassium chloride</td><td>KCl</td><td>2</td><td>Moderate VLE shift</td><td>21 CFR 184.1622</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Meranda &amp; Furter (1972) measured VLE data for 17 salt&ndash;alcohol&ndash;water systems at saturation. Some combinations eliminated the azeotrope completely and enhanced relative volatility by up to threefold.<span class="cite" data-ref="30"><sup>[30]</sup></span> Martinez de la Ossa &amp; Galan Serrano (1991) applied salts directly to wine distillation, demonstrating hyperazeotropic ethanol production from wine with CaCl<sub>2</sub>.<span class="cite" data-ref="31"><sup>[31]</sup></span></p>
+
+<h4>Volume vs. Enrichment: The Key Tradeoff</h4>
+
+<p>A natural question: <em>does salt addition reduce the recovered distillate volume?</em> <strong>Yes, and intentionally so.</strong> Because each unit of distillate is more concentrated in ethanol (less water co-distills), you collect the same mass of ethanol in a smaller total volume. The salt does not destroy ethanol&mdash;total ethanol recovery is preserved. You get less liquid that is more alcoholic. For a 10% ABV wash: without salt, a simple pot still yields distillate at 40&ndash;60% ABV; with saturated CaCl<sub>2</sub>, the same wash can yield 80&ndash;95%+ ABV in proportionally less total volume.</p>
+
+<h4>Boiling Point Elevation: Mass-to-Volume Ratios</h4>
+
+<p>The BPE formula &Delta;T<sub>b</sub> = i &middot; K<sub>b</sub> &middot; m (where K<sub>b</sub> = 0.512&deg;C/m for water) gives these estimates:</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Salt</th><th>Grams per kg water</th><th>&Delta;T<sub>b</sub> (estimated)</th></tr>
+</thead>
+<tbody>
+<tr><td>NaCl</td><td>100 g</td><td>+1.8&deg;C</td></tr>
+<tr><td>NaCl</td><td>200 g</td><td>+3.5&deg;C</td></tr>
+<tr><td>CaCl<sub>2</sub></td><td>100 g</td><td>+1.4&deg;C</td></tr>
+<tr><td>CaCl<sub>2</sub></td><td>200 g</td><td>+2.8&deg;C</td></tr>
+<tr><td>CaCl<sub>2</sub></td><td>400 g</td><td>+5.5&deg;C</td></tr>
+<tr><td>K<sub>2</sub>CO<sub>3</sub></td><td>200 g</td><td>+2.2&deg;C</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>Caveat:</strong> These assume ideal-dilute behavior. At near-saturation concentrations needed for azeotrope breaking, actual BPE exceeds these estimates due to strong ion-ion and ion-solvent interactions. In mixed ethanol-water solvents, the effective K<sub>b</sub> is composition-dependent.</p>
+
+<h4>Effect on Flavor Compound Recovery</h4>
+
+<p>The critical question for whiskey: does salting out help or hurt congener retention?</p>
 
 <ul>
-  <li><strong>Glycerol</strong> (GRAS, BP 290&deg;C): Adding 1&ndash;2% glycerol to the pot modifies the activity coefficients of all congeners. Glycerol is a poor solvent for esters, potentially boosting their distillation. Glycerol itself does not distill.</li>
-  <li><strong>Food-grade salts</strong> (NaCl, CaCl<sub>2</sub>): "Salting out" increases organic compound activity coefficients via the Setschenow equation: log(&gamma;<sub>salt</sub>/&gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub>salt</sub>.<span class="cite" data-ref="26"><sup>[26]</sup></span></li>
+  <li><strong>Esters</strong> (ethyl acetate, isoamyl acetate): Poorly water-soluble, highly volatile. Salting out further reduces their aqueous solubility, likely <em>increasing</em> their vapor-phase concentration. <strong>Favorable.</strong></li>
+  <li><strong>Higher alcohols</strong> (isoamyl alcohol, isobutanol): Less polar than water; experience a mild salting-out effect similar to ethanol. <strong>Neutral to slightly favorable.</strong></li>
+  <li><strong>Organic acids</strong> (acetic, lactic): Water-soluble and polar. Mixed effects depending on specific acid-salt interactions.</li>
+  <li><strong>High-BP phenolics</strong> (vanillin, guaiacol): Already poorly volatile at distillation temperatures. Salt effect is negligible for these compounds&mdash;other techniques (see &sect;7.6) are needed.</li>
 </ul>
 
+<p>Martinez de la Ossa &amp; Galan Serrano also observed that CuCl<sub>2</sub> (not food-safe) catalyzed ester formation from acetaldehyde during distillation<span class="cite" data-ref="31"><sup>[31]</sup></span>&mdash;a reminder that salt selection affects more than just VLE.</p>
+
 <div class="callout warning">
-  <strong>Caution:</strong> Any entrainer must not appear in the distillate. Glycerol (BP 290&deg;C) and dissolved salts meet this criterion at atmospheric distillation temperatures. Always verify by analytical testing of the distillate.
+  <strong>Practical note:</strong> All salts remain in the pot (non-volatile) and do not carry into the distillate. However, TTB regulations govern additives in US spirit production. For home distilling, the GRAS salts listed above are food-safe at the concentrations used. Always verify local regulations for commercial production.
+</div>
+
+<h3>7.6 Gin Basket Vapor Infusion for Flavor Compound Recovery</h3>
+
+<p>A gin basket (also: botanical basket, Carter-head basket) is a perforated container placed in the vapor path between pot and condenser. Flavor materials loaded into the basket are extracted by the rising ethanol-water vapor via an <em>in-situ</em> steam distillation mechanism. This technique, standard in gin production (e.g., Bombay Sapphire's Carter-head still), has unexplored potential for whiskey flavor optimization.</p>
+
+<h4>Evidence: Vapor Infusion Extracts More, Not Less</h4>
+
+<p>Hodel et al. (2019) quantitatively compared flavor compound concentrations in vapor-infused vs. steep-macerated gin distillates by GC-MS.<span class="cite" data-ref="32"><sup>[32]</sup></span> The result: <strong>9 of 10 key terpene compounds were present at higher concentration in vapor-infused distillates</strong> than in steep (maceration) distillates. Only linalool was higher in maceration (1.7&times;).</p>
+
+<p>The explanation is thermodynamic: vapor in a still is highly enriched in ethanol (often &gt;80% ABV). This ethanol-rich vapor is a superior solvent for non-polar flavor compounds compared to the dilute ethanol-water liquid in the pot (40&ndash;60% ABV). Hodel et al. (2020) confirmed that botanical mass ratio had the greatest influence on extraction, with initial ethanol concentration less important for most compounds.<span class="cite" data-ref="33"><sup>[33]</sup></span></p>
+
+<h4>Application: Oak Chips in a Gin Basket During Spirit Runs</h4>
+
+<p>Could a gin basket loaded with toasted oak chips, staves, or spirals be used during whiskey spirit runs? The thermodynamic analysis by compound class:</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Compound</th><th>Normal BP</th><th>Steam-Distillable?</th><th>Gin Basket Prediction</th></tr>
+</thead>
+<tbody>
+<tr><td>Furfural</td><td>162&deg;C</td><td>Yes</td><td>Good extraction expected</td></tr>
+<tr><td>Guaiacol</td><td>205&deg;C</td><td>Yes (smoky character)</td><td>Moderate extraction</td></tr>
+<tr><td><em>cis</em>-Oak lactone</td><td>~220&deg;C</td><td>Likely yes</td><td>Some extraction expected</td></tr>
+<tr><td>Eugenol</td><td>254&deg;C</td><td>Yes (proven from cloves)</td><td>Moderate extraction</td></tr>
+<tr><td>Vanillin</td><td>285&deg;C</td><td>Poorly (low P<sup>sat</sup>)</td><td>Minimal extraction</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>The key insight: eugenol (BP 254&deg;C) is routinely isolated by steam distillation at ~100&deg;C from clove buds&mdash;demonstrating that steam distillation can extract compounds boiling 150+&deg;C above the distillation temperature, provided they have sufficient vapor pressure at the operating temperature. This principle extends to the ethanol-water vapor in a spirit still.</p>
+
+<p>The result would be a "lighter" wood character than barrel aging: more smoky/spicy notes (guaiacol, eugenol) and oak lactone, but less vanilla (vanillin requires the slow oxidative extraction of barrel aging). Heavily toasted oak chips would release more thermally degraded lignin products and caramelized sugars.</p>
+
+<div class="callout key-insight">
+  <strong>Practical setup:</strong> Place a stainless steel or copper mesh basket containing 20&ndash;50 g of medium-toast oak chips (American or French) per liter of pot charge in the vapor path above the pot. The chips should be loosely packed to allow vapor flow. Heavy toast yields more guaiacol and furfural; medium toast favors oak lactone and eugenol. Change chips between runs&mdash;extraction is rapid and largely complete within a single distillation.
+</div>
+
+<h3>7.7 The Combined Strategy: Salt + Gin Basket Synergy</h3>
+
+<p>Salt-effect distillation and gin basket vapor infusion are <strong>synergistic</strong> when combined:</p>
+
+<ol>
+  <li><strong>Salt in the pot</strong> increases ethanol concentration in the vapor (see &sect;7.5)</li>
+  <li><strong>Higher-proof vapor</strong> passing through the gin basket is a <em>better</em> solvent for lipophilic wood-derived compounds (Hodel et al. confirmed ethanol concentration affects extraction of oxygenated monoterpenes<span class="cite" data-ref="33"><sup>[33]</sup></span>)</li>
+  <li>The salt simultaneously concentrates volatile esters via salting out, while the gin basket captures semi-volatile wood compounds that would otherwise remain in the pot</li>
+</ol>
+
+<p>This is a novel combined protocol: use CaCl<sub>2</sub> or potassium acetate in the pot charge to boost ethanol enrichment, with toasted oak chips in a vapor basket above. The result should be a spirit with both enhanced ester content (from salting out) and vapor-extracted wood character (from the basket)&mdash;in a single distillation pass.</p>
+
+<h3>7.8 Glycerol as Liquid-Phase Entrainer</h3>
+
+<p>Adding 1&ndash;2% food-grade glycerol (GRAS, BP 290&deg;C) to the pot modifies activity coefficients of all congeners.<span class="cite" data-ref="26"><sup>[26]</sup></span> Glycerol is a poor solvent for esters, potentially boosting their relative volatility. Glycerol itself does not distill at spirit-run temperatures.</p>
+
+<div class="callout warning">
+  <strong>Caution:</strong> All entrainers (salts, glycerol) must remain in the pot and not appear in the distillate. Dissolved salts and glycerol (BP 290&deg;C) meet this criterion at atmospheric distillation temperatures. Always verify by analytical testing of the distillate.
 </div>
 
 <!-- ============================================================ -->
@@ -1183,6 +1303,7 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
   <li><strong>Fermentation:</strong> Use a whiskey yeast strain with high ATF1 expression (e.g., SafSpirit M-1 or Distila-Max MW). Ferment at 20&ndash;22&deg;C for balanced ester synthesis vs. retention.<span class="cite" data-ref="5"><sup>[5]</sup></span></li>
   <li><strong>pH adjustment:</strong> After fermentation, raise wash pH to 5.5&ndash;6.0 with CaCO<sub>3</sub> to suppress fatty acid volatility while leaving esters unaffected.</li>
   <li><strong>Tails recycling:</strong> Add saved tails from the previous run to the wash (typically 5&ndash;10% by volume).</li>
+  <li><strong>Optional &mdash; salt addition:</strong> Dissolve 100&ndash;200 g CaCl<sub>2</sub> or potassium acetate per kg water in the wash to salt out esters and boost ethanol enrichment (&sect;7.5).<span class="cite" data-ref="28"><sup>[28]</sup></span></li>
 </ol>
 
 <h3>Phase B: Stripping Run (Atmospheric)</h3>
@@ -1193,9 +1314,10 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
   <li>Separate foreshots (first 50&ndash;100 mL per 20L wash) for discard</li>
 </ol>
 
-<h3>Phase C: Spirit Run (Reduced Pressure)</h3>
+<h3>Phase C: Spirit Run (Reduced Pressure, with Optional Gin Basket)</h3>
 <ol>
   <li>Charge the spirit still with low wines (typically 25&ndash;35% ABV)</li>
+  <li><strong>Optional &mdash; gin basket:</strong> Load a vapor-path basket with 20&ndash;50 g medium-toast oak chips per liter of pot charge for vapor-extracted wood character (&sect;7.6)<span class="cite" data-ref="32"><sup>[32]</sup></span></li>
   <li>Pull vacuum to 200&ndash;300 mmHg (achievable with an inexpensive aspirator or HVAC vacuum pump)</li>
   <li>Pot temperature will reach ~55&ndash;65&deg;C instead of 78&ndash;95&deg;C</li>
   <li>Apply variable reflux:
@@ -1276,6 +1398,18 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
   <li id="ref-26">Seader, J.D. &amp; Henley, E.J. (2006). <em>Separation Process Principles</em>, 2nd ed. Wiley. Chapter 11.</li>
 
   <li id="ref-27">Gmehling, J., Onken, U., &amp; Arlt, W. <em>Vapor-Liquid Equilibrium Data Collection</em>. DECHEMA Chemistry Data Series, Vol. I.</li>
+
+  <li id="ref-28">Furter, W.F. &amp; Cook, R.A. (1967). "Salt effect in distillation: a literature review." <em>Int. J. Heat Mass Transfer</em>, 10, 23-36. <a href="https://www.sciencedirect.com/science/article/abs/pii/0017931067901810">ScienceDirect</a></li>
+
+  <li id="ref-29">Furter, W.F. (1993). "Production of fuel-grade ethanol by extractive distillation employing the salt effect." <em>Separation and Purification Methods</em>, 22(1). <a href="https://www.tandfonline.com/doi/abs/10.1080/15422119308544975">Taylor &amp; Francis</a></li>
+
+  <li id="ref-30">Meranda, D. &amp; Furter, W.F. (1972). "Vapor-liquid equilibrium in alcohol-water systems containing dissolved halide salts and salt mixtures." <em>AIChE Journal</em>, 18(1), 111-116. <a href="https://aiche.onlinelibrary.wiley.com/doi/abs/10.1002/aic.690180120">AIChE</a></li>
+
+  <li id="ref-31">Martinez de la Ossa, E. &amp; Galan Serrano, M.A. (1991). "Salt effect on the composition of alcohols obtained from wine by extractive distillation." <em>Am. J. Enol. Vitic.</em>, 42(3), 252-254. <a href="https://www.ajevonline.org/content/42/3/252">AJEV</a></li>
+
+  <li id="ref-32">Hodel, J., Pauley, M., Gorseling, M.C.J.K., &amp; Hill, A.E. (2019). "Quantitative Comparison of Volatiles in Vapor Infused Gin versus Steep Infused Gin Distillates." <em>J. Am. Soc. Brew. Chem.</em>, 77(3), 149-156. <a href="https://www.tandfonline.com/doi/abs/10.1080/03610470.2019.1629263">Taylor &amp; Francis</a></li>
+
+  <li id="ref-33">Hodel, J. et al. (2020). "Influence of distillation parameters on the extraction of <em>Juniperus communis</em> L. in vapour infused gin." <em>J. Inst. Brew.</em>, 126(2), 184-193. <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/jib.607">Wiley</a></li>
 </ol>
 
 <footer>
@@ -1430,6 +1564,36 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
       source: "Gmehling et al., DECHEMA VLE Data Collection",
       excerpt: "The canonical source for vapor-liquid equilibrium data. Ethanol-water system: minimum-boiling azeotrope at 95.57 wt% ethanol (89.4 mol%), boiling point 78.15\u00b0C at 1 atm (760 mmHg).",
       url: "#ref-27"
+    },
+    28: {
+      source: "Furter & Cook (1967), Int. J. Heat Mass Transfer",
+      excerpt: "Comprehensive review of the salt effect in distillation. Dissolved salts increase the relative volatility of lower-boiling components through preferential ion-water hydration (salting-out effect), shifting or eliminating azeotropes in alcohol-water systems.",
+      url: "https://www.sciencedirect.com/science/article/abs/pii/0017931067901810"
+    },
+    29: {
+      source: "Furter (1993), Separation and Purification Methods",
+      excerpt: "Salt-effect extractive distillation can produce fuel-grade (anhydrous) ethanol from aqueous mixtures by adding dissolved salts such as CaCl\u2082, potassium acetate, or K\u2082CO\u2083 to the pot charge, breaking or shifting the ethanol-water azeotrope and enabling separation beyond the 95.6% ceiling.",
+      url: "https://www.tandfonline.com/doi/abs/10.1080/15422119308544975"
+    },
+    30: {
+      source: "Meranda & Furter (1972), AIChE Journal",
+      excerpt: "VLE data measured for 17 systems of water + alcohol + dissolved halide salts at saturation. Some salt combinations eliminated the azeotrope completely and enhanced relative volatility of ethanol over water by up to threefold.",
+      url: "https://aiche.onlinelibrary.wiley.com/doi/abs/10.1002/aic.690180120"
+    },
+    31: {
+      source: "Martinez de la Ossa & Galan Serrano (1991), Am. J. Enol. Vitic.",
+      excerpt: "Applied salt-effect distillation to wine. CaCl\u2082 broke the azeotrope, producing hyperazeotropic ethanol from wine. CuCl\u2082 showed a catalytic effect: increased ethyl acetate in distillate while decreasing acetaldehyde, suggesting esterification catalysis.",
+      url: "https://www.ajevonline.org/content/42/3/252"
+    },
+    32: {
+      source: "Hodel et al. (2019), J. Am. Soc. Brew. Chem.",
+      excerpt: "Quantitative GC-MS comparison: 9 of 10 key terpene flavor compounds were found at higher concentration in vapor-infused gin distillates vs. steep (maceration) infused distillates. Vapor-phase ethanol acts as a superior solvent for non-polar flavor compounds.",
+      url: "https://www.tandfonline.com/doi/abs/10.1080/03610470.2019.1629263"
+    },
+    33: {
+      source: "Hodel et al. (2020), J. Inst. Brew.",
+      excerpt: "Three-factor design study of vapor infusion in gin distillation. Botanical mass ratio had the greatest influence on extraction efficiency. Initial ethanol concentration affected oxygenated monoterpenes most strongly. Higher ethanol vapor = better extraction of lipophilic compounds.",
+      url: "https://onlinelibrary.wiley.com/doi/full/10.1002/jib.607"
     }
   };
 
