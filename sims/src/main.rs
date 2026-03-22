@@ -60,6 +60,9 @@ fn main() {
 
     fs::write("../graphs/carbon-dot-photocatalysis.svg", sim_carbon_dot_photocatalysis()).unwrap();
     println!("Wrote carbon-dot-photocatalysis.svg");
+
+    fs::write("../graphs/pef-esterification.svg", sim_pef_esterification()).unwrap();
+    println!("Wrote pef-esterification.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -2126,6 +2129,191 @@ fn sim_carbon_dot_photocatalysis() -> String {
         "fluorescence in filtrate", TEXT, 9, "start");
     svg += &label(lx, mt + 505.0,
         "= carbon dots confirmed", TEXT, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Simulation 15: PEF-Enhanced Esterification Kinetics
+///
+/// Based on Lin, Zeng et al. (2012) Food Bioprocess Technol:
+///   - PEF reduces Fischer esterification Ea linearly with field strength
+///   - ΔEa = 0.849E - 0.515 (kJ/mol), where E is in kV/cm
+///   - At 13.3 kV/cm: Ea drops from 77.05 → 62.85 kJ/mol (18.4%)
+///   - At 20 kV/cm: ~16.5 kJ/mol reduction (extrapolated)
+///
+/// Compares: uncatalyzed, PEF-only, Amberlyst, Amberlyst+PEF, and pH 3.0
+/// to show how PEF stacks with other acceleration methods.
+fn sim_pef_esterification() -> String {
+    let dt = 300.0_f64;
+    let total_days = 30.0;
+    let total_s = total_days * 86400.0;
+    let n_steps = (total_s / dt) as usize;
+    let sample_interval = 3600.0_f64;
+
+    // Base kinetic parameters
+    let t_k = 298.15_f64; // 25°C
+    let t_ref = 293.15_f64;
+    let k_eq = 4.0_f64;
+
+    // Ethanol and acetic acid concentrations
+    let ethanol = 6.85_f64; // 40% ABV
+    let water = 55.5 * 0.60; // 60% water
+    let acoh_init = 0.0083_f64; // ~500 ppm acetic acid
+
+    // PEF Ea reduction formula: ΔEa = 0.849*E - 0.515 (kJ/mol)
+    // E in kV/cm. Valid for 6.6-20 kV/cm range.
+
+    struct Scenario {
+        label: &'static str,
+        color: &'static str,
+        ea_f: f64,      // forward Ea (kJ/mol)
+        kf_ref: f64,    // reference rate constant at 20°C
+        ph_factor: f64, // H+ enhancement (10^(4.0-pH))
+    }
+
+    let ea_uncat = 60.0; // kJ/mol uncatalyzed
+    let ea_amb = 35.0;   // Amberlyst
+
+    // PEF at 13.3 kV/cm: ΔEa = 0.849*13.3 - 0.515 = 10.8 kJ/mol
+    let delta_ea_13 = 0.849 * 13.3 - 0.515;
+    // PEF at 20 kV/cm: ΔEa = 0.849*20 - 0.515 = 16.5 kJ/mol
+    let delta_ea_20 = 0.849 * 20.0 - 0.515;
+
+    let kf_uncat = 2.5e-9_f64;
+    let kf_amb = 2.5e-5_f64;
+
+    let scenarios = [
+        Scenario { label: "Uncatalyzed", color: MUTED,
+                   ea_f: ea_uncat * 1000.0, kf_ref: kf_uncat, ph_factor: 1.0 },
+        Scenario { label: "PEF 13.3 kV/cm only", color: BLUE,
+                   ea_f: (ea_uncat - delta_ea_13) * 1000.0, kf_ref: kf_uncat, ph_factor: 1.0 },
+        Scenario { label: "PEF 20 kV/cm only", color: CYAN,
+                   ea_f: (ea_uncat - delta_ea_20) * 1000.0, kf_ref: kf_uncat, ph_factor: 1.0 },
+        Scenario { label: "Amberlyst-15", color: GREEN,
+                   ea_f: ea_amb * 1000.0, kf_ref: kf_amb, ph_factor: 1.0 },
+        Scenario { label: "pH 3.0 + PEF 20 kV/cm", color: RED,
+                   ea_f: (ea_uncat - delta_ea_20) * 1000.0, kf_ref: kf_uncat, ph_factor: 10.0 },
+        Scenario { label: "Amberlyst + PEF 20 kV/cm", color: YELLOW,
+                   ea_f: (ea_amb - delta_ea_20 * 0.5) * 1000.0, // diminishing returns
+                   kf_ref: kf_amb, ph_factor: 1.0 },
+    ];
+
+    let panel_titles = ["Ethyl Acetate (mol/L)", "Acetic Acid (mol/L)"];
+    let mut all_series: Vec<[Vec<f64>; 2]> = Vec::new();
+
+    for sc in &scenarios {
+        let a_f = sc.kf_ref / ((-sc.ea_f) / (R * t_ref)).exp();
+        let kf = a_f * ((-sc.ea_f) / (R * t_k)).exp() * sc.ph_factor;
+        let kr = kf / k_eq;
+
+        let mut etoac = 0.0_f64;
+        let mut acoh = acoh_init;
+        let mut next_sample = 0.0_f64;
+        let mut series: [Vec<f64>; 2] = [vec![], vec![]];
+
+        for _ in 0..n_steps {
+            let r3 = kf * acoh.max(0.0) * ethanol - kr * etoac.max(0.0) * water;
+            etoac += r3 * dt;
+            acoh -= r3 * dt;
+            if acoh < 0.0 { acoh = 0.0; }
+            if etoac < 0.0 { etoac = 0.0; }
+
+            next_sample += dt;
+            if next_sample >= sample_interval {
+                series[0].push(etoac);
+                series[1].push(acoh);
+                next_sample -= sample_interval;
+            }
+        }
+        all_series.push(series);
+    }
+
+    // ---- SVG ----
+    let w = 780.0;
+    let h = 380.0;
+    let mut svg = svg_header(w, h,
+        "PEF-Enhanced Fischer Esterification (Lin & Zeng 2012)");
+
+    let ml = 80.0;
+    let mt = 38.0;
+    let pw = 400.0;
+    let panel_h = 120.0;
+    let panel_gap = 20.0;
+
+    let label = |x: f64, y: f64, t: &str, c: &str, s: u32, a: &str| -> String {
+        format!("<text x=\"{x}\" y=\"{y}\" fill=\"{c}\" font-size=\"{s}\" \
+                text-anchor=\"{a}\">{t}</text>\n")
+    };
+
+    let mut y_maxes = [0.0_f64; 2];
+    for series in &all_series {
+        for (pi, vals) in series.iter().enumerate() {
+            for &v in vals { if v > y_maxes[pi] { y_maxes[pi] = v; } }
+        }
+    }
+    for ym in y_maxes.iter_mut() { *ym *= 1.15; }
+    for ym in y_maxes.iter_mut() { if *ym < 1e-10 { *ym = 1e-4; } }
+
+    for (pi, title) in panel_titles.iter().enumerate() {
+        let pt = mt + pi as f64 * (panel_h + panel_gap);
+        let pb = pt + panel_h;
+        svg += &label(ml - 5.0, pt + 12.0, title, TEXT, 10, "end");
+        svg += &hline(ml, ml + pw, pb, MUTED, "0.8");
+        svg += &vline(ml, pt, pb, MUTED, "0.8");
+        for g in [0.25, 0.5, 0.75, 1.0] {
+            svg += &hline(ml, ml + pw, pb - g * panel_h, GRID, "0.3");
+        }
+        for (si, sc) in scenarios.iter().enumerate() {
+            let vals = &all_series[si][pi];
+            if vals.is_empty() { continue; }
+            let ym = y_maxes[pi];
+            let points_str: String = vals.iter().enumerate()
+                .map(|(i, &v)| {
+                    let x = ml + (i as f64 / vals.len() as f64) * pw;
+                    let y = pb - (v / ym) * panel_h;
+                    format!("{:.1},{:.1}", x, y)
+                })
+                .collect::<Vec<_>>()
+                .join(" ");
+            svg.push_str(&format!("<polyline points=\"{points_str}\" fill=\"none\" stroke=\"{}\" \
+                stroke-width=\"1.8\" stroke-linejoin=\"round\"/>\n", sc.color));
+        }
+        svg += &label(ml - 5.0, pb + 3.0, "0", MUTED, 8, "end");
+        svg += &label(ml - 5.0, pt + 3.0, &format!("{:.2e}", y_maxes[pi]), MUTED, 8, "end");
+    }
+
+    let bot = mt + 1.0 * (panel_h + panel_gap) + panel_h;
+    for d in [0, 5, 10, 15, 20, 25, 30] {
+        let frac = d as f64 / 30.0;
+        svg += &label(ml + frac * pw, bot + 14.0,
+            &format!("{}d", d), MUTED, 9, "middle");
+    }
+
+    let lx = ml + pw + 15.0;
+    for (i, sc) in scenarios.iter().enumerate() {
+        let ly = mt + 10.0 + i as f64 * 18.0;
+        svg.push_str(&format!("<line x1=\"{lx}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" \
+            stroke=\"{}\" stroke-width=\"2\"/>\n", lx + 18.0, sc.color));
+        svg += &label(lx + 23.0, ly + 4.0, sc.label, TEXT, 8, "start");
+    }
+
+    svg += &label(lx, mt + 130.0,
+        "PEF Ea reduction:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 146.0,
+        "\u{0394}Ea = 0.849E \u{2212} 0.515", TEXT, 9, "start");
+    svg += &label(lx, mt + 159.0,
+        "(E in kV/cm, R\u{00b2}=0.975)", TEXT, 9, "start");
+    svg += &label(lx, mt + 178.0,
+        "13.3 kV/cm: \u{2212}10.8 kJ/mol", BLUE, 9, "start");
+    svg += &label(lx, mt + 191.0,
+        "20 kV/cm: \u{2212}16.5 kJ/mol", CYAN, 9, "start");
+    svg += &label(lx, mt + 210.0,
+        "Room temp, no catalyst", GREEN, 9, "start");
+    svg += &label(lx, mt + 228.0,
+        "Lin, Zeng et al. (2012)", MUTED, 8, "start");
+    svg += &label(lx, mt + 241.0,
+        "Food Bioprocess Technol", MUTED, 8, "start");
 
     svg.push_str("</svg>");
     svg
