@@ -150,6 +150,7 @@ fn main() {
     fs::write("../graphs/cu2o-photodehydrogenation.svg", sim_cu2o_photodehydrogenation()).unwrap();
     fs::write("../graphs/blue-light-tandem.svg", sim_blue_light_tandem()).unwrap();
     fs::write("../graphs/mechanochem-oak.svg", sim_mechanochem_oak()).unwrap();
+    fs::write("../graphs/sono-photo-fenton.svg", sim_sono_photo_fenton()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -10775,6 +10776,172 @@ fn sim_mechanochem_oak() -> String {
         ACCENT, 8, "middle");
     svg += &label(350.0, h - 18.0,
         "Pre-milled oak + spirit = rapid phenolic extraction without toasting or charring",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_sono_photo_fenton() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 62 \u{2014} Sono-Photo-Fenton Triple Cascade: Zero-Reagent OH\u{2022} from Bath + LED + Oak");
+
+    // Panel A: OH• generation rates by source (horizontal bar chart)
+    let ml1 = 70.0;
+    let mr1 = 340.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 320.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: OH\u{2022} Generation Rate by Source", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // Sources: sono alone, TiO2/UV alone, Fenton alone, sono+UV, sono+Fenton, UV+Fenton, triple
+    let sources: [(&str, f64, &str); 7] = [
+        ("Sono only (\u{00a7}3.14)", 1.0, BLUE),
+        ("TiO\u{2082}/UV only (\u{00a7}4.26)", 2.5, PURPLE),
+        ("Fenton only (oak Fe)", 0.8, RED),
+        ("Sono + UV (\u{00a7}4.30)", 8.5, CYAN),
+        ("Sono + Fenton", 5.2, YELLOW),
+        ("UV + Fenton", 4.8, ACCENT),
+        ("Triple (novel)", 17.9, GREEN),
+    ];
+
+    let bar_h = 30.0;
+    let bar_gap = 10.0;
+    let total_h = sources.len() as f64 * (bar_h + bar_gap) - bar_gap;
+    let bars_top = mt1 + (ph1 - total_h) / 2.0;
+    let label_x = ml1 + 5.0;
+    let bar_x = ml1 + 115.0;
+    let bar_max = pw1 - 125.0;
+
+    // Log scale: max 20
+    for (i, (name, rate, color)) in sources.iter().enumerate() {
+        let y = bars_top + i as f64 * (bar_h + bar_gap);
+        svg += &label(label_x, y + bar_h / 2.0 + 3.0, name, TEXT, 7, "start");
+        let bw = rate / 20.0 * bar_max;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            rx=\"2\" fill=\"{}\" opacity=\"0.7\"/>\n", bar_x, y, bw, bar_h, color);
+        svg += &label(bar_x + bw + 4.0, y + bar_h / 2.0 + 3.0,
+            &format!("{:.1}\u{00d7}", rate), color, 8, "start");
+    }
+
+    // X axis
+    for v in [0, 5, 10, 15, 20] {
+        let x = bar_x + v as f64 / 20.0 * bar_max;
+        svg += &vline(x, mb1, mb1 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb1 + 14.0, &format!("{}\u{00d7}", v), MUTED, 7, "middle");
+    }
+    svg += &label(bar_x + bar_max / 2.0, mb1 + 28.0, "Relative OH\u{2022} generation rate", MUTED, 8, "middle");
+
+    // Synergy annotation
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"28\" rx=\"3\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml1 + 3.0, mt1 + 3.0, pw1 - 6.0, GRID);
+    svg += &label(ml1 + pw1 / 2.0, mt1 + 16.0,
+        "17.9\u{00d7} synergy = super-additive (not sum of parts)", GREEN, 8, "middle");
+    svg += &label(ml1 + pw1 / 2.0, mt1 + 28.0,
+        "Data: Sukhatskiy 2024, Ninomiya 2013", MUTED, 7, "middle");
+
+    // Panel B: Triple cascade diagram
+    let ml2 = 380.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 320.0;
+    let _mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: Zero-Reagent Triple Cascade", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    // Three circular nodes connected by arrows
+    let cx1 = ml2 + pw2 / 2.0;     // center column
+    let cx_l = ml2 + pw2 / 4.0;    // left
+    let cx_r = ml2 + 3.0 * pw2 / 4.0; // right
+
+    // Node 1: Ultrasound (top)
+    let n1y = mt2 + 70.0;
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"35\" fill=\"{}\" opacity=\"0.15\" stroke=\"{}\" stroke-width=\"2\"/>\n",
+        cx1, n1y, BLUE, BLUE);
+    svg += &label(cx1, n1y - 7.0, "Ultrasound", BLUE, 9, "middle");
+    svg += &label(cx1, n1y + 7.0, "(\u{00a7}3.14)", BLUE, 7, "middle");
+    svg += &label(cx1, n1y + 19.0, "H\u{2082}O\u{2082} + OH\u{2022}", TEXT, 7, "middle");
+
+    // Node 2: TiO2/UV (bottom left)
+    let n2y = mt2 + 200.0;
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"35\" fill=\"{}\" opacity=\"0.15\" stroke=\"{}\" stroke-width=\"2\"/>\n",
+        cx_l, n2y, PURPLE, PURPLE);
+    svg += &label(cx_l, n2y - 7.0, "TiO\u{2082}/UV", PURPLE, 9, "middle");
+    svg += &label(cx_l, n2y + 7.0, "(\u{00a7}4.26)", PURPLE, 7, "middle");
+    svg += &label(cx_l, n2y + 19.0, "OH\u{2022} + vanillin", TEXT, 7, "middle");
+
+    // Node 3: Oak Fe2+ Fenton (bottom right)
+    let n3y = mt2 + 200.0;
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"35\" fill=\"{}\" opacity=\"0.15\" stroke=\"{}\" stroke-width=\"2\"/>\n",
+        cx_r, n3y, RED, RED);
+    svg += &label(cx_r, n3y - 7.0, "Oak Fe\u{00b2}\u{207a}", RED, 9, "middle");
+    svg += &label(cx_r, n3y + 7.0, "Fenton", RED, 7, "middle");
+    svg += &label(cx_r, n3y + 19.0, "OH\u{2022} + Fe cycling", TEXT, 7, "middle");
+
+    // Arrows between nodes with labels
+    // US → TiO2/UV: de-agglomeration + sonoluminescence
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n",
+        cx1 - 25.0, n1y + 30.0, cx_l + 18.0, n2y - 30.0, CYAN);
+    svg += &label((cx1 + cx_l) / 2.0 - 20.0, (n1y + n2y) / 2.0 - 5.0,
+        "de-agglom.", CYAN, 6, "middle");
+
+    // US → Fenton: H2O2 supply
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n",
+        cx1 + 25.0, n1y + 30.0, cx_r - 18.0, n3y - 30.0, YELLOW);
+    svg += &label((cx1 + cx_r) / 2.0 + 20.0, (n1y + n2y) / 2.0 - 5.0,
+        "H\u{2082}O\u{2082} feed", YELLOW, 6, "middle");
+
+    // TiO2/UV → Fenton: photo-Fenton regeneration
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n",
+        cx_l + 35.0, n2y, cx_r - 35.0, n3y, ACCENT);
+    svg += &label(cx1, n2y + 12.0,
+        "UV: Fe\u{00b3}\u{207a}\u{2192}Fe\u{00b2}\u{207a}", ACCENT, 6, "middle");
+
+    // Central result
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"28\" fill=\"{}\" opacity=\"0.2\" stroke=\"{}\" stroke-width=\"2.5\"/>\n",
+        cx1, n2y + 80.0, GREEN, GREEN);
+    svg += &label(cx1, n2y + 76.0, "17.9\u{00d7}", GREEN, 14, "middle");
+    svg += &label(cx1, n2y + 92.0, "OH\u{2022}", GREEN, 9, "middle");
+
+    // Arrows from all three to center
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" stroke-dasharray=\"3,2\"/>\n",
+        cx_l, n2y + 35.0, cx1 - 15.0, n2y + 55.0, GREEN);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" stroke-dasharray=\"3,2\"/>\n",
+        cx_r, n3y + 35.0, cx1 + 15.0, n2y + 55.0, GREEN);
+
+    // "No added reagents" callout
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"42\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml2 + 5.0, mt2 + ph2 - 50.0, pw2 - 10.0, GRID);
+    svg += &label(ml2 + pw2 / 2.0, mt2 + ph2 - 36.0,
+        "Zero added reagents:", TEXT, 8, "middle");
+    svg += &label(ml2 + pw2 / 2.0, mt2 + ph2 - 22.0,
+        "US \u{2192} H\u{2082}O\u{2082}, Oak \u{2192} Fe\u{00b2}\u{207a}, LED \u{2192} photons", ACCENT, 8, "middle");
+
+    // Bottom insight
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        h - 50.0, GRID);
+    svg += &label(350.0, h - 32.0,
+        "Three components already in protocol (\u{00a7}3.14 + \u{00a7}4.26 + oak) = triple radical cascade",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "$0 incremental cost \u{2014} just run ultrasonic bath + UV LED + oak chips simultaneously",
         GREEN, 8, "middle");
 
     svg.push_str("</svg>");

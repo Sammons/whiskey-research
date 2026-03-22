@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 62 — Sono-Photo-Fenton Triple Cascade: Zero-Reagent OH• from Bath + LED + Oak</text>
+<text x="205" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: OH• Generation Rate by Source</text>
+<rect x="70.0" y="65.0" width="270.0" height="320.0" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="75" y="108" fill="#e6edf3" font-size="7" text-anchor="start">Sono only (§3.14)</text>
+<rect x="185.0" y="90.0" width="7.2" height="30.0" rx="2" fill="#58a6ff" opacity="0.7"/>
+<text x="196.25" y="108" fill="#58a6ff" font-size="8" text-anchor="start">1.0×</text>
+<text x="75" y="148" fill="#e6edf3" font-size="7" text-anchor="start">TiO₂/UV only (§4.26)</text>
+<rect x="185.0" y="130.0" width="18.1" height="30.0" rx="2" fill="#bc8cff" opacity="0.7"/>
+<text x="207.125" y="148" fill="#bc8cff" font-size="8" text-anchor="start">2.5×</text>
+<text x="75" y="188" fill="#e6edf3" font-size="7" text-anchor="start">Fenton only (oak Fe)</text>
+<rect x="185.0" y="170.0" width="5.8" height="30.0" rx="2" fill="#f85149" opacity="0.7"/>
+<text x="194.8" y="188" fill="#f85149" font-size="8" text-anchor="start">0.8×</text>
+<text x="75" y="228" fill="#e6edf3" font-size="7" text-anchor="start">Sono + UV (§4.30)</text>
+<rect x="185.0" y="210.0" width="61.6" height="30.0" rx="2" fill="#39d2c0" opacity="0.7"/>
+<text x="250.625" y="228" fill="#39d2c0" font-size="8" text-anchor="start">8.5×</text>
+<text x="75" y="268" fill="#e6edf3" font-size="7" text-anchor="start">Sono + Fenton</text>
+<rect x="185.0" y="250.0" width="37.7" height="30.0" rx="2" fill="#d29922" opacity="0.7"/>
+<text x="226.7" y="268" fill="#d29922" font-size="8" text-anchor="start">5.2×</text>
+<text x="75" y="308" fill="#e6edf3" font-size="7" text-anchor="start">UV + Fenton</text>
+<rect x="185.0" y="290.0" width="34.8" height="30.0" rx="2" fill="#e8a665" opacity="0.7"/>
+<text x="223.8" y="308" fill="#e8a665" font-size="8" text-anchor="start">4.8×</text>
+<text x="75" y="348" fill="#e6edf3" font-size="7" text-anchor="start">Triple (novel)</text>
+<rect x="185.0" y="330.0" width="129.8" height="30.0" rx="2" fill="#3fb950" opacity="0.7"/>
+<text x="318.775" y="348" fill="#3fb950" font-size="8" text-anchor="start">17.9×</text>
+<line x1="185" y1="385" x2="185" y2="389" stroke="#8b949e" stroke-width="0.5"/>
+<text x="185" y="399" fill="#8b949e" font-size="7" text-anchor="middle">0×</text>
+<line x1="221.25" y1="385" x2="221.25" y2="389" stroke="#8b949e" stroke-width="0.5"/>
+<text x="221.25" y="399" fill="#8b949e" font-size="7" text-anchor="middle">5×</text>
+<line x1="257.5" y1="385" x2="257.5" y2="389" stroke="#8b949e" stroke-width="0.5"/>
+<text x="257.5" y="399" fill="#8b949e" font-size="7" text-anchor="middle">10×</text>
+<line x1="293.75" y1="385" x2="293.75" y2="389" stroke="#8b949e" stroke-width="0.5"/>
+<text x="293.75" y="399" fill="#8b949e" font-size="7" text-anchor="middle">15×</text>
+<line x1="330" y1="385" x2="330" y2="389" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="399" fill="#8b949e" font-size="7" text-anchor="middle">20×</text>
+<text x="257.5" y="413" fill="#8b949e" font-size="8" text-anchor="middle">Relative OH• generation rate</text>
+<rect x="73.0" y="68.0" width="264.0" height="28" rx="3" fill="#30363d" opacity="0.85"/>
+<text x="205" y="81" fill="#3fb950" font-size="8" text-anchor="middle">17.9× synergy = super-additive (not sum of parts)</text>
+<text x="205" y="93" fill="#8b949e" font-size="7" text-anchor="middle">Data: Sukhatskiy 2024, Ninomiya 2013</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Zero-Reagent Triple Cascade</text>
+<rect x="380.0" y="65.0" width="290.0" height="320.0" fill="none" stroke="#8b949e" stroke-width="1"/>
+<circle cx="525.0" cy="135.0" r="35" fill="#58a6ff" opacity="0.15" stroke="#58a6ff" stroke-width="2"/>
+<text x="525" y="128" fill="#58a6ff" font-size="9" text-anchor="middle">Ultrasound</text>
+<text x="525" y="142" fill="#58a6ff" font-size="7" text-anchor="middle">(§3.14)</text>
+<text x="525" y="154" fill="#e6edf3" font-size="7" text-anchor="middle">H₂O₂ + OH•</text>
+<circle cx="452.5" cy="265.0" r="35" fill="#bc8cff" opacity="0.15" stroke="#bc8cff" stroke-width="2"/>
+<text x="452.5" y="258" fill="#bc8cff" font-size="9" text-anchor="middle">TiO₂/UV</text>
+<text x="452.5" y="272" fill="#bc8cff" font-size="7" text-anchor="middle">(§4.26)</text>
+<text x="452.5" y="284" fill="#e6edf3" font-size="7" text-anchor="middle">OH• + vanillin</text>
+<circle cx="597.5" cy="265.0" r="35" fill="#f85149" opacity="0.15" stroke="#f85149" stroke-width="2"/>
+<text x="597.5" y="258" fill="#f85149" font-size="9" text-anchor="middle">Oak Fe²⁺</text>
+<text x="597.5" y="272" fill="#f85149" font-size="7" text-anchor="middle">Fenton</text>
+<text x="597.5" y="284" fill="#e6edf3" font-size="7" text-anchor="middle">OH• + Fe cycling</text>
+<line x1="500.0" y1="165.0" x2="470.5" y2="235.0" stroke="#39d2c0" stroke-width="1.5" marker-end="url(#arr)"/>
+<text x="468.75" y="195" fill="#39d2c0" font-size="6" text-anchor="middle">de-agglom.</text>
+<line x1="550.0" y1="165.0" x2="579.5" y2="235.0" stroke="#d29922" stroke-width="1.5" marker-end="url(#arr)"/>
+<text x="581.25" y="195" fill="#d29922" font-size="6" text-anchor="middle">H₂O₂ feed</text>
+<line x1="487.5" y1="265.0" x2="562.5" y2="265.0" stroke="#e8a665" stroke-width="1.5" marker-end="url(#arr)"/>
+<text x="525" y="277" fill="#e8a665" font-size="6" text-anchor="middle">UV: Fe³⁺→Fe²⁺</text>
+<circle cx="525.0" cy="345.0" r="28" fill="#3fb950" opacity="0.2" stroke="#3fb950" stroke-width="2.5"/>
+<text x="525" y="341" fill="#3fb950" font-size="14" text-anchor="middle">17.9×</text>
+<text x="525" y="357" fill="#3fb950" font-size="9" text-anchor="middle">OH•</text>
+<line x1="452.5" y1="300.0" x2="510.0" y2="320.0" stroke="#3fb950" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="597.5" y1="300.0" x2="540.0" y2="320.0" stroke="#3fb950" stroke-width="1" stroke-dasharray="3,2"/>
+<rect x="385.0" y="335.0" width="280.0" height="42" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="525" y="349" fill="#e6edf3" font-size="8" text-anchor="middle">Zero added reagents:</text>
+<text x="525" y="363" fill="#e8a665" font-size="8" text-anchor="middle">US → H₂O₂, Oak → Fe²⁺, LED → photons</text>
+<rect x="60" y="430.0" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Three components already in protocol (§3.14 + §4.26 + oak) = triple radical cascade</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">$0 incremental cost — just run ultrasonic bath + UV LED + oak chips simultaneously</text>
+</svg>

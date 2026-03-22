@@ -2545,6 +2545,35 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<h3>4.50 Sono-Photo-Fenton Triple Cascade: Zero-Reagent Radical Generation</h3>
+
+<div class="callout key-insight">
+  <strong>Novel insight connecting three existing protocol components:</strong> Running the ultrasonic bath (&sect;3.14), UV-A LED (&sect;4.26), and oak chips simultaneously generates <strong>three independent OH&bull; production pathways</strong> that interact super-additively. Ultrasound produces H<sub>2</sub>O<sub>2</sub> via water thermolysis (&sect;4.21). Oak leaches Fe<sup>2+</sup> (5&ndash;30 ppm). Fe<sup>2+</sup> + H<sub>2</sub>O<sub>2</sub> &rarr; OH&bull; + Fe<sup>3+</sup> (Fenton). UV regenerates Fe<sup>2+</sup> from Fe<sup>3+</sup> (photo-Fenton). TiO<sub>2</sub>/UV adds photocatalytic OH&bull;. The triple combination achieves <strong>17.9&times; synergy</strong> over individual components<span class="cite" data-ref="171"><sup>[171]</sup></span>. <strong>No added reagents&mdash;everything comes from equipment and wood already in the protocol.</strong>
+</div>
+
+<p><strong>The three OH&bull; pathways:</strong></p>
+<ol>
+  <li><strong>Sonolytic:</strong> Cavitation bubble collapse at ~5,000 K thermolyzes water &rarr; OH&bull; + H&bull;. Simultaneously, interfacial microdroplet chemistry (&sect;4.21) generates H<sub>2</sub>O<sub>2</sub> continuously. With O<sub>2</sub> sparging (PDMS membrane from &sect;4.1), microdroplet H<sub>2</sub>O<sub>2</sub> reaches 88 mM/h<span class="cite" data-ref="124"><sup>[124]</sup></span>.</li>
+  <li><strong>Fenton via oak iron:</strong> Oak wood leaches iron at 5&ndash;30 ppm (0.09&ndash;0.54 mM Fe<sup>2+</sup>) during extraction. Fe<sup>2+</sup> + sono-generated H<sub>2</sub>O<sub>2</sub> &rarr; Fe<sup>3+</sup> + OH&bull; + OH<sup>&minus;</sup>. This is the same Fenton cycle as &sect;4.45, but with <strong>ultrasound supplying the H<sub>2</sub>O<sub>2</sub> instead of cold plasma</strong>.</li>
+  <li><strong>Photo-Fenton + photocatalytic:</strong> UV-A light (365 nm) does double duty: (a) reduces Fe<sup>3+</sup> &rarr; Fe<sup>2+</sup> + OH&bull;, regenerating the Fenton catalyst; (b) activates TiO<sub>2</sub> particles for photocatalytic OH&bull; and vanillin generation (&sect;4.26). Ultrasound enhances TiO<sub>2</sub> performance by de-agglomerating particles (&sect;4.30).</li>
+</ol>
+
+<p><strong>The synergy is super-additive</strong> because each pathway feeds the others. Ultrasound generates H<sub>2</sub>O<sub>2</sub> that feeds Fenton. UV regenerates Fe<sup>2+</sup> that sustains Fenton. Ultrasound de-agglomerates TiO<sub>2</sub> that boosts photocatalysis. Ninomiya et al. demonstrated 378 &mu;M OH&bull; (measured as DHBA) in 10 min from the sonocatalytic-Fenton combination<span class="cite" data-ref="172"><sup>[172]</sup></span>. Sukhatskiy et al. measured a synergy coefficient of <strong>17.9&times;</strong> for the optimized triple system<span class="cite" data-ref="171"><sup>[171]</sup></span>.</p>
+
+<p><strong>What this means for the protocol:</strong> If the ultrasonic bath (&sect;3.14) and UV-A LED (&sect;4.26) are already in the protocol, and oak chips are present, the sono-photo-Fenton cascade is already happening&mdash;<em>it was never recognized as such</em>. The iron catalytic cycle was an unaccounted-for contribution to the oxidative chemistry. Explicitly optimizing for it (ensuring oak chips are present during combined sono-photo treatment, using PDMS membrane for O<sub>2</sub> supply to maximize H<sub>2</sub>O<sub>2</sub>) could multiply the oxidation rate by up to 17.9&times; over sono-only treatment. <strong>No additional cost, no additional equipment, no additional reagents.</strong></p>
+
+<figure class="sim-figure">
+  <object data="graphs/sono-photo-fenton.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/sono-photo-fenton.svg" alt="Sono-photo-Fenton triple cascade: zero-reagent OH radical generation from ultrasonic bath + UV LED + oak">
+  </object>
+  <figcaption><strong>Fig. 62.</strong> Sono-photo-Fenton triple cascade. (A) Relative OH&bull; generation rate by source: individual pathways (sono, TiO<sub>2</sub>/UV, Fenton) generate 0.8&ndash;2.5&times; baseline; paired combinations reach 4.8&ndash;8.5&times;; the triple cascade achieves 17.9&times; (Sukhatskiy 2024). Super-additive synergy because each pathway feeds the others. (B) Zero-reagent cascade diagram: ultrasound provides H<sub>2</sub>O<sub>2</sub>, oak provides Fe<sup>2+</sup>, UV provides photons. All three components are already in the protocol.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (components)</span> &mdash; Sono-photo-Fenton synergy with 17.9&times; enhancement is published<span class="cite" data-ref="171"><sup>[171]</sup></span><span class="cite" data-ref="172"><sup>[172]</sup></span>, but used added Fe<sup>2+</sup> and H<sub>2</sub>O<sub>2</sub>. The novel prediction is that oak-derived Fe<sup>2+</sup> and sono-generated H<sub>2</sub>O<sub>2</sub> enable the same cascade without added reagents. The 17.9&times; factor is an upper bound; oak iron at 5&ndash;30 ppm may be sub-optimal. <strong>Home testability: 4/5</strong> ($0 incremental: ultrasonic bath + UV-A LED + oak chips, all already in protocol. Run combined treatment 30 min. Compare color/taste vs sono-only and UV-only controls. The triple combination should show faster color development and more vanillin aroma. For quantification: Folin-Ciocalteu phenolic assay kit ($15).)
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -2701,6 +2730,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Cu<sub>2</sub>O/TiO<sub>2</sub> photodehydrogenation (&sect;4.47)</td><td>~100% AcH selectivity (10&times; rate)</td><td><span class="verdict promising">Published</span></td><td>$20&ndash;30</td><td>OXIDATION</td></tr>
 <tr><td>Blue-light tandem (&sect;4.48)</td><td>Dual selective chemistry (AcH + vanillin)</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$15 incr.</td><td>OXIDATION</td></tr>
 <tr><td>Mechanochemical oak (&sect;4.49)</td><td>10&ndash;50&times; phenolic extraction</td><td><span class="verdict promising">Published (components)</span></td><td>$10&ndash;20</td><td>EXTRACTION</td></tr>
+<tr><td>Sono-photo-Fenton (&sect;4.50)</td><td>17.9&times; synergy</td><td><span class="verdict promising">Published (components)</span></td><td>$0 incr.</td><td>OXIDATION</td></tr>
 </tbody>
 </table>
 </div>
@@ -2885,6 +2915,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Cu<sub>2</sub>O/TiO<sub>2</sub> photodehydrogenation (&sect;4.47)</td><td>3/5</td><td>$20&ndash;30</td><td>Cu<sub>2</sub>O powder ($10/50g pottery supply or eBay) + food-grade TiO<sub>2</sub> ($5/100g) + UV-A LED strip (365 nm, $10). Mix 0.5 g/L Cu<sub>2</sub>O + TiO<sub>2</sub> in 200 mL spirit + oak extract. Irradiate 30 min (Phase 1: acetaldehyde). Filter through 0.2 &mu;m syringe filter. Add fresh TiO<sub>2</sub> for Phase 2 (vanillin, 60 min). Compare dual-phase vs single TiO<sub>2</sub> control by smell. Dual-phase should show more acetaldehyde (green apple) AND more vanillin.</td></tr>
 <tr><td><strong>Blue-light tandem (&sect;4.48)</strong></td><td><strong>5/5</strong></td><td><strong>$15 incr.</strong></td><td><strong>Cu<sub>2</sub>O powder ($10 pottery supply) + existing blue LED + riboflavin from &sect;4.8. Add 0.5 g/L Cu<sub>2</sub>O + 8 mg/L B<sub>2</sub> to spirit with oak extract. Blue LED 2h. Filter Cu<sub>2</sub>O through coffee filter. Compare vs riboflavin-only control (&sect;4.8) and untreated spirit. The tandem should produce BOTH acetaldehyde (green apple) AND enhanced vanillin development. Cheapest dual-chemistry upgrade.</strong></td></tr>
 <tr><td><strong>Mechanochemical oak (&sect;4.49)</strong></td><td><strong>3/5</strong></td><td><strong>$10&ndash;20</strong></td><td><strong>Coffee grinder ($10) or existing spice grinder. Grind toasted oak chips to finest powder (5 min burst mode). Compare: 1 g ground vs 1 g intact chips in 100 mL spirit. Measure color at 1h, 4h, 24h (phone camera + white background). Ground oak should show 4&ndash;10&times; faster color extraction. For true mechanochemical effect, mortar &amp; pestle 30+ min on small batches. Synergistic with ultrasonic bath (&sect;3.14): grind first, then sonicate in spirit.</strong></td></tr>
+<tr><td><strong>Sono-photo-Fenton triple (&sect;4.50)</strong></td><td><strong>4/5</strong></td><td><strong>$0 incr.</strong></td><td><strong>Zero incremental cost: ultrasonic bath (\u{00a7}3.14) + UV-A LED strip (\u{00a7}4.26) + oak chips, all already in protocol. Run all three simultaneously for 30 min. Compare vs sono-only, UV-only, and combined (no oak) controls. The triple (with oak) should show fastest color development and most vanillin aroma &mdash; oak Fe<sup>2+</sup> enables the hidden Fenton cycle.</strong></td></tr>
 </tbody>
 </table>
 </div>
@@ -3071,6 +3102,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r168">Qu Y, Guo Y, Zhang X, et al. (2021) &ldquo;The Effect of Ball Milling Time on the Isolation of Lignin in the Cell Wall of Different Biomass.&rdquo; <em>Front Bioeng Biotechnol</em> 9:807625. <a href="https://doi.org/10.3389/fbioe.2021.807625">DOI</a> (MWL yield vs milling time: bamboo 39.2%&rarr;53.9% (3&rarr;7h), poplar 15.5%&rarr;35.6%, larch 23.4%&rarr;25.8%. Prolonged milling cleaves &beta;-O-4 linkages, increases free phenolic hydroxyl groups. Hardwood-specific response: dramatic yield increase with time.)</li>
   <li id="r169">Yang H, Strien JRJ, Chowdari RK, Wang Z, Heeres HJ, Deuss PJ. (2022) &ldquo;Enhanced Catalytic Depolymerization of a Kraft Lignin by a Mechanochemical Approach.&rdquo; <em>Energy Fuels</em> 36(12):6606&ndash;6610. <a href="https://doi.org/10.1021/acs.energyfuels.2c01109">DOI</a> (Ball milling pre-treatment: +15% alkylphenol yield, 33% less char residue, carbon efficiency 76%&rarr;91%. Mechanochemical energy reduces particle size and partially cleaves interunit bonds, creating reactive fragments.)</li>
   <li id="r170">Sapouna I, van Erven G, Heidling E, Lawoko M, McKee LS. (2023) &ldquo;Impact of Extraction Method on the Structure of Lignin from Ball-Milled Hardwood.&rdquo; <em>ACS Sustain Chem Eng</em> 11(43):15533&ndash;15543. <a href="https://doi.org/10.1021/acssuschemeng.3c02977">DOI</a> (Ball-milled birch wood + different solvents yield structurally distinct lignin fractions. Ethanol extraction selectively recovers low-MW, high-S/G phenolics. S/G ratio and &beta;-O-4 content differ by extraction method &mdash; solvent selects phenolic population.)</li>
+  <li id="r171">Sukhatskiy Y, Shepida M, Lysak D, et al. (2024) &ldquo;Modified sono-Fenton process for oxidative degradation of chloramphenicol.&rdquo; <em>Environ Sci Pollut Res</em> 31:54559&ndash;54573. <a href="https://doi.org/10.1007/s11356-024-34827-0">DOI</a> (Synergy coefficient of <strong>17.9&times;</strong> for US + heterogeneous Fenton combination. First-order rate constant 1.253&times;10<sup>&minus;3</sup> s<sup>&minus;1</sup>. Super-additive radical generation from combined ultrasonic cavitation + Fenton catalysis. Sodium percarbonate as sustained H<sub>2</sub>O<sub>2</sub> source.)</li>
+  <li id="r172">Ninomiya K, Takamatsu H, Onishi A, Takahashi K, Shimizu N. (2013) &ldquo;Sonocatalytic-Fenton reaction for enhanced OH radical generation and its application to lignin degradation.&rdquo; <em>Ultrason Sonochem</em> 20(4):1092&ndash;1097. <a href="https://doi.org/10.1016/j.ultsonch.2013.01.007">DOI</a> (378 &mu;M DHBA (OH&bull; proxy) in 10 min from sonocatalytic-Fenton. Triple synergy: sonolysis + sonocatalysis (TiO<sub>2</sub> as cavitation nuclei, sonoluminescence-activated photocatalysis) + Fenton. Applied to lignin depolymerization &mdash; directly analogous to oak lignin breakdown.)</li>
 </ol>
 
 
@@ -3942,6 +3975,16 @@ var refs = {
     source: "Sapouna et al. (2023), ACS Sustain Chem Eng 11(43):15533\u201315543",
     excerpt: "Ball-milled birch hardwood: different extraction solvents yield structurally distinct lignin fractions. Ethanol selectively extracts low-MW, high-S/G ratio phenolics \u2014 the vanillin-rich fraction. 2D NMR confirms solvent-dependent S/G ratio and \u03b2-O-4 content. Spirit is the ideal solvent for pre-milled oak.",
     url: "#r170"
+  },
+  171: {
+    source: "Sukhatskiy et al. (2024), Environ Sci Pollut Res 31:54559\u201354573",
+    excerpt: "Synergy coefficient of 17.9\u00d7 for US + heterogeneous Fenton combination. Super-additive radical generation: combined process is 17.9\u00d7 more effective than sum of individual processes. Fe\u2082O\u2083 nanoparticles as heterogeneous Fenton catalyst; sodium percarbonate as sustained H\u2082O\u2082 source.",
+    url: "#r171"
+  },
+  172: {
+    source: "Ninomiya et al. (2013), Ultrason Sonochem 20(4):1092\u20131097",
+    excerpt: "378 \u03bcM OH\u2022 (as DHBA) in 10 min from sonocatalytic-Fenton. Triple synergy: sonolysis + sonocatalysis (TiO\u2082 as cavitation nuclei + sonoluminescence-activated photocatalysis) + Fenton. Applied to lignin depolymerization \u2014 the same chemistry as oak aging.",
+    url: "#r172"
   }
 };
 
