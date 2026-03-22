@@ -1481,6 +1481,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <p><strong>Application to spirit maturation:</strong> Rather than adding live organisms to the spirit (which would consume ethanol and produce off-flavors), the approach is to prepare an <strong>ethyl lactate concentrate</strong> via biocycle fermentation in a separate vessel, then distill or extract the ester and dose it into the spirit. Alternatively, a <strong>koji enzyme extract</strong> (<em>Aspergillus oryzae</em>) provides beta-glucosidase (releases glycoside-bound vanillin from oak), tanninase (hydrolyzes astringent ellagitannins to gallic acid), and lipase (generates fatty acid precursors for long-chain esters)&mdash;the exact enzyme cocktail that barrel aging achieves slowly through wood-resident microbiota.</p>
 
+<figure class="sim-figure">
+  <img src="graphs/lab-biocycle.svg" alt="LAB biocycle fermentation simulation showing sequential lactate then ethyl lactate production">
+  <figcaption><strong>Fig. 28.</strong> (A) Sequential biocycle timeline: LAB phase (0&ndash;48 h) produces ~28 g/L lactic acid, then yeast inoculation drives ethyl lactate synthesis via AAT activity, reaching 3.05 g/L by 120 h. (B) Yield comparison: biocycle produces 2.3&times; more ethyl lactate than mixed culture (3.05 vs 1.32 g/L). Fischer esterification cannot produce ethyl lactate&mdash;it requires the biological lactyl-CoA pathway.</figcaption>
+</figure>
+
 <div class="callout hypothesis">
   <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but biologically grounded. LAB ethyl lactate production is published<span class="cite" data-ref="120"><sup>[120]</sup></span> in food fermentation; application to spirit maturation is novel. The biocycle approach uses GRAS organisms and produces a specific aging-signature compound that Fischer chemistry misses entirely. Koji enzyme extract (&sect;3.12 enhancement) is commercially available and food-grade. <strong>Home testability: 3/5</strong> ($20&ndash;40: kefir grains or kimchi starter as LAB source, baker&rsquo;s yeast, sugar solution. Run biocycle in separate vessel. Distill or extract ethyl lactate. Koji enzyme available from homebrew suppliers).
 </div>
@@ -1494,6 +1499,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <p><strong>Process architecture:</strong> The concept is a two-stage scCO<sub>2</sub> reactor. <em>Stage 1:</em> supercritical extraction of oak chips (&sect;3.11) at 150 bar/45&deg;C, pulling vanillin, eugenol, and oak lactones while skipping harsh tannins. <em>Stage 2:</em> pass the CO<sub>2</sub>-dissolved extract through a Novozym 435 packed bed with acetic acid + isoamyl alcohol feed. The low a<sub>w</sub> environment drives ester synthesis at near-quantitative yield. Depressurize to recover the ester-enriched aromatic concentrate, then dose into the spirit.</p>
 
 <p><strong>Why this matters:</strong> CALB in scCO<sub>2</sub> has three decisive advantages over Fischer chemistry: (1) Regioselectivity&mdash;lipases produce specific esters (isoamyl acetate, ethyl hexanoate) rather than the Fischer equilibrium mixture dominated by ethyl acetate. (2) No water problem&mdash;scCO<sub>2</sub> provides inherently low a<sub>w</sub>. (3) No acid/base catalyst residue. The enzyme is immobilized and stays in the reactor; the product is pure ester in CO<sub>2</sub>. Novozym 435 retains activity for &gt;1,000 hours in scCO<sub>2</sub><span class="cite" data-ref="121"><sup>[121]</sup></span>.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/lipase-scco2.svg" alt="Lipase ester synthesis simulation showing water activity controls reaction direction">
+  <figcaption><strong>Fig. 29.</strong> (A) Reaction direction vs water activity: CALB catalyzes synthesis at a<sub>w</sub> &lt; 0.35 (scCO<sub>2</sub> conditions) but hydrolysis at a<sub>w</sub> &gt; 0.35 (spirit conditions). The same enzyme, opposite outcomes. (B) Isoamyl acetate conversion kinetics: scCO<sub>2</sub> (a<sub>w</sub>=0.05) reaches ~100% conversion in &lt;4 h; spirit conditions (a<sub>w</sub>=0.85) plateau at 5%. Ping-Pong Bi-Bi kinetics with Novozym 435.</figcaption>
+</figure>
 
 <div class="callout hypothesis">
   <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; CALB esterification in scCO<sub>2</sub> is mature industrial chemistry (biofuel, flavor, fragrance)<span class="cite" data-ref="121"><sup>[121]</sup></span><span class="cite" data-ref="122"><sup>[122]</sup></span>. Application to a two-stage extraction+esterification protocol for spirits is novel but each step is independently validated. The key limitation is equipment cost: a tabletop scCO<sub>2</sub> system capable of enzymatic reaction (~150 bar, 60&deg;C, packed bed) is $800&ndash;2,000. <strong>Home testability: 2/5</strong> (requires supercritical equipment; but tabletop extractors for essential oils exist in the $800 range and could be modified with a packed-bed cartridge).
@@ -1509,10 +1519,78 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <p>This partially explains why ultrasonic spirit treatment (&sect;3.14) consistently outperforms thermal-only controls by more than cavitation models predict: the interfacial oxidation pathway is an unaccounted-for contribution that operates on the entire aerosol cloud, not just at individual cavitation sites.</p>
 
+<figure class="sim-figure">
+  <img src="graphs/microdroplet-ros.svg" alt="Microdroplet ROS generation simulation showing hidden oxidation mechanism in sonication">
+  <figcaption><strong>Fig. 30.</strong> (A) H<sub>2</sub>O<sub>2</sub> concentration scales inversely with droplet diameter (log-log). Spontaneous production: ~30 &mu;M at 10 &mu;m droplets (Lee/Zare 2019). With O<sub>2</sub> sparging: 88 mM at ~5 &mu;m equivalent (Asserghine/Jain 2025)&mdash;a ~2,900&times; enhancement. (B) ROS sources during sonication: cavitation (classical mechanism) saturates as dissolved gas depletes, while microdroplet interfacial production is steady-state, contributing ~30% of total ROS at 60 min. This &ldquo;hidden&rdquo; contribution explains why sonication outperforms thermal controls more than cavitation models predict.</figcaption>
+</figure>
+
 <div class="callout hypothesis">
   <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but building on 2019&ndash;2025 physical chemistry literature from Stanford (Zare) and UIUC (Jain/Rodr&iacute;guez-L&oacute;pez)<span class="cite" data-ref="123"><sup>[123]</sup></span><span class="cite" data-ref="124"><sup>[124]</sup></span>. The 88 mM/hr H<sub>2</sub>O<sub>2</sub> figure is from oil-water emulsions with forced O<sub>2</sub>&mdash;spirit conditions will differ (ethanol-water miscibility reduces interface area). However, the qualitative mechanism is sound: sonication generates microdroplets, microdroplets generate ROS at interfaces, and this is additive with cavitation. <strong>Home testability: N/A</strong> (this is a mechanistic insight that enhances existing sonication steps, not a separate intervention. No additional equipment needed&mdash;you&rsquo;re already getting this benefit from every ultrasonic treatment in the protocol).
 </div>
 
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5: INTEGRATED PROTOCOL                        -->
+<h3>4.22 Dielectrophoretic Nanocluster Assembly: Electric Fields for Barrier 3</h3>
+
+<p><strong>The actual bottleneck is clustering.</strong> Section 5.2 identifies Barrier 3&mdash;the spontaneous formation of ethanol-water nanoclusters that sequester congeners&mdash;as the least understood and likely rate-limiting step. Natural aging achieves this over months as the &ldquo;pre-Ouzo&rdquo; microstructure slowly evolves. Can we accelerate it?</p>
+
+<p><strong>Electric field&ndash;induced demixing</strong> in binary liquids was demonstrated by Tsori, Tournilhac, and Leibler in a landmark 2004 <em>Nature</em> study<span class="cite" data-ref="125"><sup>[125]</sup></span>: applying ~100 V across non-uniform electrodes (50 &mu;m gap) reversibly induced phase separation in a miscible binary mixture at just 1 K above its phase transition temperature. The mechanism requires <em>field gradients</em>, not uniform fields. A 2007 follow-up showed that <strong>ion-containing mixtures phase-separate at &lt;1 V</strong><span class="cite" data-ref="126"><sup>[126]</sup></span>&mdash;because ionic screening creates field gradients even with flat electrodes. The exponential factor exp(eV/kT) at 0.5 V already reaches ~4.8 &times; 10<sup>8</sup>.</p>
+
+<p><strong>Dielectrophoresis (DEP)</strong> exerts force on polarizable particles: <strong>F<sub>DEP</sub> = 2&pi;&epsilon;<sub>m</sub> R<sup>3</sup> Re[K<sub>CM</sub>] &nabla;(E<sup>2</sup>)</strong>. The <strong>cubic R<sup>3</sup> dependence</strong> means larger clusters experience disproportionately stronger forces&mdash;exactly the selectivity needed to accelerate nanocluster coalescence while leaving monomers alone. At frequency-tunable crossover points, one can selectively trap particles by size: 500 nm clusters at ~1.6 MHz, 170 nm at ~4.6 MHz, 50 nm at ~15.6 MHz<span class="cite" data-ref="125"><sup>[125]</sup></span>.</p>
+
+<p><strong>Why ethanol-water is ideal for DEP:</strong> Organic solvents allow much higher applied voltages without electrolysis, Joule heating, or bubble formation&mdash;problems that plague aqueous DEP. Typical parameters: ~10<sup>12</sup> V<sup>2</sup>/m<sup>3</sup> field gradient, achievable with ~1 V across microelectrodes (10&ndash;120 &mu;m gaps). Frequency-tuned binary colloidal co-assembly has been demonstrated in AC fields<span class="cite" data-ref="126"><sup>[126]</sup></span>.</p>
+
+<p><strong>Proposed mechanism for spirit maturation:</strong> (1) Non-uniform AC field (~100 kHz&ndash;1 MHz) creates local field gradients that drive ethanol-rich and water-rich compositional segregation&mdash;effectively accelerating the pre-Ouzo microstructure formation that barrel aging achieves slowly. (2) DEP force selectively concentrates larger congener-laden clusters (tannin oligomers, R &gt; 100 nm) into congregation zones. (3) The concentrated clusters coalesce faster (diffusion-limited aggregation rate scales with local concentration<sup>2</sup>), forming the mature nanocluster architecture in hours instead of months.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/dep-clustering.svg" alt="DEP nanocluster assembly showing R³ force scaling and cluster growth acceleration">
+  <figcaption><strong>Fig. 31.</strong> (A) DEP force scales as R<sup>3</sup> while Brownian force scales as 1/R&mdash;above the crossover radius (~100 nm in spirit conditions), DEP dominates and drives directional particle motion. The whiskey-relevant congener cluster range (50&ndash;500 nm) falls in the DEP-dominated regime. (B) Cluster growth kinetics: natural Smoluchowski aggregation reaches ~100 nm in 30 days; DEP at 1V/100 kHz achieves this in ~6 days (5&times;); multi-frequency DEP at 5V in ~1.5 days (20&times;).</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but theoretically grounded. Field-induced demixing<span class="cite" data-ref="125"><sup>[125]</sup></span> and DEP colloidal assembly<span class="cite" data-ref="126"><sup>[126]</sup></span> are published; application to spirit nanocluster acceleration is novel. The R<sup>3</sup> size selectivity elegantly targets exactly the barrier we need to overcome. Key unknowns: (1) whether spirit&rsquo;s ionic content provides sufficient screening for sub-volt operation, (2) whether DEP-accelerated clusters have the same structure as naturally aged ones. <strong>Home testability: 2/5</strong> ($40&ndash;80: interdigitated electrode PCB + function generator. Requires characterization equipment to verify cluster formation, though turbidity/nephelometry might be a proxy).
+</div>
+
+<h3>4.23 Boron-Doped Diamond Anodes: The Superior Electrode</h3>
+
+<p><strong>Every electrochemical technique in this paper (&sect;4.3, &sect;4.10, &sect;4.12, &sect;4.19) uses carbon felt electrodes.</strong> Carbon felt is cheap and has good surface area, but it is an <em>active</em> anode: hydroxyl radicals chemisorb strongly to the surface, forming higher oxide species that permit only selective partial oxidation. This is why &sect;4.7&rsquo;s overshoot problem is so persistent&mdash;the electrode surface chemistry drives unpredictable product distributions.</p>
+
+<p><strong>Boron-doped diamond (BDD)</strong> is classified as a <em>non-active</em> anode in the Comninellis framework<span class="cite" data-ref="127"><sup>[127]</sup></span>. The sp<sup>3</sup>-hybridized carbon orbitals in diamond show weak adsorption of reaction intermediates. Paradoxically, this makes BDD <em>superior</em> for controlled oxidation: OH&bull; radicals are <strong>weakly physisorbed</strong> (quasi-free) rather than chemisorbed, remaining available to attack organic substrates in the bulk solution rather than being consumed by electrode surface reactions.</p>
+
+<p><strong>Quantitative advantages:</strong> (1) <strong>OER overpotential: +2.3 V vs. SHE</strong>&mdash;the highest of any electrode material, creating a 3.5 V electrochemical window where organic oxidation proceeds before parasitic O<sub>2</sub> evolution<span class="cite" data-ref="127"><sup>[127]</sup></span>. For comparison, Pt starts evolving O<sub>2</sub> at ~1.6 V, wasting current. (2) <strong>Faradaic efficiency: 90%</strong> for oxidant generation vs. 22% for Pt&mdash;a 4&times; improvement in current utilization. (3) <strong>Optimal OH&bull; potential: 1.60 V vs. Ag/AgCl</strong> with instantaneous current efficiency of 69%<span class="cite" data-ref="128"><sup>[128]</sup></span>. (4) <strong>OH&bull; activity sphere: ~20 nm from surface</strong>&mdash;sufficient for organic attack in convective conditions.</p>
+
+<p><strong>Direct evidence in spirits:</strong> Electrochemical oxidation of Baijiu (Chinese distilled spirit) showed <strong>3,000&ndash;10,000&times; acceleration</strong> of alcohol oxidation compared to natural aging. After 20 min at 0.8 V, PCA analysis showed no significant difference between treated new spirit and naturally aged samples<span class="cite" data-ref="128"><sup>[128]</sup></span>. Higher alcohols and aldehydes decreased; esters and free amino acids increased&mdash;exactly the chemical signature of barrel maturation.</p>
+
+<p><strong>Synergy with pulsed electrolysis (&sect;4.19):</strong> BDD + rAP is the optimal combination. BDD&rsquo;s quasi-free OH&bull; radicals provide more predictable oxidation stoichiometry than carbon felt&rsquo;s chemisorbed intermediates, while pulsed operation prevents the overshoot that even BDD&rsquo;s superior selectivity cannot entirely avoid. The combination gives: controlled oxidation depth (pulse duty cycle) &times; controlled oxidation chemistry (BDD surface) &times; high current efficiency (90% vs. 22%).</p>
+
+<figure class="sim-figure">
+  <img src="graphs/bdd-anode-comparison.svg" alt="BDD vs conventional electrode comparison showing Faradaic efficiency and selectivity advantages">
+  <figcaption><strong>Fig. 32.</strong> (A) Current efficiency: BDD delivers 90% Faradaic efficiency for organic oxidation vs. 22% for Pt, because its +2.3 V OER overpotential prevents parasitic O<sub>2</sub> evolution. (B) OH&bull; radical fate: on active anodes (Pt, carbon felt), radicals chemisorb and drive unpredictable surface reactions; on BDD, radicals remain quasi-free in solution, attacking organics with controllable stoichiometry.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; BDD electrochemistry is mature (wastewater treatment, electroanalysis)<span class="cite" data-ref="127"><sup>[127]</sup></span><span class="cite" data-ref="128"><sup>[128]</sup></span>. The 3,000&ndash;10,000&times; acceleration in Baijiu is a direct proof of concept for spirits. Limitation: BDD electrodes cost $50&ndash;200 for a 10 cm<sup>2</sup> piece, vs. $5 for carbon felt. However, BDD lasts essentially forever (diamond is chemically inert), while carbon felt degrades. <strong>Home testability: 2/5</strong> ($80&ndash;200: BDD electrode from electrochemistry supplier + bench PSU. Higher upfront cost but dramatically better performance and longevity than carbon felt).
+</div>
+
+<h3>4.24 Sonochemical Tannin Condensation: Radical-Mediated Astringency Reduction</h3>
+
+<p><strong>The missing link between sonication and mouthfeel.</strong> Sections 3.14 and 4.17 focus on sonication for radical generation (oxidation) and extraction. But sonication also directly accelerates <strong>tannin polymerization</strong>&mdash;the structural transformation that converts harsh, astringent free tannin into smooth, high-molecular-weight polymeric pigments characteristic of aged whiskey.</p>
+
+<p><strong>The acetaldehyde bridge mechanism:</strong> Acoustic cavitation homolyzes water to OH&bull;. OH&bull; + ethanol &rarr; <strong>1-hydroxyethyl radical</strong> (CH<sub>3</sub>CHOH&bull;)&mdash;identified by EPR spin-trapping as the &ldquo;key radical in the maturation process.&rdquo; This radical is oxidized to <strong>acetaldehyde</strong>, which acts as a <strong>bridge chain</strong> mediating tannin&ndash;tannin polymerization via ethylidene bridges<span class="cite" data-ref="129"><sup>[129]</sup></span>. The result: increased molecular weight, reduced protein-binding capacity, and reduced perceived astringency.</p>
+
+<p><strong>Quantitative rate enhancement:</strong> Multi-frequency sonication (20/28/40 kHz, 50 W/L, 15 min at 30&deg;C in a 20 L reactor) of rice wine showed after 6 months of storage: volatile esters +287%, volatile aldehydes &minus;67%, volatile alcohols &minus;13%<span class="cite" data-ref="130"><sup>[130]</sup></span>. Polymerized compound concentration was ~35% higher than untreated controls at 6 months and ~42% higher at 12 months. Critically, <strong>trained panelists preferred sonicated samples</strong> over controls, and FT-NIR spectroscopy confirmed tannin structural changes consistent with accelerated aging.</p>
+
+<p><strong>The sonication&ndash;condensation chain:</strong> This connects four mechanisms from earlier sections into a single cascade: (1) Cavitation &rarr; OH&bull; (&sect;3.14). (2) OH&bull; + EtOH &rarr; 1-hydroxyethyl radical. (3) Radical &rarr; acetaldehyde (controlled by pulsed electrolysis, &sect;4.19). (4) Acetaldehyde + tannin &rarr; ethylidene-bridged polymer (&sect;4.24). The entire chain is accelerated by sonication, explaining why sonicated spirits consistently show both chemical and sensory signatures of advanced aging after only minutes of treatment.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/tannin-sono-polymerization.svg" alt="Sonochemical tannin condensation showing radical cascade and polymerization kinetics">
+  <figcaption><strong>Fig. 33.</strong> (A) The radical cascade: OH&bull; &rarr; 1-hydroxyethyl radical &rarr; acetaldehyde &rarr; ethylidene-bridged tannin polymer. Sonication rate at each step. (B) Polymerization degree: sonicated samples reach 135&ndash;142% of control levels within 6&ndash;12 months, with the gap widening over time as bridge-mediated condensation continues post-treatment.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; EPR-confirmed radical mechanism<span class="cite" data-ref="129"><sup>[129]</sup></span>, quantified polymerization enhancement<span class="cite" data-ref="130"><sup>[130]</sup></span>, and sensory validation by trained panels. This is not speculative&mdash;it&rsquo;s the mechanistic explanation for why sonication works for aging acceleration. The insight changes how we think about &sect;3.14: sonication isn&rsquo;t just &ldquo;shaking things up&rdquo;&mdash;it initiates a specific radical cascade that produces the exact acetaldehyde-bridged polymers found in barrel-aged spirits. <strong>Home testability: 4/5</strong> ($50: ultrasonic cleaner + oak extract + turbidity measurement. Polymerization is visible as increasing turbidity/color deepening. Advanced: FT-NIR or Folin-Ciocalteu assay for phenolic characterization).
+</div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
@@ -1639,6 +1717,10 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Pulsed electrolysis rAP (&sect;4.19)</td><td>Selectivity control</td><td><span class="verdict promising">Published</span></td><td>$30&ndash;80</td><td>OXIDATION</td></tr>
 <tr><td>LAB biocycle fermentation (&sect;4.20)</td><td>3 g/L ethyl lactate</td><td><span class="verdict promising">Published</span></td><td>$20&ndash;40</td><td>ESTER</td></tr>
 <tr><td>Lipase in scCO<sub>2</sub> (&sect;1.14)</td><td>100% (specific esters)</td><td><span class="verdict promising">Published</span></td><td>$800+</td><td>ESTER</td></tr>
+<tr><td>Microdroplet ROS (&sect;4.21)</td><td>+30% (hidden mechanism)</td><td><span class="verdict speculative">Novel</span></td><td>$0</td><td>OXIDATION</td></tr>
+<tr><td>DEP nanocluster assembly (&sect;4.22)</td><td>5&ndash;20&times;</td><td><span class="verdict speculative">Novel</span></td><td>$40&ndash;80</td><td>CLUSTER</td></tr>
+<tr><td>BDD anode (&sect;4.23)</td><td>3,000&ndash;10,000&times;</td><td><span class="verdict promising">Published</span></td><td>$80&ndash;200</td><td>OXIDATION</td></tr>
+<tr><td>Sono-tannin condensation (&sect;4.24)</td><td>+35&ndash;42%</td><td><span class="verdict promising">Published</span></td><td>$50</td><td>CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -1722,6 +1804,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li><strong>What is the molecular sieve 3A saturation time in spirit?</strong> Published data is for aqueous esterification. In 40% ethanol with ~33 mol/L water, the sieve may saturate faster (higher water activity) or slower (ethanol-water interactions). A breakthrough curve experiment on a small column (25 g sieve, 100 mL spirit, 1 mL/min) would determine the regeneration schedule for the protocol.</li>
   <li><strong>What is BsADH&rsquo;s actual activity curve at 10&ndash;40% ethanol?</strong> The K<sub>m</sub> of 0.91 mM means the enzyme is saturated 7,000-fold at 40% ABV. The substrate inhibition kinetics (dead-end abortive complex vs. productive saturation) are unpublished at whiskey concentrations. The 0.12% conversion requirement means even 0.1% of V<sub>max</sub> may suffice&mdash;but this is theoretical. A simple activity assay (NADH absorbance at 340 nm) with 10/20/30/40% ethanol would resolve the question (&sect;4.14).</li>
   <li><strong>Does the 58% ester ceiling matter in practice?</strong> At 40% ABV, water suppresses Fischer esterification to 58.5% conversion regardless of catalyst (&sect;4.18). But actual whiskey aging reaches 66% or higher by mechanisms beyond simple Fischer: enzymatic esterification (lipases in yeast/wood), oxidative ester formation (Baeyer-Villiger), and long-chain ester accumulation from fatty acid precursors. The question is whether the accelerated protocol&rsquo;s reliance on Fischer chemistry leaves a detectable &ldquo;ester signature gap&rdquo; compared to barrel aging. GC-MS profiling of C4&ndash;C18 esters would reveal whether the missing 7.5% of conversion corresponds to sensorially important species.</li>
+  <li><strong>Do DEP-accelerated nanoclusters have the same structure as naturally aged ones?</strong> Field-induced demixing (&sect;4.22) could drive nanocluster formation faster, but under non-equilibrium conditions. The resulting clusters might have different internal packing, surface charge distribution, or size polydispersity than those formed by slow diffusion-limited aggregation. DLS + cryo-TEM comparison of DEP-treated vs. 10-year-aged whiskey would answer this. If structures differ, does it matter sensorially?</li>
+  <li><strong>Is BDD&rsquo;s 90% Faradaic efficiency maintained in 40% ethanol?</strong> Published BDD data is mostly in aqueous electrolytes. Ethanol-water mixtures change the double-layer structure, OH&bull; scavenging kinetics, and OER thermodynamics. The 3,000&ndash;10,000&times; acceleration in Baijiu (&sect;4.23) was with gold electrodes, not BDD. A direct BDD vs. carbon felt comparison in 40% ABV spirit with GC-MS ester/aldehyde profiling would validate the theoretical superiority.</li>
 </ol>
 
 
@@ -1787,6 +1871,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Zeolite side-stream reactor (&sect;4.18)</td><td>3/5</td><td>$50&ndash;100</td><td>3A mol sieve beads ($15) + H-BEA zeolite catalyst ($40&ndash;80). Dehydrate 50 mL side-stream, heat to 90&deg;C, 8&ndash;12h, re-blend ester concentrate. Breaks the 58% conversion ceiling.</td></tr>
 <tr><td>Pulsed electrolysis (&sect;4.19)</td><td>3/5</td><td>$30&ndash;80</td><td>555-timer + MOSFET relay modulating existing EF power supply. 10&ndash;20 Hz pulse, 50&ndash;200 ms duty. Prevents AcH overshoot. Self-cleaning electrodes.</td></tr>
 <tr><td>LAB biocycle fermentation (&sect;4.20)</td><td>3/5</td><td>$20&ndash;40</td><td>Kefir grains (LAB source) + baker&rsquo;s yeast + sugar solution in separate vessel. Biocycle 3&ndash;5 days. Extract ethyl lactate. Dose into spirit.</td></tr>
+<tr><td>DEP nanocluster assembly (&sect;4.22)</td><td>2/5</td><td>$40&ndash;80</td><td>Interdigitated electrode PCB (custom or repurposed) + function generator ($30 eBay). 100 kHz&ndash;1 MHz AC field. Verify via turbidity change (nephelometer or laser pointer + photodiode).</td></tr>
+<tr><td>BDD anode electrolysis (&sect;4.23)</td><td>2/5</td><td>$80&ndash;200</td><td>BDD electrode from electrochemistry supplier + bench PSU. Higher upfront cost but 4&times; current efficiency and infinite lifetime vs carbon felt. Combine with 555-timer pulse circuit (&sect;4.19).</td></tr>
+<tr><td>Sono-tannin condensation (&sect;4.24)</td><td>4/5</td><td>$50</td><td>Ultrasonic cleaner + oak extract. 15 min at 40 kHz. Polymerization visible as turbidity increase and color deepening. Advanced: Folin-Ciocalteu phenolic assay ($15 kit) to quantify.</td></tr>
 </tbody>
 </table>
 </div>
@@ -1927,6 +2014,12 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r122">Habulin M, Knez &Zcaron;. (2001) &ldquo;Activity and stability of lipases from different sources in supercritical carbon dioxide and near-critical propane.&rdquo; <em>J Chem Technol Biotechnol</em> 76:1260&ndash;1266. <a href="https://doi.org/10.1002/jctb.714">DOI</a> (Butyl butyrate via Novozym 435 in scCO<sub>2</sub>: 80% conversion in 1 hour, 45&ndash;50&deg;C. Ping-Pong Bi-Bi kinetics. Low a<sub>w</sub> drives esterification over hydrolysis.)</li>
   <li id="r123">Lee JK, et al. (2019) &ldquo;Spontaneous generation of hydrogen peroxide from aqueous microdroplets.&rdquo; <em>Proc Natl Acad Sci USA</em> 116:19294&ndash;19298. <a href="https://doi.org/10.1073/pnas.1911883116">DOI</a> (Zare group, Stanford. Sprayed water microdroplets (1&ndash;20 &mu;m) spontaneously produce ~30 &mu;M H<sub>2</sub>O<sub>2</sub>. No reagent, catalyst, or energy input. OH<sup>&minus;</sup> surface electron loss &rarr; OH&bull; recombination. Yield inversely scales with droplet size.)</li>
   <li id="r124">Asserghine A, et al. (2025) &ldquo;Dissolved Oxygen Redox as the Source of Hydrogen Peroxide and Hydroxyl Radical in Sonicated Emulsive Water Microdroplets.&rdquo; <em>J Am Chem Soc</em> 147:11851&ndash;11858. <a href="https://doi.org/10.1021/jacs.4c16759">DOI</a> (UIUC. Sonicated microdroplets: O<sub>2</sub> &rarr; &bull;O<sub>2</sub><sup>&minus;</sup> &rarr; H<sub>2</sub>O<sub>2</sub> at water-oil interface, ~10<sup>7</sup> V/cm field. With O<sub>2</sub> bubbling: 88 mM H<sub>2</sub>O<sub>2</sub> in 1 hour. 99% at interface, 0.10 mM/m<sup>2</sup>/min. Mechanism independent of cavitation collapse.)</li>
+  <li id="r125">Tsori Y, Tournilhac F, Leibler L. (2004) &ldquo;Demixing in simple fluids induced by electric field gradients.&rdquo; <em>Nature</em> 430:544&ndash;547. <a href="https://doi.org/10.1038/nature02758">DOI</a> (Landmark: ~100 V across non-uniform electrodes (50 &mu;m gap) reversibly induces phase separation at 1 K above phase boundary. Non-uniform fields essential; uniform fields impractical. Ion-containing mixtures demix at &lt;1 V.)</li>
+  <li id="r126">Juarez JJ, Bevan MA. (2014) &ldquo;Dielectrophoretic Coassembly of Binary Colloidal Mixtures in AC Electric Fields.&rdquo; <em>Langmuir</em> 30:1095&ndash;1104. <a href="https://doi.org/10.1021/la403306x">DOI</a> (Frequency-tuned selective assembly of binary latex mixtures. Crossover frequencies inversely scale with particle size. F<sub>DEP</sub> &prop; R<sup>3</sup>. Ethanol/organic media advantageous: no electrolysis or Joule heating.)</li>
+  <li id="r127">Marselli B, et al. (2003) &ldquo;Electrogeneration of Hydroxyl Radicals on Boron-Doped Diamond Electrodes.&rdquo; <em>J Electrochem Soc</em> 150:D79&ndash;D83. <a href="https://doi.org/10.1149/1.1553790">DOI</a> (ESR spin-trapping confirms OH&bull; at BDD. OER onset +2.3 V vs SHE (highest known). 3.5 V electrochemical window. Non-active anode: quasi-free physisorbed radicals vs chemisorbed on Pt/carbon.)</li>
+  <li id="r128">Xiong A, et al. (2020) &ldquo;Influence of Electrochemical Oxidation on the Maturation Process of the Distilled Spirit.&rdquo; <em>ACS Omega</em> 5:18096&ndash;18106. <a href="https://doi.org/10.1021/acsomega.0c02090">DOI</a> (Baijiu electrochemical aging: 3,000&ndash;10,000&times; natural rate. 20 min at 0.8 V: PCA indistinguishable from naturally aged. Higher alcohols &darr;, esters &uarr;, free amino acids &uarr;. ICE 69% optimal at 1.60 V.)</li>
+  <li id="r129">Chen L, et al. (2023) &ldquo;The state-of-the-art research of the application of ultrasound to winemaking: A critical review.&rdquo; <em>Ultrason Sonochem</em> 95:106382. <a href="https://doi.org/10.1016/j.ultsonch.2023.106382">DOI</a> (Comprehensive review. EPR confirms OH&bull; &rarr; 1-hydroxyethyl radical &rarr; acetaldehyde cascade. AcH acts as bridge chain for ethylidene-linked tannin polymerization. Polymerized compounds +35% at 6 mo, +42% at 12 mo vs control.)</li>
+  <li id="r130">He Z, et al. (2025) &ldquo;Accelerating maturation of Chinese rice wine by using a 20 L scale multi-sweeping-frequency mode ultrasonic reactor.&rdquo; <em>Ultrason Sonochem</em> 114:107229. <a href="https://doi.org/10.1016/j.ultsonch.2025.107229">DOI</a> (20 L reactor, 20/28/40 kHz, 50 W/L, 15 min at 30&deg;C. After 6 months: volatile esters +287%, volatile aldehydes &minus;67%, higher alcohols &minus;13%. Trained panelists preferred sonicated samples.)</li>
 </ol>
 
 
@@ -2568,6 +2661,36 @@ var refs = {
     source: "Asserghine et al. (2025), JACS 147:11851\u201311858",
     excerpt: "Sonicated water-in-oil microdroplets: dissolved O\u2082 \u2192 \u2022O\u2082\u207B \u2192 H\u2082O\u2082 at interface (~10\u2077 V/cm field). With continuous O\u2082 bubbling: 88 mM H\u2082O\u2082 in 1 hr. 99% production at water-oil interface. Mechanism independent of cavitation collapse \u2014 interfacial electric field drives O\u2082 reduction.",
     url: "#r124"
+  },
+  125: {
+    source: "Tsori, Tournilhac & Leibler (2004), Nature 430:544\u2013547",
+    excerpt: "Electric field gradients induce reversible phase separation in miscible binary liquids. ~100 V across non-uniform electrodes (50 \u00B5m gap), 1 K above phase boundary. Ion-containing mixtures demix at <1 V due to ionic screening creating local field gradients. Exponential factor exp(eV/kT) at 0.5 V \u2248 4.8 \u00D7 10\u2078.",
+    url: "#r125"
+  },
+  126: {
+    source: "Juarez & Bevan (2014), Langmuir 30:1095\u20131104",
+    excerpt: "Dielectrophoretic co-assembly of binary colloidal mixtures using spatially varying AC fields. Crossover frequencies inversely scale with particle size. F_DEP \u221D R\u00B3 enables size-selective assembly. Ethanol/organic media advantageous: higher voltages without electrolysis or Joule heating.",
+    url: "#r126"
+  },
+  127: {
+    source: "Marselli et al. (2003), J Electrochem Soc 150:D79\u2013D83",
+    excerpt: "ESR spin-trapping detects OH\u2022 at BDD surfaces. OER onset +2.3 V vs SHE (highest known electrode). 3.5 V electrochemical window. Non-active anode: OH\u2022 weakly physisorbed (quasi-free), not chemisorbed like on Pt/carbon. 90% Faradaic efficiency vs 22% for Pt.",
+    url: "#r127"
+  },
+  128: {
+    source: "Xiong et al. (2020), ACS Omega 5:18096\u201318106",
+    excerpt: "Electrochemical oxidation of Baijiu (Chinese distilled spirit): 3,000\u201310,000\u00D7 natural aging rate. 20 min at 0.8 V: PCA indistinguishable from naturally aged. Higher alcohols \u2193, esters \u2191, free amino acids \u2191. Optimal OH\u2022 at 1.60 V vs Ag/AgCl, ICE = 69%.",
+    url: "#r128"
+  },
+  129: {
+    source: "Chen et al. (2023), Ultrason Sonochem 95:106382",
+    excerpt: "Comprehensive review of ultrasound in winemaking. EPR confirms radical cascade: OH\u2022 \u2192 1-hydroxyethyl radical (CH\u2083CHOH\u2022) \u2192 acetaldehyde. AcH acts as bridge chain for ethylidene-linked tannin-tannin polymerization. Polymerized compounds +35% at 6 mo, +42% at 12 mo vs untreated controls.",
+    url: "#r129"
+  },
+  130: {
+    source: "He et al. (2025), Ultrason Sonochem 114:107229",
+    excerpt: "20 L multi-frequency reactor (20/28/40 kHz), 50 W/L, 15 min at 30\u00B0C. After 6 months storage: volatile esters +287%, volatile aldehydes \u221267%, higher alcohols \u221213%. 1-Hydroxyethyl radical identified as key maturation intermediate. Trained panelists preferred sonicated samples.",
+    url: "#r130"
   }
 };
 

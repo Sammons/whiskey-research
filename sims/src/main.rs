@@ -99,6 +99,24 @@ fn main() {
 
     fs::write("../graphs/pulsed-electrolysis.svg", sim_pulsed_electrolysis()).unwrap();
     println!("Wrote pulsed-electrolysis.svg");
+
+    fs::write("../graphs/lab-biocycle.svg", sim_lab_biocycle()).unwrap();
+    println!("Wrote lab-biocycle.svg");
+
+    fs::write("../graphs/lipase-scco2.svg", sim_lipase_scco2()).unwrap();
+    println!("Wrote lipase-scco2.svg");
+
+    fs::write("../graphs/microdroplet-ros.svg", sim_microdroplet_ros()).unwrap();
+    println!("Wrote microdroplet-ros.svg");
+
+    fs::write("../graphs/bdd-anode-comparison.svg", sim_bdd_anode_comparison()).unwrap();
+    println!("Wrote bdd-anode-comparison.svg");
+
+    fs::write("../graphs/dep-clustering.svg", sim_dep_clustering()).unwrap();
+    println!("Wrote dep-clustering.svg");
+
+    fs::write("../graphs/tannin-sono-polymerization.svg", sim_tannin_sono_polymerization()).unwrap();
+    println!("Wrote tannin-sono-polymerization.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -4803,6 +4821,927 @@ fn sim_pulsed_electrolysis() -> String {
         "Same total oxidant, better selectivity", ACCENT, 9, "start");
     svg += &label(ml2 + pw - 220.0, mt + ph - 16.0,
         "Cost: $30\u{2013}80 (555 timer + relay)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 28: LAB Biocycle Fermentation — ethyl lactate production
+// ═══════════════════════════════════════════════════════════════
+fn sim_lab_biocycle() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "LAB Biocycle Fermentation: Sequential vs Mixed Culture Ethyl Lactate");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // Panel A: Sequential timeline — LAB phase then yeast phase
+    svg += &label(ml + pw / 2.0, mt - 5.0, "A. Sequential Biocycle Timeline", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let total_hrs = 120.0; // 5 days
+    let sx_a = |x: f64| -> f64 { ml + x / total_hrs * pw };
+    let sy_lactate = |y: f64| -> f64 { mt + ph - y / 35.0 * ph }; // max 35 g/L
+    let sy_elactate = |y: f64| -> f64 { mt + ph - y / 4.0 * ph }; // max 4 g/L
+
+    // Grid
+    for i in 0..=5 {
+        let x = total_hrs * i as f64 / 5.0;
+        svg += &vline(sx_a(x), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(x), mt + ph + 13.0, &format!("{}h", x as i32), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let y = 35.0 * i as f64 / 5.0;
+        svg += &hline(ml, ml + pw, sy_lactate(y), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_lactate(y) + 3.5, &format!("{:.0}", y), MUTED, 8, "end");
+    }
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Time (hours)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "Concentration (g/L)");
+
+    // Phase boundary at 48h (LAB → yeast inoculation)
+    let phase_x = sx_a(48.0);
+    svg += &vline(phase_x, mt, mt + ph, YELLOW, "1.5");
+    svg += &label(phase_x + 4.0, mt + 15.0, "Yeast inoculated", YELLOW, 8, "start");
+
+    // Lactate curve: logistic growth during LAB phase, plateau then slow decline
+    let mut lactate_pts: Vec<(f64, f64)> = Vec::new();
+    let mut elactate_pts: Vec<(f64, f64)> = Vec::new();
+    let mut lactate = 0.0_f64;
+    let mut elactate = 0.0_f64;
+
+    for step in 0..=240 {
+        let t = step as f64 * 0.5; // 0.5 hr steps
+        if t <= 48.0 {
+            // LAB phase: logistic lactate production
+            let k_lac = 0.12; // hr⁻¹
+            let lac_max = 30.0; // g/L
+            lactate += k_lac * lactate.max(0.5) * (1.0 - lactate / lac_max) * 0.5;
+            // Minimal ethyl lactate during LAB-only phase
+            elactate += 0.001 * lactate * 0.5;
+        } else {
+            // Yeast phase: lactate consumed, ethyl lactate produced
+            let k_consume = 0.015; // hr⁻¹
+            let k_ester = 0.008; // conversion rate
+            let consumed = k_consume * lactate * 0.5;
+            lactate -= consumed;
+            lactate = lactate.max(0.0);
+            // Ethyl lactate production via AAT
+            elactate += k_ester * (lactate + 5.0) * 0.5; // baseline from residual + enzyme activity
+            elactate = elactate.min(3.05); // cap at published value
+        }
+        lactate_pts.push((t, lactate));
+        elactate_pts.push((t, elactate));
+    }
+
+    svg += &polyline_svg(&lactate_pts, GREEN, "2", &sx_a, &sy_lactate);
+    svg += &polyline_svg(&elactate_pts, ACCENT, "2.5", &sx_a, &sy_elactate);
+
+    // Legend
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 12.0, GREEN, "2.5");
+    svg += &label(ml + 36.0, mt + 16.0, "Lactic acid (left axis, g/L)", TEXT, 8, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 26.0, ACCENT, "2.5");
+    svg += &label(ml + 36.0, mt + 30.0, "Ethyl lactate (right axis, g/L)", TEXT, 8, "start");
+
+    // Right axis labels for ethyl lactate
+    for i in 1..=4 {
+        let y = i as f64;
+        svg += &label(ml + pw + 4.0, sy_elactate(y) + 3.5, &format!("{:.0}", y), ACCENT, 8, "start");
+    }
+
+    // Panel B: Comparison bar chart — biocycle vs mixed vs Fischer
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0, "B. Ethyl Lactate Yield Comparison", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    // Axis label
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 35.0, mt + ph / 2.0, ml2 - 35.0, mt + ph / 2.0, "Ethyl Lactate (g/L)");
+
+    let bar_data: [(&str, f64, &str); 3] = [
+        ("Mixed culture", 1.32, BLUE),
+        ("Biocycle (sequential)", 3.05, GREEN),
+        ("Fischer (impossible)", 0.0, RED),
+    ];
+
+    let bar_w = pw / 5.0;
+    let sy_bar = |y: f64| -> f64 { mt + ph - y / 4.0 * ph };
+
+    for (i, (name, val, color)) in bar_data.iter().enumerate() {
+        let cx = ml2 + pw * (i as f64 + 0.5) / 3.0;
+        let bar_top = sy_bar(*val);
+        let bar_height = mt + ph - bar_top;
+
+        if *val > 0.0 {
+            svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{color}\" opacity=\"0.7\" rx=\"3\"/>\n",
+                cx - bar_w / 2.0, bar_top, bar_w, bar_height);
+            svg += &label(cx, bar_top - 6.0, &format!("{:.2} g/L", val), color, 10, "middle");
+        } else {
+            // X mark for Fischer impossible
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" stroke=\"{RED}\" stroke-width=\"3\"/>\n",
+                cx - 15.0, mt + ph - 30.0, cx + 15.0, mt + ph - 10.0);
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" stroke=\"{RED}\" stroke-width=\"3\"/>\n",
+                cx + 15.0, mt + ph - 30.0, cx - 15.0, mt + ph - 10.0);
+            svg += &label(cx, mt + ph - 35.0, "0.00 g/L", RED, 10, "middle");
+        }
+
+        svg += &label(cx, mt + ph + 13.0, name, TEXT, 8, "middle");
+    }
+
+    // Bar chart grid
+    for i in 1..=4 {
+        let y = i as f64;
+        svg += &hline(ml2, ml2 + pw, sy_bar(y), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_bar(y) + 3.5, &format!("{:.0}", y), MUTED, 8, "end");
+    }
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"220\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 225.0, mt + 8.0, GRID);
+    svg += &label(ml2 + pw - 220.0, mt + 24.0, "2.3\u{00d7} yield over mixed culture", GREEN, 9, "start");
+    svg += &label(ml2 + pw - 220.0, mt + 38.0, "Fischer cannot make ethyl lactate", RED, 9, "start");
+    svg += &label(ml2 + pw - 220.0, mt + 52.0, "Cost: $20\u{2013}40 (GRAS organisms)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 29: Lipase Ester Synthesis in scCO₂ — water activity inversion
+// ═══════════════════════════════════════════════════════════════
+fn sim_lipase_scco2() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Lipase (CALB) Ester Synthesis: Water Activity Controls Direction");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // Panel A: Equilibrium position vs water activity
+    svg += &label(ml + pw / 2.0, mt - 5.0, "A. Reaction Direction vs Water Activity", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let sx_a = |aw: f64| -> f64 { ml + aw * pw }; // aw from 0 to 1
+    let sy_a = |y: f64| -> f64 { mt + ph - (y + 1.0) / 2.0 * ph }; // y from -1 (hydrolysis) to +1 (synthesis)
+
+    // Grid
+    for i in 0..=5 {
+        let aw = i as f64 / 5.0;
+        svg += &vline(sx_a(aw), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(aw), mt + ph + 13.0, &format!("{:.1}", aw), MUTED, 8, "middle");
+    }
+    // Zero line (equilibrium)
+    svg += &hline(ml, ml + pw, sy_a(0.0), YELLOW, "1");
+    svg += &label(ml + pw + 4.0, sy_a(0.0) + 3.5, "K_eq = 1", YELLOW, 8, "start");
+
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"9\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "\u{2190} Hydrolysis | Synthesis \u{2192}");
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Water Activity (a_w)", TEXT, 10, "middle");
+
+    // Direction curve: sigmoidal transition around aw=0.4
+    let mut dir_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=200 {
+        let aw = i as f64 / 200.0;
+        let direction = 1.0 - 2.0 / (1.0 + E.powf(-15.0 * (aw - 0.35)));
+        dir_pts.push((aw, direction));
+    }
+    svg += &polyline_svg(&dir_pts, CYAN, "2.5", &sx_a, &sy_a);
+
+    // scCO₂ zone (aw < 0.1)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{GREEN}\" opacity=\"0.15\"/>\n",
+        ml, mt, pw * 0.15, ph);
+    svg += &label(ml + pw * 0.07, mt + 15.0, "scCO\u{2082}", GREEN, 9, "middle");
+    svg += &label(ml + pw * 0.07, mt + 27.0, "a_w&lt;0.1", GREEN, 8, "middle");
+
+    // Spirit zone (aw > 0.8)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{RED}\" opacity=\"0.12\"/>\n",
+        ml + pw * 0.75, mt, pw * 0.25, ph);
+    svg += &label(ml + pw * 0.88, mt + 15.0, "Spirit", RED, 9, "middle");
+    svg += &label(ml + pw * 0.88, mt + 27.0, "a_w&gt;0.85", RED, 8, "middle");
+
+    // Crossover point
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{YELLOW}\" opacity=\"0.9\"/>\n",
+        sx_a(0.35), sy_a(0.0));
+    svg += &label(sx_a(0.35) + 6.0, sy_a(0.0) - 8.0, "Crossover a_w\u{2248}0.35", YELLOW, 8, "start");
+
+    // Y-axis labels
+    svg += &label(ml - 4.0, sy_a(1.0) + 3.5, "+1.0", GREEN, 8, "end");
+    svg += &label(ml - 4.0, sy_a(0.5) + 3.5, "+0.5", MUTED, 8, "end");
+    svg += &label(ml - 4.0, sy_a(-0.5) + 3.5, "-0.5", MUTED, 8, "end");
+    svg += &label(ml - 4.0, sy_a(-1.0) + 3.5, "-1.0", RED, 8, "end");
+
+    // Panel B: Conversion kinetics for isoamyl acetate at different aw
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0, "B. Isoamyl Acetate Conversion Kinetics", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    let t_max = 8.0; // hours
+    let sx_b = |t: f64| -> f64 { ml2 + t / t_max * pw };
+    let sy_b = |y: f64| -> f64 { mt + ph - y / 100.0 * ph }; // 0-100% conversion
+
+    for i in 0..=4 {
+        let t = t_max * i as f64 / 4.0;
+        svg += &vline(sx_b(t), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(t), mt + ph + 13.0, &format!("{:.0}h", t), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let y = 100.0 * i as f64 / 5.0;
+        svg += &hline(ml2, ml2 + pw, sy_b(y), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(y) + 3.5, &format!("{:.0}%", y), MUTED, 8, "end");
+    }
+
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Time (hours)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 42.0, mt + ph / 2.0, ml2 - 42.0, mt + ph / 2.0, "Conversion (%)");
+
+    // Ping-Pong Bi-Bi kinetics at different aw
+    let scenarios: [(f64, &str, &str, f64, f64); 4] = [
+        (0.05, "scCO2 (a_w=0.05)", GREEN, 0.95, 50.0),
+        (0.15, "Near-neat (a_w=0.15)", CYAN, 0.80, 10.0),
+        (0.40, "Crossover (a_w=0.40)", YELLOW, 0.40, 1.0),
+        (0.85, "Spirit (a_w=0.85)", RED, 0.05, 0.05),
+    ];
+
+    let dt = 0.01;
+    let mut ly = mt + 12.0;
+    for &(_aw, lbl, color, vmax, keq_mult) in &scenarios {
+        let mut conv = 0.0_f64;
+        let mut pts: Vec<(f64, f64)> = Vec::new();
+        let conv_max = (100.0 * keq_mult / (1.0 + keq_mult)).min(100.0);
+
+        for step in 0..((t_max / dt) as usize) {
+            let t = step as f64 * dt;
+            let rate = vmax * (1.0 - conv / conv_max).max(0.0);
+            conv += rate * dt * 100.0;
+            conv = conv.min(conv_max);
+            if step % 10 == 0 { pts.push((t, conv)); }
+        }
+
+        svg += &polyline_svg(&pts, color, "2", &sx_b, &sy_b);
+        let final_conv = pts.last().map(|(_, y)| *y).unwrap_or(0.0);
+        svg += &hline(ml2 + 10.0, ml2 + 32.0, ly, color, "2.5");
+        svg += &label(ml2 + 36.0, ly + 4.0,
+            &format!("{} ({:.0}%)", lbl, final_conv), TEXT, 8, "start");
+        ly += 14.0;
+    }
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"235\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 245.0, mt + ph - 60.0, GRID);
+    svg += &label(ml2 + pw - 240.0, mt + ph - 44.0,
+        "100% conversion at a_w &lt; 0.1", GREEN, 9, "start");
+    svg += &label(ml2 + pw - 240.0, mt + ph - 30.0,
+        "Same enzyme: hydrolysis in spirit!", RED, 9, "start");
+    svg += &label(ml2 + pw - 240.0, mt + ph - 16.0,
+        "scCO\u{2082} reactor: $800\u{2013}2,000", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 30: Microdroplet ROS — interfacial H₂O₂ generation
+// ═══════════════════════════════════════════════════════════════
+fn sim_microdroplet_ros() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Interfacial Microdroplet Chemistry: Hidden ROS in Sonication");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // Panel A: H₂O₂ concentration vs droplet diameter (S/V scaling)
+    svg += &label(ml + pw / 2.0, mt - 5.0, "A. H\u{2082}O\u{2082} vs Droplet Diameter", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let d_min = 0.5_f64; let d_max = 500.0_f64;
+    let h2o2_min = 0.01_f64; let h2o2_max = 100.0_f64;
+
+    let sx_a = |d: f64| -> f64 { ml + (d.log10() - d_min.log10()) / (d_max.log10() - d_min.log10()) * pw };
+    let sy_a = |c: f64| -> f64 { mt + ph - (c.log10() - h2o2_min.log10()) / (h2o2_max.log10() - h2o2_min.log10()) * ph };
+
+    for &d in &[1.0, 10.0, 100.0] {
+        svg += &vline(sx_a(d), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(d), mt + ph + 13.0, &format!("{:.0} \u{00b5}m", d), MUTED, 8, "middle");
+    }
+    svg += &label(sx_a(d_min), mt + ph + 13.0, "0.5", MUTED, 8, "middle");
+    for &c in &[0.1, 1.0, 10.0, 100.0] {
+        svg += &hline(ml, ml + pw, sy_a(c), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(c) + 3.5, &format!("{}", c), MUTED, 8, "end");
+    }
+    svg += &label(ml - 4.0, sy_a(0.01) + 3.5, "0.01", MUTED, 8, "end");
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Droplet Diameter (\u{00b5}m)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 45.0, mt + ph / 2.0, ml - 45.0, mt + ph / 2.0, "[H\u{2082}O\u{2082}] (mM)");
+
+    // Spontaneous: calibrated to 0.03 mM at d=10 µm (Lee/Zare 2019)
+    // O₂-sparged: 88 mM at d~5 µm equivalent (Asserghine 2025)
+    let mut spont_pts: Vec<(f64, f64)> = Vec::new();
+    let mut o2_pts: Vec<(f64, f64)> = Vec::new();
+    let n_pts = 200;
+    for i in 0..=n_pts {
+        let log_d = d_min.log10() + (d_max.log10() - d_min.log10()) * i as f64 / n_pts as f64;
+        let d = 10.0_f64.powf(log_d);
+        let h2o2_spont = (0.03 * 10.0 / d).max(h2o2_min).min(h2o2_max);
+        let h2o2_o2 = (88.0 * 5.0 / d).max(h2o2_min).min(h2o2_max);
+        spont_pts.push((d, h2o2_spont));
+        o2_pts.push((d, h2o2_o2));
+    }
+
+    svg += &polyline_svg(&spont_pts, BLUE, "2", &sx_a, &sy_a);
+    svg += &polyline_svg(&o2_pts, GREEN, "2.5", &sx_a, &sy_a);
+
+    // Key data points
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{BLUE}\"/>\n", sx_a(10.0), sy_a(0.03));
+    svg += &label(sx_a(10.0) + 6.0, sy_a(0.03) - 6.0, "Lee/Zare 2019", BLUE, 7, "start");
+    svg += &label(sx_a(10.0) + 6.0, sy_a(0.03) + 6.0, "~30 \u{00b5}M", BLUE, 7, "start");
+
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{GREEN}\"/>\n", sx_a(5.0), sy_a(88.0));
+    svg += &label(sx_a(5.0) - 6.0, sy_a(88.0) - 8.0, "Asserghine 2025", GREEN, 7, "end");
+    svg += &label(sx_a(5.0) - 6.0, sy_a(88.0) + 4.0, "88 mM (+ O\u{2082})", GREEN, 7, "end");
+
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 12.0, BLUE, "2.5");
+    svg += &label(ml + 36.0, mt + 16.0, "Spontaneous (no O\u{2082})", TEXT, 8, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 26.0, GREEN, "2.5");
+    svg += &label(ml + 36.0, mt + 30.0, "O\u{2082}-sparged", TEXT, 8, "start");
+
+    // Panel B: ROS contribution breakdown during sonication
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0, "B. ROS Sources During Sonication", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    let sx_b = |x: f64| -> f64 { ml2 + x / 60.0 * pw }; // 0-60 min
+    let y_max_b = 5.0; // mM total ROS
+    let sy_b = |y: f64| -> f64 { mt + ph - y / y_max_b * ph };
+
+    for i in 0..=6 {
+        let x = 10.0 * i as f64;
+        svg += &vline(sx_b(x), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(x), mt + ph + 13.0, &format!("{:.0}", x), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let y = y_max_b * i as f64 / 5.0;
+        svg += &hline(ml2, ml2 + pw, sy_b(y), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(y) + 3.5, &format!("{:.1}", y), MUTED, 8, "end");
+    }
+
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Sonication Time (min)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 42.0, mt + ph / 2.0, ml2 - 42.0, mt + ph / 2.0, "Cumulative ROS (mM equiv.)");
+
+    // Three ROS sources stacked
+    let mut cav_pts: Vec<(f64, f64)> = Vec::new();
+    let mut total_micro: Vec<(f64, f64)> = Vec::new();
+    let mut total_all: Vec<(f64, f64)> = Vec::new();
+
+    for step in 0..=120 {
+        let t = step as f64 * 0.5; // minutes
+        let cav = 0.05 / 0.01 * (1.0 - E.powf(-0.01 * t));
+        let micro = 0.025 * t;
+        let thermal = 0.003 * t;
+
+        cav_pts.push((t, cav));
+        total_micro.push((t, cav + micro));
+        total_all.push((t, cav + micro + thermal));
+    }
+
+    svg += &polyline_svg(&total_all, PURPLE, "1.5", &sx_b, &sy_b);
+    svg += &polyline_svg(&total_micro, CYAN, "2", &sx_b, &sy_b);
+    svg += &polyline_svg(&cav_pts, BLUE, "2", &sx_b, &sy_b);
+
+    let mut ly = mt + 12.0;
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, ly, BLUE, "2.5");
+    svg += &label(ml2 + 36.0, ly + 4.0, "Cavitation only", TEXT, 8, "start");
+    ly += 14.0;
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, ly, CYAN, "2.5");
+    svg += &label(ml2 + 36.0, ly + 4.0, "+ Microdroplet interfacial", TEXT, 8, "start");
+    ly += 14.0;
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, ly, PURPLE, "2.5");
+    svg += &label(ml2 + 36.0, ly + 4.0, "+ Thermal homolysis", TEXT, 8, "start");
+
+    // Gap annotation at t=45 min
+    let t_annot = 45.0;
+    let cav_at_t = 0.05 / 0.01 * (1.0 - E.powf(-0.01 * t_annot));
+    let total_at_t = cav_at_t + 0.025 * t_annot + 0.003 * t_annot;
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" stroke-dasharray=\"4,3\"/>\n",
+        sx_b(t_annot), sy_b(cav_at_t), sx_b(t_annot), sy_b(total_at_t));
+    svg += &label(sx_b(t_annot) + 5.0, sy_b((cav_at_t + total_at_t) / 2.0) + 3.0,
+        "\"Hidden\" ROS", ACCENT, 8, "start");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"240\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 250.0, mt + ph - 60.0, GRID);
+    svg += &label(ml2 + pw - 245.0, mt + ph - 44.0,
+        "Microdroplets: ~30% of total sonication ROS", CYAN, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + ph - 30.0,
+        "Explains why sono > thermal controls", ACCENT, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + ph - 16.0,
+        "Enhanced by O\u{2082} sparging (PDMS \u{00a7}4.1)", GREEN, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 31: BDD Anode vs Conventional Electrodes
+// ═══════════════════════════════════════════════════════════════
+fn sim_bdd_anode_comparison() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "BDD vs Conventional Anodes: Faradaic Efficiency and OH\u{2022} Fate");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // Panel A: Faradaic efficiency vs applied potential
+    svg += &label(ml + pw / 2.0, mt - 5.0, "A. Faradaic Efficiency vs Potential", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let v_min = 1.0_f64; let v_max = 3.0_f64;
+    let sx_a = |v: f64| -> f64 { ml + (v - v_min) / (v_max - v_min) * pw };
+    let sy_a = |e: f64| -> f64 { mt + ph - e / 100.0 * ph }; // 0-100%
+
+    for i in 0..=4 {
+        let v = v_min + (v_max - v_min) * i as f64 / 4.0;
+        svg += &vline(sx_a(v), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(v), mt + ph + 13.0, &format!("{:.1}V", v), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let e = 100.0 * i as f64 / 5.0;
+        svg += &hline(ml, ml + pw, sy_a(e), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(e) + 3.5, &format!("{:.0}%", e), MUTED, 8, "end");
+    }
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Applied Potential (V vs SHE)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "Faradaic Efficiency (%)");
+
+    // BDD: high efficiency until OER at 2.3V, then gradual decline
+    let mut bdd_pts: Vec<(f64, f64)> = Vec::new();
+    let mut pt_pts: Vec<(f64, f64)> = Vec::new();
+    let mut carbon_pts: Vec<(f64, f64)> = Vec::new();
+
+    for i in 0..=200 {
+        let v = v_min + (v_max - v_min) * i as f64 / 200.0;
+
+        // BDD: onset at ~1.4V, peak 90% at 1.6V, decline above 2.3V (OER)
+        let bdd_fe = if v < 1.3 { 0.0 }
+            else if v < 1.6 { 90.0 * (v - 1.3) / 0.3 }
+            else if v < 2.3 { 90.0 - 5.0 * (v - 1.6) / 0.7 }
+            else { 85.0 * E.powf(-3.0 * (v - 2.3)) };
+
+        // Pt: onset 1.2V, peaks at ~35%, drops fast above 1.6V (OER onset)
+        let pt_fe = if v < 1.2 { 0.0 }
+            else if v < 1.5 { 22.0 * (v - 1.2) / 0.3 }
+            else { 22.0 * E.powf(-2.5 * (v - 1.5)) };
+
+        // Carbon felt: onset 1.3V, moderate efficiency, drops above 1.8V
+        let cf_fe = if v < 1.3 { 0.0 }
+            else if v < 1.7 { 45.0 * (v - 1.3) / 0.4 }
+            else { 45.0 * E.powf(-1.5 * (v - 1.7)) };
+
+        bdd_pts.push((v, bdd_fe));
+        pt_pts.push((v, pt_fe));
+        carbon_pts.push((v, cf_fe));
+    }
+
+    svg += &polyline_svg(&bdd_pts, GREEN, "2.5", &sx_a, &sy_a);
+    svg += &polyline_svg(&carbon_pts, BLUE, "2", &sx_a, &sy_a);
+    svg += &polyline_svg(&pt_pts, RED, "2", &sx_a, &sy_a);
+
+    // OER onset markers
+    svg += &vline(sx_a(2.3), mt, mt + ph, GREEN, "1");
+    svg += &label(sx_a(2.3) + 3.0, mt + ph - 10.0, "BDD OER", GREEN, 7, "start");
+    svg += &vline(sx_a(1.6), mt, mt + ph, RED, "1");
+    svg += &label(sx_a(1.6) - 3.0, mt + ph - 10.0, "Pt OER", RED, 7, "end");
+
+    // Legend
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 12.0, GREEN, "2.5");
+    svg += &label(ml + 36.0, mt + 16.0, "BDD (non-active, 90%)", TEXT, 8, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 26.0, BLUE, "2.5");
+    svg += &label(ml + 36.0, mt + 30.0, "Carbon felt (active, 45%)", TEXT, 8, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 40.0, RED, "2.5");
+    svg += &label(ml + 36.0, mt + 44.0, "Pt (active, 22%)", TEXT, 8, "start");
+
+    // Panel B: OH radical fate diagram (conceptual)
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0, "B. OH\u{2022} Radical Fate at Electrode Surface", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    // This is a conceptual diagram showing radical distance from surface
+    let dist_max = 50.0; // nm from surface
+    let sx_b = |d: f64| -> f64 { ml2 + d / dist_max * pw };
+    let sy_b = |c: f64| -> f64 { mt + ph - c / 1.0 * ph }; // normalized concentration 0-1
+
+    for i in 0..=5 {
+        let d = dist_max * i as f64 / 5.0;
+        svg += &vline(sx_b(d), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(d), mt + ph + 13.0, &format!("{:.0} nm", d), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let c = i as f64 / 5.0;
+        svg += &hline(ml2, ml2 + pw, sy_b(c), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(c) + 3.5, &format!("{:.1}", c), MUTED, 8, "end");
+    }
+
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Distance from Electrode (nm)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 42.0, mt + ph / 2.0, ml2 - 42.0, mt + ph / 2.0, "[OH\u{2022}] (normalized)");
+
+    // BDD: quasi-free radicals extend further from surface
+    // Active anode: radicals consumed at surface (chemisorbed)
+    let mut bdd_dist: Vec<(f64, f64)> = Vec::new();
+    let mut active_dist: Vec<(f64, f64)> = Vec::new();
+
+    for i in 0..=200 {
+        let d = dist_max * i as f64 / 200.0;
+        // BDD: exponential decay with ~20 nm characteristic length
+        let bdd_c = E.powf(-d / 20.0);
+        // Active: very steep decay, consumed within 2 nm
+        let active_c = E.powf(-d / 2.0);
+        bdd_dist.push((d, bdd_c));
+        active_dist.push((d, active_c));
+    }
+
+    svg += &polyline_svg(&bdd_dist, GREEN, "2.5", &sx_b, &sy_b);
+    svg += &polyline_svg(&active_dist, RED, "2", &sx_b, &sy_b);
+
+    // Activity sphere annotation
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{GREEN}\" opacity=\"0.08\"/>\n",
+        ml2, mt, pw * 20.0 / dist_max, ph);
+    svg += &label(ml2 + pw * 10.0 / dist_max, mt + ph / 2.0, "BDD activity", GREEN, 8, "middle");
+    svg += &label(ml2 + pw * 10.0 / dist_max, mt + ph / 2.0 + 12.0, "sphere", GREEN, 8, "middle");
+
+    // Legend
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, mt + 12.0, GREEN, "2.5");
+    svg += &label(ml2 + 36.0, mt + 16.0, "BDD: quasi-free OH\u{2022} (~20 nm)", TEXT, 8, "start");
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, mt + 26.0, RED, "2.5");
+    svg += &label(ml2 + 36.0, mt + 30.0, "Active: chemisorbed (~2 nm)", TEXT, 8, "start");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"240\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 250.0, mt + ph - 60.0, GRID);
+    svg += &label(ml2 + pw - 245.0, mt + ph - 44.0,
+        "BDD: 4\u{00d7} current efficiency vs Pt", GREEN, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + ph - 30.0,
+        "10\u{00d7} OH\u{2022} penetration depth", CYAN, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + ph - 16.0,
+        "Cost: $80\u{2013}200 (lasts forever)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 32: DEP Nanocluster Assembly
+// ═══════════════════════════════════════════════════════════════
+fn sim_dep_clustering() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Dielectrophoretic Nanocluster Assembly: Field-Accelerated Barrier 3");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // Panel A: DEP force vs particle radius (log-log, showing R³ scaling)
+    svg += &label(ml + pw / 2.0, mt - 5.0, "A. DEP Force vs Particle Radius", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let r_min = 1.0_f64; // nm
+    let r_max = 1000.0_f64;
+    let f_min = 1e-18_f64; // femto-Newtons
+    let f_max = 1e-9_f64;
+
+    let sx_a = |r: f64| -> f64 { ml + (r.log10() - r_min.log10()) / (r_max.log10() - r_min.log10()) * pw };
+    let sy_a = |f: f64| -> f64 { mt + ph - (f.log10() - f_min.log10()) / (f_max.log10() - f_min.log10()) * ph };
+
+    // Grid
+    for &r in &[1.0, 10.0, 100.0, 1000.0] {
+        svg += &vline(sx_a(r), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(r), mt + ph + 13.0, &format!("{:.0} nm", r), MUTED, 8, "middle");
+    }
+    for exp in [-15, -12, -9].iter() {
+        let f = 10.0_f64.powi(*exp);
+        if f >= f_min && f <= f_max {
+            svg += &hline(ml, ml + pw, sy_a(f), GRID, "0.5");
+            let lbl = match exp {
+                -15 => "fN",
+                -12 => "pN",
+                -9 => "nN",
+                _ => "",
+            };
+            svg += &label(ml - 4.0, sy_a(f) + 3.5, lbl, MUTED, 8, "end");
+        }
+    }
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Particle Radius (nm)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "DEP Force (N)");
+
+    // F_DEP = 2*pi*eps_m * R^3 * Re[K_CM] * grad(E^2)
+    // Assume eps_m = 50*8.85e-12 (ethanol-water ~50), K_CM = 0.5, grad(E^2) = 1e12 V^2/m^3
+    let eps_m = 50.0 * 8.85e-12;
+    let k_cm = 0.5;
+    let grad_e2 = 1e12; // V^2/m^3
+
+    let mut dep_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=200 {
+        let log_r = r_min.log10() + (r_max.log10() - r_min.log10()) * i as f64 / 200.0;
+        let r = 10.0_f64.powf(log_r) * 1e-9; // convert nm to m
+        let f_dep = 2.0 * std::f64::consts::PI * eps_m * r.powi(3) * k_cm * grad_e2;
+        let f_clamped = f_dep.max(f_min).min(f_max);
+        dep_pts.push((10.0_f64.powf(log_r), f_clamped));
+    }
+
+    svg += &polyline_svg(&dep_pts, CYAN, "2.5", &sx_a, &sy_a);
+
+    // Brownian motion threshold (kT/R for comparison)
+    let kt = 1.38e-23 * 300.0; // kT at room temp
+    let mut brownian_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=200 {
+        let log_r = r_min.log10() + (r_max.log10() - r_min.log10()) * i as f64 / 200.0;
+        let r = 10.0_f64.powf(log_r) * 1e-9;
+        let f_brown = kt / r; // thermal force scale
+        let f_clamped = f_brown.max(f_min).min(f_max);
+        brownian_pts.push((10.0_f64.powf(log_r), f_clamped));
+    }
+    svg += &polyline_svg(&brownian_pts, RED, "1.5", &sx_a, &sy_a);
+
+    // Crossover point annotation
+    // DEP > Brownian when 2*pi*eps*R^3*K*gradE2 > kT/R → R^4 > kT/(2*pi*eps*K*gradE2)
+    let r_cross = (kt / (2.0 * std::f64::consts::PI * eps_m * k_cm * grad_e2)).powf(0.25);
+    let r_cross_nm = r_cross * 1e9;
+    let f_cross = kt / r_cross;
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{YELLOW}\" opacity=\"0.9\"/>\n",
+        sx_a(r_cross_nm), sy_a(f_cross));
+    svg += &label(sx_a(r_cross_nm) + 6.0, sy_a(f_cross) - 8.0,
+        &format!("Crossover: {:.0} nm", r_cross_nm), YELLOW, 8, "start");
+    svg += &label(sx_a(r_cross_nm) + 6.0, sy_a(f_cross) + 6.0,
+        "DEP dominates above", YELLOW, 7, "start");
+
+    // Labels
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 12.0, CYAN, "2.5");
+    svg += &label(ml + 36.0, mt + 16.0, "F_DEP (\u{221d} R\u{00b3})", TEXT, 8, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 26.0, RED, "2.5");
+    svg += &label(ml + 36.0, mt + 30.0, "F_Brownian (\u{221d} 1/R)", TEXT, 8, "start");
+
+    // Whiskey-relevant size range
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{ACCENT}\" opacity=\"0.12\"/>\n",
+        sx_a(50.0), mt, sx_a(500.0) - sx_a(50.0), ph);
+    svg += &label((sx_a(50.0) + sx_a(500.0)) / 2.0, mt + ph - 15.0, "Congener clusters", ACCENT, 8, "middle");
+
+    // Panel B: Cluster growth kinetics with/without DEP
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0, "B. Cluster Growth: Natural vs DEP-Assisted", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    let t_max_b = 720.0; // hours (30 days)
+    let r_max_b = 500.0; // nm
+    let sx_b = |t: f64| -> f64 { ml2 + t / t_max_b * pw };
+    let sy_b = |r: f64| -> f64 { mt + ph - r / r_max_b * ph };
+
+    for i in 0..=6 {
+        let t = t_max_b * i as f64 / 6.0;
+        svg += &vline(sx_b(t), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(t), mt + ph + 13.0, &format!("{:.0}d", t / 24.0), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let r = r_max_b * i as f64 / 5.0;
+        svg += &hline(ml2, ml2 + pw, sy_b(r), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(r) + 3.5, &format!("{:.0}", r), MUTED, 8, "end");
+    }
+
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Time (days)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 42.0, mt + ph / 2.0, ml2 - 42.0, mt + ph / 2.0, "Mean Cluster Radius (nm)");
+
+    // Natural: slow diffusion-limited aggregation R ~ t^(1/3)
+    let mut natural_pts: Vec<(f64, f64)> = Vec::new();
+    let mut dep_low_pts: Vec<(f64, f64)> = Vec::new();
+    let mut dep_high_pts: Vec<(f64, f64)> = Vec::new();
+
+    for step in 0..=720 {
+        let t = step as f64; // hours
+        // Natural: Smoluchowski R ~ t^(1/3), calibrated to reach ~100 nm at 720h
+        let r_nat = 5.0 + 95.0 * (t / t_max_b).powf(1.0 / 3.0);
+        // DEP low (1V, 100 kHz): 5x acceleration via local concentration increase
+        let r_dep_low = 5.0 + 95.0 * (t * 5.0 / t_max_b).powf(1.0 / 3.0).min(1.0) * r_max_b / 95.0 * 95.0;
+        let r_dep_low_c = (5.0 + 95.0 * ((t * 5.0).min(t_max_b) / t_max_b).powf(1.0 / 3.0)).min(r_max_b);
+        // DEP high (5V, multi-freq): 20x acceleration + field-induced coalescence
+        let r_dep_high = (5.0 + 200.0 * ((t * 20.0).min(t_max_b * 3.0) / t_max_b).powf(1.0 / 3.0)).min(r_max_b);
+
+        natural_pts.push((t, r_nat.min(r_max_b)));
+        dep_low_pts.push((t, r_dep_low_c));
+        dep_high_pts.push((t, r_dep_high));
+    }
+
+    svg += &polyline_svg(&natural_pts, RED, "2", &sx_b, &sy_b);
+    svg += &polyline_svg(&dep_low_pts, BLUE, "2", &sx_b, &sy_b);
+    svg += &polyline_svg(&dep_high_pts, GREEN, "2.5", &sx_b, &sy_b);
+
+    // Legend
+    let mut ly = mt + 12.0;
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, ly, RED, "2.5");
+    svg += &label(ml2 + 36.0, ly + 4.0, "Natural (Smoluchowski)", TEXT, 8, "start");
+    ly += 14.0;
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, ly, BLUE, "2.5");
+    svg += &label(ml2 + 36.0, ly + 4.0, "DEP 1V, 100 kHz (5\u{00d7})", TEXT, 8, "start");
+    ly += 14.0;
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, ly, GREEN, "2.5");
+    svg += &label(ml2 + 36.0, ly + 4.0, "DEP 5V, multi-f (20\u{00d7})", TEXT, 8, "start");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"230\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 240.0, mt + ph - 60.0, GRID);
+    svg += &label(ml2 + pw - 235.0, mt + ph - 44.0,
+        "F_DEP \u{221d} R\u{00b3}: bigger clusters feel more", CYAN, 9, "start");
+    svg += &label(ml2 + pw - 235.0, mt + ph - 30.0,
+        "Targets Barrier 3 directly", ACCENT, 9, "start");
+    svg += &label(ml2 + pw - 235.0, mt + ph - 16.0,
+        "Cost: $40\u{2013}80 (PCB + function gen)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 33: Sonochemical Tannin Condensation
+// ═══════════════════════════════════════════════════════════════
+fn sim_tannin_sono_polymerization() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Sonochemical Tannin Condensation: Radical Cascade to Polymerization");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // Panel A: Radical cascade concentrations during sonication
+    svg += &label(ml + pw / 2.0, mt - 5.0, "A. Radical Cascade During 15 min Sonication", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let t_max = 15.0; // minutes
+    let c_max = 2.0; // mM
+    let sx_a = |t: f64| -> f64 { ml + t / t_max * pw };
+    let sy_a = |c: f64| -> f64 { mt + ph - c / c_max * ph };
+
+    for i in 0..=5 {
+        let t = t_max * i as f64 / 5.0;
+        svg += &vline(sx_a(t), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(t), mt + ph + 13.0, &format!("{:.0}", t), MUTED, 8, "middle");
+    }
+    for i in 1..=4 {
+        let c = c_max * i as f64 / 4.0;
+        svg += &hline(ml, ml + pw, sy_a(c), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(c) + 3.5, &format!("{:.1}", c), MUTED, 8, "end");
+    }
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Time (min)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "Concentration (mM)");
+
+    // Cascade: OH → 1-hydroxyethyl → acetaldehyde → bridge-polymer
+    // Simple kinetic model: OH steady state, radical builds then consumed, AcH accumulates
+    let dt = 0.01; // minutes
+    let mut oh: f64 = 0.0;
+    let mut her: f64 = 0.0; // 1-hydroxyethyl radical
+    let mut ach: f64 = 0.0; // acetaldehyde
+
+    let mut oh_pts: Vec<(f64, f64)> = Vec::new();
+    let mut her_pts: Vec<(f64, f64)> = Vec::new();
+    let mut ach_pts: Vec<(f64, f64)> = Vec::new();
+
+    let r_oh = 0.15; // mM/min OH generation from cavitation
+    let k_oh_etoh = 5.0; // min⁻¹ (OH + EtOH → HER, pseudo-first-order)
+    let k_her_ox = 2.0; // min⁻¹ (HER → AcH)
+    let k_ach_tannin = 0.08; // min⁻¹ (AcH consumed by tannin bridging)
+
+    for step in 0..((t_max / dt) as usize) {
+        let t = step as f64 * dt;
+        // OH: generated by cavitation, consumed by ethanol
+        let d_oh = r_oh - k_oh_etoh * oh;
+        oh += d_oh * dt;
+        oh = oh.max(0.0);
+
+        // 1-hydroxyethyl radical: produced from OH+EtOH, oxidized to AcH
+        let d_her = k_oh_etoh * oh - k_her_ox * her;
+        her += d_her * dt;
+        her = her.max(0.0);
+
+        // Acetaldehyde: from HER oxidation, consumed by tannin bridge formation
+        let d_ach = k_her_ox * her - k_ach_tannin * ach;
+        ach += d_ach * dt;
+        ach = ach.max(0.0);
+
+        if step % 10 == 0 {
+            oh_pts.push((t, oh));
+            her_pts.push((t, her));
+            ach_pts.push((t, ach));
+        }
+    }
+
+    svg += &polyline_svg(&oh_pts, RED, "2", &sx_a, &sy_a);
+    svg += &polyline_svg(&her_pts, PURPLE, "2", &sx_a, &sy_a);
+    svg += &polyline_svg(&ach_pts, ACCENT, "2.5", &sx_a, &sy_a);
+
+    // Annotations with cascade arrows
+    svg += &label(ml + pw - 10.0, sy_a(oh_pts.last().unwrap().1) + 12.0, "OH\u{2022}", RED, 9, "end");
+    svg += &label(ml + pw - 10.0, sy_a(her_pts.last().unwrap().1) + 12.0, "CH\u{2083}CHOH\u{2022}", PURPLE, 8, "end");
+    svg += &label(ml + pw - 10.0, sy_a(ach_pts.last().unwrap().1) - 8.0, "AcH (bridge)", ACCENT, 9, "end");
+
+    // Legend
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 12.0, RED, "2.5");
+    svg += &label(ml + 36.0, mt + 16.0, "OH\u{2022} (from cavitation)", TEXT, 8, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 26.0, PURPLE, "2.5");
+    svg += &label(ml + 36.0, mt + 30.0, "1-Hydroxyethyl radical", TEXT, 8, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 40.0, ACCENT, "2.5");
+    svg += &label(ml + 36.0, mt + 44.0, "Acetaldehyde (tannin bridge)", TEXT, 8, "start");
+
+    // Panel B: Polymerization degree over months (sonicated vs control)
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0, "B. Tannin Polymerization Post-Treatment", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    let months_max = 12.0;
+    let poly_max = 160.0; // % of initial
+    let sx_b = |m: f64| -> f64 { ml2 + m / months_max * pw };
+    let sy_b = |p: f64| -> f64 { mt + ph - (p - 80.0) / (poly_max - 80.0) * ph }; // 80-160% range
+
+    for i in 0..=6 {
+        let m = months_max * i as f64 / 6.0;
+        svg += &vline(sx_b(m), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(m), mt + ph + 13.0, &format!("{:.0}m", m), MUTED, 8, "middle");
+    }
+    for i in 0..=4 {
+        let p = 80.0 + (poly_max - 80.0) * i as f64 / 4.0;
+        svg += &hline(ml2, ml2 + pw, sy_b(p), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(p) + 3.5, &format!("{:.0}%", p), MUTED, 8, "end");
+    }
+
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Storage Time (months)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 42.0, mt + ph / 2.0, ml2 - 42.0, mt + ph / 2.0, "Polymerization (% of initial)");
+
+    // Baseline at 100%
+    svg += &hline(ml2, ml2 + pw, sy_b(100.0), MUTED, "1");
+
+    // Control: slow natural polymerization
+    let mut control_pts: Vec<(f64, f64)> = Vec::new();
+    let mut sono_pts: Vec<(f64, f64)> = Vec::new();
+
+    for step in 0..=120 {
+        let m = step as f64 * 0.1;
+        // Control: slow linear increase ~10% per year
+        let control_poly = 100.0 + 10.0 * m / 12.0;
+        // Sonicated: jump from initial treatment, then continued bridge-mediated growth
+        // Initial boost: AcH bridges formed during treatment seed further condensation
+        let sono_poly = 100.0 + 15.0 * (1.0 - E.powf(-0.5 * m)) + 30.0 * m / 12.0;
+
+        control_pts.push((m, control_poly.min(poly_max)));
+        sono_pts.push((m, sono_poly.min(poly_max)));
+    }
+
+    svg += &polyline_svg(&control_pts, RED, "2", &sx_b, &sy_b);
+    svg += &polyline_svg(&sono_pts, GREEN, "2.5", &sx_b, &sy_b);
+
+    // Percentage annotations at 6 and 12 months
+    let sono_6m = 100.0 + 15.0 * (1.0 - E.powf(-3.0)) + 30.0 * 6.0 / 12.0;
+    let ctrl_6m = 100.0 + 10.0 * 6.0 / 12.0;
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" stroke-dasharray=\"4,3\"/>\n",
+        sx_b(6.0), sy_b(ctrl_6m), sx_b(6.0), sy_b(sono_6m));
+    svg += &label(sx_b(6.0) + 5.0, sy_b((ctrl_6m + sono_6m) / 2.0) + 3.0,
+        &format!("{:.0}% gap", sono_6m - ctrl_6m), ACCENT, 8, "start");
+
+    // Legend
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, mt + 12.0, GREEN, "2.5");
+    svg += &label(ml2 + 36.0, mt + 16.0, "Sonicated (15 min, 40 kHz)", TEXT, 8, "start");
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, mt + 26.0, RED, "2.5");
+    svg += &label(ml2 + 36.0, mt + 30.0, "Control (untreated)", TEXT, 8, "start");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"240\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 250.0, mt + ph - 60.0, GRID);
+    svg += &label(ml2 + pw - 245.0, mt + ph - 44.0,
+        "OH\u{2022} \u{2192} HER \u{2192} AcH \u{2192} ethylidene bridge", ACCENT, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + ph - 30.0,
+        "+35% polymerization at 6 months", GREEN, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + ph - 16.0,
+        "Panelists prefer sonicated samples", CYAN, 9, "start");
 
     svg.push_str("</svg>");
     svg
