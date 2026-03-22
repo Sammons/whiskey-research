@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 90 — Progressive Freeze Fractionation: Tubular Ice for Spirit Stratification</text>
+<text x="195" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Volatile Aroma Retention by Method</text>
+<rect x="70" y="65" width="250" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="67" y1="375" x2="70" y2="375" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0%</text>
+<line x1="67" y1="313" x2="70" y2="313" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">20%</text>
+<line x1="67" y1="251" x2="70" y2="251" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">40%</text>
+<line x1="67" y1="189" x2="70" y2="189" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="192" fill="#8b949e" font-size="7" text-anchor="end">60%</text>
+<line x1="67" y1="127" x2="70" y2="127" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">80%</text>
+<line x1="67" y1="65" x2="70" y2="65" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">100%</text>
+<text x="45" y="220" fill="#8b949e" font-size="7" text-anchor="middle" transform="rotate(-90,45,220)">Aroma compound retention</text>
+<rect x="80" y="251" width="38" height="124" fill="#f85149" opacity="0.7" rx="2"/>
+<text x="99" y="246" fill="#f85149" font-size="8" text-anchor="middle">40%</text>
+<text x="99" y="389" fill="#e6edf3" font-size="7" text-anchor="middle">Evaporative</text>
+<text x="99" y="400" fill="#e6edf3" font-size="7" text-anchor="middle">concentration</text>
+<rect x="128" y="173.5" width="38" height="201.5" fill="#d29922" opacity="0.7" rx="2"/>
+<text x="147" y="168.5" fill="#d29922" font-size="8" text-anchor="middle">65%</text>
+<text x="147" y="389" fill="#e6edf3" font-size="7" text-anchor="middle">Reverse</text>
+<text x="147" y="400" fill="#e6edf3" font-size="7" text-anchor="middle">osmosis</text>
+<rect x="176" y="127" width="38" height="248" fill="#58a6ff" opacity="0.7" rx="2"/>
+<text x="195" y="122" fill="#58a6ff" font-size="8" text-anchor="middle">80%</text>
+<text x="195" y="389" fill="#e6edf3" font-size="7" text-anchor="middle">Batch</text>
+<text x="195" y="400" fill="#e6edf3" font-size="7" text-anchor="middle">freeze</text>
+<rect x="224" y="86.69999999999999" width="38" height="288.3" fill="#3fb950" opacity="0.7" rx="2"/>
+<text x="243" y="81.69999999999999" fill="#3fb950" font-size="8" text-anchor="middle">93%</text>
+<text x="243" y="389" fill="#e6edf3" font-size="7" text-anchor="middle">Progressive</text>
+<text x="243" y="400" fill="#e6edf3" font-size="7" text-anchor="middle">freeze (PFC)</text>
+<rect x="272" y="80.5" width="38" height="294.5" fill="#3fb950" opacity="0.7" rx="2"/>
+<text x="291" y="75.5" fill="#3fb950" font-size="8" text-anchor="middle">95%</text>
+<text x="291" y="389" fill="#e6edf3" font-size="7" text-anchor="middle">Freeze +</text>
+<text x="291" y="400" fill="#e6edf3" font-size="7" text-anchor="middle">Vit C</text>
+<text x="315" y="80" fill="#8b949e" font-size="7" text-anchor="end">Ding et al. 2016:</text>
+<text x="315" y="92" fill="#3fb950" font-size="7" text-anchor="end">>90% aroma retention</text>
+<text x="315" y="104" fill="#f85149" font-size="7" text-anchor="end">vs 40% evaporative</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Multi-Pass PFC Concentration of Spirit</text>
+<rect x="400" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="400" y1="375" x2="400" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="400" y="389" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="452" y1="375" x2="452" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="452" y="389" fill="#8b949e" font-size="7" text-anchor="middle">1</text>
+<line x1="504" y1="375" x2="504" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="504" y="389" fill="#8b949e" font-size="7" text-anchor="middle">2</text>
+<line x1="556" y1="375" x2="556" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="556" y="389" fill="#8b949e" font-size="7" text-anchor="middle">3</text>
+<line x1="608" y1="375" x2="608" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="608" y="389" fill="#8b949e" font-size="7" text-anchor="middle">4</text>
+<line x1="660" y1="375" x2="660" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="660" y="389" fill="#8b949e" font-size="7" text-anchor="middle">5</text>
+<text x="530" y="401" fill="#8b949e" font-size="8" text-anchor="middle">PFC pass number</text>
+<line x1="397" y1="336.25" x2="400" y2="336.25" stroke="#8b949e" stroke-width="0.5"/>
+<text x="395" y="339.25" fill="#8b949e" font-size="7" text-anchor="end">40%</text>
+<line x1="397" y1="258.75" x2="400" y2="258.75" stroke="#8b949e" stroke-width="0.5"/>
+<text x="395" y="261.75" fill="#8b949e" font-size="7" text-anchor="end">50%</text>
+<line x1="397" y1="181.25" x2="400" y2="181.25" stroke="#8b949e" stroke-width="0.5"/>
+<text x="395" y="184.25" fill="#8b949e" font-size="7" text-anchor="end">60%</text>
+<line x1="397" y1="103.75" x2="400" y2="103.75" stroke="#8b949e" stroke-width="0.5"/>
+<text x="395" y="106.75" fill="#8b949e" font-size="7" text-anchor="end">70%</text>
+<line x1="397" y1="26.25" x2="400" y2="26.25" stroke="#8b949e" stroke-width="0.5"/>
+<text x="395" y="29.25" fill="#8b949e" font-size="7" text-anchor="end">80%</text>
+<text x="372" y="220" fill="#8b949e" font-size="7" text-anchor="middle" transform="rotate(-90,372,220)">Ethanol concentration (% ABV)</text>
+<polyline points="400.0,336.2 452.0,268.2 504.0,199.6 556.0,134.5 608.0,76.5 660.0,27.3" fill="none" stroke="#e8a665" stroke-width="2.5"/>
+<circle cx="400.0" cy="336.2" r="4" fill="#e8a665" stroke="#e6edf3" stroke-width="1"/>
+<text x="408" y="339.25" fill="#e8a665" font-size="7" text-anchor="start">40%</text>
+<circle cx="452.0" cy="268.2" r="4" fill="#e8a665" stroke="#e6edf3" stroke-width="1"/>
+<text x="460" y="271.2012195121951" fill="#e8a665" font-size="7" text-anchor="start">49%</text>
+<circle cx="504.0" cy="199.6" r="4" fill="#e8a665" stroke="#e6edf3" stroke-width="1"/>
+<text x="512" y="202.56412103746396" fill="#e8a665" font-size="7" text-anchor="start">58%</text>
+<circle cx="556.0" cy="134.5" r="4" fill="#e8a665" stroke="#e6edf3" stroke-width="1"/>
+<text x="564" y="137.52996038296467" fill="#e8a665" font-size="7" text-anchor="start">66%</text>
+<circle cx="608.0" cy="76.5" r="4" fill="#e8a665" stroke="#e6edf3" stroke-width="1"/>
+<text x="616" y="79.4599033194869" fill="#e8a665" font-size="7" text-anchor="start">74%</text>
+<circle cx="660.0" cy="27.3" r="4" fill="#e8a665" stroke="#e6edf3" stroke-width="1"/>
+<text x="668" y="30.292324725162928" fill="#e8a665" font-size="7" text-anchor="start">80%</text>
+<line x1="400" y1="196.75" x2="660" y2="196.75" stroke="#d29922" stroke-width="1.5" stroke-dasharray="4,3"/>
+<text x="655" y="191.75" fill="#d29922" font-size="7" text-anchor="end">Ester ceiling (58% ABV)</text>
+<text x="655" y="206.75" fill="#d29922" font-size="7" text-anchor="end">from §1.16</text>
+<rect x="405" y="80" width="250" height="38" rx="4" fill="#30363d" opacity="0.7"/>
+<text x="530" y="97" fill="#8b949e" font-size="7" text-anchor="middle">Osorio 2024: stirred PFC on beer</text>
+<text x="530" y="109" fill="#8b949e" font-size="7" text-anchor="middle">Style-dependent K values = composit. matters</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">PFC retains >90% aroma (vs 40% evaporative). 3 passes: 40% → 60% ABV, crossing ester ceiling.</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Concentrate → esterify → dilute back. Each pass multiplies [EtOH]×[Acid]/[H₂O].</text>
+</svg>

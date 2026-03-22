@@ -3053,6 +3053,170 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<h3 id="s4-74">&sect;4.74 &mdash; Freeze-Driven Ester Genesis: Le Chatelier at the Ice Front</h3>
+
+<div class="callout key-insight">
+  <strong>Freeze concentration is not passive&mdash;it actively synthesizes new compounds.</strong> Yoda et al. (2021) freeze-concentrated apple juice and detected <strong>37 new + 35 novel compounds</strong> not present in the original&mdash;a 33% increase in total detectable species<span class="cite" data-ref="219"><sup>[219]</sup></span>. Jiang et al. (2017) showed that freeze-concentrated wine had <strong>increased ester content and decreased volatile acid content</strong><span class="cite" data-ref="220"><sup>[220]</sup></span>. The mechanism: removing water as ice shifts ester equilibrium RIGHT via Le Chatelier&rsquo;s principle. This is fundamentally different from &sect;3.3 and &sect;1.16, which frame freezing as passive concentration. <strong>Freezing is an active ester synthesis tool.</strong>
+</div>
+
+<p><strong>The Le Chatelier mechanism.</strong> Fischer esterification: AcOH + EtOH &harr; EtOAc + H<sub>2</sub>O, K<sub>eq</sub> &asymp; 4. At 40% ABV: [EtOH] = 6.9 M, [H<sub>2</sub>O] = 33.3 M. As water freezes out:</p>
+<ul>
+  <li>[H<sub>2</sub>O] decreases (removed as ice)</li>
+  <li>[EtOH] and [AcOH] increase (concentrated in unfrozen liquid)</li>
+  <li>Equilibrium ester = K<sub>eq</sub> &times; [AcOH] &times; [EtOH] / [H<sub>2</sub>O] &mdash; all three factors shift in favor of ester</li>
+</ul>
+
+<p><strong>Quantitative equilibrium amplification.</strong> Removing 50% of water from 40% ABV spirit (achievable in a chest freezer at &minus;30&deg;C):</p>
+<ul>
+  <li>[EtOH]: 6.9 &rarr; 9.9 M (+43%)</li>
+  <li>[H<sub>2</sub>O]: 33.3 &rarr; 23.8 M (&minus;29%)</li>
+  <li>[AcOH]: 0.01 &rarr; 0.014 M (+43%)</li>
+  <li><strong>Ester equilibrium: 2.9&times; baseline</strong> &mdash; nearly triple the ester-forming potential</li>
+</ul>
+<p>At 70% water removal: ester equilibrium reaches <strong>5.7&times; baseline</strong>. This is a larger equilibrium shift than temperature cycling (which provides ~2&times; via Arrhenius at 50&deg;C vs 20&deg;C) and comparable to enzymatic catalysis.</p>
+
+<p><strong>New compound generation.</strong> Yoda et al.&rsquo;s finding of 37 new + 35 novel compounds is explained by concentration-driven equilibrium shifts: when all reactant concentrations increase simultaneously, reactions that were below detection threshold in dilute solution now proceed measurably. For spirit, this means freeze cycling generates esters, acetals, and condensation products that simply <em>cannot form</em> at the original water activity<span class="cite" data-ref="219"><sup>[219]</sup></span>. Jiang et al. confirmed the ester-specific direction: <strong>ester content up, volatile acid content down</strong>&mdash;exactly the Le Chatelier prediction<span class="cite" data-ref="220"><sup>[220]</sup></span>. Eight individual esters exceeded their odor activity value thresholds, including ethyl hexanoate and ethyl octanoate.</p>
+
+<figure class="sim-figure">
+  <object data="graphs/freeze-ester-genesis.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/freeze-ester-genesis.svg" alt="Freeze-driven ester genesis: Le Chatelier equilibrium shift and compound generation">
+  </object>
+  <figcaption><strong>Fig. 86.</strong> Freeze-driven ester genesis. (A) Equilibrium amplification as water is removed as ice: ester equilibrium (green), [EtOH] factor (blue), [Acid] factor (red). At 50% water removal (chest freezer zone), ester equilibrium reaches 2.9&times; baseline. (B) Compound inventory (Yoda 2021): fresh juice had 97 compounds; after freeze concentration, 57 retained + 37 new + 35 novel = 129 total (+33%).</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (components)</span> &mdash; Yoda 2021<span class="cite" data-ref="219"><sup>[219]</sup></span> (new compound formation), Jiang 2017<span class="cite" data-ref="220"><sup>[220]</sup></span> (ester increase in wine). The Le Chatelier mechanism is thermodynamically sound. Application to spirit ester synthesis is novel. <strong>Home testability: 5/5</strong> (Chest freezer + 40% ABV spirit. Freeze to &minus;30&deg;C, hold 4h, thaw. Compare ester aroma vs unfrozen control. Multiple freeze-thaw cycles should amplify the effect. At $0 incremental cost.)
+</div>
+
+
+<h3 id="s4-75">&sect;4.75 &mdash; Plasma Gas-Mixture Selectivity: The N<sub>2</sub> Shield vs O<sub>2</sub> Sword</h3>
+
+<div class="callout key-insight">
+  <strong>Gas composition is the master control variable for plasma treatment of spirits.</strong> Niedzwiedz et al. (2022) quantified plasma effects on wine phenolics under He/N<sub>2</sub> vs He/O<sub>2</sub> carrier gas<span class="cite" data-ref="221"><sup>[221]</sup></span>. After 3 months storage: He/N<sub>2</sub> at 5 min showed only &minus;18.6% phenolic degradation (vs &minus;20% untreated control), while He/O<sub>2</sub> at 10 min showed <strong>&minus;33% phenolic loss, &minus;67% DPPH radical scavenging, &minus;37% FRAP</strong>. The gas you choose determines whether plasma preserves or destroys the very phenolics that give aged spirit its character.
+</div>
+
+<p><strong>Quantitative evidence.</strong> DBD reactor, 50 mL red wine, measured after 3 months<span class="cite" data-ref="221"><sup>[221]</sup></span>:</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Treatment</th><th>&Delta; Total phenolics</th><th>DPPH (% inhibition)</th><th>FRAP (mM Trolox)</th><th>&Delta;E* (color)</th></tr>
+  <tr><td>Control (untreated)</td><td>&minus;20.0%</td><td>57.2%</td><td>11.32</td><td>ref</td></tr>
+  <tr style="background:#58a6ff15"><td><strong>He/N<sub>2</sub> 5 min</strong></td><td><strong>&minus;18.6%</strong></td><td>50.2%</td><td><strong>11.46</strong></td><td><strong>1.12</strong></td></tr>
+  <tr style="background:#f8514915"><td>He/O<sub>2</sub> 10 min</td><td><strong>&minus;33.0%</strong></td><td><strong>23.8%</strong></td><td><strong>7.16</strong></td><td>severe</td></tr>
+  <tr><td>SO<sub>2</sub> 100 mg/L</td><td>&minus;26.4%</td><td>48.1%</td><td>10.89</td><td>10.98</td></tr>
+</table>
+</div>
+
+<p><strong>Why gas composition matters for spirits.</strong> Two distinct plasma chemistries:</p>
+<ul>
+  <li><strong>N<sub>2</sub>-carrier plasma:</strong> Generates reactive nitrogen species (N atoms, N<sub>2</sub><sup>+</sup>, NO<sub>x</sub>). These cause mild acidification (NO<sub>3</sub><sup>&minus;</sup> formation) and selective nitrosation but <strong>do not generate the aggressive O<sub>3</sub> and OH&bull; that destroy phenolics</strong>. Color shift (&Delta;E* = 1.12) is imperceptible to the human eye. FRAP antioxidant capacity is <em>higher</em> than the untreated control (11.46 vs 11.32).</li>
+  <li><strong>O<sub>2</sub>-carrier plasma:</strong> Generates ozone, singlet oxygen, and concentrated OH&bull;. These aggressively oxidize phenolic rings, cleaving catechol and galloyl moieties. DPPH drops from 57% to 24%&mdash;worse than any other treatment including SO<sub>2</sub>. For spirit aging, this is useful <em>only</em> for deliberate oxidation targets (ellagitannin &rarr; ellagic acid, higher alcohols &rarr; aldehydes).</li>
+</ul>
+
+<p><strong>Implication for the integrated protocol.</strong> All plasma treatments in &sect;4.27 (plasma-activated ethanol) and &sect;4.68 (plasma-nebulized ester) should specify N<sub>2</sub> or Ar carrier gas when oak-derived phenolics are present. O<sub>2</sub>-carrier should be reserved for the <em>pre-extraction</em> oxidation step (before oak contact) or for spirits without phenolic complexity (e.g., vodka, white rum). <strong>Mixing blindly risks destroying weeks of careful extraction work in minutes.</strong></p>
+
+<figure class="sim-figure">
+  <object data="graphs/plasma-gas-selectivity.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/plasma-gas-selectivity.svg" alt="Plasma gas-mixture selectivity: N₂ preserves phenolics, O₂ destroys them">
+  </object>
+  <figcaption><strong>Fig. 87.</strong> Plasma gas-mixture selectivity (Niedzwiedz 2022). (A) Total phenolic change after 3 months: He/N<sub>2</sub> (5 min) outperforms even SO<sub>2</sub> preservation. He/O<sub>2</sub> (10 min) causes &minus;33% degradation. (B) Reactive species by carrier gas: N<sub>2</sub> generates mild nitrogen species (phenolics preserved), O<sub>2</sub> generates aggressive oxidants (phenolics destroyed). FRAP and &Delta;E* data confirm the dichotomy.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (wine)</span> &mdash; Niedzwiedz 2022<span class="cite" data-ref="221"><sup>[221]</sup></span> provides comprehensive quantitative data on wine. Extension to spirit is straightforward since the phenolic targets (anthocyanins in wine, ellagitannins in whiskey) are chemically similar. <strong>Home testability: 3/5</strong> ($20&ndash;50: Requires ozone generator with selectable gas input. Use aquarium air pump for O<sub>2</sub>-containing air, or inflate a bag with cigarette-lighter-fueled N<sub>2</sub> from a tire inflator. Run parallel plasma treatments on spirit aliquots with oak chips. Compare color intensity and astringency after 1&ndash;2 weeks.)
+</div>
+
+
+<h3 id="s4-76">&sect;4.76 &mdash; HHP Ester Selectivity: Pressure Favors Long-Chain Esters</h3>
+
+<div class="callout key-insight">
+  <strong>High hydrostatic pressure doesn&rsquo;t just speed up esterification&mdash;it selects for specific esters.</strong> Zhu et al. (2016) subjected Chinese liquor to 400 MPa for 30 min and found radically different enhancements across ester species: ethyl acetate +5.9%, but <strong>ethyl hexanoate +384%</strong><span class="cite" data-ref="222"><sup>[222]</sup></span>. The reason: Fischer esterification volume change (&Delta;V<sub>rxn</sub>) becomes more negative as the acid chain lengthens. Le Chatelier&rsquo;s principle amplifies long-chain ester formation disproportionately under pressure. <strong>Pressure is a selectivity knob, not just a speed knob.</strong>
+</div>
+
+<p><strong>Quantitative HHP results</strong> (Zhu 2016, &ldquo;Junchang&rdquo; strong-aroma liquor, 400 MPa, 30 min, 25&deg;C)<span class="cite" data-ref="222"><sup>[222]</sup></span>:</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Parameter</th><th>Young spirit</th><th>HHP 400 MPa</th><th>&Delta;</th><th>6-yr aged</th><th>&Delta;</th></tr>
+  <tr><td>Total acid (g/L)</td><td>0.854</td><td>0.788</td><td>&minus;7.7%</td><td>0.726</td><td>&minus;14.1%</td></tr>
+  <tr><td>Total ester (g/L)</td><td>0.95</td><td>1.02</td><td>+5.7%</td><td>2.053</td><td>+116%</td></tr>
+  <tr><td>Ethyl acetate (mg/L)</td><td>1657</td><td>1754</td><td>+5.9%</td><td>1904</td><td>+15%</td></tr>
+  <tr style="background:#e8a66520"><td><strong>Ethyl hexanoate (mg/L)</strong></td><td><strong>11.5</strong></td><td><strong>55.7</strong></td><td><strong>+384%</strong></td><td>205.4</td><td>+1686%</td></tr>
+  <tr><td>Acetic acid (mg/L)</td><td>1132</td><td>970</td><td>&minus;15%</td><td>670</td><td>&minus;41%</td></tr>
+</table>
+</div>
+
+<p><strong>Why long-chain esters respond more to pressure.</strong> The molar volume change for Fischer esterification: &Delta;V = V(ester) + V(H<sub>2</sub>O) &minus; V(acid) &minus; V(EtOH). As the acid chain lengthens, the ester product packs more efficiently than the acid+ethanol reactants, making &Delta;V more negative. Estimated &Delta;V values (cm&sup3;/mol): ethyl acetate &asymp; &minus;8; ethyl butyrate &asymp; &minus;11; ethyl hexanoate &asymp; &minus;14; ethyl octanoate &asymp; &minus;17. The equilibrium enhancement K<sub>P</sub>/K<sub>0</sub> = exp(&minus;&Delta;V&middot;P/RT) grows exponentially with |&Delta;V|. At 400 MPa: ethyl acetate gets ~1.4&times; enhancement; ethyl hexanoate gets ~2.0&times;; ethyl octanoate ~2.7&times;. <strong>Pressure naturally enriches the fruity long-chain esters that are signatures of aged whiskey.</strong></p>
+
+<p><strong>Sensory confirmation.</strong> Electronic nose (e-nose) analysis placed HHP-treated samples between young and 6-year-aged in PCA/DFA space. Overall sensory score: young 7.31, HHP 7.81, 6-yr 8.64. The odour sub-score improved more than taste, consistent with ester-driven aroma enhancement without the full wood-derived complexity of barrel aging<span class="cite" data-ref="222"><sup>[222]</sup></span>.</p>
+
+<p><strong>Synergy with &sect;1.8 (HPP flash) and &sect;4.41 (HPH).</strong> This selectivity data reframes the existing HHP sections: the +342% ethyl acetate from sorghum spirit HPH<span class="cite" data-ref="143"><sup>[143]</sup></span> used lower pressures (30&ndash;90 MPa) where &Delta;V selectivity is weaker. At 400 MPa, the selectivity for long-chain esters becomes dominant. A staged pressure protocol could exploit this: lower pressure first for bulk ethyl acetate, then 400 MPa for selective ethyl hexanoate/octanoate enrichment.</p>
+
+<figure class="sim-figure">
+  <object data="graphs/hhp-ester-selectivity.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/hhp-ester-selectivity.svg" alt="HHP ester selectivity: pressure favors long-chain esters">
+  </object>
+  <figcaption><strong>Fig. 88.</strong> HHP ester selectivity. (A) Percent change in ester and acid species: HHP 400 MPa/30 min (gold) vs 6-year natural aging (blue). Ethyl hexanoate responds 65&times; more strongly than ethyl acetate to pressure. (B) Reaction volume &Delta;V becomes more negative with chain length, explaining why pressure disproportionately enhances long-chain esters via Le Chatelier.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (baijiu)</span> &mdash; Zhu 2016<span class="cite" data-ref="222"><sup>[222]</sup></span> (400 MPa quantitative data). The &Delta;V selectivity argument is thermodynamically rigorous. Application to whiskey is direct. <strong>Home testability: 1/5</strong> (400 MPa requires industrial HHP equipment. Conceptually important: explains why HPP aging companies report &ldquo;fruity&rdquo; ester enhancement but struggle to replicate the full aged profile. The selectivity is a feature, not a bug&mdash;combine with other techniques for the missing components.)
+</div>
+
+
+<h3 id="s4-77">&sect;4.77 &mdash; Mechanochemical Energy Dosimetry: The Ball Milling Linearity Window</h3>
+
+<div class="callout key-insight">
+  <strong>Ball milling has an optimal energy dose&mdash;beyond it, energy is wasted.</strong> Kessler &amp; Rinaldi (2022) discovered a linear correlation between water-soluble product yield and <strong>kinetic energy dose</strong> (kJ/g) for both planetary and mixer ball mills<span class="cite" data-ref="223"><sup>[223]</sup></span>. The linearity breaks when substrate forms a layer on grinding surfaces, dissipating energy into friction rather than bond cleavage. This defines a &ldquo;linear regime&rdquo; that is the optimal operating window for oak pre-treatment (&sect;4.49).
+</div>
+
+<p><strong>The dosimetry framework.</strong> Kinetic energy dose = cumulative mechanical energy input per gram of substrate. In the linear regime, each kJ of mechanical energy breaks a proportional number of glycosidic and &beta;-O-4 ether bonds. When the relationship deviates from linearity, the substrate has formed a compacted layer on the grinding media surface, and additional energy generates heat rather than bond cleavage<span class="cite" data-ref="223"><sup>[223]</sup></span>.</p>
+
+<p><strong>Translation to oak.</strong> Cross-referencing Kessler&rsquo;s energy dose framework with Qu et al.&rsquo;s oak-relevant data (&sect;4.49)<span class="cite" data-ref="168"><sup>[168]</sup></span>:</p>
+<ul>
+  <li><strong>3h planetary milling</strong> &asymp; 30 kJ/g: MWL yield 15.5% (poplar). Firmly in the linear regime. Good efficiency.</li>
+  <li><strong>7h planetary milling</strong> &asymp; 70 kJ/g: MWL yield 35.6%. Approaching or entering the plateau regime. The yield-per-kJ drops significantly in the last 2 hours.</li>
+  <li><strong>Predicted optimum for oak: 4&ndash;5h</strong> (&asymp;40&ndash;50 kJ/g): Maximizes MWL yield per unit energy input. Beyond this, energy cost grows faster than phenolic yield.</li>
+</ul>
+
+<p><strong>Practical implication.</strong> The &sect;4.49 recommendation of &ldquo;3&ndash;7h milling&rdquo; can now be sharpened: <strong>4&ndash;5h is the sweet spot.</strong> At home (coffee grinder approximation), the energy dose is much lower but the principle holds: short intense bursts are more efficient than prolonged grinding that compacts material against the blade.</p>
+
+<figure class="sim-figure">
+  <object data="graphs/mechanochem-dosimetry.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/mechanochem-dosimetry.svg" alt="Mechanochemical dosimetry: linear regime and optimal window">
+  </object>
+  <figcaption><strong>Fig. 89.</strong> Mechanochemical dosimetry (Kessler 2022). (A) Depolymerization yield vs kinetic energy dose: linear regime (green) up to ~50 kJ/g, then plateau (red) as substrate layers form on grinding surfaces. Green dots = data from planetary and mixer mills. (B) Energy efficiency (yield per kJ) peaks in the linear regime and drops sharply in the plateau. For oak: 4&ndash;5h planetary milling maximizes phenolic yield per kWh.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (framework)</span> &mdash; Kessler 2022<span class="cite" data-ref="223"><sup>[223]</sup></span> established the dosimetry framework on lignocellulose. Application to oak phenolic extraction optimization is novel. <strong>Home testability: 2/5</strong> (Requires ball mill or aggressive spice grinder. Test: compare phenolic extraction from oak chips ground 2 min vs 5 min vs 15 min in spirit. The 5-min sample should show the best extraction-per-effort ratio. Folin-Ciocalteu assay ($15 kit) for quantitation.)
+</div>
+
+
+<h3 id="s4-78">&sect;4.78 &mdash; Progressive Freeze Fractionation: Tubular Ice for Spirit Stratification</h3>
+
+<div class="callout key-insight">
+  <strong>Progressive freeze concentration (PFC) retains &gt;90% of aroma compounds vs ~40% for evaporation.</strong> Ding et al. (2016) demonstrated a tubular ice system that concentrated apple juice from 13.7 to 25.5 &deg;Brix in three passes with &gt;90% retention of vitamin C and aromatic substances<span class="cite" data-ref="224"><sup>[224]</sup></span>. Osorio et al. (2024) extended PFC to craft beer, showing that ice fraction is the primary control variable for concentration<span class="cite" data-ref="225"><sup>[225]</sup></span>. Applied to spirit: 3 passes of PFC could concentrate 40% ABV to ~60% ABV&mdash;<strong>crossing the ester ceiling from &sect;1.16</strong>&mdash;while preserving volatile congeners that evaporation would destroy.
+</div>
+
+<p><strong>How PFC differs from batch freezing (&sect;3.3).</strong> In batch freezing, ice grows randomly throughout the vessel, trapping solutes in inclusions (occlusion). In PFC, ice grows directionally from a cooled surface, and stirring sweeps the concentrated liquid away from the ice front. The directional growth minimizes occlusion, achieving distribution coefficient K &rarr; theoretical minimum<span class="cite" data-ref="225"><sup>[225]</sup></span>. Multi-pass operation compounds the concentration: pass 1 (40 &rarr; 48% ABV), pass 2 (48 &rarr; 55%), pass 3 (55 &rarr; 61%)&mdash;exceeding the 58% ester equilibrium ceiling.</p>
+
+<p><strong>The concentrate-esterify-dilute strategy.</strong> The &sect;1.16 ester ceiling at 58% ABV represents the concentration above which water activity is low enough to thermodynamically favor ester formation over hydrolysis. PFC enables a three-step protocol: (1) concentrate spirit to &gt;58% ABV via 3 PFC passes; (2) hold at elevated concentration for ester formation (with acid catalyst or enzyme, &sect;1.7); (3) dilute back to drinking strength by recombining with the ice fraction. This achieves both the Le Chatelier shift (&sect;4.74) and the a<sub>w</sub> threshold crossing, with &gt;90% volatile retention throughout.</p>
+
+<p><strong>Style dependence.</strong> Osorio et al. found that beer style significantly affected color and bitterness response to freeze concentration<span class="cite" data-ref="225"><sup>[225]</sup></span>: Witbier, Bitter, and Porter showed different distribution coefficients. For whiskey, this predicts that bourbon (high vanillin, high ester) and peated scotch (high phenol) would respond differently to PFC&mdash;the phenol/flavor balance would shift based on each compound&rsquo;s K value.</p>
+
+<figure class="sim-figure">
+  <object data="graphs/progressive-freeze-fractionation.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/progressive-freeze-fractionation.svg" alt="Progressive freeze fractionation: tubular ice for spirit stratification">
+  </object>
+  <figcaption><strong>Fig. 90.</strong> Progressive freeze fractionation. (A) Aroma retention by concentration method: PFC retains &gt;93% (Ding 2016), vs ~40% for evaporation. (B) Multi-pass concentration profile: 3 PFC passes take 40% ABV spirit to ~61%, crossing the 58% ester ceiling (yellow dashed, from &sect;1.16). Each pass multiplies the [EtOH]&times;[Acid]/[H<sub>2</sub>O] equilibrium ratio.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (juice/beer)</span> &mdash; Ding 2016<span class="cite" data-ref="224"><sup>[224]</sup></span> (&gt;90% aroma retention), Osorio 2024<span class="cite" data-ref="225"><sup>[225]</sup></span> (beer PFC). Application to spirit concentration for ester synthesis is novel. <strong>Home testability: 3/5</strong> ($5&ndash;15: Use a deep chest freezer + stainless steel pot. Freeze spirit slowly (&minus;30&deg;C, 4h). Decant concentrated liquid (pour off, leaving ice behind). Repeat 3&times;. Measure ABV of each pass with hydrometer. Hold final concentrated liquid with acid/enzyme for 48h, then recombine with melted ice fraction. Compare ester aroma to control.)
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -3233,6 +3397,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Corona acetaldehyde dosing (&sect;4.71)</td><td>30 mg/L at 0.01 kWh/L</td><td><span class="verdict speculative">Novel application</span></td><td>$30&ndash;60</td><td>OXIDATION (precision)</td></tr>
 <tr><td>PEF &times; cryo synergy (&sect;4.72)</td><td>5&ndash;8&times; extraction (predicted)</td><td><span class="verdict speculative">Novel combination</span></td><td>$30&ndash;60</td><td>EXTRACT + ESTER</td></tr>
 <tr><td>Microfluidic scCO<sub>2</sub> oak (&sect;4.73)</td><td>ms equilibrium</td><td><span class="verdict promising">Published (microfluidics)</span></td><td>$5K+ (lab)</td><td>EXTRACTION (ms-scale)</td></tr>
+<tr><td>Freeze ester genesis (&sect;4.74)</td><td>2.9&ndash;5.7&times; ester equil.</td><td><span class="verdict promising">Published (components)</span></td><td>$0&ndash;5</td><td>ESTER (Le Chatelier)</td></tr>
+<tr><td>Plasma gas selectivity (&sect;4.75)</td><td>Phenolics &plusmn;33%</td><td><span class="verdict promising">Published (wine)</span></td><td>$20&ndash;50</td><td>OXIDATION (control)</td></tr>
+<tr><td>HHP ester selectivity (&sect;4.76)</td><td>+384% ethyl hexanoate</td><td><span class="verdict promising">Published (baijiu)</span></td><td>$500+ (industrial)</td><td>ESTER (long-chain)</td></tr>
+<tr><td>Mechanochem dosimetry (&sect;4.77)</td><td>Optimal at 4&ndash;5h</td><td><span class="verdict promising">Published (framework)</span></td><td>$10&ndash;20</td><td>EXTRACTION (efficiency)</td></tr>
+<tr><td>Progressive freeze frac. (&sect;4.78)</td><td>&gt;90% aroma retention</td><td><span class="verdict promising">Published (juice/beer)</span></td><td>$5&ndash;15</td><td>ESTER + CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -3441,6 +3610,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Corona acetaldehyde (&sect;4.71)</td><td>2/5</td><td>$30&ndash;60</td><td>Extremely hazardous: HV + ethanol vapor = fire/shock risk. NOT recommended without professional safety equipment. Neon sign transformer + sharp needle above spirit surface in sealed vessel. Test with Schiff reagent for acetaldehyde.</td></tr>
 <tr><td><strong>PEF &times; cryo synergy (&sect;4.72)</strong></td><td><strong>4/5</strong></td><td><strong>$30&ndash;60</strong></td><td><strong>Chest freezer + neon sign transformer + SS mesh electrodes. Freeze 40% ABV spirit + oak chips to &minus;30&deg;C. Decant unfrozen fraction. Apply 1 kV/cm, 50 Hz for 30&ndash;60 min. Recombine with thawed ice. Compare vs PEF-only and freeze-only controls. Expect synergistic extraction exceeding either alone. HV safety precautions required.</strong></td></tr>
 <tr><td>Microfluidic scCO<sub>2</sub> (&sect;4.73)</td><td>1/5</td><td>$5K+</td><td>Requires specialized high-pressure microfluidic equipment. Not home-accessible. Conceptually important for understanding the theoretical floor of extraction timescales. Lab collaboration only.</td></tr>
+<tr><td><strong>Freeze ester genesis (&sect;4.74)</strong></td><td><strong>5/5</strong></td><td><strong>$0</strong></td><td><strong>Chest freezer + 40% ABV spirit. Freeze to &minus;30&deg;C, hold 4h, thaw. Decant concentrated liquid, smell for ester richness vs unfrozen control. Repeat 3&ndash;5 cycles. Each cycle amplifies ester equilibrium by removing water as ice. $0 incremental cost. The most accessible ester-enhancement technique in this document.</strong></td></tr>
+<tr><td>Plasma gas selectivity (&sect;4.75)</td><td>3/5</td><td>$20&ndash;50</td><td>Ozone generator with gas input selection. Use aquarium air pump (O<sub>2</sub>-containing) vs N<sub>2</sub> from tire inflator. Run parallel plasma treatments on spirit aliquots with oak chips, 5 min each. Compare color and astringency after 1&ndash;2 weeks. N<sub>2</sub> should preserve phenolics; O<sub>2</sub> should darken but over-oxidize.</td></tr>
+<tr><td>HHP ester selectivity (&sect;4.76)</td><td>1/5</td><td>$500+</td><td>Requires industrial HHP equipment (400 MPa). Not home-accessible. Conceptually important: explains why HHP companies report fruity enhancement but not full aging profile. The chain-length selectivity is a feature for targeting specific esters.</td></tr>
+<tr><td>Mechanochem dosimetry (&sect;4.77)</td><td>2/5</td><td>$10&ndash;20</td><td>Spice grinder or coffee grinder ($10&ndash;20). Grind oak chips at 2 min, 5 min, 15 min. Extract in spirit 7 days each. Compare color intensity and taste. 5-min sample should show best extraction-per-effort. Folin-Ciocalteu kit ($15) for quantitative phenolic comparison.</td></tr>
+<tr><td><strong>Progressive freeze frac. (&sect;4.78)</strong></td><td><strong>3/5</strong></td><td><strong>$5&ndash;15</strong></td><td><strong>Deep chest freezer + stainless steel pot + hydrometer ($5). Freeze spirit slowly (&minus;30&deg;C, 4h). Pour off concentrated liquid (leaving ice). Repeat 3&times;. Measure ABV of each pass. Hold final concentrate (should be &gt;58% ABV) with acid/enzyme for 48h. Recombine with melted ice. Compare ester aroma to control.</strong></td></tr>
 </tbody>
 </table>
 </div>
@@ -3675,6 +3849,13 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r216">Albanese L, Ciriminna R, Meneguzzo F, Pagliaro M. (2017) &ldquo;Beer-brewing powered by controlled hydrodynamic cavitation: Theory and real-scale experiments.&rdquo; <em>J Cleaner Prod</em> 142:1457&ndash;1470. <a href="https://doi.org/10.1016/j.jclepro.2016.11.162">DOI</a> (230 L pilot-scale HC brewing. 30% improved starch extraction. 12% energy reduction. Saccharification temp reduced 35&deg;C. Demonstrates HC scalability for beverage processing.)</li>
   <li id="r217">Kozlov KV, et al. (2013) &ldquo;Oxidation of Ethanol Vapors in Negative Atmospheric Corona Discharge.&rdquo; <em>Ind Eng Chem Res</em>. <a href="https://doi.org/10.1021/ie400476p">DOI</a> (Primary product: acetaldehyde (2 OH&bull; per molecule). Secondary: acetic acid, CO<sub>2</sub>. Lowest energy cost: 0.33 kWh/g. Acetaldehyde concentration stable across power levels. Enables precision acetaldehyde dosing for spirit aging.)</li>
   <li id="r218">Assmann N, et al. (2013) &ldquo;Supercritical extraction of lignin oxidation products in a microfluidic device.&rdquo; <em>Chem Eng Sci</em> 99:177&ndash;183. <a href="https://doi.org/10.1016/j.ces.2013.05.032">DOI</a> (Continuous microfluidic scCO<sub>2</sub> extraction. Equilibrium reached in milliseconds. Vanillin extraction marginal (high polarity); MDHA near-complete. Selectivity peaks near CO<sub>2</sub> critical point. Pressure 81&ndash;121 bar, temp 39.8&ndash;59.3&deg;C.)</li>
+  <li id="r219">Yoda T, Miyaki H, Saito T. (2021) &ldquo;Freeze concentrated apple juice maintains its flavor.&rdquo; <em>Sci Rep</em> 11:12529. <a href="https://doi.org/10.1038/s41598-021-92274-0">DOI</a> (97 volatile compounds in fresh juice. After freeze concentration: 57 retained + 37 NEW + 35 NOVEL compounds = 129 total (+33%). Sensory triangle test: panelists could not distinguish reconstituted from fresh. Demonstrates compound <strong>genesis</strong> from concentration-driven equilibrium shifts.)</li>
+  <li id="r220">Jiang L, Ren Y, Li Z. (2017) &ldquo;Influence of Freeze Concentration Technique on Aromatic and Phenolic Compounds, Color Attributes, and Sensory Properties of Cabernet Sauvignon Wine.&rdquo; <em>Molecules</em> 22(6):899. <a href="https://doi.org/10.3390/molecules22060899">DOI</a> (Ester content increased, volatile acid decreased after freeze concentration. Eight aroma compounds exceeded OAV thresholds (ethyl acetate, ethyl butanoate, isoamyl acetate, ethyl hexanoate, ethyl octanoate). Color stabilized via anthocyanin enhancement. Phenolic changes equalized after aging.)</li>
+  <li id="r221">Niedzwiedz I, Simeonov V, Wasko A, Polak-Berecka M. (2022) &ldquo;Comparison of the Effect of Cold Plasma with Conventional Preservation Methods on Red Wine Quality Using Chemometrics Analysis.&rdquo; <em>Molecules</em> 27(20):7048. <a href="https://doi.org/10.3390/molecules27207048">DOI</a> (DBD plasma, He/N<sub>2</sub> vs He/O<sub>2</sub>. He/N<sub>2</sub> 5 min: &minus;18.6% phenolics (less than untreated &minus;20%). He/O<sub>2</sub> 10 min: &minus;33% phenolics, DPPH &minus;67%, FRAP &minus;37%. He/N<sub>2</sub> color shift &Delta;E* = 1.12 (imperceptible). <strong>Gas composition determines phenolic preservation vs destruction.</strong>)</li>
+  <li id="r222">Zhu SM, Xu ML, Ramaswamy HS, Yang MY, Yu Y. (2016) &ldquo;Effect of high pressure treatment on the aging characteristics of Chinese liquor as evaluated by electronic nose and chemical analysis.&rdquo; <em>Sci Rep</em> 6:30273. <a href="https://doi.org/10.1038/srep30273">DOI</a> (HHP 400 MPa, 30 min, 25&deg;C: total ester +5.7%, ethyl hexanoate <strong>+384%</strong>, acetic acid &minus;15%. PCA placed HHP between young and 6-yr aged. <strong>Long-chain esters respond disproportionately to pressure</strong> due to larger negative &Delta;V<sub>rxn</sub>.)</li>
+  <li id="r223">Kessler M, Rinaldi R. (2022) &ldquo;Kinetic Energy Dose as a Unified Metric for Comparing Ball Mills in the Mechanocatalytic Depolymerization of Lignocellulose.&rdquo; <em>Front Chem</em> 9:816553. <a href="https://doi.org/10.3389/fchem.2021.816553">DOI</a> (Linear correlation between WSP yield and kinetic energy dose for both planetary and mixer mills. Linearity breaks when substrate forms grinding-surface layer. Defines optimal &ldquo;linear regime&rdquo; for ball milling. Framework enables cross-mill-type optimization and scale-up.)</li>
+  <li id="r224">Ding Z, Qin FGF, Yuan J, Huang S, Jiang R, Shao Y. (2016) &ldquo;Progressive freeze-concentration of apple juice and its application to produce a new type apple wine.&rdquo; <em>J Food Eng</em> 171:131&ndash;139. <a href="https://doi.org/10.1016/j.jfoodeng.2015.10.022">DOI</a> (Tubular ice PFC: 13.7 to 25.5 &deg;Brix in 3 passes. <strong>&gt;90% retention of vitamin C and aromatics</strong> vs ~40% for evaporation. Directional ice growth minimizes solute occlusion.)</li>
+  <li id="r225">Osorio M, Moreno FL, Hernandez E, Ruiz R. (2024) &ldquo;Progressive stirred freeze concentration: Effect of operative parameters on vital statistics of beer.&rdquo; <em>J Food Process Eng</em> 47(3):e14574. <a href="https://doi.org/10.1111/jfpe.14574">DOI</a> (PFC on three craft ales: ice fraction is the primary control variable. Style-dependent responses for color and bitterness. Distribution coefficient K quantified for ethanol, total solids, color. Demonstrates PFC applicability to alcoholic beverages.)</li>
 </ol>
 
 
@@ -4786,6 +4967,41 @@ var refs = {
     source: "Assmann et al. (2013), Chem Eng Sci 99:177",
     excerpt: "Microfluidic scCO\u2082 extraction: equilibrium in milliseconds. Vanillin extraction marginal (polar); MDHA near-complete (non-polar). Selectivity peaks near CO\u2082 critical point. Pressure 81\u2013121 bar.",
     url: "#r218"
+  },
+  219: {
+    source: "Yoda et al. (2021), Sci Rep 11:12529",
+    excerpt: "Freeze concentrated apple juice: 97 compounds in fresh \u2192 57 retained + 37 NEW + 35 NOVEL = 129 total (+33%). Sensory triangle test: indistinguishable from fresh. New compounds formed via concentration-driven equilibrium shifts during freezing.",
+    url: "#r219"
+  },
+  220: {
+    source: "Jiang et al. (2017), Molecules 22(6):899",
+    excerpt: "Freeze concentration of wine: ester content increased, volatile acid decreased. Eight esters above OAV threshold (ethyl acetate, ethyl butanoate, isoamyl acetate, ethyl hexanoate, ethyl octanoate, isoamyl lactate, ethyl decanoate, ethyl dihydrocinnamate). Color stabilized via anthocyanin enhancement.",
+    url: "#r220"
+  },
+  221: {
+    source: "Niedzwiedz et al. (2022), Molecules 27(20):7048",
+    excerpt: "DBD plasma gas selectivity: He/N\u2082 5 min \u2192 \u221218.6% phenolics (better than untreated \u221220%); He/O\u2082 10 min \u2192 \u221233% phenolics, DPPH \u221267%, FRAP \u221237%. Gas composition is the master control variable. He/N\u2082 color \u0394E* = 1.12 (imperceptible).",
+    url: "#r221"
+  },
+  222: {
+    source: "Zhu et al. (2016), Sci Rep 6:30273",
+    excerpt: "HHP 400 MPa, 30 min: total ester +5.7%, ethyl hexanoate +384%, acetic acid \u221215%. PCA placed HHP-treated between young and 6-yr aged. Long-chain esters respond disproportionately to pressure due to larger negative \u0394V. E-nose confirmed aroma improvement.",
+    url: "#r222"
+  },
+  223: {
+    source: "Kessler & Rinaldi (2022), Front Chem 9:816553",
+    excerpt: "Kinetic energy dose as unified metric: linear yield-vs-dose correlation until substrate layers on grinding surfaces. Defines optimal \u201clinear regime\u201d for ball milling. Cross-mill-type comparison enabled. Energy efficiency peaks in the linear regime.",
+    url: "#r223"
+  },
+  224: {
+    source: "Ding et al. (2016), J Food Eng 171:131\u2013139",
+    excerpt: "Progressive freeze concentration via tubular ice: 13.7 to 25.5 \u00b0Brix in 3 passes. >90% retention of vitamin C and aromatics vs ~40% for evaporation. Directional ice growth minimizes solute occlusion. Multi-pass operation for high concentration.",
+    url: "#r224"
+  },
+  225: {
+    source: "Osorio et al. (2024), J Food Process Eng 47(3):e14574",
+    excerpt: "Stirred PFC on three craft ales (Witbier, Bitter, Porter). Ice fraction is primary control variable. Style-dependent color and bitterness responses. Distribution coefficient K quantified. Demonstrates PFC applicability to alcoholic beverages.",
+    url: "#r225"
   }
 };
 

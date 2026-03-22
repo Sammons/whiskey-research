@@ -174,6 +174,11 @@ fn main() {
     fs::write("../graphs/corona-acetaldehyde.svg", sim_corona_acetaldehyde()).unwrap();
     fs::write("../graphs/pef-cryo-synergy.svg", sim_pef_cryo_synergy()).unwrap();
     fs::write("../graphs/microfluidic-scco2-oak.svg", sim_microfluidic_scco2_oak()).unwrap();
+    fs::write("../graphs/freeze-ester-genesis.svg", sim_freeze_ester_genesis()).unwrap();
+    fs::write("../graphs/plasma-gas-selectivity.svg", sim_plasma_gas_selectivity()).unwrap();
+    fs::write("../graphs/hhp-ester-selectivity.svg", sim_hhp_ester_selectivity()).unwrap();
+    fs::write("../graphs/mechanochem-dosimetry.svg", sim_mechanochem_dosimetry()).unwrap();
+    fs::write("../graphs/progressive-freeze-fractionation.svg", sim_progressive_freeze_fractionation()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -13710,6 +13715,780 @@ fn sim_microfluidic_scco2_oak() -> String {
     svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
     svg += &label(350.0, 448.0, "Assmann 2013: extraction equilibrium in MILLISECONDS in microchannels.", ACCENT, 8, "middle");
     svg += &label(350.0, 462.0, "Bottleneck shifts from kinetics to selectivity. Tune pressure for targets.", GREEN, 8, "middle");
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 86: Freeze-Driven Ester Genesis — Le Chatelier at Ice Front
+// ═══════════════════════════════════════════════════════════════
+fn sim_freeze_ester_genesis() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 86 \u{2014} Freeze-Driven Ester Genesis: Le Chatelier at the Ice Front");
+    // Panel A: Ester equilibrium amplification as water is removed
+    svg += &label(195.0, 57.0, "A: Ester Equilibrium Shift vs Water Removal", TEXT, 10, "middle");
+    let (ax, ay, aw_p, ah_p) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_p}\" height=\"{ah_p}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // x-axis: fraction water removed (0 to 0.8)
+    for i in 0..=8 {
+        let f = i as f64 * 0.1;
+        let px = ax + f / 0.8 * aw_p;
+        svg += &vline(px, ay + ah_p, ay + ah_p + 4.0, MUTED, "0.5");
+        if i % 2 == 0 {
+            svg += &label(px, ay + ah_p + 14.0, &format!("{:.1}", f), MUTED, 7, "middle");
+        }
+    }
+    svg += &label(ax + aw_p / 2.0, ay + ah_p + 26.0, "Fraction of water removed as ice", MUTED, 8, "middle");
+
+    // y-axis: amplification factor (1× to 12×)
+    let y_max = 12.0;
+    for i in 0..=6 {
+        let val = i as f64 * 2.0;
+        let py = ay + ah_p - val / y_max * ah_p;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:.0}\u{00d7}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 25.0, ay + ah_p / 2.0, ax - 25.0, ay + ah_p / 2.0,
+        "Ester equilibrium amplification");
+
+    // Compute equilibrium amplification
+    // Fischer: Keq = [EtOAc][H2O]/([AcOH][EtOH]) = 4
+    // At 40% ABV: [EtOH]=6.9M, [H2O]=33.3M, [AcOH]=0.01M
+    // When fraction f of water removed: volume shrinks by 0.6*f
+    // [EtOAc_eq] = Keq * [AcOH] * [EtOH] / [H2O]
+    let keq = 4.0_f64;
+    let etoh_0 = 6.9_f64;
+    let h2o_0 = 33.3_f64;
+    let acid_0 = 0.01_f64;
+    let ester_baseline = keq * acid_0 * etoh_0 / h2o_0;
+
+    let sx = |x: f64| ax + x / 0.8 * aw_p;
+    let sy = |y: f64| ay + ah_p - y / y_max * ah_p;
+
+    // Ester amplification curve
+    let mut pts_ester: Vec<(f64, f64)> = Vec::new();
+    let mut pts_etoh: Vec<(f64, f64)> = Vec::new();
+    let mut pts_acid: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=80 {
+        let f = i as f64 * 0.01;
+        let vol_factor = 1.0 - 0.6 * f; // volume fraction remaining
+        let etoh_c = etoh_0 / vol_factor;
+        let h2o_c = h2o_0 * (1.0 - f) / vol_factor;
+        let acid_c = acid_0 / vol_factor;
+        let ester_eq = keq * acid_c * etoh_c / h2o_c;
+        let amplification = ester_eq / ester_baseline;
+        pts_ester.push((f, amplification));
+        pts_etoh.push((f, etoh_c / etoh_0)); // concentration factor
+        pts_acid.push((f, acid_c / acid_0));
+    }
+    svg += &polyline_svg(&pts_ester, GREEN, "2.5", &sx, &sy);
+    svg += &polyline_svg(&pts_etoh, BLUE, "1.5", &sx, &sy);
+    svg += &polyline_svg(&pts_acid, RED, "1.5", &sx, &sy);
+
+    // Legend
+    svg += &format!("<line x1=\"{}\" y1=\"80\" x2=\"{}\" y2=\"80\" stroke=\"{GREEN}\" stroke-width=\"2.5\"/>\n", ax + 10.0, ax + 30.0);
+    svg += &label(ax + 33.0, 83.0, "Ester equilibrium", GREEN, 7, "start");
+    svg += &format!("<line x1=\"{}\" y1=\"93\" x2=\"{}\" y2=\"93\" stroke=\"{BLUE}\" stroke-width=\"1.5\"/>\n", ax + 10.0, ax + 30.0);
+    svg += &label(ax + 33.0, 96.0, "[EtOH] factor", BLUE, 7, "start");
+    svg += &format!("<line x1=\"{}\" y1=\"106\" x2=\"{}\" y2=\"106\" stroke=\"{RED}\" stroke-width=\"1.5\"/>\n", ax + 10.0, ax + 30.0);
+    svg += &label(ax + 33.0, 109.0, "[Acid] factor", RED, 7, "start");
+
+    // Mark typical chest freezer zone (f ~ 0.3-0.5 for 40% ABV at -30°C)
+    let fx1 = sx(0.3);
+    let fx2 = sx(0.5);
+    svg += &format!("<rect x=\"{fx1}\" y=\"{ay}\" width=\"{}\" height=\"{ah_p}\" fill=\"{ACCENT}\" opacity=\"0.08\"/>\n", fx2 - fx1);
+    svg += &label((fx1 + fx2) / 2.0, ay + ah_p - 20.0, "Chest freezer", ACCENT, 7, "middle");
+    svg += &label((fx1 + fx2) / 2.0, ay + ah_p - 10.0, "(-30\u{00b0}C zone)", ACCENT, 7, "middle");
+
+    // Annotation: equilibrium equation
+    svg += &format!("<rect x=\"{ax}\" y=\"{}\" width=\"{aw_p}\" height=\"22\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n", ay + ah_p + 32.0);
+    svg += &label(ax + aw_p / 2.0, ay + ah_p + 47.0, "AcOH + EtOH \u{21cc} EtOAc + H\u{2082}O  \u{2014}  removing H\u{2082}O shifts RIGHT", ACCENT, 8, "middle");
+
+    // Panel B: Compound inventory (Yoda 2021)
+    svg += &label(525.0, 57.0, "B: Compound Inventory After Freeze Concentration", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Stacked bar chart: Fresh vs Freeze-concentrated
+    let bar_w = 70.0;
+    let bar_gap = 50.0;
+    let bar_x1 = bx + 40.0;
+    let bar_x2 = bar_x1 + bar_w + bar_gap;
+    let max_compounds = 140.0;
+    let bar_scale = bh / max_compounds;
+
+    // Fresh juice: 97 compounds
+    let fresh_h = 97.0 * bar_scale;
+    svg += &format!("<rect x=\"{bar_x1}\" y=\"{}\" width=\"{bar_w}\" height=\"{fresh_h}\" fill=\"{BLUE}\" opacity=\"0.7\"/>\n",
+        by + bh - fresh_h);
+    svg += &label(bar_x1 + bar_w / 2.0, by + bh - fresh_h - 5.0, "97", BLUE, 9, "middle");
+    svg += &label(bar_x1 + bar_w / 2.0, by + bh + 14.0, "Fresh", TEXT, 8, "middle");
+
+    // Freeze-concentrated: 57 retained + 37 new + 35 novel = 129
+    let retained_h = 57.0 * bar_scale;
+    let new_h = 37.0 * bar_scale;
+    let novel_h = 35.0 * bar_scale;
+    let total_h = retained_h + new_h + novel_h;
+    let base_y = by + bh;
+
+    svg += &format!("<rect x=\"{bar_x2}\" y=\"{}\" width=\"{bar_w}\" height=\"{retained_h}\" fill=\"{BLUE}\" opacity=\"0.7\"/>\n",
+        base_y - retained_h);
+    svg += &format!("<rect x=\"{bar_x2}\" y=\"{}\" width=\"{bar_w}\" height=\"{new_h}\" fill=\"{GREEN}\" opacity=\"0.7\"/>\n",
+        base_y - retained_h - new_h);
+    svg += &format!("<rect x=\"{bar_x2}\" y=\"{}\" width=\"{bar_w}\" height=\"{novel_h}\" fill=\"{ACCENT}\" opacity=\"0.7\"/>\n",
+        base_y - retained_h - new_h - novel_h);
+
+    svg += &label(bar_x2 + bar_w / 2.0, base_y - retained_h / 2.0 + 3.0, "57 retained", TEXT, 7, "middle");
+    svg += &label(bar_x2 + bar_w / 2.0, base_y - retained_h - new_h / 2.0 + 3.0, "37 new", TEXT, 7, "middle");
+    svg += &label(bar_x2 + bar_w / 2.0, base_y - retained_h - new_h - novel_h / 2.0 + 3.0, "35 novel", TEXT, 7, "middle");
+    svg += &label(bar_x2 + bar_w / 2.0, by + bh - total_h - 5.0, "129", GREEN, 9, "middle");
+    svg += &label(bar_x2 + bar_w / 2.0, by + bh + 14.0, "Freeze-conc.", TEXT, 8, "middle");
+
+    // Legend for panel B
+    svg += &format!("<rect x=\"{}\" y=\"80\" width=\"10\" height=\"8\" fill=\"{BLUE}\" opacity=\"0.7\"/>\n", bx + bw - 90.0);
+    svg += &label(bx + bw - 77.0, 88.0, "Retained", BLUE, 7, "start");
+    svg += &format!("<rect x=\"{}\" y=\"93\" width=\"10\" height=\"8\" fill=\"{GREEN}\" opacity=\"0.7\"/>\n", bx + bw - 90.0);
+    svg += &label(bx + bw - 77.0, 101.0, "New", GREEN, 7, "start");
+    svg += &format!("<rect x=\"{}\" y=\"106\" width=\"10\" height=\"8\" fill=\"{ACCENT}\" opacity=\"0.7\"/>\n", bx + bw - 90.0);
+    svg += &label(bx + bw - 77.0, 114.0, "Novel", ACCENT, 7, "start");
+
+    // Source annotation
+    svg += &label(bx + bw / 2.0, by + bh + 35.0, "Yoda et al. 2021, Sci Rep", MUTED, 7, "middle");
+
+    // Arrow annotation
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n",
+        bar_x1 + bar_w + 5.0, by + bh - fresh_h / 2.0,
+        bar_x2 - 5.0, by + bh - total_h / 2.0);
+    svg += &label((bar_x1 + bar_w + bar_x2) / 2.0, by + bh - fresh_h / 2.0 - 8.0,
+        "+33%", GREEN, 9, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "Freeze concentration is NOT passive \u{2014} removing water as ice shifts ester equilibrium RIGHT.",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "Yoda 2021: 37 NEW compounds + 35 NOVEL compounds formed during freezing alone.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 87: Plasma Gas-Mixture Selectivity
+// ═══════════════════════════════════════════════════════════════
+fn sim_plasma_gas_selectivity() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 87 \u{2014} Plasma Gas-Mixture Selectivity: N\u{2082} Shield vs O\u{2082} Sword");
+
+    // Panel A: Phenolic change under different plasma conditions
+    svg += &label(195.0, 57.0, "A: Total Phenolic Change After 3 Months Storage", TEXT, 10, "middle");
+    let (ax, ay, aw_p, ah_p) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_p}\" height=\"{ah_p}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Zero line
+    let zero_y = ay + ah_p * 0.45; // 0% change line
+    svg += &hline(ax, ax + aw_p, zero_y, MUTED, "1");
+    svg += &label(ax - 5.0, zero_y + 3.0, "0%", MUTED, 7, "end");
+
+    // y-axis labels
+    let scale_per_pct = ah_p * 0.45 / 35.0; // -35% to +5%
+    for pct in [-30, -20, -10, 5].iter() {
+        let py = zero_y - (*pct as f64) * scale_per_pct;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:+}%", pct), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, zero_y, ax - 28.0, zero_y,
+        "\u{0394} Total phenolics (%)");
+
+    // Bar chart data: [label, value%, color]
+    let bars: Vec<(&str, f64, &str)> = vec![
+        ("Control", -20.0, MUTED),
+        ("He/N\u{2082}\n5 min", -18.6, BLUE),
+        ("He/N\u{2082}\n10 min", -15.0, BLUE), // estimated
+        ("He/O\u{2082}\n5 min", -25.0, RED), // estimated
+        ("He/O\u{2082}\n10 min", -33.0, RED),
+        ("SO\u{2082}\n100mg/L", -26.4, MUTED),
+    ];
+
+    let bar_w = 30.0;
+    let gap = (aw_p - bars.len() as f64 * bar_w) / (bars.len() as f64 + 1.0);
+    for (i, (lbl, val, color)) in bars.iter().enumerate() {
+        let bx = ax + gap + i as f64 * (bar_w + gap);
+        let bar_h = val.abs() * scale_per_pct;
+        let (by_bar, bar_dir) = if *val < 0.0 {
+            (zero_y, bar_h)
+        } else {
+            (zero_y - bar_h, bar_h)
+        };
+        svg += &format!("<rect x=\"{bx}\" y=\"{by_bar}\" width=\"{bar_w}\" height=\"{bar_dir}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n");
+        svg += &label(bx + bar_w / 2.0, by_bar + bar_dir + 12.0,
+            &format!("{:.1}%", val), *color, 7, "middle");
+
+        // Split label by \n
+        let parts: Vec<&str> = lbl.split('\n').collect();
+        for (j, part) in parts.iter().enumerate() {
+            svg += &label(bx + bar_w / 2.0, ay + ah_p + 14.0 + j as f64 * 11.0,
+                part, TEXT, 7, "middle");
+        }
+    }
+
+    // Highlight best: He/N₂ 5min
+    svg += &label(ax + gap + 1.0 * (bar_w + gap) + bar_w / 2.0, zero_y - 18.6 * scale_per_pct - 10.0,
+        "\u{2605} Best", GREEN, 8, "middle");
+
+    // Panel B: Reactive species by gas composition
+    svg += &label(525.0, 57.0, "B: Dominant Reactive Species by Carrier Gas", TEXT, 10, "middle");
+    let (bx_p, by_p, bw_p, bh_p) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx_p}\" y=\"{by_p}\" width=\"{bw_p}\" height=\"{bh_p}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // N₂ side (left)
+    let nx = bx_p + 10.0;
+    let nw = bw_p / 2.0 - 15.0;
+    svg += &format!("<rect x=\"{nx}\" y=\"{}\" width=\"{nw}\" height=\"140\" rx=\"6\" fill=\"{BLUE}\" opacity=\"0.12\"/>\n", by_p + 10.0);
+    svg += &label(nx + nw / 2.0, by_p + 30.0, "He/N\u{2082} Plasma", BLUE, 10, "middle");
+    svg += &label(nx + nw / 2.0, by_p + 48.0, "\u{2022} N atoms, N\u{2082}\u{207a}", BLUE, 8, "middle");
+    svg += &label(nx + nw / 2.0, by_p + 62.0, "\u{2022} NO\u{2093} (nitrite/nitrate)", BLUE, 8, "middle");
+    svg += &label(nx + nw / 2.0, by_p + 76.0, "\u{2022} Mild acidification", BLUE, 8, "middle");
+    svg += &label(nx + nw / 2.0, by_p + 96.0, "\u{2191} Phenolics preserved", GREEN, 9, "middle");
+    svg += &label(nx + nw / 2.0, by_p + 112.0, "\u{2191} Color stability", GREEN, 8, "middle");
+    svg += &label(nx + nw / 2.0, by_p + 128.0, "\u{2191} DPPH \u{2248} control", GREEN, 8, "middle");
+    svg += &label(nx + nw / 2.0, by_p + 145.0, "\u{0394}E* = 1.12", GREEN, 8, "middle");
+
+    // O₂ side (right)
+    let ox = bx_p + bw_p / 2.0 + 5.0;
+    let ow = bw_p / 2.0 - 15.0;
+    svg += &format!("<rect x=\"{ox}\" y=\"{}\" width=\"{ow}\" height=\"140\" rx=\"6\" fill=\"{RED}\" opacity=\"0.12\"/>\n", by_p + 10.0);
+    svg += &label(ox + ow / 2.0, by_p + 30.0, "He/O\u{2082} Plasma", RED, 10, "middle");
+    svg += &label(ox + ow / 2.0, by_p + 48.0, "\u{2022} O\u{2083}, O atoms", RED, 8, "middle");
+    svg += &label(ox + ow / 2.0, by_p + 62.0, "\u{2022} OH\u{2022} radicals", RED, 8, "middle");
+    svg += &label(ox + ow / 2.0, by_p + 76.0, "\u{2022} H\u{2082}O\u{2082} accumulation", RED, 8, "middle");
+    svg += &label(ox + ow / 2.0, by_p + 96.0, "\u{2193} Phenolics -33%", RED, 9, "middle");
+    svg += &label(ox + ow / 2.0, by_p + 112.0, "\u{2193} DPPH -67%", RED, 8, "middle");
+    svg += &label(ox + ow / 2.0, by_p + 128.0, "\u{2193} FRAP -37%", RED, 8, "middle");
+    svg += &label(ox + ow / 2.0, by_p + 145.0, "\u{0394}E* = severe", RED, 8, "middle");
+
+    // Spirit application box
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{bw_p}\" height=\"100\" rx=\"6\" fill=\"{GRID}\" opacity=\"0.7\"/>\n", bx_p + 5.0, by_p + 165.0);
+    svg += &label(bx_p + bw_p / 2.0, by_p + 185.0, "Application to Spirit Aging:", ACCENT, 9, "middle");
+    svg += &label(bx_p + bw_p / 2.0, by_p + 202.0, "N\u{2082}-carrier: selective chemistry WITHOUT", BLUE, 8, "middle");
+    svg += &label(bx_p + bw_p / 2.0, by_p + 216.0, "destroying oak-derived phenolics", BLUE, 8, "middle");
+    svg += &label(bx_p + bw_p / 2.0, by_p + 234.0, "O\u{2082}-carrier: DELIBERATE oxidation of", RED, 8, "middle");
+    svg += &label(bx_p + bw_p / 2.0, by_p + 248.0, "ellagitannin \u{2192} ellagic acid (color)", RED, 8, "middle");
+
+    // Niedzwiedz data table
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{bw_p}\" height=\"45\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx_p + 5.0, by_p + 275.0);
+    svg += &label(bx_p + bw_p / 2.0, by_p + 290.0, "FRAP (mM Trolox eq/L) after 3 months:", TEXT, 7, "middle");
+    svg += &label(bx_p + bw_p / 2.0, by_p + 304.0,
+        "Control: 11.32 | He/N\u{2082}: 11.46 | He/O\u{2082}: 7.16", TEXT, 7, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "Gas composition is the MASTER CONTROL VARIABLE for plasma treatment of spirits.",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "N\u{2082} carrier \u{2192} preserve phenolics; O\u{2082} carrier \u{2192} controlled oxidation. Never mix blindly.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 88: HHP Ester Selectivity — Ethyl Hexanoate +384%
+// ═══════════════════════════════════════════════════════════════
+fn sim_hhp_ester_selectivity() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 88 \u{2014} HHP Ester Selectivity: Pressure Favors Long-Chain Esters");
+
+    // Panel A: Ester changes at 400 MPa vs 6-year aging
+    svg += &label(195.0, 57.0, "A: Ester Changes: HHP 400 MPa vs 6-Year Aged", TEXT, 10, "middle");
+    let (ax, ay, aw_p, ah_p) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_p}\" height=\"{ah_p}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Data from Zhu 2016: [compound, HHP%, 6yr%]
+    let data: Vec<(&str, f64, f64)> = vec![
+        ("Total ester", 5.7, 116.0),
+        ("Ethyl acetate", 5.9, 15.0),
+        ("Ethyl hexanoate", 384.0, 1686.0),
+        ("Total acid", -7.7, -14.1),
+        ("Acetic acid", -15.0, -41.0),
+    ];
+
+    // Use log-ish scale for the wide range
+    // We'll do a grouped bar chart
+    let n = data.len();
+    let group_w = aw_p / (n as f64 + 1.0);
+    let bar_w = group_w * 0.35;
+
+    // y-axis: split into positive (0 to 400%) and negative (0 to -50%)
+    let zero_y = ay + ah_p * 0.15; // 15% from top for large positive values
+    let pos_max = 450.0;
+    let neg_max = 50.0;
+    let pos_scale = (ah_p * 0.15) / pos_max; // pixels per %
+    let neg_scale = (ah_p * 0.85) / neg_max; // larger negative space... no, this is wrong
+
+    // Actually, let me rethink the scale. The range is -50% to +400%.
+    // Let's put zero at 80% of the height (for -50% below)
+    let zero_frac = 0.12; // zero line at 12% from top
+    let zero_y2 = ay + ah_p * zero_frac;
+    // Above zero: 12% of height for values up to +400% → need log or capped
+    // Below zero: 88% of height for -50% is too much
+
+    // Better approach: Use two different scales above/below zero
+    // Positive: 0 to 400% in top 75% of panel
+    // Negative: 0 to -50% in bottom 25% of panel
+    let pos_h = ah_p * 0.72;
+    let neg_h = ah_p * 0.25;
+    let zero_y3 = ay + pos_h + 10.0; // small gap
+    let pos_scale2 = pos_h / 400.0;
+    let neg_scale2 = neg_h / 50.0;
+
+    svg += &hline(ax, ax + aw_p, zero_y3, TEXT, "1");
+    svg += &label(ax - 5.0, zero_y3 + 3.0, "0%", TEXT, 7, "end");
+
+    // Positive y-axis
+    for pct in [100, 200, 300, 400].iter() {
+        let py = zero_y3 - *pct as f64 * pos_scale2;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("+{}%", pct), MUTED, 7, "end");
+    }
+    // Negative y-axis
+    for pct in [-20, -40].iter() {
+        let py = zero_y3 + (*pct as f64).abs() * neg_scale2;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{}%", pct), MUTED, 7, "end");
+    }
+
+    for (i, (compound, hhp_pct, aged_pct)) in data.iter().enumerate() {
+        let gx = ax + (i as f64 + 0.5) * group_w;
+
+        // HHP bar
+        let (hhp_y, hhp_h) = if *hhp_pct >= 0.0 {
+            let h = hhp_pct.min(400.0) * pos_scale2;
+            (zero_y3 - h, h)
+        } else {
+            let h = hhp_pct.abs().min(50.0) * neg_scale2;
+            (zero_y3, h)
+        };
+        svg += &format!("<rect x=\"{}\" y=\"{hhp_y}\" width=\"{bar_w}\" height=\"{}\" fill=\"{ACCENT}\" opacity=\"0.8\" rx=\"2\"/>\n",
+            gx - bar_w - 1.0, hhp_h.max(1.0));
+
+        // 6-year bar (capped at 400% for display)
+        let (aged_y, aged_h) = if *aged_pct >= 0.0 {
+            let h = aged_pct.min(400.0) * pos_scale2;
+            (zero_y3 - h, h)
+        } else {
+            let h = aged_pct.abs().min(50.0) * neg_scale2;
+            (zero_y3, h)
+        };
+        svg += &format!("<rect x=\"{}\" y=\"{aged_y}\" width=\"{bar_w}\" height=\"{}\" fill=\"{BLUE}\" opacity=\"0.6\" rx=\"2\"/>\n",
+            gx + 1.0, aged_h.max(1.0));
+
+        // Value labels (compact)
+        if hhp_pct.abs() > 10.0 {
+            let ly = if *hhp_pct >= 0.0 { hhp_y - 4.0 } else { hhp_y + hhp_h + 10.0 };
+            svg += &label(gx - bar_w / 2.0 - 1.0, ly, &format!("{:+.0}%", hhp_pct), ACCENT, 6, "middle");
+        }
+
+        // Compound label
+        svg += &label(gx, zero_y3 + 50.0 * neg_scale2 + 12.0, compound, TEXT, 7, "middle");
+    }
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"72\" width=\"10\" height=\"8\" fill=\"{ACCENT}\" opacity=\"0.8\"/>\n", ax + 10.0);
+    svg += &label(ax + 23.0, 80.0, "HHP 400 MPa, 30 min", ACCENT, 7, "start");
+    svg += &format!("<rect x=\"{}\" y=\"85\" width=\"10\" height=\"8\" fill=\"{BLUE}\" opacity=\"0.6\"/>\n", ax + 10.0);
+    svg += &label(ax + 23.0, 93.0, "6-year natural aging", BLUE, 7, "start");
+
+    // Call-out for ethyl hexanoate
+    svg += &label(ax + aw_p - 10.0, ay + 20.0, "Ethyl hexanoate:", YELLOW, 8, "end");
+    svg += &label(ax + aw_p - 10.0, ay + 33.0, "+384% (HHP)", ACCENT, 9, "end");
+
+    // Panel B: Mechanism — pressure favors negative ΔV reactions
+    svg += &label(525.0, 57.0, "B: Why Pressure Selects for Long-Chain Esters", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Reaction volume change data
+    let reactions: Vec<(&str, f64, &str)> = vec![
+        ("Ethyl acetate", -8.0, MUTED),
+        ("Ethyl butyrate", -11.0, BLUE),
+        ("Ethyl hexanoate", -14.0, GREEN),
+        ("Ethyl octanoate", -17.0, ACCENT),
+        ("Ethyl decanoate", -20.0, YELLOW),
+    ];
+
+    // Bar chart for ΔV
+    let dv_max = 25.0;
+    let dv_scale = (bh - 80.0) / dv_max;
+    let dv_bar_w = 35.0;
+    let dv_gap = (bw - reactions.len() as f64 * dv_bar_w) / (reactions.len() as f64 + 1.0);
+
+    svg += &label(bx + bw / 2.0, by + 30.0, "\u{0394}V\u{1d63}\u{2093}\u{2099} (cm\u{00b3}/mol) — more negative = more pressure-enhanced", TEXT, 7, "middle");
+
+    for (i, (ester, dv, color)) in reactions.iter().enumerate() {
+        let rx = bx + dv_gap + i as f64 * (dv_bar_w + dv_gap);
+        let bar_h = dv.abs() * dv_scale;
+        let bar_y = by + 40.0;
+        svg += &format!("<rect x=\"{rx}\" y=\"{bar_y}\" width=\"{dv_bar_w}\" height=\"{bar_h}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n");
+        svg += &label(rx + dv_bar_w / 2.0, bar_y + bar_h + 12.0,
+            &format!("{:.0}", dv), *color, 8, "middle");
+        // Ester label (rotated)
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"7\" text-anchor=\"start\" \
+            transform=\"rotate(-45,{},{})\">{}</text>\n",
+            rx + 2.0, bar_y + bar_h + 25.0, rx + 2.0, bar_y + bar_h + 25.0, ester);
+    }
+
+    // Acceleration calculation at 400 MPa
+    // ln(K_P/K_0) = -ΔV * ΔP / (RT)
+    // At 400 MPa, T = 298K, R = 8.314 cm³·MPa/(mol·K)
+    let r_cm3_mpa = 8.314; // cm³·MPa/(mol·K)
+    let t = 298.0;
+    let p = 400.0; // MPa
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"80\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.7\"/>\n",
+        bx + 5.0, by + bh - 95.0, bw - 10.0);
+    svg += &label(bx + bw / 2.0, by + bh - 80.0, "Equilibrium enhancement at 400 MPa:", TEXT, 8, "middle");
+
+    for (i, (ester, dv, _)) in reactions.iter().enumerate() {
+        let dv_m3 = *dv * 1e-6; // cm³ → m³... actually in SI: ΔV in m³/mol, P in Pa
+        // Better: use consistent units. ΔV in cm³/mol, P in atm, R in cm³·atm/(mol·K)
+        // ln(K_P/K_0) = -ΔV(cm³/mol) * P(atm) / (R(cm³·atm/(mol·K)) * T)
+        // R = 82.057 cm³·atm/(mol·K)
+        let r_atm = 82.057;
+        let p_atm = 400.0 * 9.8692; // MPa to atm
+        let enhancement = (-dv * p_atm / (r_atm * t)).exp();
+        if i < 3 {
+            svg += &label(bx + bw / 2.0, by + bh - 66.0 + i as f64 * 14.0,
+                &format!("{}: K\u{209a}/K\u{2080} = {:.1}\u{00d7}", ester, enhancement),
+                ACCENT, 7, "middle");
+        }
+    }
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "HHP at 400 MPa: +384% ethyl hexanoate (Zhu 2016). Pressure selects for LONG-CHAIN esters",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "because their formation has larger negative \u{0394}V. Short-chain esters barely respond.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 89: Mechanochemical Dosimetry — Ball Milling Linearity Window
+// ═══════════════════════════════════════════════════════════════
+fn sim_mechanochem_dosimetry() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 89 \u{2014} Mechanochemical Dosimetry: The Ball Milling Linearity Window");
+
+    // Panel A: Yield vs kinetic energy dose
+    svg += &label(195.0, 57.0, "A: Depolymerization Yield vs Kinetic Energy Dose", TEXT, 10, "middle");
+    let (ax, ay, aw_p, ah_p) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_p}\" height=\"{ah_p}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // x-axis: Energy dose (kJ/g), 0 to 100
+    let x_max = 100.0;
+    for i in 0..=5 {
+        let val = i as f64 * 20.0;
+        let px = ax + val / x_max * aw_p;
+        svg += &vline(px, ay + ah_p, ay + ah_p + 4.0, MUTED, "0.5");
+        svg += &label(px, ay + ah_p + 14.0, &format!("{:.0}", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw_p / 2.0, ay + ah_p + 26.0, "Kinetic energy dose (kJ/g)", MUTED, 8, "middle");
+
+    // y-axis: Yield (%), 0 to 50
+    let y_max = 50.0;
+    for i in 0..=5 {
+        let val = i as f64 * 10.0;
+        let py = ay + ah_p - val / y_max * ah_p;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:.0}%", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 25.0, ay + ah_p / 2.0, ax - 25.0, ay + ah_p / 2.0,
+        "MWL / WSP yield (%)");
+
+    let sx = |x: f64| ax + x / x_max * aw_p;
+    let sy = |y: f64| ay + ah_p - y / y_max * ah_p;
+
+    // Linear regime: y = 0.5 * x for 0 ≤ x ≤ 50 (slope = 0.5%/kJ/g)
+    // Plateau: y = 25 + 10*(1 - e^(-0.03*(x-50))) for x > 50
+    let mut pts: Vec<(f64, f64)> = Vec::new();
+    let transition_dose = 50.0;
+    let linear_slope = 0.5; // %/(kJ/g)
+    for i in 0..=100 {
+        let x = i as f64;
+        let y = if x <= transition_dose {
+            linear_slope * x
+        } else {
+            let y_at_trans = linear_slope * transition_dose;
+            y_at_trans + 10.0 * (1.0 - E.powf(-0.03 * (x - transition_dose)))
+        };
+        pts.push((x, y));
+    }
+    svg += &polyline_svg(&pts, ACCENT, "2.5", &sx, &sy);
+
+    // Mark linear regime
+    let lin_end_x = sx(transition_dose);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{}\" height=\"{ah_p}\" fill=\"{GREEN}\" opacity=\"0.08\"/>\n",
+        lin_end_x - ax);
+    svg += &label((ax + lin_end_x) / 2.0, ay + 20.0, "LINEAR REGIME", GREEN, 9, "middle");
+    svg += &label((ax + lin_end_x) / 2.0, ay + 33.0, "(efficient)", GREEN, 7, "middle");
+
+    // Mark plateau
+    svg += &format!("<rect x=\"{lin_end_x}\" y=\"{ay}\" width=\"{}\" height=\"{ah_p}\" fill=\"{RED}\" opacity=\"0.06\"/>\n",
+        ax + aw_p - lin_end_x);
+    svg += &label((lin_end_x + ax + aw_p) / 2.0, ay + 20.0, "PLATEAU", RED, 9, "middle");
+    svg += &label((lin_end_x + ax + aw_p) / 2.0, ay + 33.0, "(wasted energy)", RED, 7, "middle");
+
+    // Transition dashed line
+    svg += &format!("<line x1=\"{lin_end_x}\" y1=\"{ay}\" x2=\"{lin_end_x}\" y2=\"{}\" \
+        stroke=\"{YELLOW}\" stroke-width=\"1.5\" stroke-dasharray=\"4,3\"/>\n", ay + ah_p);
+    svg += &label(lin_end_x + 3.0, ay + ah_p - 10.0, "Substrate layering", YELLOW, 7, "start");
+    svg += &label(lin_end_x + 3.0, ay + ah_p - 0.0, "onset", YELLOW, 7, "start");
+
+    // Kessler 2022 data points (approximate)
+    let data_pts: Vec<(f64, f64, &str)> = vec![
+        (10.0, 5.0, "Mixer mill"),
+        (20.0, 10.0, "Mixer mill"),
+        (35.0, 17.0, "Planetary mill"),
+        (50.0, 25.0, "Planetary mill"),
+        (70.0, 30.0, "Planetary (excess)"),
+        (90.0, 33.0, "Planetary (excess)"),
+    ];
+    for (x, y, _label_text) in &data_pts {
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{GREEN}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+            sx(*x), sy(*y));
+    }
+
+    // Panel B: Energy efficiency (yield/kJ) vs dose
+    svg += &label(525.0, 57.0, "B: Energy Efficiency vs Dose (Oak Optimization)", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // x-axis: Energy dose
+    for i in 0..=5 {
+        let val = i as f64 * 20.0;
+        let px = bx + val / x_max * bw;
+        svg += &vline(px, by + bh, by + bh + 4.0, MUTED, "0.5");
+        svg += &label(px, by + bh + 14.0, &format!("{:.0}", val), MUTED, 7, "middle");
+    }
+    svg += &label(bx + bw / 2.0, by + bh + 26.0, "Kinetic energy dose (kJ/g)", MUTED, 8, "middle");
+
+    // y-axis: Efficiency (%/(kJ/g))
+    let eff_max = 0.6;
+    for i in 0..=3 {
+        let val = i as f64 * 0.2;
+        let py = by + bh - val / eff_max * bh;
+        svg += &hline(bx - 3.0, bx, py, MUTED, "0.5");
+        svg += &label(bx - 5.0, py + 3.0, &format!("{:.1}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        bx - 28.0, by + bh / 2.0, bx - 28.0, by + bh / 2.0,
+        "Efficiency (%/(kJ/g))");
+
+    let sx2 = |x: f64| bx + x / x_max * bw;
+    let sy2 = |y: f64| by + bh - y / eff_max * bh;
+
+    // Efficiency = d(yield)/d(dose)
+    let mut eff_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 1..=100 {
+        let x = i as f64;
+        let eff = if x <= transition_dose {
+            linear_slope // constant in linear regime
+        } else {
+            10.0 * 0.03 * E.powf(-0.03 * (x - transition_dose))
+        };
+        eff_pts.push((x, eff));
+    }
+    svg += &polyline_svg(&eff_pts, ACCENT, "2.5", &sx2, &sy2);
+
+    // Optimal zone marker
+    let opt_x1 = sx2(30.0);
+    let opt_x2 = sx2(50.0);
+    svg += &format!("<rect x=\"{opt_x1}\" y=\"{by}\" width=\"{}\" height=\"{bh}\" fill=\"{GREEN}\" opacity=\"0.10\"/>\n",
+        opt_x2 - opt_x1);
+    svg += &label((opt_x1 + opt_x2) / 2.0, by + 25.0, "OPTIMAL", GREEN, 9, "middle");
+    svg += &label((opt_x1 + opt_x2) / 2.0, by + 38.0, "for oak", GREEN, 8, "middle");
+
+    // Translate to milling time for oak
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"60\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.7\"/>\n",
+        bx + 5.0, by + bh - 75.0, bw - 10.0);
+    svg += &label(bx + bw / 2.0, by + bh - 60.0, "Oak translation (Qu 2021 data):", TEXT, 8, "middle");
+    svg += &label(bx + bw / 2.0, by + bh - 46.0, "3h milling \u{2248} 30 kJ/g \u{2192} 15.5% MWL (linear)", GREEN, 7, "middle");
+    svg += &label(bx + bw / 2.0, by + bh - 33.0, "7h milling \u{2248} 70 kJ/g \u{2192} 35.6% MWL (plateau)", YELLOW, 7, "middle");
+    svg += &label(bx + bw / 2.0, by + bh - 20.0, "\u{2192} Optimal: 4\u{2013}5h milling for hardwood", ACCENT, 8, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "Kessler 2022: yield is LINEAR with energy dose until substrate forms a grinding-surface layer.",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "For oak: ~4-5h planetary milling maximizes phenolic yield per kWh. Beyond = diminishing returns.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 90: Progressive Freeze Fractionation
+// ═══════════════════════════════════════════════════════════════
+fn sim_progressive_freeze_fractionation() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 90 \u{2014} Progressive Freeze Fractionation: Tubular Ice for Spirit Stratification");
+
+    // Panel A: Aroma retention by concentration method
+    svg += &label(195.0, 57.0, "A: Volatile Aroma Retention by Method", TEXT, 10, "middle");
+    let (ax, ay, aw_p, ah_p) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_p}\" height=\"{ah_p}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // y-axis: retention %
+    for i in 0..=5 {
+        let val = i as f64 * 20.0;
+        let py = ay + ah_p - val / 100.0 * ah_p;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:.0}%", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 25.0, ay + ah_p / 2.0, ax - 25.0, ay + ah_p / 2.0,
+        "Aroma compound retention");
+
+    // Bar data
+    let methods: Vec<(&str, f64, &str)> = vec![
+        ("Evaporative\nconcentration", 40.0, RED),
+        ("Reverse\nosmosis", 65.0, YELLOW),
+        ("Batch\nfreeze", 80.0, BLUE),
+        ("Progressive\nfreeze (PFC)", 93.0, GREEN),
+        ("Freeze +\nVit C", 95.0, GREEN),
+    ];
+
+    let bar_w = 38.0;
+    let gap = (aw_p - methods.len() as f64 * bar_w) / (methods.len() as f64 + 1.0);
+
+    for (i, (lbl, retention, color)) in methods.iter().enumerate() {
+        let bx_bar = ax + gap + i as f64 * (bar_w + gap);
+        let bar_h = retention / 100.0 * ah_p;
+        let bar_y = ay + ah_p - bar_h;
+        svg += &format!("<rect x=\"{bx_bar}\" y=\"{bar_y}\" width=\"{bar_w}\" height=\"{bar_h}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n");
+        svg += &label(bx_bar + bar_w / 2.0, bar_y - 5.0, &format!("{:.0}%", retention), *color, 8, "middle");
+
+        let parts: Vec<&str> = lbl.split('\n').collect();
+        for (j, part) in parts.iter().enumerate() {
+            svg += &label(bx_bar + bar_w / 2.0, ay + ah_p + 14.0 + j as f64 * 11.0,
+                part, TEXT, 7, "middle");
+        }
+    }
+
+    // Ding 2016 annotation
+    svg += &label(ax + aw_p - 5.0, ay + 15.0, "Ding et al. 2016:", MUTED, 7, "end");
+    svg += &label(ax + aw_p - 5.0, ay + 27.0, ">90% aroma retention", GREEN, 7, "end");
+    svg += &label(ax + aw_p - 5.0, ay + 39.0, "vs 40% evaporative", RED, 7, "end");
+
+    // Panel B: Multi-pass PFC concentration profile
+    svg += &label(525.0, 57.0, "B: Multi-Pass PFC Concentration of Spirit", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // x-axis: Number of passes
+    for i in 0..=5 {
+        let px = bx + i as f64 / 5.0 * bw;
+        svg += &vline(px, by + bh, by + bh + 4.0, MUTED, "0.5");
+        svg += &label(px, by + bh + 14.0, &format!("{}", i), MUTED, 7, "middle");
+    }
+    svg += &label(bx + bw / 2.0, by + bh + 26.0, "PFC pass number", MUTED, 8, "middle");
+
+    // y-axis: ABV (%) — range 35 to 75
+    let abv_min = 35.0;
+    let abv_max = 75.0;
+    for i in 0..=4 {
+        let val = 40.0 + i as f64 * 10.0;
+        let py = by + bh - (val - abv_min) / (abv_max - abv_min) * bh;
+        svg += &hline(bx - 3.0, bx, py, MUTED, "0.5");
+        svg += &label(bx - 5.0, py + 3.0, &format!("{:.0}%", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        bx - 28.0, by + bh / 2.0, bx - 28.0, by + bh / 2.0,
+        "Ethanol concentration (% ABV)");
+
+    let sx = |x: f64| bx + x / 5.0 * bw;
+    let sy_abv = |y: f64| by + bh - (y - abv_min) / (abv_max - abv_min) * bh;
+
+    // PFC concentration profile: each pass removes ~25% of water as ice
+    // Start at 40% ABV
+    let mut abv_pts: Vec<(f64, f64)> = Vec::new();
+    let mut ester_factor_pts: Vec<(f64, f64)> = Vec::new();
+    let mut abv = 40.0_f64;
+    for pass in 0..=5 {
+        abv_pts.push((pass as f64, abv));
+        // Ester equilibrium factor relative to starting point
+        // EtOH concentration in mol/L: (abv/100) * 789 / 46.07
+        let etoh_mol = (abv / 100.0) * 789.0 / 46.07;
+        let h2o_mol = ((100.0 - abv) / 100.0) * 1000.0 / 18.015;
+        let ester_factor = (etoh_mol / h2o_mol) / ((40.0 / 100.0 * 789.0 / 46.07) / ((60.0 / 100.0) * 1000.0 / 18.015));
+        // Scale to fit secondary y-axis (1× to 6×)
+        let ester_abv_equiv = abv_min + ester_factor / 6.0 * (abv_max - abv_min);
+        ester_factor_pts.push((pass as f64, ester_abv_equiv));
+
+        // Each pass: remove ~30% of current water as ice
+        let water_frac = (100.0 - abv) / 100.0;
+        let water_removed = water_frac * 0.30;
+        let new_total = 1.0 - water_removed;
+        abv = (abv / 100.0) / new_total * 100.0;
+    }
+
+    svg += &polyline_svg(&abv_pts, ACCENT, "2.5", &sx, &sy_abv);
+
+    // Data points
+    for (x, y) in &abv_pts {
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{ACCENT}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+            sx(*x), sy_abv(*y));
+        svg += &label(sx(*x) + 8.0, sy_abv(*y) + 3.0, &format!("{:.0}%", y), ACCENT, 7, "start");
+    }
+
+    // Ester ceiling line at 58% ABV (from §1.16)
+    let ester_ceil_y = sy_abv(58.0);
+    svg += &format!("<line x1=\"{bx}\" y1=\"{ester_ceil_y}\" x2=\"{}\" y2=\"{ester_ceil_y}\" \
+        stroke=\"{YELLOW}\" stroke-width=\"1.5\" stroke-dasharray=\"4,3\"/>\n", bx + bw);
+    svg += &label(bx + bw - 5.0, ester_ceil_y - 5.0, "Ester ceiling (58% ABV)", YELLOW, 7, "end");
+    svg += &label(bx + bw - 5.0, ester_ceil_y + 10.0, "from \u{00a7}1.16", YELLOW, 7, "end");
+
+    // Osorio 2024 annotation
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.7\"/>\n",
+        bx + 5.0, by + 15.0, bw - 10.0);
+    svg += &label(bx + bw / 2.0, by + 32.0, "Osorio 2024: stirred PFC on beer", MUTED, 7, "middle");
+    svg += &label(bx + bw / 2.0, by + 44.0, "Style-dependent K values = composit. matters", MUTED, 7, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "PFC retains >90% aroma (vs 40% evaporative). 3 passes: 40% \u{2192} 60% ABV, crossing ester ceiling.",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "Concentrate \u{2192} esterify \u{2192} dilute back. Each pass multiplies [EtOH]\u{00d7}[Acid]/[H\u{2082}O].",
+        GREEN, 8, "middle");
+
     svg.push_str("</svg>");
     svg
 }

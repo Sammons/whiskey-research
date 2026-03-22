@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 88 — HHP Ester Selectivity: Pressure Favors Long-Chain Esters</text>
+<text x="195" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Ester Changes: HHP 400 MPa vs 6-Year Aged</text>
+<rect x="70" y="65" width="250" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="70" y1="298.2" x2="320" y2="298.2" stroke="#e6edf3" stroke-width="1"/>
+<text x="65" y="301.2" fill="#e6edf3" font-size="7" text-anchor="end">0%</text>
+<line x1="67" y1="242.39999999999998" x2="70" y2="242.39999999999998" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="245.39999999999998" fill="#8b949e" font-size="7" text-anchor="end">+100%</text>
+<line x1="67" y1="186.6" x2="70" y2="186.6" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="189.6" fill="#8b949e" font-size="7" text-anchor="end">+200%</text>
+<line x1="67" y1="130.8" x2="70" y2="130.8" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="133.8" fill="#8b949e" font-size="7" text-anchor="end">+300%</text>
+<line x1="67" y1="75" x2="70" y2="75" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="78" fill="#8b949e" font-size="7" text-anchor="end">+400%</text>
+<line x1="67" y1="329.2" x2="70" y2="329.2" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="332.2" fill="#8b949e" font-size="7" text-anchor="end">-20%</text>
+<line x1="67" y1="360.2" x2="70" y2="360.2" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="363.2" fill="#8b949e" font-size="7" text-anchor="end">-40%</text>
+<rect x="75.25" y="295.01939999999996" width="14.583333333333332" height="3.1805999999999996" fill="#e8a665" opacity="0.8" rx="2"/>
+<rect x="91.83333333333333" y="233.47199999999998" width="14.583333333333332" height="64.728" fill="#58a6ff" opacity="0.6" rx="2"/>
+<text x="90.83333333333333" y="387.7" fill="#e6edf3" font-size="7" text-anchor="middle">Total ester</text>
+<rect x="116.91666666666667" y="294.9078" width="14.583333333333332" height="3.2922" fill="#e8a665" opacity="0.8" rx="2"/>
+<rect x="133.5" y="289.83" width="14.583333333333332" height="8.37" fill="#58a6ff" opacity="0.6" rx="2"/>
+<text x="132.5" y="387.7" fill="#e6edf3" font-size="7" text-anchor="middle">Ethyl acetate</text>
+<rect x="158.58333333333331" y="83.928" width="14.583333333333332" height="214.272" fill="#e8a665" opacity="0.8" rx="2"/>
+<rect x="175.16666666666666" y="75" width="14.583333333333332" height="223.2" fill="#58a6ff" opacity="0.6" rx="2"/>
+<text x="165.875" y="79.928" fill="#e8a665" font-size="6" text-anchor="middle">+384%</text>
+<text x="174.16666666666666" y="387.7" fill="#e6edf3" font-size="7" text-anchor="middle">Ethyl hexanoate</text>
+<rect x="200.24999999999997" y="298.2" width="14.583333333333332" height="11.935" fill="#e8a665" opacity="0.8" rx="2"/>
+<rect x="216.83333333333331" y="298.2" width="14.583333333333332" height="21.855" fill="#58a6ff" opacity="0.6" rx="2"/>
+<text x="215.83333333333331" y="387.7" fill="#e6edf3" font-size="7" text-anchor="middle">Total acid</text>
+<rect x="241.91666666666666" y="298.2" width="14.583333333333332" height="23.25" fill="#e8a665" opacity="0.8" rx="2"/>
+<rect x="258.5" y="298.2" width="14.583333333333332" height="63.550000000000004" fill="#58a6ff" opacity="0.6" rx="2"/>
+<text x="249.20833333333334" y="331.45" fill="#e8a665" font-size="6" text-anchor="middle">-15%</text>
+<text x="257.5" y="387.7" fill="#e6edf3" font-size="7" text-anchor="middle">Acetic acid</text>
+<rect x="80" y="72" width="10" height="8" fill="#e8a665" opacity="0.8"/>
+<text x="93" y="80" fill="#e8a665" font-size="7" text-anchor="start">HHP 400 MPa, 30 min</text>
+<rect x="80" y="85" width="10" height="8" fill="#58a6ff" opacity="0.6"/>
+<text x="93" y="93" fill="#58a6ff" font-size="7" text-anchor="start">6-year natural aging</text>
+<text x="310" y="85" fill="#d29922" font-size="8" text-anchor="end">Ethyl hexanoate:</text>
+<text x="310" y="98" fill="#e8a665" font-size="9" text-anchor="end">+384% (HHP)</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Why Pressure Selects for Long-Chain Esters</text>
+<rect x="400" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="530" y="95" fill="#e6edf3" font-size="7" text-anchor="middle">ΔVᵣₓₙ (cm³/mol) — more negative = more pressure-enhanced</text>
+<rect x="414.1666666666667" y="105" width="35" height="73.6" fill="#8b949e" opacity="0.7" rx="2"/>
+<text x="431.6666666666667" y="190.6" fill="#8b949e" font-size="8" text-anchor="middle">-8</text>
+<text x="416.1666666666667" y="203.6" fill="#e6edf3" font-size="7" text-anchor="start" transform="rotate(-45,416.1666666666667,203.6)">Ethyl acetate</text>
+<rect x="463.33333333333337" y="105" width="35" height="101.19999999999999" fill="#58a6ff" opacity="0.7" rx="2"/>
+<text x="480.83333333333337" y="218.2" fill="#58a6ff" font-size="8" text-anchor="middle">-11</text>
+<text x="465.33333333333337" y="231.2" fill="#e6edf3" font-size="7" text-anchor="start" transform="rotate(-45,465.33333333333337,231.2)">Ethyl butyrate</text>
+<rect x="512.5" y="105" width="35" height="128.79999999999998" fill="#3fb950" opacity="0.7" rx="2"/>
+<text x="530" y="245.79999999999998" fill="#3fb950" font-size="8" text-anchor="middle">-14</text>
+<text x="514.5" y="258.79999999999995" fill="#e6edf3" font-size="7" text-anchor="start" transform="rotate(-45,514.5,258.79999999999995)">Ethyl hexanoate</text>
+<rect x="561.6666666666667" y="105" width="35" height="156.39999999999998" fill="#e8a665" opacity="0.7" rx="2"/>
+<text x="579.1666666666667" y="273.4" fill="#e8a665" font-size="8" text-anchor="middle">-17</text>
+<text x="563.6666666666667" y="286.4" fill="#e6edf3" font-size="7" text-anchor="start" transform="rotate(-45,563.6666666666667,286.4)">Ethyl octanoate</text>
+<rect x="610.8333333333334" y="105" width="35" height="184" fill="#d29922" opacity="0.7" rx="2"/>
+<text x="628.3333333333334" y="301" fill="#d29922" font-size="8" text-anchor="middle">-20</text>
+<text x="612.8333333333334" y="314" fill="#e6edf3" font-size="7" text-anchor="start" transform="rotate(-45,612.8333333333334,314)">Ethyl decanoate</text>
+<rect x="405" y="280" width="250" height="80" rx="4" fill="#30363d" opacity="0.7"/>
+<text x="530" y="295" fill="#e6edf3" font-size="8" text-anchor="middle">Equilibrium enhancement at 400 MPa:</text>
+<text x="530" y="309" fill="#e8a665" font-size="7" text-anchor="middle">Ethyl acetate: Kₚ/K₀ = 3.6×</text>
+<text x="530" y="323" fill="#e8a665" font-size="7" text-anchor="middle">Ethyl butyrate: Kₚ/K₀ = 5.9×</text>
+<text x="530" y="337" fill="#e8a665" font-size="7" text-anchor="middle">Ethyl hexanoate: Kₚ/K₀ = 9.6×</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">HHP at 400 MPa: +384% ethyl hexanoate (Zhu 2016). Pressure selects for LONG-CHAIN esters</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">because their formation has larger negative ΔV. Short-chain esters barely respond.</text>
+</svg>
