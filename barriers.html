@@ -2184,7 +2184,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <p><strong>Spirit-specific implementation:</strong> A dielectric barrier discharge (DBD) reactor for 1 L of spirit: two parallel plate electrodes (aluminum foil on glass, 2 mm gap) over a thin spirit film. He/N<sub>2</sub> gas mixture (90:10) flows through the gap at 1&ndash;5 L/min. AC excitation at 10&ndash;20 kHz, 5&ndash;15 kV peak. Treatment: 5 min produces controlled radical dose equivalent to weeks of barrel-mediated oxidation. The trick: use He/N<sub>2</sub> (not He/O<sub>2</sub>) to preserve phenolics while still driving the acetaldehyde &rarr; acetic acid cascade.</p>
 
-<p><strong>Cross-domain synthesis &mdash; plasma-nebulization:</strong> Combining CAP with microdroplet esterification (&sect;1.18) creates a novel dual-barrier single-pass concept. Spirit is nebulized into &lt;20 &micro;m droplets within a plasma field. At the droplet surface: (1) plasma-generated radicals oxidize ethanol to acetic acid (Barrier 1), and (2) the freshly formed acetic acid reacts with ethanol at the high-field interface (Barrier 4 &mdash; esterification). As the droplet evaporates, concentration increases, further driving both reactions. A single pass through a plasma-nebulization chamber could attack two barriers simultaneously with residence time &lt;1 second.</p>
+<p><strong>Critical caveat &mdash; ethanol esterification gap:</strong> Warne et al. (2024) demonstrated 7.5&times; enhancement of methyl hexanoate esterification using RF cold plasma&mdash;but <strong>no detectable esterification occurred in ethanol-based solutions</strong><span class="cite" data-ref="159"><sup>[159]</sup></span>. Methanol&rsquo;s lower solvation free energy appears to permit plasma-induced esterification while ethanol resists. This means the plasma-esterification pathway in &sect;1.18&rsquo;s hybrid concept may not work in spirit directly. However, the <em>oxidation</em> pathway (ethanol &rarr; acetaldehyde &rarr; acetic acid) operates robustly in ethanol systems, and electrochemical oxidation of distilled spirit achieves <strong>~10,000&times; acceleration</strong> of higher alcohol oxidation with 20 min at 0.8V matching 1-year naturally aged PCA profiles<span class="cite" data-ref="160"><sup>[160]</sup></span>.</p>
+
+<p><strong>Cross-domain synthesis &mdash; plasma-nebulization:</strong> Combining CAP with microdroplet esterification (&sect;1.18) creates a novel dual-barrier single-pass concept. Spirit is nebulized into &lt;20 &micro;m droplets within a plasma field. At the droplet surface: (1) plasma-generated radicals oxidize ethanol to acetic acid (Barrier 1), and (2) the freshly formed acetic acid reacts with ethanol at the high-field interface (Barrier 4 &mdash; esterification). As the droplet evaporates, concentration increases, further driving both reactions. <strong>Note:</strong> the esterification component is speculative given Warne 2024&rsquo;s ethanol failure; the oxidation component is well-supported.</p>
 
 <figure class="sim-figure">
   <img src="graphs/cold-plasma-aging.svg" alt="Cold plasma: reactive species generation and gas-composition selectivity">
@@ -2751,6 +2753,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r156">Ref (2024) &ldquo;Nanosecond Pulse-Driven Oxygen Bubble Plasma Activation of Low-Concentration Alcohol Solutions and its Sterilization Mechanism.&rdquo; <em>ACS Omega</em>. <a href="https://doi.org/10.1021/acsomega.4c08119">DOI</a> (Plasma-activated ethanol: 445 ppm acetic acid, 166 ppm peroxyacetic acid, 118 ppm H<sub>2</sub>O<sub>2</sub>, pH 3.0. Confirms EtOH &rarr; acetaldehyde &rarr; acetic acid oxidation cascade operates in plasma-treated ethanol.)</li>
   <li id="r157">Niedz&#769;wiedz&#769; I, et al. (2022) &ldquo;Comparison of the Effect of Cold Plasma with Conventional Preservation Methods on Red Wine Quality Using Chemometrics Analysis.&rdquo; <em>Molecules</em> 27(20):7048. <a href="https://doi.org/10.3390/molecules27207048">DOI</a> (DBD reactor, He/O<sub>2</sub> or He/N<sub>2</sub>. He/N<sub>2</sub> 5 min: phenolics 1944 mg/L after 3 mo (vs 1954 control, &Delta;E* = 1.12). He/O<sub>2</sub> 10 min: severe degradation &minus;33%. Gas composition is the selectivity switch for controlled oxidation.)</li>
   <li id="r158">Yoshida J-i. (2010) &ldquo;Flash Chemistry: Flow Microreactor Synthesis Based on High-Resolution Reaction Time Control.&rdquo; <em>Chem Rec</em> 10(5):332&ndash;341. <a href="https://doi.org/10.1002/tcr.201000020">DOI</a> (Microreactors achieve complete diffusive mixing in milliseconds. Residence time control at ms scale enables generation, transfer, and consumption of reactive intermediates before decomposition. Foundation for precision high-temperature cascade chemistry.)</li>
+  <li id="r159">Warne GR, et al. (2024) &ldquo;Esterification and volatile compound manipulation using radiofrequency cold plasma.&rdquo; <em>Innov Food Sci Emerg Technol</em> 95:103726. <a href="https://doi.org/10.1016/j.ifset.2024.103726">DOI</a> (RF cold plasma (kINPen IND-x, 1 MHz): 7.5&times; methyl hexanoate enhancement in methanol solvent. <strong>Critical: no detectable esterification in ethanol-based solutions.</strong> Argon plasma best for esterification; N<sub>2</sub> plasma increases acid volatility but not ester formation.)</li>
+  <li id="r160">Xiong A, et al. (2020) &ldquo;Influence of Electrochemical Oxidation on the Maturation Process of the Distilled Spirit.&rdquo; <em>ACS Omega</em> 5(29):18349&ndash;18355. <a href="https://doi.org/10.1021/acsomega.0c02090">DOI</a> (Electrochemical oxidation at 0.8V for 20 min: no significant PCA difference from 1-year naturally aged spirit. Higher alcohol consumption rate ~10,000&times; faster than natural aging. 24 volatiles quantified by GC.)</li>
 </ol>
 
 
@@ -3562,6 +3566,16 @@ var refs = {
     source: "Yoshida (2010), Chem Rec 10(5):332\u2013341",
     excerpt: "Flash chemistry in flow microreactors. Complete diffusive mixing in milliseconds. Residence time control at millisecond scale. Reactive intermediates generated, transferred, and consumed before decomposition. Enables precision high-temperature cascade reactions impossible in batch.",
     url: "#r158"
+  },
+  159: {
+    source: "Warne et al. (2024), Innov Food Sci Emerg Technol 95:103726",
+    excerpt: "RF cold plasma (kINPen, 1 MHz): 7.5\u00d7 methyl hexanoate esterification in methanol. CRITICAL: no detectable esterification in ethanol-based solutions. Argon plasma best for ester formation; air plasma best for individual acid esterification. Gas-type selectivity for different product profiles.",
+    url: "#r159"
+  },
+  160: {
+    source: "Xiong et al. (2020), ACS Omega 5(29):18349\u201318355",
+    excerpt: "Electrochemical oxidation of distilled spirit at 0.8V for 20 min: PCA indistinguishable from 1-year naturally aged. Higher alcohol consumption rate ~10,000\u00d7 faster than natural aging. 24 volatiles quantified. Demonstrates electrochemistry as a viable maturation accelerator.",
+    url: "#r160"
   }
 };
 
