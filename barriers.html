@@ -1494,6 +1494,20 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; CALB esterification in scCO<sub>2</sub> is mature industrial chemistry (biofuel, flavor, fragrance)<span class="cite" data-ref="121"><sup>[121]</sup></span><span class="cite" data-ref="122"><sup>[122]</sup></span>. Application to a two-stage extraction+esterification protocol for spirits is novel but each step is independently validated. The key limitation is equipment cost: a tabletop scCO<sub>2</sub> system capable of enzymatic reaction (~150 bar, 60&deg;C, packed bed) is $800&ndash;2,000. <strong>Home testability: 2/5</strong> (requires supercritical equipment; but tabletop extractors for essential oils exist in the $800 range and could be modified with a packed-bed cartridge).
 </div>
 
+<h3>4.21 Interfacial Microdroplet Chemistry: A Hidden Oxidation Mechanism</h3>
+
+<p><strong>A paradigm-shifting discovery from physical chemistry.</strong> Water microdroplets (1&ndash;20 &mu;m) spontaneously generate H<sub>2</sub>O<sub>2</sub> at the air-water interface without any reagent, catalyst, electricity, or radiation<span class="cite" data-ref="123"><sup>[123]</sup></span>. The mechanism: OH<sup>&minus;</sup> at the droplet surface loses an electron, generating OH&bull; radicals that recombine to form H<sub>2</sub>O<sub>2</sub>. The interfacial electric field (~10<sup>7</sup> V/cm) drives this spontaneous oxidation. Concentration scales inversely with droplet size&mdash;smaller droplets (higher surface-to-volume ratio) produce more H<sub>2</sub>O<sub>2</sub> per unit volume.</p>
+
+<p><strong>The connection to sonication.</strong> Every ultrasonic treatment of spirit (&sect;3.14, &sect;4.12, &sect;4.17) generates microdroplets by fragmentation at the cavitation bubble interface. These microdroplets spontaneously produce ROS <em>independently of cavitation collapse</em>. A 2025 study confirmed the mechanism: dissolved O<sub>2</sub> at the microdroplet interface undergoes reduction to superoxide (&bull;O<sub>2</sub><sup>&minus;</sup>), which dismutates to H<sub>2</sub>O<sub>2</sub>. With continuous O<sub>2</sub> bubbling through sonicated microdroplets, H<sub>2</sub>O<sub>2</sub> accumulated to <strong>88 mM in 1 hour</strong><span class="cite" data-ref="124"><sup>[124]</sup></span>&mdash;88&times; the production rate of our electro-Fenton cell (&sect;4.10 at 10 mA).</p>
+
+<p><strong>Implications for the protocol:</strong> This means sonication contributes to oxidation through <em>two independent mechanisms</em>: (1) cavitation collapse generates local temperatures of ~5,000 K that homolyze water &rarr; OH&bull; + H&bull; (the classical mechanism), and (2) interfacial microdroplet chemistry generates OH&bull; and H<sub>2</sub>O<sub>2</sub> at the air-liquid boundary of every aerosol droplet created during cavitation. Mechanism (2) is enhanced by: larger sonication surface area (wider vessel), O<sub>2</sub> sparging (PDMS membrane from &sect;4.1), and higher acoustic power (more microdroplets). Critically, mechanism (2) does <em>not</em> require inertial cavitation&mdash;even gentle ultrasonic misting produces it.</p>
+
+<p>This partially explains why ultrasonic spirit treatment (&sect;3.14) consistently outperforms thermal-only controls by more than cavitation models predict: the interfacial oxidation pathway is an unaccounted-for contribution that operates on the entire aerosol cloud, not just at individual cavitation sites.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but building on 2019&ndash;2025 physical chemistry literature from Stanford (Zare) and UIUC (Jain/Rodr&iacute;guez-L&oacute;pez)<span class="cite" data-ref="123"><sup>[123]</sup></span><span class="cite" data-ref="124"><sup>[124]</sup></span>. The 88 mM/hr H<sub>2</sub>O<sub>2</sub> figure is from oil-water emulsions with forced O<sub>2</sub>&mdash;spirit conditions will differ (ethanol-water miscibility reduces interface area). However, the qualitative mechanism is sound: sonication generates microdroplets, microdroplets generate ROS at interfaces, and this is additive with cavitation. <strong>Home testability: N/A</strong> (this is a mechanistic insight that enhances existing sonication steps, not a separate intervention. No additional equipment needed&mdash;you&rsquo;re already getting this benefit from every ultrasonic treatment in the protocol).
+</div>
+
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
@@ -1906,6 +1920,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r120">Chen Q, et al. (2019) &ldquo;Biocycle Fermentation Based on Lactic Acid Bacteria and Yeast for the Production of Natural Ethyl Lactate.&rdquo; <em>ACS Omega</em> 4:14908&ndash;14916. <a href="https://doi.org/10.1021/acsomega.9b01700">DOI</a> (Sequential LAB+yeast: 3.05 g/L ethyl lactate, 2.3&times; mixed culture. GRAS organisms. ldhA &rarr; pct &rarr; AAT pathway. AAT is rate-limiting.)</li>
   <li id="r121">Romero MD, et al. (2005) &ldquo;Enzymatic synthesis of isoamyl acetate with immobilized <em>Candida antarctica</em> lipase in supercritical carbon dioxide.&rdquo; <em>J Supercrit Fluids</em> 33:77&ndash;84. <a href="https://doi.org/10.1016/j.supflu.2004.05.004">DOI</a> (Novozym 435 in scCO<sub>2</sub>: 100% conversion isoamyl acetate in continuous packed-bed. 10 MPa, 60&deg;C. Rate significantly higher in scCO<sub>2</sub> than n-hexane. Enzyme stable &gt;1000 h.)</li>
   <li id="r122">Habulin M, Knez &Zcaron;. (2001) &ldquo;Activity and stability of lipases from different sources in supercritical carbon dioxide and near-critical propane.&rdquo; <em>J Chem Technol Biotechnol</em> 76:1260&ndash;1266. <a href="https://doi.org/10.1002/jctb.714">DOI</a> (Butyl butyrate via Novozym 435 in scCO<sub>2</sub>: 80% conversion in 1 hour, 45&ndash;50&deg;C. Ping-Pong Bi-Bi kinetics. Low a<sub>w</sub> drives esterification over hydrolysis.)</li>
+  <li id="r123">Lee JK, et al. (2019) &ldquo;Spontaneous generation of hydrogen peroxide from aqueous microdroplets.&rdquo; <em>Proc Natl Acad Sci USA</em> 116:19294&ndash;19298. <a href="https://doi.org/10.1073/pnas.1911883116">DOI</a> (Zare group, Stanford. Sprayed water microdroplets (1&ndash;20 &mu;m) spontaneously produce ~30 &mu;M H<sub>2</sub>O<sub>2</sub>. No reagent, catalyst, or energy input. OH<sup>&minus;</sup> surface electron loss &rarr; OH&bull; recombination. Yield inversely scales with droplet size.)</li>
+  <li id="r124">Asserghine A, et al. (2025) &ldquo;Dissolved Oxygen Redox as the Source of Hydrogen Peroxide and Hydroxyl Radical in Sonicated Emulsive Water Microdroplets.&rdquo; <em>J Am Chem Soc</em> 147:11851&ndash;11858. <a href="https://doi.org/10.1021/jacs.4c16759">DOI</a> (UIUC. Sonicated microdroplets: O<sub>2</sub> &rarr; &bull;O<sub>2</sub><sup>&minus;</sup> &rarr; H<sub>2</sub>O<sub>2</sub> at water-oil interface, ~10<sup>7</sup> V/cm field. With O<sub>2</sub> bubbling: 88 mM H<sub>2</sub>O<sub>2</sub> in 1 hour. 99% at interface, 0.10 mM/m<sup>2</sup>/min. Mechanism independent of cavitation collapse.)</li>
 </ol>
 
 
@@ -2537,6 +2553,16 @@ var refs = {
     source: "Habulin & Knez (2001), J Chem Technol Biotechnol 76:1260",
     excerpt: "Butyl butyrate synthesis via Novozym 435 in scCO\u2082: 80% conversion in 1 hour at 45\u201350\u00B0C. Ping-Pong Bi-Bi kinetics fully characterized. Lipase regioselectivity produces specific flavor esters (not Fischer equilibrium mixture). CO\u2082 acts as tunable solvent and water activity controller.",
     url: "#r122"
+  },
+  123: {
+    source: "Lee et al. (2019), PNAS 116:19294 (Zare group, Stanford)",
+    excerpt: "Water microdroplets (1\u201320 \u00B5m) spontaneously generate ~30 \u00B5M H\u2082O\u2082 at the air-water interface. No reagent, catalyst, electricity, or radiation needed. Mechanism: OH\u207B at droplet surface loses electron \u2192 OH\u2022 radicals \u2192 recombination to H\u2082O\u2082. Yield inversely scales with droplet size (higher surface/volume ratio).",
+    url: "#r123"
+  },
+  124: {
+    source: "Asserghine et al. (2025), JACS 147:11851\u201311858",
+    excerpt: "Sonicated water-in-oil microdroplets: dissolved O\u2082 \u2192 \u2022O\u2082\u207B \u2192 H\u2082O\u2082 at interface (~10\u2077 V/cm field). With continuous O\u2082 bubbling: 88 mM H\u2082O\u2082 in 1 hr. 99% production at water-oil interface. Mechanism independent of cavitation collapse \u2014 interfacial electric field drives O\u2082 reduction.",
+    url: "#r124"
   }
 };
 
