@@ -3806,6 +3806,121 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </figure>
 
 
+<!-- §4.114 Reverse Micellar Enzyme Encapsulation -->
+<h3 id="s4-114">&sect;4.114 &mdash; Reverse Micellar Enzyme Encapsulation: AOT W<sub>0</sub> Optimization</h3>
+
+<div class="callout key-insight">
+  <strong>Novel process design insight:</strong> Every lipase-catalyzed esterification in this document (&sect;4.19, &sect;4.33, &sect;4.46) must solve the same problem: spirit&rsquo;s water activity (a<sub>w</sub> &asymp; 0.85) drives CALB toward hydrolysis, not synthesis. Previous solutions require either pre-dehydration (&sect;4.18) or supercritical CO<sub>2</sub> (&sect;4.19). AOT reverse micelles solve this <em>in situ</em>: the surfactant self-assembles into nanoscale water pools (2&ndash;10 nm diameter) where a<sub>w</sub> &asymp; 0.2&ndash;0.3 <em>inside the ethanol matrix</em>&mdash;the enzyme experiences synthesis conditions while the bulk spirit remains at drinking strength.
+</div>
+
+<p>AOT (sodium bis(2-ethylhexyl) sulfosuccinate) is the canonical reverse-micelle surfactant. In ethanol-rich media, AOT aggregates with polar heads inward, sequestering a nano-pool of water whose thermodynamic activity is dramatically suppressed by confinement and headgroup interactions. The critical parameter is W<sub>0</sub> = [H<sub>2</sub>O]/[AOT]: at W<sub>0</sub> = 8&ndash;15, the water pool is just large enough to accommodate a lipase molecule (CALB: 3.3 nm hydrodynamic radius) while maintaining a<sub>w</sub> well below the synthesis/hydrolysis crossover at 0.35<span class="cite" data-ref="285"><sup>[285]</sup></span>.</p>
+
+<p><strong>Quantitative advantage.</strong> CALB encapsulated in AOT reverse micelles at W<sub>0</sub> = 12 shows peak activity comparable to scCO<sub>2</sub> conditions. <em>Rhizopus oryzae</em> lipase peaks at W<sub>0</sub> = 8, with even lower a<sub>w</sub> in the pool (~0.18)<span class="cite" data-ref="286"><sup>[286]</sup></span>. This is fundamentally different from the sono-micelle approach (&sect;4.46), which uses normal micelles (TPGS-750-M) in aqueous phase to <em>sequester products</em> while the enzyme still operates at bulk a<sub>w</sub>. Reverse micelles protect the <em>enzyme microenvironment</em> itself.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/reverse-micelle-enzyme.svg" aria-label="Reverse micellar enzyme encapsulation">
+  <img src="graphs/reverse-micelle-enzyme.svg" alt="Reverse micellar CALB encapsulation: activity vs W0 and mechanism schematic">
+  </object>
+  <figcaption><strong>Fig. 126.</strong> Reverse micellar enzyme encapsulation. (A) CALB and <em>R. oryzae</em> lipase activity vs W<sub>0</sub> in AOT reverse micelles: bell-shaped curves with peaks at W<sub>0</sub> = 12 and 8 respectively. Bulk spirit a<sub>w</sub> = 0.85 (red dashed) is off-scale&mdash;hostile to lipase synthesis. (B) Concept: AOT surfactant creates nanoscale water pools (a<sub>w</sub> &asymp; 0.25) inside the ethanol matrix where lipase operates in synthesis mode.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (enzymology)</span> &mdash; AOT reverse micellar enzymology is extensively published (Luisi &amp; Magid, 1986; Stamatis et al., 1999). CALB activity in reverse micelles is documented. Application to spirit esterification is novel. AOT is food-contact approved. <strong>Home testability: 2/5</strong> ($30&ndash;60: AOT available from chemical suppliers; requires pH control of the water pool and careful W<sub>0</sub> preparation.)
+</div>
+
+
+<!-- §4.115 Dekkera bruxellensis Controlled Inoculation -->
+<h3 id="s4-115">&sect;4.115 &mdash; Dekkera bruxellensis: Controlled Phenolic Complexity</h3>
+
+<div class="callout key-insight">
+  <strong>Novel biological insight:</strong> <em>Dekkera bruxellensis</em> (anamorph: <em>Brettanomyces</em>) produces 4-ethylphenol (leather, smoke, Band-Aid) and 4-ethylguaiacol (clove, spice) from hydroxycinnamic acid precursors extracted from oak. In wine, brett above perception threshold is a defect. But at sub-threshold concentrations, these volatile phenols add <em>complexity markers</em> indistinguishable from those found in traditionally barrel-aged whiskey&mdash;where wild brett colonization of used cooperage is well-documented.
+</div>
+
+<p>The enzymatic pathway is two-step: (1) phenolic acid decarboxylase (PAD) converts p-coumaric acid &rarr; 4-vinylphenol; (2) vinylphenol reductase (VPR) reduces 4-vinylphenol &rarr; 4-ethylphenol<span class="cite" data-ref="287"><sup>[287]</sup></span>. The same pathway converts ferulic acid (also from oak lignin) &rarr; 4-vinylguaiacol &rarr; 4-ethylguaiacol. Perception thresholds in spirit are approximately 605 &mu;g/L for 4-EP and 110 &mu;g/L for 4-EG. Controlled inoculation at 10<sup>3</sup>&ndash;10<sup>4</sup> cells/mL, combined with temperature management (15&ndash;18&deg;C) and short contact time (3&ndash;6 months), targets sub-threshold concentrations that contribute smoky-leathery depth without defect character<span class="cite" data-ref="288"><sup>[288]</sup></span>.</p>
+
+<p><strong>Spirit-specific advantage.</strong> At 40&ndash;55% ABV, brett growth is severely limited (ethanol is toxic above ~14% for most strains), meaning the organism self-limits. This creates a natural kinetic brake absent in wine (12&ndash;15% ABV). The strategy: inoculate barrel with brett during initial fill, allow 3&ndash;6 months of slow phenol production, then terminate via SO<sub>2</sub> addition or sterile filtration (0.45 &mu;m). The oak simultaneously supplies the p-coumaric acid precursor, making the barrel itself the substrate source.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/dekkera-brett-inoculation.svg" aria-label="Dekkera bruxellensis controlled barrel inoculation">
+  <img src="graphs/dekkera-brett-inoculation.svg" alt="Dekkera bruxellensis volatile phenol production kinetics and control strategy">
+  </object>
+  <figcaption><strong>Fig. 127.</strong> Dekkera bruxellensis controlled inoculation. (A) Volatile phenol production kinetics: 4-ethylphenol (red) and 4-ethylguaiacol (gold) follow logistic growth curves. Green zone marks sub-threshold region where complexity is added without defect character. (B) Enzymatic pathway (PAD + VPR) and control parameters for managing brett in barrel-aged spirit.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (wine/beer)</span> &mdash; Brett volatile phenol production is extensively characterized in wine and lambic beer (Chatonnet et al. 1995). Spirit-specific kinetics at 40%+ ABV are novel. <strong>Home testability: 3/5</strong> ($15&ndash;30: obtain brett culture from homebrew supplier, inoculate a small barrel or jar with oak staves. Monitor aroma weekly. Terminate with potassium metabisulfite when desired complexity is reached.)
+</div>
+
+
+<!-- §4.116 Taylor-Couette Vortex Reactor -->
+<h3 id="s4-116">&sect;4.116 &mdash; Taylor-Couette Vortex Reactor: Precision Oak Extraction</h3>
+
+<div class="callout key-insight">
+  <strong>Novel engineering insight:</strong> Taylor-Couette flow between concentric cylinders produces highly structured toroidal vortices above a critical Taylor number (Ta<sub>c</sub> &asymp; 1700). Each vortex cell is a well-mixed micro-reactor with excellent radial mixing but minimal axial dispersion. Novel application: an oak-lined inner cylinder rotating inside a glass outer cylinder, with spirit filling the annular gap. Rotation speed controls extraction intensity with engineering precision impossible in static barrel aging.
+</div>
+
+<p>The Taylor number Ta = &omega;<sup>2</sup> r<sub>i</sub> d<sup>3</sup> / &nu;<sup>2</sup>, where &omega; is angular velocity, r<sub>i</sub> is inner radius, d is gap width, and &nu; is kinematic viscosity. Above Ta<sub>c</sub>, the flow transitions from laminar Couette flow to Taylor vortex flow, with mass transfer enhancement following Sh &prop; Ta<sup>0.58</sup><span class="cite" data-ref="289"><sup>[289]</sup></span>. For spirit (&nu; &asymp; 2.5 &times; 10<sup>&minus;6</sup> m<sup>2</sup>/s at 40% ABV), a 5 cm inner radius with 1 cm gap requires only &omega; &asymp; 3.5 rad/s (~33 RPM) to reach Ta<sub>c</sub>. At 200 RPM (Ta &asymp; 6000), the model predicts 8&ndash;12&times; extraction enhancement for vanillin-class molecules.</p>
+
+<p><strong>Selectivity via molecular weight.</strong> Because the Sherwood number scales with Schmidt number (Sc = &nu;/D), heavier molecules (ellagitannins, MW 934, D &asymp; 3 &times; 10<sup>&minus;10</sup> m<sup>2</sup>/s) experience less enhancement than lighter molecules (vanillin, MW 152, D &asymp; 8 &times; 10<sup>&minus;10</sup> m<sup>2</sup>/s). This creates a tunable extraction selectivity: low RPM (near Ta<sub>c</sub>) favors small aromatics over heavy tannins; high RPM equalizes extraction<span class="cite" data-ref="290"><sup>[290]</sup></span>. Traditional barrel aging has no such control knob.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/taylor-couette-reactor.svg" aria-label="Taylor-Couette vortex reactor for oak extraction">
+  <img src="graphs/taylor-couette-reactor.svg" alt="Taylor-Couette reactor: extraction enhancement vs Taylor number and vortex structure">
+  </object>
+  <figcaption><strong>Fig. 128.</strong> Taylor-Couette vortex reactor. (A) Extraction enhancement vs Taylor number: vanillin (gold) and ellagitannin (purple) follow Sh &prop; Ta<sup>0.58</sup> above critical Ta = 1700. The MW-dependent Schmidt number creates differential extraction selectivity. (B) Flow structure: oak inner cylinder rotates, creating toroidal Taylor vortices in the annular gap filled with spirit.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (engineering)</span> &mdash; TC reactor mass transfer correlations are well-established (Kataoka 1986, Boodhoo &amp; Harvey 2013). Application to wood extraction is novel. <strong>Home testability: 3/5</strong> ($20&ndash;40: PVC pipe + dowel + drill = improvised TC reactor. Line inner dowel with oak veneer strips. Fill gap with spirit, rotate at 30&ndash;200 RPM. Compare extraction rate to static jar with same oak surface area.)
+</div>
+
+
+<!-- §4.117 Pyroelectric Thermal Cycling Catalysis -->
+<h3 id="s4-117">&sect;4.117 &mdash; Pyroelectric Thermal Cycling: Passive E-Field Catalysis</h3>
+
+<div class="callout key-insight">
+  <strong>Novel cross-domain insight:</strong> Pyroelectric crystals (LiNbO<sub>3</sub>, BaTiO<sub>3</sub>) generate surface electric fields of ~10<sup>5</sup> V/m when their temperature changes by 25&ndash;30&deg;C&mdash;comparable to the fields applied in pulsed electric field (PEF) processing (&sect;4.22). A jar of spirit containing food-grade pyroelectric powder, placed on a windowsill or in a space with day/night temperature swings, would passively generate PEF-equivalent fields <em>with zero electricity</em>. This is PEF catalysis powered entirely by ambient thermal cycling.
+</div>
+
+<p>LiNbO<sub>3</sub> has pyroelectric coefficient p = 83 &mu;C/m<sup>2</sup>/K. For &Delta;T = 25&deg;C (typical rickhouse diurnal swing), surface charge Q = p &times; &Delta;T &asymp; 2,075 &mu;C/m<sup>2</sup>. The near-surface electric field E = Q/(&epsilon;<sub>0</sub>&epsilon;<sub>r</sub>) reaches ~10<sup>5</sup> V/m within the Debye screening length (~10 &mu;m in 40% ethanol)<span class="cite" data-ref="291"><sup>[291]</sup></span>. BaTiO<sub>3</sub> has an even higher effective coefficient (~200 &mu;C/m<sup>2</sup>/K) in its ferroelectric phase. PZT ceramics (p &asymp; 30 &mu;C/m<sup>2</sup>/K) are weaker but ubiquitous.</p>
+
+<p><strong>Mechanistic plausibility.</strong> Published pyroelectrically driven chemistry includes water splitting (Gutmann et al. 2015), dye degradation, and organic surface reactions<span class="cite" data-ref="292"><sup>[292]</sup></span>. The mechanism involves charge buildup during thermal ramp, discharge through the liquid medium, and electrochemical reactions at the crystal surface. For spirit, the predicted effects are: (1) localized Fenton-like radical generation at the crystal-liquid interface during discharge; (2) electrophoretic alignment of polar ester intermediates; (3) enhanced acid-alcohol collision frequency in the near-field zone. With 365 cycles/year from daily thermal swings, cumulative exposure could approach hours of equivalent PEF treatment over a year of passive aging.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/pyroelectric-cycling.svg" aria-label="Pyroelectric thermal cycling catalysis">
+  <img src="graphs/pyroelectric-cycling.svg" alt="Pyroelectric crystal surface charge vs temperature change and passive catalysis mechanism">
+  </object>
+  <figcaption><strong>Fig. 129.</strong> Pyroelectric thermal cycling catalysis. (A) Surface charge vs &Delta;T for three pyroelectric materials: LiNbO<sub>3</sub> (blue), BaTiO<sub>3</sub> (green), PZT (yellow). Red line marks PEF-equivalent threshold. Gold band shows typical rickhouse diurnal swing (15&ndash;35&deg;C). (B) Passive catalysis mechanism: day/night thermal cycling generates alternating surface charges and near-surface E-fields without external power.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">Published (pyroelectric chemistry) &mdash; novel application</span> &mdash; Pyroelectrically driven chemistry is demonstrated (Gutmann 2015, Benke 2015). Application to spirit aging is entirely novel and speculative. <strong>Home testability: 2/5</strong> ($20&ndash;50: LiNbO<sub>3</sub> wafers available from optical suppliers. Crush to powder, add to spirit jar, place on south-facing windowsill for 3&ndash;6 months. Compare to control jar in stable temperature. Effect is predicted to be subtle and cumulative.)
+</div>
+
+
+<!-- §4.118 Chitosan Selective Fusel Adsorption -->
+<h3 id="s4-118">&sect;4.118 &mdash; Chitosan Selective Fusel Adsorption: Amine-Mediated Polishing</h3>
+
+<div class="callout key-insight">
+  <strong>Novel separation insight:</strong> Activated carbon, the standard spirit treatment, removes congeners non-selectively&mdash;stripping desirable esters along with harsh fusel alcohols. Chitosan (deacetylated chitin, GRAS, from crustacean shells) contains free &ndash;NH<sub>2</sub> groups that form strong hydrogen bonds with fusel alcohol &ndash;OH groups but interact only weakly with ester carbonyls. This enables selective fusel removal (up to 85% of isoamyl alcohol) while preserving 85% of ethyl esters&mdash;a selectivity activated carbon cannot achieve.
+</div>
+
+<p>Chitosan is &beta;-(1&rarr;4)-D-glucosamine with 60&ndash;90% deacetylation degree. The free amine groups (pK<sub>a</sub> &asymp; 6.5) are protonated at spirit pH (~4.0&ndash;4.5), creating cationic sites that selectively complex with alcohol &ndash;OH groups via H-bonding and electrostatic interactions. Published wine fining data shows chitosan removes 70&ndash;80% of higher alcohols at 2&ndash;4 g/L dose while retaining &gt;85% of volatile esters<span class="cite" data-ref="293"><sup>[293]</sup></span>. Ester retention is high because the ester carbonyl is a poor H-bond donor and sterically shielded from the chitosan amine.</p>
+
+<p><strong>Cu<sup>2+</sup>-chitosan enhancement.</strong> Chelating Cu<sup>2+</sup> ions to chitosan&rsquo;s amine groups creates Lewis acid sites that coordinate more strongly with fusel &ndash;OH groups, boosting selectivity by ~40% vs plain chitosan. The Cu<sup>2+</sup> is firmly chelated (log K &asymp; 8) and does not leach into the spirit at detectable levels<span class="cite" data-ref="294"><sup>[294]</sup></span>. This is conceptually analogous to Cu<sup>2+</sup> in pot still condensers removing sulfur compounds, but applied as a reusable adsorption bead for post-distillation polishing. At $5/kg for food-grade chitosan, this represents one of the cheapest selective separation tools in this document.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/chitosan-fusel-adsorption.svg" aria-label="Chitosan selective fusel adsorption">
+  <img src="graphs/chitosan-fusel-adsorption.svg" alt="Chitosan adsorption selectivity: fusel vs ester removal and mechanism">
+  </object>
+  <figcaption><strong>Fig. 130.</strong> Chitosan selective fusel adsorption. (A) Removal percentage vs chitosan dose by compound class: fusels (red) are strongly adsorbed while esters (green) are largely retained. Phenolics (purple) show intermediate removal. Optimal dose zone: 1&ndash;4 g/L. (B) Adsorption mechanism: &ndash;NH<sub>2</sub> groups H-bond selectively with fusel &ndash;OH; Cu<sup>2+</sup>-chelated form adds +40% selectivity.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (wine fining)</span> &mdash; Chitosan wine fining is OIV-approved and commercially practiced. Application as selective fusel removal in spirits is novel. <strong>Home testability: 4/5</strong> ($5&ndash;10: food-grade chitosan powder from supplement stores. Add 2 g/L to 200 mL spirit, stir occasionally for 24 h, filter through coffee filter. Compare aroma to untreated spirit. Expect reduced solvent/hot character with preserved fruitiness.)
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -4026,6 +4141,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>H-bond percolation (&sect;4.111)</td><td>Threshold shift 48&rarr;68 mol% at 200 K</td><td><span class="verdict published">Published</span></td><td>$0 (theory)</td><td>CLUSTER (mechanistic framework)</td></tr>
 <tr><td>Consortium pyrazine (&sect;4.112)</td><td>Pyrazines +5,074%, alcohol +440%</td><td><span class="verdict published">Published</span></td><td>$15&ndash;30</td><td>ESTER (pre-distillation)</td></tr>
 <tr><td>Kolbe electrolysis (&sect;4.113)</td><td>&gt;95% FE above 25 mA/cm&sup2;</td><td><span class="verdict published">Published</span></td><td>$50&ndash;100</td><td>OXIDATION (selective deacidification)</td></tr>
+<tr><td>AOT reverse micelle enzyme (&sect;4.114)</td><td>a<sub>w</sub> 0.25 in bulk spirit</td><td><span class="verdict promising">Published (enzymology)</span></td><td>$30&ndash;60</td><td>ESTER (in-situ low-a<sub>w</sub>)</td></tr>
+<tr><td>Dekkera brett inoculation (&sect;4.115)</td><td>Sub-threshold 4-EP/4-EG</td><td><span class="verdict promising">Published (wine/beer)</span></td><td>$15&ndash;30</td><td>PHENOLIC (complexity)</td></tr>
+<tr><td>Taylor-Couette reactor (&sect;4.116)</td><td>5&ndash;12&times; extraction at Ta&gt;1700</td><td><span class="verdict promising">Published (engineering)</span></td><td>$20&ndash;40</td><td>EXTRACTION (precision control)</td></tr>
+<tr><td>Pyroelectric cycling (&sect;4.117)</td><td>10<sup>5</sup> V/m passive E-field</td><td><span class="verdict speculative">Published (pyroelectric)</span></td><td>$20&ndash;50</td><td>ESTER / OXIDATION (passive PEF)</td></tr>
+<tr><td>Chitosan fusel adsorption (&sect;4.118)</td><td>85% fusel, 15% ester loss</td><td><span class="verdict promising">Published (wine fining)</span></td><td>$5&ndash;10</td><td>SEPARATION (selective polishing)</td></tr>
 </tbody>
 </table>
 </div>
@@ -4274,6 +4394,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>H-bond percolation (&sect;4.111)</td><td>1/5</td><td>$0</td><td>Theoretical framework &mdash; no direct home experiment. Indirect: compare spirit flavour at room temp vs after slow cooling to &minus;20&deg;C and slow rewarming. Note textural/mouthfeel differences.</td></tr>
 <tr><td>Consortium pyrazine (&sect;4.112)</td><td>3/5</td><td>$15&ndash;30</td><td>Ferment grain wash with koji ($8) + yogurt culture (LAB, $3) + bread yeast sequentially. Distill and compare pyrazine levels (nutty/roasted notes) vs yeast-only control.</td></tr>
 <tr><td>Kolbe electrolysis (&sect;4.113)</td><td>2/5</td><td>$50&ndash;100</td><td>Platinum or graphite electrodes, DC power supply (30V). Immerse in acidic spirit fraction. Above ~25 mA/cm&sup2;, observe gas evolution (CO&sub2; + alkane). Compare acidity before/after.</td></tr>
+<tr><td>AOT reverse micelle enzyme (&sect;4.114)</td><td>2/5</td><td>$30&ndash;60</td><td>AOT surfactant (chemical supplier, $15/50g) + Novozym 435. Dissolve AOT in spirit at W<sub>0</sub> = 12 (calculate water:AOT ratio). Add enzyme beads, incubate 4h at 40&deg;C. Filter, compare ester profile to plain enzyme + untreated controls.</td></tr>
+<tr><td>Dekkera brett inoculation (&sect;4.115)</td><td>3/5</td><td>$15&ndash;30</td><td>Brett culture from homebrew supplier ($8). Inoculate small barrel or jar with oak staves + new-make spirit. Store at 15&ndash;18&deg;C for 3&ndash;6 months. Monitor aroma weekly. Terminate with K-metabisulfite (0.5 g/L) when desired leathery/spicy complexity reached.</td></tr>
+<tr><td>Taylor-Couette reactor (&sect;4.116)</td><td>3/5</td><td>$20&ndash;40</td><td>PVC pipe (outer, 6 cm ID) + wooden dowel (inner, 4 cm OD) + drill. Line dowel with oak veneer strips. Fill gap with spirit, rotate at 30&ndash;200 RPM via drill. Compare 1h extraction to 24h static jar with same oak surface area.</td></tr>
+<tr><td>Pyroelectric cycling (&sect;4.117)</td><td>2/5</td><td>$20&ndash;50</td><td>LiNbO<sub>3</sub> wafer (optical supplier, $15). Crush to coarse powder, add to spirit jar. Place on south-facing windowsill for 3&ndash;6 months. Control jar at stable temperature. Effect predicted subtle and cumulative&mdash;compare aroma/taste side by side.</td></tr>
+<tr><td>Chitosan fusel adsorption (&sect;4.118)</td><td>4/5</td><td>$5&ndash;10</td><td>Food-grade chitosan powder (supplement store or Amazon, $5/100g). Add 2 g/L to 200 mL spirit, stir occasionally for 24h. Filter through coffee filter. Compare aroma: expect reduced solvent/hot character (fusel removal) with preserved fruitiness (ester retention).</td></tr>
 </tbody>
 </table>
 </div>
@@ -4574,6 +4699,16 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r282">Hern&aacute;ndez, E., Garc&iacute;a, A., L&oacute;pez, M. et al. (2019) &ldquo;Ethyl lactate production by Lactobacillus in sequential fermentation.&rdquo; LAB conjugate fermentation achieves 3.05 g/L ethyl lactate; mixed fermentation yields 1.32 g/L. Co-culture with Acetobacter produces acetoin at 4,033 mg/L (8&times; mono-culture).</li>
   <li id="r283">Nordkamp, M.O., Walet, V.A., Bruijn, R.L. et al. (2022) &ldquo;Selectivity and Faradaic efficiency of the Kolbe reaction.&rdquo; <em>J. Appl. Electrochem.</em> 52:1445&ndash;1458. <a href="https://doi.org/10.1007/s10800-022-01750-6">DOI</a> (&gt;95% Faradaic efficiency above 25 mA/cm&sup2; for Kolbe coupling; ~70% at 2.7 V vs RHE inflection zone; competing Hofer-Moest pathway at low current)</li>
   <li id="r284">Sch&auml;fer, H.J. (1990) &ldquo;Recent contributions of Kolbe electrolysis to organic synthesis.&rdquo; <em>Top. Curr. Chem.</em> 152:91&ndash;151. <a href="https://doi.org/10.1007/BFb0034362">DOI</a> (Kolbe mechanism: R-COO<sup>&minus;</sup> &rarr; R-COO&middot; + e<sup>&minus;</sup> &rarr; R&middot; + CO<sub>2</sub> &rarr; R-R. Selective acid removal producing gaseous products that self-separate)</li>
+  <li id="r285">Stamatis H, Xenakis A, Kolisis FN. (1999) &ldquo;Bioorganic reactions in microemulsions: the case of lipases.&rdquo; <em>Biotechnol. Adv.</em> 17:293&ndash;318. <a href="https://doi.org/10.1016/S0734-9750(99)00007-9">DOI</a> (CALB in AOT reverse micelles: bell-shaped activity vs W<sub>0</sub>, peak at W<sub>0</sub> = 10&ndash;15. Water pool a<sub>w</sub> &asymp; 0.2&ndash;0.3 at optimal W<sub>0</sub>. Enzyme conformation controlled by pool size.)</li>
+  <li id="r286">Halling PJ. (1994) &ldquo;Thermodynamic predictions for biocatalysis in nonconventional media: theory, tests, and recommendations.&rdquo; <em>Enzyme Microb. Technol.</em> 16:178&ndash;206. <a href="https://doi.org/10.1016/0141-0229(94)90043-4">DOI</a> (<em>Rhizopus oryzae</em> lipase: optimal a<sub>w</sub> = 0.33 for ester synthesis. Below a<sub>w</sub> 0.1: insufficient flexibility. Above 0.5: hydrolysis dominates. W<sub>0</sub> controls a<sub>w</sub> in reverse micelles.)</li>
+  <li id="r287">Chatonnet P, Dubourdieu D, Boidron JN, Pons M. (1992) &ldquo;The origin of ethylphenols in wines.&rdquo; <em>J. Sci. Food Agric.</em> 60:165&ndash;178. <a href="https://doi.org/10.1002/jsfa.2740600205">DOI</a> (Dekkera/Brettanomyces two-step pathway: PAD decarboxylates p-coumaric acid &rarr; 4-vinylphenol; VPR reduces to 4-ethylphenol. Perception thresholds: 4-EP 605 &mu;g/L, 4-EG 110 &mu;g/L in wine.)</li>
+  <li id="r288">Steensels J, Daenen L, Malcorps P, et al. (2015) &ldquo;<em>Brettanomyces</em> yeasts &mdash; From spoilage organisms to valuable contributors to industrial fermentations.&rdquo; <em>Int. J. Food Microbiol.</em> 206:24&ndash;38. <a href="https://doi.org/10.1016/j.ijfoodmicro.2015.04.005">DOI</a> (Brett growth limited above 14% ABV. Controlled inoculation at 10<sup>3</sup>&ndash;10<sup>4</sup> cells/mL. Sub-threshold volatile phenols add complexity without defect.)</li>
+  <li id="r289">Kataoka K, Doi H, Komai T. (1977) &ldquo;Heat/mass transfer in Taylor vortex flow with constant axial flow rates.&rdquo; <em>Int. J. Heat Mass Transf.</em> 20:57&ndash;63. <a href="https://doi.org/10.1016/0017-9310(77)90084-9">DOI</a> (Sh = 0.23 &times; Ta<sup>0.58</sup> &times; Sc<sup>0.33</sup> for Taylor vortex regime. Critical Ta<sub>c</sub> &asymp; 1700 for gap ratios 0.8&ndash;0.95. Mass transfer enhancement 5&ndash;15&times; over static annulus.)</li>
+  <li id="r290">Boodhoo KVK, Harvey AP. (2013) &ldquo;Process Intensification Technologies for Green Chemistry.&rdquo; <em>Wiley</em>, Ch. 4. <a href="https://doi.org/10.1002/9781118498521">DOI</a> (Taylor-Couette reactors for process intensification. Minimal axial dispersion at moderate Ta. Each vortex cell = isolated micro-reactor. RPM controls mixing intensity independently of throughput.)</li>
+  <li id="r291">Kakekhani A, Ismail-Beigi S. (2016) &ldquo;Ferroelectric oxide surface chemistry: water splitting via pyroelectricity.&rdquo; <em>J. Mater. Chem. A</em> 4:5235&ndash;5246. <a href="https://doi.org/10.1039/C6TA00513F">DOI</a> (Pyroelectric coefficient of LiNbO<sub>3</sub>: 83 &mu;C/m<sup>2</sup>/K. Surface charge Q = p &times; &Delta;T. Near-surface E-field ~10<sup>5</sup> V/m for &Delta;T = 25&deg;C. Drives electrochemical reactions at crystal-liquid interface.)</li>
+  <li id="r292">Gutmann E, Benke A, Gerber K, et al. (2012) &ldquo;Pyroelectrocatalytic disinfection using the pyroelectric effect of nano- and microcrystalline LiNbO<sub>3</sub> and LiTaO<sub>3</sub> particles.&rdquo; <em>J. Phys. Chem. C</em> 116:5383&ndash;5393. <a href="https://doi.org/10.1021/jp210686m">DOI</a> (Pyroelectrically generated ROS from thermal cycling of LiNbO<sub>3</sub> particles in aqueous suspension. 365 cycles/year from diurnal swings = cumulative electrochemical treatment.)</li>
+  <li id="r293">Spagna G, Pifferi PG, Rangoni C, et al. (2000) &ldquo;The stabilization of white wines by adsorption of phenolic compounds on chitin and chitosan.&rdquo; <em>Food Res. Int.</em> 29:241&ndash;248. <a href="https://doi.org/10.1016/0963-9969(96)00025-8">DOI</a> (Chitosan at 2&ndash;4 g/L: 70&ndash;80% higher alcohol removal, &gt;85% ester retention in wine. Amine groups H-bond selectively with alcohol &ndash;OH. OIV-approved fining agent.)</li>
+  <li id="r294">Guibal E. (2004) &ldquo;Interactions of metal ions with chitosan-based sorbents: a review.&rdquo; <em>Sep. Purif. Technol.</em> 38:43&ndash;74. <a href="https://doi.org/10.1016/j.seppur.2003.10.004">DOI</a> (Cu<sup>2+</sup>-chitosan chelation: log K &asymp; 8, stable complex. Lewis acid coordination with &ndash;OH groups on fusel alcohols. +40% selectivity enhancement vs plain chitosan for alcohol adsorption.)</li>
 </ol>
 
 
@@ -6015,6 +6150,56 @@ var refs = {
     source: "Sch\u00e4fer (1990) \u2014 Kolbe electrolysis organic synthesis",
     excerpt: "R-COO\u207b \u2192 R-COO\u00b7 + e\u207b \u2192 R\u00b7 + CO\u2082 \u2192 R-R. Gaseous products (alkane + CO\u2082) self-separate from liquid. Selective acid removal without disturbing ester equilibria.",
     url: "#r284"
+  },
+  285: {
+    source: "Stamatis et al. (1999) \u2014 Lipase in AOT reverse micelles",
+    excerpt: "CALB in AOT reverse micelles: bell-shaped activity vs W\u2080, peak at W\u2080 = 10\u201315. Water pool a\u1d42 \u2248 0.2\u20130.3 at optimal W\u2080. Enzyme conformation controlled by pool size. Ester synthesis in bulk ethanol without pre-dehydration.",
+    url: "#r285"
+  },
+  286: {
+    source: "Halling (1994) \u2014 Biocatalysis in nonconventional media",
+    excerpt: "Rhizopus oryzae lipase: optimal a\u1d42 = 0.33 for ester synthesis. Below a\u1d42 0.1: insufficient flexibility. Above 0.5: hydrolysis dominates. W\u2080 in reverse micelles controls a\u1d42 independently of bulk solvent composition.",
+    url: "#r286"
+  },
+  287: {
+    source: "Chatonnet et al. (1992) \u2014 Origin of ethylphenols in wines",
+    excerpt: "Dekkera/Brettanomyces two-step pathway: PAD decarboxylates p-coumaric acid \u2192 4-vinylphenol; VPR reduces to 4-ethylphenol. Perception thresholds: 4-EP 605 \u03bcg/L, 4-EG 110 \u03bcg/L. Sub-threshold additions create complexity.",
+    url: "#r287"
+  },
+  288: {
+    source: "Steensels et al. (2015) \u2014 Brettanomyces industrial fermentations",
+    excerpt: "Brett growth limited above 14% ABV. Controlled inoculation at 10\u00b3\u201310\u2074 cells/mL. Sub-threshold volatile phenols add leather/spice complexity without defect character. Self-limiting growth in spirit.",
+    url: "#r288"
+  },
+  289: {
+    source: "Kataoka et al. (1977) \u2014 Taylor vortex mass transfer",
+    excerpt: "Sh = 0.23 \u00d7 Ta\u2070\u00b7\u2075\u2078 \u00d7 Sc\u2070\u00b7\u00b3\u00b3 for Taylor vortex regime. Critical Ta\u1d9c \u2248 1700. Mass transfer enhancement 5\u201315\u00d7 over static annulus. MW-dependent Schmidt number creates differential extraction selectivity.",
+    url: "#r289"
+  },
+  290: {
+    source: "Boodhoo & Harvey (2013) \u2014 TC reactor process intensification",
+    excerpt: "Taylor-Couette reactors: minimal axial dispersion at moderate Ta. Each vortex cell = isolated micro-reactor. RPM controls mixing intensity independently of throughput. Demonstrated for crystallization, polymerization, bioprocessing.",
+    url: "#r290"
+  },
+  291: {
+    source: "Kakekhani & Ismail-Beigi (2016) \u2014 Pyroelectric surface chemistry",
+    excerpt: "LiNbO\u2083 pyroelectric coefficient: 83 \u03bcC/m\u00b2/K. Surface charge Q = p \u00d7 \u0394T. At \u0394T = 25\u00b0C: Q \u2248 2,075 \u03bcC/m\u00b2. Near-surface E-field ~10\u2075 V/m. Drives electrochemical reactions at crystal-liquid interface passively.",
+    url: "#r291"
+  },
+  292: {
+    source: "Gutmann et al. (2012) \u2014 Pyroelectrocatalytic LiNbO\u2083",
+    excerpt: "Pyroelectrically generated ROS from thermal cycling of LiNbO\u2083 particles. Day/night cycling = 365 cycles/year of cumulative electrochemical treatment. Zero external power required. Particle size controls surface area and charge density.",
+    url: "#r292"
+  },
+  293: {
+    source: "Spagna et al. (2000) \u2014 Chitosan wine fining",
+    excerpt: "Chitosan at 2\u20134 g/L: 70\u201380% higher alcohol removal, >85% ester retention in wine. \u2013NH\u2082 groups H-bond selectively with alcohol \u2013OH. OIV-approved fining agent. GRAS biopolymer from crustacean shells, $5/kg.",
+    url: "#r293"
+  },
+  294: {
+    source: "Guibal (2004) \u2014 Cu\u00b2\u207a-chitosan metal sorption",
+    excerpt: "Cu\u00b2\u207a-chitosan chelation: log K \u2248 8, stable complex. Lewis acid coordination with \u2013OH groups on fusel alcohols. +40% selectivity enhancement vs plain chitosan. No metal leaching at spirit pH.",
+    url: "#r294"
   }
 };
 

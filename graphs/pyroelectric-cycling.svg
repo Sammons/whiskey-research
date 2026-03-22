@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 129 — Pyroelectric Thermal Cycling: Passive E-Field Catalysis</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Pyroelectric Surface Charge vs ΔT</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="200" y="393" fill="#8b949e" font-size="8" text-anchor="middle">ΔT (°C)</text>
+<text x="55" y="220" fill="#8b949e" font-size="7" text-anchor="middle">Surface charge (μC/m²)</text>
+<line x1="70" y1="375" x2="330" y2="375" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<line x1="70" y1="313" x2="330" y2="313" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">1000</text>
+<line x1="70" y1="251" x2="330" y2="251" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">2000</text>
+<line x1="70" y1="189" x2="330" y2="189" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="192" fill="#8b949e" font-size="7" text-anchor="end">3000</text>
+<line x1="70" y1="127" x2="330" y2="127" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">4000</text>
+<line x1="70" y1="65" x2="330" y2="65" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">5000</text>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="388" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="113.33333333333333" y1="375" x2="113.33333333333333" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="113.33333333333333" y="388" fill="#8b949e" font-size="7" text-anchor="middle">10</text>
+<line x1="156.66666666666666" y1="375" x2="156.66666666666666" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="156.66666666666666" y="388" fill="#8b949e" font-size="7" text-anchor="middle">20</text>
+<line x1="200" y1="375" x2="200" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="200" y="388" fill="#8b949e" font-size="7" text-anchor="middle">30</text>
+<line x1="243.33333333333331" y1="375" x2="243.33333333333331" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="243.33333333333331" y="388" fill="#8b949e" font-size="7" text-anchor="middle">40</text>
+<line x1="286.6666666666667" y1="375" x2="286.6666666666667" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="286.6666666666667" y="388" fill="#8b949e" font-size="7" text-anchor="middle">50</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="388" fill="#8b949e" font-size="7" text-anchor="middle">60</text>
+<polyline points="70.0,375.0 74.3,369.9 78.7,364.7 83.0,359.6 87.3,354.4 91.7,349.3 96.0,344.1 100.3,339.0 104.7,333.8 109.0,328.7 113.3,323.5 117.7,318.4 122.0,313.2 126.3,308.1 130.7,303.0 135.0,297.8 139.3,292.7 143.7,287.5 148.0,282.4 152.3,277.2 156.7,272.1 161.0,266.9 165.3,261.8 169.7,256.6 174.0,251.5 178.3,246.3 182.7,241.2 187.0,236.1 191.3,230.9 195.7,225.8 200.0,220.6 204.3,215.5 208.7,210.3 213.0,205.2 217.3,200.0 221.7,194.9 226.0,189.7 230.3,184.6 234.7,179.5 239.0,174.3 243.3,169.2 247.7,164.0 252.0,158.9 256.3,153.7 260.7,148.6 265.0,143.4 269.3,138.3 273.7,133.1 278.0,128.0 282.3,122.8 286.7,117.7 291.0,112.6 295.3,107.4 299.7,102.3 304.0,97.1 308.3,92.0 312.7,86.8 317.0,81.7 321.3,76.5 325.7,71.4 330.0,66.2" fill="none" stroke="#58a6ff" stroke-width="2.5"/>
+<polyline points="70.0,375.0 74.3,362.6 78.7,350.2 83.0,337.8 87.3,325.4 91.7,313.0 96.0,300.6 100.3,288.2 104.7,275.8 109.0,263.4 113.3,251.0 117.7,238.6 122.0,226.2 126.3,213.8 130.7,201.4 135.0,189.0 139.3,176.6 143.7,164.2 148.0,151.8 152.3,139.4 156.7,127.0 161.0,114.6 165.3,102.2 169.7,89.8 174.0,77.4 178.3,65.0 182.7,65.0 187.0,65.0 191.3,65.0 195.7,65.0 200.0,65.0 204.3,65.0 208.7,65.0 213.0,65.0 217.3,65.0 221.7,65.0 226.0,65.0 230.3,65.0 234.7,65.0 239.0,65.0 243.3,65.0 247.7,65.0 252.0,65.0 256.3,65.0 260.7,65.0 265.0,65.0 269.3,65.0 273.7,65.0 278.0,65.0 282.3,65.0 286.7,65.0 291.0,65.0 295.3,65.0 299.7,65.0 304.0,65.0 308.3,65.0 312.7,65.0 317.0,65.0 321.3,65.0 325.7,65.0 330.0,65.0" fill="none" stroke="#3fb950" stroke-width="2.5"/>
+<polyline points="70.0,375.0 74.3,373.1 78.7,371.3 83.0,369.4 87.3,367.6 91.7,365.7 96.0,363.8 100.3,362.0 104.7,360.1 109.0,358.3 113.3,356.4 117.7,354.5 122.0,352.7 126.3,350.8 130.7,349.0 135.0,347.1 139.3,345.2 143.7,343.4 148.0,341.5 152.3,339.7 156.7,337.8 161.0,335.9 165.3,334.1 169.7,332.2 174.0,330.4 178.3,328.5 182.7,326.6 187.0,324.8 191.3,322.9 195.7,321.1 200.0,319.2 204.3,317.3 208.7,315.5 213.0,313.6 217.3,311.8 221.7,309.9 226.0,308.0 230.3,306.2 234.7,304.3 239.0,302.5 243.3,300.6 247.7,298.7 252.0,296.9 256.3,295.0 260.7,293.2 265.0,291.3 269.3,289.4 273.7,287.6 278.0,285.7 282.3,283.9 286.7,282.0 291.0,280.1 295.3,278.3 299.7,276.4 304.0,274.6 308.3,272.7 312.7,270.8 317.0,269.0 321.3,267.1 325.7,265.3 330.0,263.4" fill="none" stroke="#d29922" stroke-width="2"/>
+<line x1="70" y1="220" x2="330" y2="220" stroke="#f85149" stroke-width="1"/>
+<text x="333" y="223" fill="#f85149" font-size="6" text-anchor="start">PEF-equiv.</text>
+<rect x="135" y="65" width="86.66666666666669" height="310" fill="#e8a665" opacity="0.06"/>
+<text x="178.33333333333334" y="80" fill="#e8a665" font-size="7" text-anchor="middle">Rickhouse ΔT</text>
+<text x="178.33333333333334" y="92" fill="#e8a665" font-size="7" text-anchor="middle">15–35°C/day</text>
+<rect x="80" y="75" width="140" height="60" rx="3" fill="#30363d" opacity="0.8"/>
+<line x1="85" y1="93" x2="105" y2="93" stroke="#58a6ff" stroke-width="2.5"/>
+<text x="110" y="96" fill="#58a6ff" font-size="7" text-anchor="start">LiNbO₃ (p=83)</text>
+<line x1="85" y1="108" x2="105" y2="108" stroke="#3fb950" stroke-width="2.5"/>
+<text x="110" y="111" fill="#3fb950" font-size="7" text-anchor="start">BaTiO₃ (p=200)</text>
+<line x1="85" y1="123" x2="105" y2="123" stroke="#d29922" stroke-width="2"/>
+<text x="110" y="126" fill="#d29922" font-size="7" text-anchor="start">PZT (p=30)</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Passive Catalysis Mechanism</text>
+<rect x="390" y="65" width="270" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<rect x="410" y="80" width="230" height="50" rx="4" fill="#58a6ff" opacity="0.10" stroke="#58a6ff" stroke-width="1"/>
+<text x="525" y="100" fill="#58a6ff" font-size="8" text-anchor="middle">Day: Sun heats jar (ΔT = +25°C)</text>
+<text x="525" y="117" fill="#58a6ff" font-size="7" text-anchor="middle">→ Crystal surface charges (+)</text>
+<rect x="410" y="140" width="230" height="50" rx="4" fill="#bc8cff" opacity="0.10" stroke="#bc8cff" stroke-width="1"/>
+<text x="525" y="160" fill="#bc8cff" font-size="8" text-anchor="middle">Night: Jar cools (ΔT = −25°C)</text>
+<text x="525" y="177" fill="#bc8cff" font-size="7" text-anchor="middle">→ Crystal surface charges (−)</text>
+<rect x="410" y="205" width="230" height="40" rx="4" fill="#3fb950" opacity="0.10" stroke="#3fb950" stroke-width="1"/>
+<text x="525" y="222" fill="#3fb950" font-size="8" text-anchor="middle">E ≈ Q/(ε₀εᵣ) ≈ 10⁵ V/m near surface</text>
+<text x="525" y="237" fill="#3fb950" font-size="7" text-anchor="middle">(comparable to PEF at 1–10 kV/cm)</text>
+<rect x="410" y="260" width="230" height="120" rx="4" fill="#30363d" opacity="0.5"/>
+<text x="525" y="278" fill="#e6edf3" font-size="8" text-anchor="middle">Quantitative Estimates</text>
+<line x1="420" y1="285" x2="630" y2="285" stroke="#8b949e" stroke-width="0.5"/>
+<text x="425" y="302" fill="#8b949e" font-size="7" text-anchor="start">LiNbO₃ at ΔT=25°C:</text>
+<text x="630" y="302" fill="#58a6ff" font-size="7" text-anchor="end">2,075 μC/m²</text>
+<text x="425" y="318" fill="#8b949e" font-size="7" text-anchor="start">Near-surface E-field:</text>
+<text x="630" y="318" fill="#3fb950" font-size="7" text-anchor="end">~10⁵ V/m</text>
+<text x="425" y="334" fill="#8b949e" font-size="7" text-anchor="start">Decay length:</text>
+<text x="630" y="334" fill="#e8a665" font-size="7" text-anchor="end">~10 μm (Debye)</text>
+<text x="425" y="350" fill="#8b949e" font-size="7" text-anchor="start">Cycles/year:</text>
+<text x="630" y="350" fill="#d29922" font-size="7" text-anchor="end">365 (daily thermal)</text>
+<text x="425" y="366" fill="#8b949e" font-size="7" text-anchor="start">Power required:</text>
+<text x="630" y="366" fill="#3fb950" font-size="7" text-anchor="end">Zero (passive)</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/><text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Pyroelectric crystals generate 10⁵ V/m E-fields passively from day/night thermal cycling</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">LiNbO₃ powder in spirit jar on windowsill = passive PEF-equivalent catalysis, zero electricity</text>
+</svg>

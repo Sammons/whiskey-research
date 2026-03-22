@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 128 — Taylor-Couette Vortex Reactor: Controlled Oak Extraction</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Extraction Enhancement vs Taylor Number</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="200" y="393" fill="#8b949e" font-size="8" text-anchor="middle">Taylor number (Ta)</text>
+<text x="55" y="220" fill="#8b949e" font-size="7" text-anchor="middle">Extraction rate (x baseline)</text>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="388" fill="#8b949e" font-size="6" text-anchor="middle">0</text>
+<line x1="113.33333333333333" y1="375" x2="113.33333333333333" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="113.33333333333333" y="388" fill="#8b949e" font-size="6" text-anchor="middle">1000</text>
+<line x1="156.66666666666666" y1="375" x2="156.66666666666666" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="156.66666666666666" y="388" fill="#8b949e" font-size="6" text-anchor="middle">2000</text>
+<line x1="200" y1="375" x2="200" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="200" y="388" fill="#8b949e" font-size="6" text-anchor="middle">4000</text>
+<line x1="243.33333333333331" y1="375" x2="243.33333333333331" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="243.33333333333331" y="388" fill="#8b949e" font-size="6" text-anchor="middle">6000</text>
+<line x1="286.6666666666667" y1="375" x2="286.6666666666667" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="286.6666666666667" y="388" fill="#8b949e" font-size="6" text-anchor="middle">8000</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="388" fill="#8b949e" font-size="6" text-anchor="middle">10000</text>
+<line x1="70" y1="375" x2="330" y2="375" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0×</text>
+<line x1="70" y1="313" x2="330" y2="313" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">3×</text>
+<line x1="70" y1="251" x2="330" y2="251" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">6×</text>
+<line x1="70" y1="189" x2="330" y2="189" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="192" fill="#8b949e" font-size="7" text-anchor="end">9×</text>
+<line x1="70" y1="127" x2="330" y2="127" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">12×</text>
+<line x1="70" y1="65" x2="330" y2="65" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">15×</text>
+<polyline points="70.0,354.3 71.3,354.2 72.6,354.0 73.9,353.8 75.2,353.6 76.5,353.4 77.8,353.2 79.1,353.1 80.4,352.9 81.7,352.7 83.0,352.5 84.3,352.3 85.6,352.1 86.9,352.0 88.2,351.8 89.5,351.6 90.8,351.4 92.1,351.2 93.4,351.1 94.7,350.9 96.0,350.7 97.3,350.5 98.6,350.3 99.9,350.1 101.2,350.0 102.5,349.8 103.8,349.6 105.1,349.4 106.4,349.2 107.7,349.0 109.0,348.9 110.3,348.7 111.6,348.5 112.9,348.3 114.2,354.3 115.5,345.2 116.8,340.7 118.1,337.1 119.4,334.0 120.7,331.2 122.0,328.6 123.3,326.2 124.6,324.0 125.9,321.8 127.2,319.8 128.5,317.8 129.8,315.9 131.1,314.1 132.4,312.3 133.7,310.6 135.0,308.9 136.3,307.3 137.6,305.7 138.9,304.2 140.2,302.7 141.5,301.2 142.8,299.7 144.1,298.3 145.4,296.9 146.7,295.5 148.0,294.2 149.3,292.8 150.6,291.5 151.9,290.2 153.2,289.0 154.5,287.7 155.8,286.5 157.1,285.3 158.4,284.0 159.7,282.9 161.0,281.7 162.3,280.5 163.6,279.4 164.9,278.2 166.2,277.1 167.5,276.0 168.8,274.9 170.1,273.8 171.4,272.7 172.7,271.6 174.0,270.6 175.3,269.5 176.6,268.5 177.9,267.5 179.2,266.4 180.5,265.4 181.8,264.4 183.1,263.4 184.4,262.4 185.7,261.4 187.0,260.5 188.3,259.5 189.6,258.5 190.9,257.6 192.2,256.6 193.5,255.7 194.8,254.7 196.1,253.8 197.4,252.9 198.7,252.0 200.0,251.1 201.3,250.2 202.6,249.3 203.9,248.4 205.2,247.5 206.5,246.6 207.8,245.7 209.1,244.9 210.4,244.0 211.7,243.1 213.0,242.3 214.3,241.4 215.6,240.6 216.9,239.7 218.2,238.9 219.5,238.0 220.8,237.2 222.1,236.4 223.4,235.6 224.7,234.7 226.0,233.9 227.3,233.1 228.6,232.3 229.9,231.5 231.2,230.7 232.5,229.9 233.8,229.1 235.1,228.3 236.4,227.6 237.7,226.8 239.0,226.0 240.3,225.2 241.6,224.5 242.9,223.7 244.2,222.9 245.5,222.2 246.8,221.4 248.1,220.7 249.4,219.9 250.7,219.2 252.0,218.4 253.3,217.7 254.6,216.9 255.9,216.2 257.2,215.5 258.5,214.7 259.8,214.0 261.1,213.3 262.4,212.6 263.7,211.8 265.0,211.1 266.3,210.4 267.6,209.7 268.9,209.0 270.2,208.3 271.5,207.6 272.8,206.9 274.1,206.2 275.4,205.5 276.7,204.8 278.0,204.1 279.3,203.4 280.6,202.7 281.9,202.0 283.2,201.3 284.5,200.6 285.8,200.0 287.1,199.3 288.4,198.6 289.7,197.9 291.0,197.3 292.3,196.6 293.6,195.9 294.9,195.3 296.2,194.6 297.5,193.9 298.8,193.3 300.1,192.6 301.4,192.0 302.7,191.3 304.0,190.7 305.3,190.0 306.6,189.4 307.9,188.7 309.2,188.1 310.5,187.4 311.8,186.8 313.1,186.2 314.4,185.5 315.7,184.9 317.0,184.3 318.3,183.6 319.6,183.0 320.9,182.4 322.2,181.7 323.5,181.1 324.8,180.5 326.1,179.9 327.4,179.3 328.7,178.6 330.0,178.0" fill="none" stroke="#e8a665" stroke-width="2.5"/>
+<polyline points="70.0,354.3 71.3,354.2 72.6,354.2 73.9,354.1 75.2,354.0 76.5,353.9 77.8,353.8 79.1,353.7 80.4,353.6 81.7,353.5 83.0,353.4 84.3,353.3 85.6,353.2 86.9,353.1 88.2,353.1 89.5,353.0 90.8,352.9 92.1,352.8 93.4,352.7 94.7,352.6 96.0,352.5 97.3,352.4 98.6,352.3 99.9,352.2 101.2,352.1 102.5,352.1 103.8,352.0 105.1,351.9 106.4,351.8 107.7,351.7 109.0,351.6 110.3,351.5 111.6,351.4 112.9,351.3 114.2,354.3 115.5,347.8 116.8,344.5 118.1,342.0 119.4,339.7 120.7,337.7 122.0,335.8 123.3,334.1 124.6,332.5 125.9,330.9 127.2,329.4 128.5,328.0 129.8,326.7 131.1,325.4 132.4,324.1 133.7,322.9 135.0,321.6 136.3,320.5 137.6,319.3 138.9,318.2 140.2,317.1 141.5,316.1 142.8,315.0 144.1,314.0 145.4,313.0 146.7,312.0 148.0,311.0 149.3,310.1 150.6,309.1 151.9,308.2 153.2,307.3 154.5,306.4 155.8,305.5 157.1,304.6 158.4,303.7 159.7,302.9 161.0,302.0 162.3,301.2 163.6,300.4 164.9,299.5 166.2,298.7 167.5,297.9 168.8,297.1 170.1,296.3 171.4,295.6 172.7,294.8 174.0,294.0 175.3,293.3 176.6,292.5 177.9,291.8 179.2,291.0 180.5,290.3 181.8,289.6 183.1,288.9 184.4,288.2 185.7,287.4 187.0,286.7 188.3,286.0 189.6,285.4 190.9,284.7 192.2,284.0 193.5,283.3 194.8,282.6 196.1,282.0 197.4,281.3 198.7,280.6 200.0,280.0 201.3,279.3 202.6,278.7 203.9,278.0 205.2,277.4 206.5,276.8 207.8,276.1 209.1,275.5 210.4,274.9 211.7,274.3 213.0,273.6 214.3,273.0 215.6,272.4 216.9,271.8 218.2,271.2 219.5,270.6 220.8,270.0 222.1,269.4 223.4,268.8 224.7,268.2 226.0,267.6 227.3,267.1 228.6,266.5 229.9,265.9 231.2,265.3 232.5,264.8 233.8,264.2 235.1,263.6 236.4,263.1 237.7,262.5 239.0,261.9 240.3,261.4 241.6,260.8 242.9,260.3 244.2,259.7 245.5,259.2 246.8,258.6 248.1,258.1 249.4,257.5 250.7,257.0 252.0,256.5 253.3,255.9 254.6,255.4 255.9,254.9 257.2,254.3 258.5,253.8 259.8,253.3 261.1,252.8 262.4,252.3 263.7,251.7 265.0,251.2 266.3,250.7 267.6,250.2 268.9,249.7 270.2,249.2 271.5,248.7 272.8,248.2 274.1,247.7 275.4,247.1 276.7,246.6 278.0,246.1 279.3,245.7 280.6,245.2 281.9,244.7 283.2,244.2 284.5,243.7 285.8,243.2 287.1,242.7 288.4,242.2 289.7,241.7 291.0,241.3 292.3,240.8 293.6,240.3 294.9,239.8 296.2,239.3 297.5,238.9 298.8,238.4 300.1,237.9 301.4,237.4 302.7,237.0 304.0,236.5 305.3,236.0 306.6,235.6 307.9,235.1 309.2,234.6 310.5,234.2 311.8,233.7 313.1,233.3 314.4,232.8 315.7,232.3 317.0,231.9 318.3,231.4 319.6,231.0 320.9,230.5 322.2,230.1 323.5,229.6 324.8,229.2 326.1,228.7 327.4,228.3 328.7,227.8 330.0,227.4" fill="none" stroke="#bc8cff" stroke-width="2.5"/>
+<line x1="114.2" y1="65" x2="114.2" y2="375" stroke="#d29922" stroke-width="1"/>
+<text x="117.2" y="80" fill="#d29922" font-size="7" text-anchor="start">Taᶜ = 1700</text>
+<text x="117.2" y="92" fill="#d29922" font-size="7" text-anchor="start">Vortex onset</text>
+<rect x="185" y="315" width="135" height="48" rx="3" fill="#30363d" opacity="0.8"/>
+<line x1="190" y1="330" x2="210" y2="330" stroke="#e8a665" stroke-width="2.5"/>
+<text x="215" y="333" fill="#e8a665" font-size="7" text-anchor="start">Vanillin (MW 152)</text>
+<line x1="190" y1="345" x2="210" y2="345" stroke="#bc8cff" stroke-width="2.5"/>
+<text x="215" y="348" fill="#bc8cff" font-size="7" text-anchor="start">Ellagitannin (MW 934)</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Taylor Vortex Flow Structure</text>
+<rect x="390" y="65" width="270" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<rect x="480" y="95" width="30" height="200" rx="2" fill="#e8a665" opacity="0.15" stroke="#e8a665" stroke-width="1.5"/>
+<text x="495" y="90" fill="#e8a665" font-size="7" text-anchor="middle">Oak inner</text>
+<text x="495" y="310" fill="#e8a665" font-size="7" text-anchor="middle">cylinder</text>
+<rect x="445" y="95" width="120" height="200" rx="2" fill="none" stroke="#8b949e" stroke-width="1.5"/>
+<text x="570" y="90" fill="#8b949e" font-size="7" text-anchor="start">Glass outer</text>
+<ellipse cx="535" cy="115" rx="20" ry="15" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.6"/>
+<ellipse cx="465" cy="115" rx="20" ry="15" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.6"/>
+<ellipse cx="535" cy="153" rx="20" ry="15" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.6"/>
+<ellipse cx="465" cy="153" rx="20" ry="15" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.6"/>
+<ellipse cx="535" cy="191" rx="20" ry="15" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.6"/>
+<ellipse cx="465" cy="191" rx="20" ry="15" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.6"/>
+<ellipse cx="535" cy="229" rx="20" ry="15" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.6"/>
+<ellipse cx="465" cy="229" rx="20" ry="15" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.6"/>
+<ellipse cx="535" cy="267" rx="20" ry="15" fill="none" stroke="#58a6ff" stroke-width="1" opacity="0.6"/>
+<ellipse cx="465" cy="267" rx="20" ry="15" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.6"/>
+<text x="535" y="200" fill="#58a6ff" font-size="8" text-anchor="middle">Spirit</text>
+<text x="420" y="195" fill="#e8a665" font-size="16" text-anchor="middle">↻</text>
+<text x="420" y="215" fill="#e8a665" font-size="7" text-anchor="middle">Rotate</text>
+<rect x="405" y="285" width="240" height="90" rx="4" fill="#30363d" opacity="0.5"/>
+<text x="525" y="303" fill="#e6edf3" font-size="8" text-anchor="middle">Key Advantages</text>
+<line x1="415" y1="309" x2="635" y2="309" stroke="#8b949e" stroke-width="0.5"/>
+<text x="420" y="325" fill="#3fb950" font-size="7" text-anchor="start">• Minimal axial mixing → plug flow</text>
+<text x="420" y="340" fill="#3fb950" font-size="7" text-anchor="start">• Each vortex = isolated micro-reactor</text>
+<text x="420" y="355" fill="#3fb950" font-size="7" text-anchor="start">• RPM controls extraction intensity</text>
+<text x="420" y="370" fill="#58a6ff" font-size="7" text-anchor="start">• Shear stress 10–100× stirred tank</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/><text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Taylor-Couette reactor: vortex onset at Ta = 1700 gives 5–12× extraction enhancement</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Oak inner cylinder + rotating gap = precision-controlled extraction with zero axial mixing</text>
+</svg>

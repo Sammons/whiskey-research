@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 126 — Reverse Micellar Enzyme Encapsulation: AOT W₀ Optimization</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: CALB Activity vs W₀ in AOT Reverse Micelles</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="200" y="393" fill="#8b949e" font-size="8" text-anchor="middle">W₀ = [H₂O]/[AOT]</text>
+<text x="55" y="220" fill="#8b949e" font-size="7" text-anchor="middle">Relative activity (%)</text>
+<line x1="70" y1="375" x2="330" y2="375" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<line x1="70" y1="313" x2="330" y2="313" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">20</text>
+<line x1="70" y1="251" x2="330" y2="251" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">40</text>
+<line x1="70" y1="189" x2="330" y2="189" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="192" fill="#8b949e" font-size="7" text-anchor="end">60</text>
+<line x1="70" y1="127" x2="330" y2="127" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">80</text>
+<line x1="70" y1="65" x2="330" y2="65" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">100</text>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="388" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="113.33333333333333" y1="375" x2="113.33333333333333" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="113.33333333333333" y="388" fill="#8b949e" font-size="7" text-anchor="middle">5</text>
+<line x1="156.66666666666666" y1="375" x2="156.66666666666666" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="156.66666666666666" y="388" fill="#8b949e" font-size="7" text-anchor="middle">10</text>
+<line x1="200" y1="375" x2="200" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="200" y="388" fill="#8b949e" font-size="7" text-anchor="middle">15</text>
+<line x1="243.33333333333331" y1="375" x2="243.33333333333331" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="243.33333333333331" y="388" fill="#8b949e" font-size="7" text-anchor="middle">20</text>
+<line x1="286.6666666666667" y1="375" x2="286.6666666666667" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="286.6666666666667" y="388" fill="#8b949e" font-size="7" text-anchor="middle">25</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="388" fill="#8b949e" font-size="7" text-anchor="middle">30</text>
+<polyline points="70.0,371.6 74.3,370.0 78.7,367.9 83.0,365.1 87.3,361.4 91.7,356.5 96.0,350.3 100.3,342.6 104.7,333.0 109.0,321.5 113.3,308.0 117.7,292.2 122.0,274.4 126.3,254.5 130.7,233.1 135.0,210.4 139.3,187.0 143.7,163.6 148.0,141.0 152.3,120.0 156.7,101.4 161.0,86.0 165.3,74.5 169.7,67.4 174.0,65.0 178.3,67.4 182.7,74.5 187.0,86.0 191.3,101.4 195.7,120.0 200.0,141.0 204.3,163.6 208.7,187.0 213.0,210.4 217.3,233.1 221.7,254.5 226.0,274.4 230.3,292.2 234.7,308.0 239.0,321.5 243.3,333.0 247.7,342.6 252.0,350.3 256.3,356.5 260.7,361.4 265.0,365.1 269.3,367.9 273.7,370.0 278.0,371.6 282.3,372.7 286.7,373.4 291.0,374.0 295.3,374.3 299.7,374.6 304.0,374.7 308.3,374.8 312.7,374.9 317.0,374.9 321.3,375.0 325.7,375.0 330.0,375.0" fill="none" stroke="#3fb950" stroke-width="2.5"/>
+<polyline points="70.0,367.5 74.3,363.4 78.7,357.7 83.0,349.8 87.3,339.3 91.7,325.9 96.0,309.3 100.3,289.5 104.7,266.7 109.0,241.6 113.3,215.2 117.7,188.8 122.0,164.0 126.3,142.5 130.7,125.7 135.0,115.1 139.3,111.5 143.7,115.1 148.0,125.7 152.3,142.5 156.7,164.0 161.0,188.8 165.3,215.2 169.7,241.6 174.0,266.7 178.3,289.5 182.7,309.3 187.0,325.9 191.3,339.3 195.7,349.8 200.0,357.7 204.3,363.4 208.7,367.5 213.0,370.2 217.3,372.1 221.7,373.2 226.0,374.0 230.3,374.4 234.7,374.7 239.0,374.8 243.3,374.9 247.7,375.0 252.0,375.0 256.3,375.0 260.7,375.0 265.0,375.0 269.3,375.0 273.7,375.0 278.0,375.0 282.3,375.0 286.7,375.0 291.0,375.0 295.3,375.0 299.7,375.0 304.0,375.0 308.3,375.0 312.7,375.0 317.0,375.0 321.3,375.0 325.7,375.0 330.0,375.0" fill="none" stroke="#58a6ff" stroke-width="2.5"/>
+<line x1="320" y1="65" x2="320" y2="375" stroke="#f85149" stroke-width="1" stroke-dasharray="4,3"/>
+<text x="318" y="80" fill="#f85149" font-size="7" text-anchor="end">Spirit bulk</text>
+<text x="318" y="92" fill="#f85149" font-size="7" text-anchor="end">(aᵂ ≈ 0.85)</text>
+<rect x="139.33333333333331" y="65" width="69.33333333333334" height="310" fill="#3fb950" opacity="0.06"/>
+<text x="174" y="80" fill="#3fb950" font-size="7" text-anchor="middle">Optimal zone</text>
+<text x="174" y="92" fill="#3fb950" font-size="7" text-anchor="middle">aᵂ ≈ 0.2–0.3 inside</text>
+<rect x="80" y="315" width="130" height="48" rx="3" fill="#30363d" opacity="0.8"/>
+<line x1="85" y1="330" x2="105" y2="330" stroke="#3fb950" stroke-width="2.5"/>
+<text x="110" y="333" fill="#3fb950" font-size="7" text-anchor="start">CALB (peak W₀=12)</text>
+<line x1="85" y1="345" x2="105" y2="345" stroke="#58a6ff" stroke-width="2.5"/>
+<text x="110" y="348" fill="#58a6ff" font-size="7" text-anchor="start">R. oryzae (peak W₀=8)</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Reverse Micelle Concept</text>
+<rect x="390" y="65" width="270" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<rect x="400" y="85" width="250" height="140" rx="8" fill="#e8a665" opacity="0.08" stroke="#e8a665" stroke-width="1"/>
+<text x="525" y="103" fill="#e8a665" font-size="8" text-anchor="middle">Bulk ethanol phase (40–65% ABV)</text>
+<text x="525" y="117" fill="#f85149" font-size="7" text-anchor="middle">aᵂ = 0.85 (hostile to lipase)</text>
+<circle cx="525" cy="173" r="40" fill="#58a6ff" opacity="0.12" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="525" y="165" fill="#58a6ff" font-size="7" text-anchor="middle">Water pool</text>
+<text x="525" y="178" fill="#58a6ff" font-size="7" text-anchor="middle">aᵂ ≈ 0.25</text>
+<text x="525" y="191" fill="#3fb950" font-size="7" text-anchor="middle">Enzyme active</text>
+<text x="440" y="135" fill="#e8a665" font-size="7" text-anchor="middle">AOT</text>
+<text x="440" y="147" fill="#e8a665" font-size="7" text-anchor="middle">surfactant</text>
+<text x="610" y="135" fill="#e8a665" font-size="7" text-anchor="middle">Tails in</text>
+<text x="610" y="147" fill="#e8a665" font-size="7" text-anchor="middle">ethanol</text>
+<rect x="400" y="240" width="250" height="120" rx="4" fill="#30363d" opacity="0.5"/>
+<text x="525" y="260" fill="#e6edf3" font-size="8" text-anchor="middle">Comparison</text>
+<line x1="410" y1="267" x2="640" y2="267" stroke="#8b949e" stroke-width="0.5"/>
+<text x="420" y="283" fill="#8b949e" font-size="7" text-anchor="start">Bulk spirit:</text>
+<text x="630" y="283" fill="#f85149" font-size="7" text-anchor="end">aᵂ = 0.85 → hydrolysis</text>
+<text x="420" y="299" fill="#8b949e" font-size="7" text-anchor="start">scCO₂:</text>
+<text x="630" y="299" fill="#3fb950" font-size="7" text-anchor="end">aᵂ = 0.05 → synthesis</text>
+<text x="420" y="315" fill="#8b949e" font-size="7" text-anchor="start">Reverse micelle:</text>
+<text x="630" y="315" fill="#3fb950" font-size="7" text-anchor="end">aᵂ = 0.25 → synthesis</text>
+<text x="420" y="335" fill="#8b949e" font-size="7" text-anchor="start">Normal micelle (§4.46):</text>
+<text x="630" y="335" fill="#d29922" font-size="7" text-anchor="end">aᵂ = 0.85, product trap</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/><text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">AOT reverse micelles: enzyme operates at aᵂ ≈ 0.25 INSIDE spirit at bulk aᵂ = 0.85</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">W₀ = 8–15 optimal — ester synthesis in spirit without pre-dehydration or scCO₂</text>
+</svg>
