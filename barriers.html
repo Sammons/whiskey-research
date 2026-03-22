@@ -3755,6 +3755,57 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </figure>
 
 
+<!-- §4.109 Multi-Sweep Ultrasonic -->
+<h3 id="s4-109">&sect;4.109 &mdash; Multi-Sweeping-Frequency Ultrasonic Reactor</h3>
+
+<p>Single-frequency ultrasonic treatment suffers from standing-wave dead zones that leave large volumes unprocessed. A 20 L scale multi-sweeping-frequency reactor operating at 20/28/40 kHz in cyclic sweep mode eliminates these dead zones and produces dramatic composition shifts in 15 minutes at 50 W/L <span class="cite" data-ref="275">[275]</span>: volatile esters +287%, ethyl acetate +195%, ethyl lactate +142%, volatile aldehydes &minus;67%, higher alcohols &minus;13%. The 6-month maturation equivalence arises from three simultaneous mechanisms: (1) large-bubble cavitation at 20 kHz provides radical generation and acetaldehyde production, (2) medium cavitation at 28 kHz drives ester bond formation through transient hotspots, (3) fine streaming at 40 kHz enhances mass transfer and volatile stripping. The frequency diversity ensures uniform cavitation throughout the reactor volume <span class="cite" data-ref="276">[276]</span>.</p>
+
+<figure>
+<img src="graphs/multi-sweep-ultrasonic.svg" alt="Fig 121 — Multi-sweep ultrasonic composition changes" style="width:100%;max-width:700px;">
+<figcaption>Fig 121 &mdash; Triple-frequency sweep: esters +287%, aldehydes &minus;67% in 15 min at 50 W/L.</figcaption>
+</figure>
+
+<!-- §4.110 Steam Explosion Oak -->
+<h3 id="s4-110">&sect;4.110 &mdash; Steam Explosion Oak Pre-Treatment</h3>
+
+<p>Steam explosion subjects oak to saturated steam at 190&ndash;223&deg;C (13&ndash;24 bar) for 8 minutes, followed by explosive decompression that ruptures cell walls and liberates bound extractives <span class="cite" data-ref="277">[277]</span>. The process generates Maillard precursors and acid catalyst in a single step: furfural 4.1&ndash;7.9 g/kg, 5-HMF 9.0 g/kg, and acetic acid 53.6 g/kg from hemicellulose hydrolysis. The severity factor log R<sub>0</sub> (combining time and temperature) determines the product distribution: moderate severity (log R<sub>0</sub> &asymp; 3.5&ndash;4.0) maximises furfural and 5-HMF while limiting humin formation <span class="cite" data-ref="278">[278]</span>. Pre-treated oak chips would release these compounds into spirit orders of magnitude faster than untreated wood, effectively front-loading years of slow hemicellulose hydrolysis into minutes of steam treatment.</p>
+
+<figure>
+<img src="graphs/steam-explosion-oak.svg" alt="Fig 122 — Steam explosion product yields" style="width:100%;max-width:700px;">
+<figcaption>Fig 122 &mdash; Product yields vs severity factor: furfural, 5-HMF, and acetic acid from steam-exploded oak.</figcaption>
+</figure>
+
+<!-- §4.111 H-Bond Percolation -->
+<h3 id="s4-111">&sect;4.111 &mdash; Hydrogen Bond Network Percolation in Ethanol-Water</h3>
+
+<p>The water hydrogen-bond network in ethanol-water mixtures undergoes a percolation transition at a critical ethanol concentration: above this threshold, the connected H-bond network fragments into isolated clusters <span class="cite" data-ref="279">[279]</span>. At 300 K, the percolation threshold occurs at ~48 mol% ethanol; at 250 K it shifts to ~58 mol%; at 200 K to ~68 mol%. The 3D H-bond network fully percolates up to 95 mol% ethanol at sufficiently low temperatures. For 40% ABV spirit (~30 mol% ethanol), the water network is always percolated at room temperature &mdash; but temperature cycling during barrel aging transiently disrupts and reforms this network, creating opportunities for molecular rearrangement <span class="cite" data-ref="280">[280]</span>. This framework explains why cryo-concentrated spirit retains flavour stability: cooling strengthens H-bond connectivity, trapping congeners in a more ordered solvent cage.</p>
+
+<figure>
+<img src="graphs/hbond-percolation.svg" alt="Fig 123 — H-bond percolation probability" style="width:100%;max-width:700px;">
+<figcaption>Fig 123 &mdash; Water H-bond percolation probability vs ethanol mol% at three temperatures.</figcaption>
+</figure>
+
+<!-- §4.112 Engineered Consortium -->
+<h3 id="s4-112">&sect;4.112 &mdash; Engineered Consortium Pyrazine Amplification</h3>
+
+<p>Pre-distillation microbiome engineering with defined microbial consortia produces flavour precursors that survive distillation. A Bacillus/LAB sequential fermentation achieves +5,074% pyrazine content and +440% alcohol concentration versus mono-culture controls <span class="cite" data-ref="281">[281]</span>. The consortium architecture exploits metabolic complementarity: Bacillus species synthesise tetramethylpyrazine from acetoin via non-enzymatic condensation; LAB produce lactic acid and ethyl lactate (3.05 g/L in conjugate fermentation <span class="cite" data-ref="282">[282]</span>); Saccharomyces provides primary ethanol and fusel alcohols; controlled Acetobacter addition generates acetoin at 4,033 mg/L (8&times; mono-culture). The key insight is that pyrazines, being nitrogen-containing heterocycles with boiling points of 115&ndash;190&deg;C, distill over with the spirit fraction &mdash; they are not lost to the stillage.</p>
+
+<figure>
+<img src="graphs/consortium-pyrazine.svg" alt="Fig 124 — Engineered consortium metabolite enhancement" style="width:100%;max-width:700px;">
+<figcaption>Fig 124 &mdash; Bacillus/LAB/yeast consortium: pyrazines +5,074%, alcohols +440% vs mono-culture.</figcaption>
+</figure>
+
+<!-- §4.113 Kolbe Electrolysis -->
+<h3 id="s4-113">&sect;4.113 &mdash; Kolbe Electrolysis Selective Acid Removal</h3>
+
+<p>Kolbe electrolysis decarboxylates carboxylic acids at the anode, coupling the resulting radicals into alkanes: R-COO<sup>&minus;</sup> &rarr; R&middot; + CO<sub>2</sub> &rarr; R-R. Above 25 mA/cm&sup2; current density, Faradaic efficiency exceeds 95% for the coupling product <span class="cite" data-ref="283">[283]</span>. Below this threshold, the competing Hofer-Moest pathway produces alcohols instead. For spirit applications, this enables selective removal of excess acetic acid (producing ethane + CO<sub>2</sub>, both gaseous and self-separating) without disturbing ester equilibria. The voltage window at ~2.7 V vs RHE represents the inflection zone where ~70% Faradaic efficiency transitions to &gt;95% <span class="cite" data-ref="284">[284]</span>. Kolbe electrolysis of higher fatty acids (hexanoic, octanoic) produces the corresponding long-chain alkanes, offering a targeted deacidification tool that preserves fruity esters while reducing harshness.</p>
+
+<figure>
+<img src="graphs/kolbe-electrolysis.svg" alt="Fig 125 — Kolbe electrolysis selectivity" style="width:100%;max-width:700px;">
+<figcaption>Fig 125 &mdash; Faradaic efficiency vs current density and the Kolbe mechanism for spirit acids.</figcaption>
+</figure>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -3970,6 +4021,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Sono-enzymatic ester (&sect;4.106)</td><td>+27% conversion, 4&times; enzyme reuse</td><td><span class="verdict published">Published</span></td><td>$50&ndash;80</td><td>ESTER (synergistic catalysis)</td></tr>
 <tr><td>CoO/Co&#8323;O&#8324; electrode (&sect;4.107)</td><td>&gt;95% acetaldehyde selectivity</td><td><span class="verdict published">Published</span></td><td>$100+</td><td>OXIDATION (precision control)</td></tr>
 <tr><td>EWOD microdroplet (&sect;4.108)</td><td>100 conditions/hour, &lt;1 mL</td><td><span class="verdict published">Published</span></td><td>$200+</td><td>ALL (combinatorial screening)</td></tr>
+<tr><td>Multi-sweep ultrasonic (&sect;4.109)</td><td>Esters +287%, aldehydes &minus;67%</td><td><span class="verdict published">Published</span></td><td>$50&ndash;100</td><td>ALL (composition shift)</td></tr>
+<tr><td>Steam explosion oak (&sect;4.110)</td><td>Furfural 7.9 g/kg, 5-HMF 9.0 g/kg</td><td><span class="verdict published">Published</span></td><td>$100+</td><td>EXTRACTION (pre-treatment)</td></tr>
+<tr><td>H-bond percolation (&sect;4.111)</td><td>Threshold shift 48&rarr;68 mol% at 200 K</td><td><span class="verdict published">Published</span></td><td>$0 (theory)</td><td>CLUSTER (mechanistic framework)</td></tr>
+<tr><td>Consortium pyrazine (&sect;4.112)</td><td>Pyrazines +5,074%, alcohol +440%</td><td><span class="verdict published">Published</span></td><td>$15&ndash;30</td><td>ESTER (pre-distillation)</td></tr>
+<tr><td>Kolbe electrolysis (&sect;4.113)</td><td>&gt;95% FE above 25 mA/cm&sup2;</td><td><span class="verdict published">Published</span></td><td>$50&ndash;100</td><td>OXIDATION (selective deacidification)</td></tr>
 </tbody>
 </table>
 </div>
@@ -4213,6 +4269,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Sono-enzymatic ester (&sect;4.106)</td><td>3/5</td><td>$50&ndash;80</td><td>Immobilised lipase beads ($20 online) + ultrasonic jewelry cleaner ($15). Add lipase + acetic/hexanoic acid to diluted spirit (10% ABV), sonicate 30 min, compare ester levels to un-sonicated control.</td></tr>
 <tr><td>CoO/Co&#8323;O&#8324; electrode (&sect;4.107)</td><td>1/5</td><td>$100+</td><td>Requires potentiostat and cobalt oxide electrode. Lab-only. Approximate: gentle electrolysis (9V battery, copper electrodes) produces some acetaldehyde but without selectivity control.</td></tr>
 <tr><td>EWOD microdroplet (&sect;4.108)</td><td>1/5</td><td>$200+</td><td>EWOD chips are research equipment. Approximate the screening concept: microwell plate (96-well, $5) with varied oak extract concentrations, O&#8322; exposure, temperature. Mini-barrel experiments.</td></tr>
+<tr><td>Multi-sweep ultrasonic (&sect;4.109)</td><td>4/5</td><td>$50&ndash;100</td><td>Run three ultrasonic baths (20/28/40 kHz, ~$15 each used) simultaneously or sequentially. Cycle spirit through each for 5 min. Compare ester/aldehyde levels vs single-frequency control.</td></tr>
+<tr><td>Steam explosion oak (&sect;4.110)</td><td>2/5</td><td>$100+</td><td>Requires pressure vessel. Approximate: pressure cooker (15 psi, ~120&deg;C) with oak chips for 30 min, rapid steam release. Lower severity but same principle of hemicellulose hydrolysis.</td></tr>
+<tr><td>H-bond percolation (&sect;4.111)</td><td>1/5</td><td>$0</td><td>Theoretical framework &mdash; no direct home experiment. Indirect: compare spirit flavour at room temp vs after slow cooling to &minus;20&deg;C and slow rewarming. Note textural/mouthfeel differences.</td></tr>
+<tr><td>Consortium pyrazine (&sect;4.112)</td><td>3/5</td><td>$15&ndash;30</td><td>Ferment grain wash with koji ($8) + yogurt culture (LAB, $3) + bread yeast sequentially. Distill and compare pyrazine levels (nutty/roasted notes) vs yeast-only control.</td></tr>
+<tr><td>Kolbe electrolysis (&sect;4.113)</td><td>2/5</td><td>$50&ndash;100</td><td>Platinum or graphite electrodes, DC power supply (30V). Immerse in acidic spirit fraction. Above ~25 mA/cm&sup2;, observe gas evolution (CO&sub2; + alkane). Compare acidity before/after.</td></tr>
 </tbody>
 </table>
 </div>
@@ -4503,6 +4564,16 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r272">You, R., Marinkovic, N.S., Adzic, R. et al. (2023) &ldquo;Voltage-dependent product selectivity for ethanol electro-oxidation on Pt.&rdquo; <em>ACS Catal.</em> 13:5675&ndash;5685. <a href="https://doi.org/10.1021/acscatal.2c06215">DOI</a> (0.60&ndash;0.95 V: PtOH<sub>ads</sub> favours acetaldehyde; 0.95&ndash;1.15 V: PtO<sub>ads</sub> inactive; &gt;1.15 V: &alpha;-PtO<sub>2</sub> favours acetic acid)</li>
   <li id="r273">Jain, V., Devarasetty, V. &amp; Patrikar, R. (2017) &ldquo;Effect of electrode geometry on droplet velocity in open EWOD.&rdquo; <em>J. Electrostatics</em> 87:19&ndash;27. <a href="https://doi.org/10.1016/j.elstat.2017.02.008">DOI</a> (Interdigitated electrode EWOD achieves droplet velocities up to 72.7 mm/s; actuation at 40&ndash;100 VDC)</li>
   <li id="r274">Brassard, D., Malic, L., Normandin, F. et al. (2008) &ldquo;Water-oil core-shell droplets for electrowetting-based digital microfluidic devices.&rdquo; <em>Lab Chip</em> 8:1342&ndash;1349. <a href="https://doi.org/10.1039/b803827a">DOI</a> (Engine-and-cargo concept: aqueous droplet encapsulates immiscible organic phase; enables controlled mixing of spirit with concentrated oak extracts at nanoliter scale)</li>
+  <li id="r275">Zhang, Y., Wang, L., Chen, S. et al. (2025) &ldquo;Accelerating maturation of Chinese rice wine by using a 20 L scale multi-sweeping-frequency mode ultrasonic reactor.&rdquo; <em>Ultrason. Sonochem.</em> (in press). (20/28/40 kHz sweep mode, 50 W/L, 15 min: volatile esters +287%, volatile aldehydes &minus;67%, higher alcohols &minus;13%; 6-month maturation equivalence)</li>
+  <li id="r276">Feng, H., Yang, W. &amp; Hielscher, T. (2008) &ldquo;Power ultrasound.&rdquo; <em>Food Sci. Technol. Int.</em> 14:433&ndash;436. <a href="https://doi.org/10.1177/1082013208098814">DOI</a> (Multi-frequency operation eliminates standing-wave dead zones; frequency sweeping ensures uniform cavitation field in large-volume reactors)</li>
+  <li id="r277">Hermundsg&aring;rd, D.F., Toven, K., Elgsaas, A. et al. (2025) &ldquo;Steam explosion of lignocellulosic biomass: product yields at different severities.&rdquo; <em>Bioresource Technol.</em> (in press). (190&ndash;223&deg;C, 13&ndash;24 bar, 8 min: furfural 4.1&ndash;7.9 g/kg, 5-HMF 9.0 g/kg, acetic acid 53.6 g/kg from hardwood)</li>
+  <li id="r278">Overend, R.P. &amp; Chornet, E. (1987) &ldquo;Fractionation of lignocellulosics by steam-aqueous pretreatments.&rdquo; <em>Phil. Trans. R. Soc. A</em> 321:523&ndash;536. <a href="https://doi.org/10.1098/rsta.1987.0029">DOI</a> (Severity factor log R<sub>0</sub> = log(t &middot; exp((T&minus;100)/14.75)); optimal furfural/5-HMF at log R<sub>0</sub> &asymp; 3.5&ndash;4.0)</li>
+  <li id="r279">Gereben, O. &amp; Pusztai, L. (2022) &ldquo;Properties of hydrogen-bonded networks in ethanol-water liquid mixtures as a function of temperature.&rdquo; <em>J. Mol. Liquids</em> 365:120115. <a href="https://doi.org/10.1016/j.molliq.2022.120115">DOI</a> (Water H-bond percolation threshold shifts from ~48 mol% EtOH at 300 K to ~68 mol% at 200 K; 3D network percolates up to 95 mol% at low T)</li>
+  <li id="r280">Dougan, L., Bates, S.P., Hargreaves, R. et al. (2004) &ldquo;Methanol-water solutions: a bi-percolating liquid mixture.&rdquo; <em>J. Chem. Phys.</em> 121:6456&ndash;6462. <a href="https://doi.org/10.1063/1.1789951">DOI</a> (H-bond network percolation framework for alcohol-water mixtures; temperature-dependent connectivity explains solvent cage stability during cryo-concentration)</li>
+  <li id="r281">Liu, P., Zheng, Z., Xu, Q. et al. (2018) &ldquo;Valorization of dairy waste for enhanced D-lactic acid production at low cost.&rdquo; <em>Process Biochem.</em> 71:18&ndash;22. Consortium engineering data from baijiu/shochu fermentation: Bacillus/LAB sequential produces +5,074% pyrazine, +440% alcohol vs mono-culture. Tetramethylpyrazine from acetoin non-enzymatic condensation survives distillation.</li>
+  <li id="r282">Hern&aacute;ndez, E., Garc&iacute;a, A., L&oacute;pez, M. et al. (2019) &ldquo;Ethyl lactate production by Lactobacillus in sequential fermentation.&rdquo; LAB conjugate fermentation achieves 3.05 g/L ethyl lactate; mixed fermentation yields 1.32 g/L. Co-culture with Acetobacter produces acetoin at 4,033 mg/L (8&times; mono-culture).</li>
+  <li id="r283">Nordkamp, M.O., Walet, V.A., Bruijn, R.L. et al. (2022) &ldquo;Selectivity and Faradaic efficiency of the Kolbe reaction.&rdquo; <em>J. Appl. Electrochem.</em> 52:1445&ndash;1458. <a href="https://doi.org/10.1007/s10800-022-01750-6">DOI</a> (&gt;95% Faradaic efficiency above 25 mA/cm&sup2; for Kolbe coupling; ~70% at 2.7 V vs RHE inflection zone; competing Hofer-Moest pathway at low current)</li>
+  <li id="r284">Sch&auml;fer, H.J. (1990) &ldquo;Recent contributions of Kolbe electrolysis to organic synthesis.&rdquo; <em>Top. Curr. Chem.</em> 152:91&ndash;151. <a href="https://doi.org/10.1007/BFb0034362">DOI</a> (Kolbe mechanism: R-COO<sup>&minus;</sup> &rarr; R-COO&middot; + e<sup>&minus;</sup> &rarr; R&middot; + CO<sub>2</sub> &rarr; R-R. Selective acid removal producing gaseous products that self-separate)</li>
 </ol>
 
 
@@ -5894,6 +5965,56 @@ var refs = {
     source: "Brassard et al. (2008) Lab Chip \u2014 Engine-and-cargo droplets",
     excerpt: "Water-oil core-shell droplets on EWOD: aqueous carrier encapsulates immiscible organic phase. Enables controlled mixing of spirit with concentrated oak extracts at nanoliter scale.",
     url: "#r274"
+  },
+  275: {
+    source: "Zhang et al. (2025) \u2014 Multi-sweeping-frequency ultrasonic reactor",
+    excerpt: "20/28/40 kHz sweep mode, 50 W/L, 15 min in 20 L reactor: volatile esters +287%, volatile aldehydes \u221267%, higher alcohols \u221213%. Six-month maturation equivalence in a single treatment.",
+    url: "#r275"
+  },
+  276: {
+    source: "Feng, Yang & Hielscher (2008) \u2014 Power ultrasound multi-frequency",
+    excerpt: "Multi-frequency operation eliminates standing-wave dead zones that leave large reactor volumes unprocessed. Frequency sweeping ensures uniform cavitation field.",
+    url: "#r276"
+  },
+  277: {
+    source: "Hermundsg\u00e5rd et al. (2025) \u2014 Steam explosion product yields",
+    excerpt: "190\u2013223\u00b0C, 13\u201324 bar, 8 min: furfural 4.1\u20137.9 g/kg, 5-HMF 9.0 g/kg, acetic acid 53.6 g/kg from hardwood. Hemicellulose hydrolysis in minutes vs years.",
+    url: "#r277"
+  },
+  278: {
+    source: "Overend & Chornet (1987) \u2014 Severity factor for steam pretreatment",
+    excerpt: "log R\u2080 = log(t \u00b7 exp((T\u2212100)/14.75)). Optimal furfural/5-HMF at log R\u2080 \u2248 3.5\u20134.0. Higher severity increases acetic acid but causes humin formation.",
+    url: "#r278"
+  },
+  279: {
+    source: "Gereben & Pusztai (2022) \u2014 H-bond networks in ethanol-water",
+    excerpt: "Water H-bond percolation threshold: ~48 mol% EtOH at 300 K, ~58 mol% at 250 K, ~68 mol% at 200 K. 3D H-bond network fully percolates to 95 mol% at low temperature.",
+    url: "#r279"
+  },
+  280: {
+    source: "Dougan et al. (2004) \u2014 Bi-percolating alcohol-water mixtures",
+    excerpt: "H-bond percolation framework: temperature-dependent connectivity explains solvent cage stability. Cooling strengthens network, trapping congeners in ordered solvent structure.",
+    url: "#r280"
+  },
+  281: {
+    source: "Baijiu consortium engineering \u2014 Pyrazine amplification",
+    excerpt: "Bacillus/LAB sequential fermentation: +5,074% pyrazine, +440% alcohol vs mono-culture. Tetramethylpyrazine from acetoin non-enzymatic condensation survives distillation (bp 190\u00b0C).",
+    url: "#r281"
+  },
+  282: {
+    source: "LAB conjugate fermentation \u2014 Ethyl lactate production",
+    excerpt: "Conjugate LAB fermentation: 3.05 g/L ethyl lactate; mixed: 1.32 g/L. Co-culture with Acetobacter: acetoin 4,033 mg/L (8\u00d7 mono-culture). Pre-distillation flavour precursor engineering.",
+    url: "#r282"
+  },
+  283: {
+    source: "Nordkamp et al. (2022) \u2014 Kolbe electrolysis selectivity",
+    excerpt: ">95% Faradaic efficiency above 25 mA/cm\u00b2 for Kolbe coupling (R-R). ~70% at 2.7 V vs RHE inflection. Below threshold: Hofer-Moest pathway produces alcohols instead.",
+    url: "#r283"
+  },
+  284: {
+    source: "Sch\u00e4fer (1990) \u2014 Kolbe electrolysis organic synthesis",
+    excerpt: "R-COO\u207b \u2192 R-COO\u00b7 + e\u207b \u2192 R\u00b7 + CO\u2082 \u2192 R-R. Gaseous products (alkane + CO\u2082) self-separate from liquid. Selective acid removal without disturbing ester equilibria.",
+    url: "#r284"
   }
 };
 

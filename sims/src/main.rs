@@ -209,6 +209,11 @@ fn main() {
     fs::write("../graphs/sono-enzymatic-esterification.svg", sim_sono_enzymatic_esterification()).unwrap();
     fs::write("../graphs/coo-electrochemical-acetaldehyde.svg", sim_coo_electrochemical_acetaldehyde()).unwrap();
     fs::write("../graphs/ewod-microdroplet-screening.svg", sim_ewod_microdroplet_screening()).unwrap();
+    fs::write("../graphs/multi-sweep-ultrasonic.svg", sim_multi_sweep_ultrasonic()).unwrap();
+    fs::write("../graphs/steam-explosion-oak.svg", sim_steam_explosion_oak()).unwrap();
+    fs::write("../graphs/hbond-percolation.svg", sim_hbond_percolation()).unwrap();
+    fs::write("../graphs/consortium-pyrazine.svg", sim_consortium_pyrazine()).unwrap();
+    fs::write("../graphs/kolbe-electrolysis.svg", sim_kolbe_electrolysis()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -18115,6 +18120,514 @@ fn sim_ewod_microdroplet_screening() -> String {
         ACCENT, 8, "middle");
     svg += &label(350.0, h - 18.0,
         "Combinatorial optimization of extract concentration, O2, temperature, and time in nanoliter volumes",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Fig 121 — Multi-Sweeping-Frequency Ultrasonic Reactor
+fn sim_multi_sweep_ultrasonic() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 121 \u{2014} Multi-Sweeping-Frequency Ultrasonic Reactor: Composition Shifts");
+
+    // Panel A: Bar chart of composition changes
+    svg += &label(200.0, 57.0, "A: Composition Change After 15 min Treatment (50 W/L)", TEXT, 10, "middle");
+    let cx = 70.0; let cy = 70.0; let cw = 260.0; let ch = 290.0;
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"{cw}\" height=\"{ch}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Y axis: -100% to +300%
+    let sy = |y: f64| -> f64 { cy + ch - ((y + 100.0) / 400.0) * ch };
+    svg += &hline(cx, cx + cw, sy(0.0), MUTED, "1");
+
+    for val in [-100, 0, 100, 200, 300].iter() {
+        let y = sy(*val as f64);
+        svg += &hline(cx, cx + cw, y, GRID, "0.3");
+        svg += &label(cx - 5.0, y + 3.0, &format!("{}%", val), MUTED, 7, "end");
+    }
+
+    let compounds: Vec<(&str, f64, &str)> = vec![
+        ("Volatile\nesters", 287.0, GREEN),
+        ("Ethyl\nacetate", 195.0, BLUE),
+        ("Ethyl\nlactate", 142.0, ACCENT),
+        ("Volatile\naldehydes", -67.0, RED),
+        ("Higher\nalcohols", -13.0, YELLOW),
+    ];
+    let bar_w = 38.0;
+    let gap = (cw - compounds.len() as f64 * bar_w) / (compounds.len() as f64 + 1.0);
+
+    for (i, (name, pct, color)) in compounds.iter().enumerate() {
+        let x = cx + gap + i as f64 * (bar_w + gap);
+        let zero_y = sy(0.0);
+        let bar_h = (pct.abs() / 400.0) * ch;
+        let y = if *pct > 0.0 { zero_y - bar_h } else { zero_y };
+        svg += &format!("<rect x=\"{x}\" y=\"{y}\" width=\"{bar_w}\" height=\"{bar_h}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>");
+        let label_y = if *pct > 0.0 { y - 4.0 } else { y + bar_h + 10.0 };
+        svg += &label(x + bar_w / 2.0, label_y, &format!("+{:.0}%", pct).replace("+-", "-"), color, 7, "middle");
+        let parts: Vec<&str> = name.split('\n').collect();
+        svg += &label(x + bar_w / 2.0, cy + ch + 12.0, parts[0], color, 6, "middle");
+        if parts.len() > 1 {
+            svg += &label(x + bar_w / 2.0, cy + ch + 20.0, parts[1], color, 6, "middle");
+        }
+    }
+
+    // Panel B: Frequency sweep diagram
+    svg += &label(525.0, 57.0, "B: Triple-Frequency Sweep Mode", TEXT, 10, "middle");
+    let bx = 390.0; let by = 70.0; let bw = 270.0; let bh = 290.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Three frequency bands
+    let freqs: Vec<(&str, &str, f64, &str)> = vec![
+        ("20 kHz", "Large cavitation", 0.25, BLUE),
+        ("28 kHz", "Medium cavitation", 0.50, GREEN),
+        ("40 kHz", "Fine streaming", 0.75, ACCENT),
+    ];
+    for (name, desc, frac, color) in &freqs {
+        let fy = by + *frac * bh * 0.6 + 20.0;
+        svg += &format!("<rect x=\"{}\" y=\"{fy}\" width=\"220\" height=\"40\" rx=\"4\" fill=\"{color}\" opacity=\"0.12\" stroke=\"{color}\" stroke-width=\"1.5\"/>",
+            bx + 25.0);
+        svg += &label(bx + 60.0, fy + 17.0, name, color, 9, "start");
+        svg += &label(bx + 60.0, fy + 31.0, desc, color, 7, "start");
+
+        // Sine wave icon
+        let wave_y = fy + 20.0;
+        let wave_x = bx + 210.0;
+        let amp = 8.0;
+        let wavelength = if *name == "20 kHz" { 20.0 } else if *name == "28 kHz" { 14.0 } else { 10.0 };
+        let mut wave_pts = Vec::new();
+        for j in 0..=30 {
+            let wx = wave_x + j as f64;
+            let wy = wave_y + amp * (j as f64 * 2.0 * std::f64::consts::PI / wavelength).sin();
+            wave_pts.push(format!("{:.1},{:.1}", wx, wy));
+        }
+        svg += &format!("<polyline points=\"{}\" fill=\"none\" stroke=\"{color}\" stroke-width=\"1.5\"/>", wave_pts.join(" "));
+    }
+
+    // Sweep arrows between bands
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{ACCENT}\" stroke-width=\"1\" stroke-dasharray=\"3,2\" marker-end=\"url(#arr)\"/>",
+        bx + 135.0, by + 0.25 * bh * 0.6 + 62.0, bx + 135.0, by + 0.50 * bh * 0.6 + 18.0);
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{ACCENT}\" stroke-width=\"1\" stroke-dasharray=\"3,2\" marker-end=\"url(#arr)\"/>",
+        bx + 135.0, by + 0.50 * bh * 0.6 + 62.0, bx + 135.0, by + 0.75 * bh * 0.6 + 18.0);
+
+    // Key metrics
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"240\" height=\"50\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.8\"/>",
+        bx + 15.0, by + bh - 65.0);
+    svg += &label(bx + 135.0, by + bh - 48.0, "20 L reactor, 50 W/L, 15 min", ACCENT, 8, "middle");
+    svg += &label(bx + 135.0, by + bh - 34.0, "6-month equivalent maturation shift", GREEN, 7, "middle");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Multi-sweep 20/28/40 kHz: esters +287%, aldehydes \u{2013}67%, higher alcohols \u{2013}13% in 15 min",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Frequency diversity prevents standing-wave dead zones \u{2014} uniform cavitation field in 20 L volume",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Fig 122 — Steam Explosion Oak Pre-Treatment
+fn sim_steam_explosion_oak() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 122 \u{2014} Steam Explosion Oak: Rapid Lignin Fragmentation + Sugar Release");
+
+    // Panel A: Product yields at different severities
+    svg += &label(200.0, 57.0, "A: Product Yield vs Severity (g/kg dry wood)", TEXT, 10, "middle");
+    let cx = 70.0; let cy = 70.0; let cw = 260.0; let ch = 290.0;
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"{cw}\" height=\"{ch}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // X: severity (log R0) from 2 to 5
+    let sx = |x: f64| -> f64 { cx + ((x - 2.0) / 3.0) * cw };
+    // Y: yield 0-60 g/kg
+    let sy = |y: f64| -> f64 { cy + ch - (y / 60.0) * ch };
+
+    for i in 0..=3 {
+        let xv = 2.0 + i as f64;
+        svg += &vline(sx(xv), cy, cy + ch, GRID, "0.3");
+        svg += &label(sx(xv), cy + ch + 12.0, &format!("{:.0}", xv), MUTED, 7, "middle");
+    }
+    for i in 0..=3 {
+        let yv = i as f64 * 20.0;
+        svg += &hline(cx, cx + cw, sy(yv), GRID, "0.3");
+        svg += &label(cx - 5.0, sy(yv) + 3.0, &format!("{}", yv as i32), MUTED, 7, "end");
+    }
+    svg += &label(200.0, cy + ch + 26.0, "log R\u{2080} (severity factor)", MUTED, 8, "middle");
+    svg += &label(55.0, cy + ch / 2.0, "g/kg dry", MUTED, 7, "middle");
+
+    // Acetic acid curve (rises steeply)
+    let acetic_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let x = 2.0 + i as f64 * 0.03;
+        let y = 53.6 * (1.0 - (-1.5 * (x - 2.0)).exp());
+        (x, y)
+    }).collect();
+    svg += &polyline_svg(&acetic_pts, RED, "2.5", &sx, &sy);
+
+    // 5-HMF curve (peaks then declines)
+    let hmf_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let x = 2.0 + i as f64 * 0.03;
+        let y = 9.0 * (-(x - 4.0).powi(2) / 0.8).exp();
+        (x, y)
+    }).collect();
+    svg += &polyline_svg(&hmf_pts, ACCENT, "2.5", &sx, &sy);
+
+    // Furfural curve (peaks)
+    let furf_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let x = 2.0 + i as f64 * 0.03;
+        let y = 7.9 * (-(x - 3.8).powi(2) / 0.6).exp();
+        (x, y)
+    }).collect();
+    svg += &polyline_svg(&furf_pts, GREEN, "2.5", &sx, &sy);
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"100\" height=\"50\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>",
+        cx + 10.0, cy + 10.0);
+    svg += &hline(cx + 15.0, cx + 35.0, cy + 25.0, RED, "2.5");
+    svg += &label(cx + 40.0, cy + 28.0, "Acetic acid", RED, 7, "start");
+    svg += &hline(cx + 15.0, cx + 35.0, cy + 38.0, ACCENT, "2.5");
+    svg += &label(cx + 40.0, cy + 41.0, "5-HMF", ACCENT, 7, "start");
+    svg += &hline(cx + 15.0, cx + 35.0, cy + 51.0, GREEN, "2.5");
+    svg += &label(cx + 40.0, cy + 54.0, "Furfural", GREEN, 7, "start");
+
+    // Panel B: Process diagram
+    svg += &label(525.0, 57.0, "B: Steam Explosion Process", TEXT, 10, "middle");
+    let bx = 390.0; let by = 70.0; let bw = 270.0; let bh = 290.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Process steps
+    let steps: Vec<(&str, &str, &str)> = vec![
+        ("Oak chips/staves", "Load into pressure vessel", MUTED),
+        ("Steam injection", "190\u{2013}223\u{00b0}C, 13\u{2013}24 bar", BLUE),
+        ("Hold 8 min", "Hemicellulose hydrolysis", GREEN),
+        ("Explosive decompression", "Cell wall rupture", RED),
+        ("Collect fragments", "Enriched in Maillard precursors", ACCENT),
+    ];
+    let step_h = 42.0;
+    let step_gap = (bh - steps.len() as f64 * step_h) / (steps.len() as f64 + 1.0);
+
+    for (i, (title, detail, color)) in steps.iter().enumerate() {
+        let sy_pos = by + step_gap + i as f64 * (step_h + step_gap);
+        svg += &format!("<rect x=\"{}\" y=\"{sy_pos}\" width=\"230\" height=\"{step_h}\" rx=\"4\" fill=\"{color}\" opacity=\"0.12\" stroke=\"{color}\" stroke-width=\"1\"/>",
+            bx + 20.0);
+        svg += &label(bx + 135.0, sy_pos + 16.0, title, color, 8, "middle");
+        svg += &label(bx + 135.0, sy_pos + 30.0, detail, color, 7, "middle");
+
+        if i < steps.len() - 1 {
+            svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{ACCENT}\" stroke-width=\"1\" marker-end=\"url(#arr)\"/>",
+                bx + 135.0, sy_pos + step_h + 2.0, bx + 135.0, sy_pos + step_h + step_gap - 2.0);
+        }
+    }
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Steam explosion: 190\u{2013}223\u{00b0}C, 8 min \u{2192} furfural 7.9 g/kg, 5-HMF 9.0 g/kg, acetic acid 53.6 g/kg",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Pre-treatment liberates Maillard precursors and acid catalyst in minutes vs years of slow hydrolysis",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Fig 123 — Hydrogen Bond Percolation in Ethanol-Water
+fn sim_hbond_percolation() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 123 \u{2014} Hydrogen Bond Network Percolation in Ethanol-Water Mixtures");
+
+    // Panel A: Percolation probability vs ethanol mol%
+    svg += &label(200.0, 57.0, "A: Water H-Bond Percolation Probability", TEXT, 10, "middle");
+    let cx = 70.0; let cy = 70.0; let cw = 260.0; let ch = 290.0;
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"{cw}\" height=\"{ch}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    let sx = |x: f64| -> f64 { cx + (x / 100.0) * cw };
+    let sy = |y: f64| -> f64 { cy + ch - y * ch };
+
+    for i in 0..=5 {
+        let xv = i as f64 * 20.0;
+        svg += &vline(sx(xv), cy, cy + ch, GRID, "0.3");
+        svg += &label(sx(xv), cy + ch + 12.0, &format!("{}%", xv as i32), MUTED, 7, "middle");
+    }
+    for i in 0..=5 {
+        let yv = i as f64 * 0.2;
+        svg += &hline(cx, cx + cw, sy(yv), GRID, "0.3");
+        svg += &label(cx - 5.0, sy(yv) + 3.0, &format!("{:.1}", yv), MUTED, 7, "end");
+    }
+    svg += &label(200.0, cy + ch + 26.0, "Ethanol mol%", MUTED, 8, "middle");
+    svg += &label(55.0, cy + ch / 2.0, "P(percolation)", MUTED, 7, "middle");
+
+    // 300K curve: percolation drops at ~50 mol%
+    let p300: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let x = i as f64;
+        let p = 1.0 / (1.0 + (0.12 * (x - 48.0)).exp());
+        (x, p)
+    }).collect();
+    svg += &polyline_svg(&p300, RED, "2.5", &sx, &sy);
+
+    // 250K curve: percolation persists longer
+    let p250: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let x = i as f64;
+        let p = 1.0 / (1.0 + (0.10 * (x - 58.0)).exp());
+        (x, p)
+    }).collect();
+    svg += &polyline_svg(&p250, BLUE, "2.5", &sx, &sy);
+
+    // 200K curve: percolation up to ~70 mol%
+    let p200: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let x = i as f64;
+        let p = 1.0 / (1.0 + (0.08 * (x - 68.0)).exp());
+        (x, p)
+    }).collect();
+    svg += &polyline_svg(&p200, GREEN, "2.5", &sx, &sy);
+
+    // 40% ABV line (~30 mol%)
+    svg += &vline(sx(30.0), cy, cy + ch, ACCENT, "1");
+    svg += &label(sx(30.0) + 4.0, cy + 15.0, "40% ABV", ACCENT, 7, "start");
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"80\" height=\"50\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>",
+        cx + cw - 90.0, cy + ch - 60.0);
+    svg += &hline(cx + cw - 85.0, cx + cw - 65.0, cy + ch - 45.0, RED, "2.5");
+    svg += &label(cx + cw - 60.0, cy + ch - 42.0, "300 K", RED, 7, "start");
+    svg += &hline(cx + cw - 85.0, cx + cw - 65.0, cy + ch - 32.0, BLUE, "2.5");
+    svg += &label(cx + cw - 60.0, cy + ch - 29.0, "250 K", BLUE, 7, "start");
+    svg += &hline(cx + cw - 85.0, cx + cw - 65.0, cy + ch - 19.0, GREEN, "2.5");
+    svg += &label(cx + cw - 60.0, cy + ch - 16.0, "200 K", GREEN, 7, "start");
+
+    // Panel B: Network diagram
+    svg += &label(525.0, 57.0, "B: H-Bond Network Structure", TEXT, 10, "middle");
+    let bx = 390.0; let by = 70.0; let bw = 270.0; let bh = 290.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Percolated network (left half)
+    svg += &label(bx + 65.0, by + 25.0, "Percolated", GREEN, 8, "middle");
+    svg += &label(bx + 65.0, by + 37.0, "(connected)", GREEN, 7, "middle");
+    // Random dots with connections
+    let nodes_p: Vec<(f64, f64)> = vec![
+        (420.0, 70.0), (440.0, 110.0), (410.0, 150.0), (460.0, 140.0),
+        (430.0, 190.0), (470.0, 180.0), (415.0, 230.0), (455.0, 220.0),
+        (440.0, 260.0), (475.0, 250.0), (425.0, 290.0), (460.0, 300.0),
+    ];
+    // Draw connections (percolating)
+    let edges_p: Vec<(usize, usize)> = vec![
+        (0,1),(1,2),(1,3),(2,4),(3,5),(4,6),(4,7),(5,7),(6,8),(7,9),(8,10),(9,11),(10,11),
+    ];
+    for (a, b) in &edges_p {
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{BLUE}\" stroke-width=\"1.5\" opacity=\"0.6\"/>",
+            nodes_p[*a].0, nodes_p[*a].1, nodes_p[*b].0, nodes_p[*b].1);
+    }
+    for (x, y) in &nodes_p {
+        svg += &format!("<circle cx=\"{x}\" cy=\"{y}\" r=\"4\" fill=\"{BLUE}\" opacity=\"0.8\"/>");
+    }
+
+    // Non-percolated network (right half)
+    svg += &label(bx + 200.0, by + 25.0, "Fragmented", RED, 8, "middle");
+    svg += &label(bx + 200.0, by + 37.0, "(disconnected)", RED, 7, "middle");
+    let nodes_f: Vec<(f64, f64)> = vec![
+        (550.0, 80.0), (580.0, 100.0), (540.0, 140.0), (600.0, 150.0),
+        (560.0, 190.0), (590.0, 200.0), (545.0, 240.0), (610.0, 230.0),
+        (570.0, 270.0), (600.0, 280.0), (555.0, 310.0), (585.0, 320.0),
+    ];
+    let edges_f: Vec<(usize, usize)> = vec![
+        (0,1),(2,4),(3,5),(6,8),(7,9),(10,11),
+    ];
+    for (a, b) in &edges_f {
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{RED}\" stroke-width=\"1.5\" opacity=\"0.4\"/>",
+            nodes_f[*a].0, nodes_f[*a].1, nodes_f[*b].0, nodes_f[*b].1);
+    }
+    for (x, y) in &nodes_f {
+        svg += &format!("<circle cx=\"{x}\" cy=\"{y}\" r=\"4\" fill=\"{RED}\" opacity=\"0.6\"/>");
+    }
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Water H-bond network percolation threshold shifts with temperature: 48 mol% (300K) to 68 mol% (200K)",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Cooling strengthens H-bond connectivity \u{2014} explains cryo-concentration flavour stabilisation",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Fig 124 — Engineered Consortium Pyrazine Amplification
+fn sim_consortium_pyrazine() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 124 \u{2014} Engineered Microbial Consortium: Pyrazine +5,074%, Alcohol +440%");
+
+    // Panel A: Enhancement bars
+    svg += &label(200.0, 57.0, "A: Metabolite Enhancement (Consortium vs Control)", TEXT, 10, "middle");
+    let cx = 70.0; let cy = 70.0; let cw = 260.0; let ch = 290.0;
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"{cw}\" height=\"{ch}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    let metabolites: Vec<(&str, f64, &str)> = vec![
+        ("Pyrazines", 5074.0, GREEN),
+        ("Alcohols", 440.0, BLUE),
+        ("Esters", 312.0, ACCENT),
+        ("Organic acids", 185.0, YELLOW),
+        ("Aldehydes", 89.0, RED),
+    ];
+    let max_val = 5500.0;
+    let bar_h = 38.0;
+    let gap = (ch - metabolites.len() as f64 * bar_h) / (metabolites.len() as f64 + 1.0);
+
+    for (i, (name, pct, color)) in metabolites.iter().enumerate() {
+        let y = cy + gap + i as f64 * (bar_h + gap);
+        svg += &label(cx + 70.0, y + bar_h / 2.0 + 3.0, name, color, 7, "end");
+        let bwidth = (pct / max_val) * (cw - 80.0);
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{bwidth}\" height=\"{}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>",
+            cx + 75.0, y + 5.0, bar_h - 10.0);
+        svg += &label(cx + 80.0 + bwidth, y + bar_h / 2.0 + 3.0,
+            &format!("+{:.0}%", pct), color, 8, "start");
+    }
+
+    // Panel B: Consortium members
+    svg += &label(525.0, 57.0, "B: Consortium Architecture", TEXT, 10, "middle");
+    let bx = 390.0; let by = 70.0; let bw = 270.0; let bh = 290.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    let members: Vec<(&str, &str, &str, &str)> = vec![
+        ("Bacillus spp.", "Pyrazine synthesis", "Tetramethylpyrazine", GREEN),
+        ("LAB", "Lactic acid + esters", "Ethyl lactate 3.05 g/L", BLUE),
+        ("Saccharomyces", "Ethanol + fusel alcohols", "Primary fermentation", ACCENT),
+        ("Acetobacter", "Controlled oxidation", "Acetoin 4,033 mg/L", RED),
+    ];
+    let mem_h = 52.0;
+    let mem_gap = (bh - members.len() as f64 * mem_h) / (members.len() as f64 + 1.0);
+
+    for (i, (org, role, product, color)) in members.iter().enumerate() {
+        let my = by + mem_gap + i as f64 * (mem_h + mem_gap);
+        svg += &format!("<rect x=\"{}\" y=\"{my}\" width=\"230\" height=\"{mem_h}\" rx=\"4\" fill=\"{color}\" opacity=\"0.12\" stroke=\"{color}\" stroke-width=\"1\"/>",
+            bx + 20.0);
+        svg += &label(bx + 135.0, my + 15.0, org, color, 8, "middle");
+        svg += &label(bx + 135.0, my + 29.0, role, color, 7, "middle");
+        svg += &label(bx + 135.0, my + 42.0, product, color, 6, "middle");
+    }
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Engineered Bacillus/LAB/yeast consortium: pyrazines +5,074%, alcohols +440% vs mono-culture",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Pre-distillation microbiome engineering \u{2014} flavour precursors survive distillation",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Fig 125 — Kolbe Electrolysis Selectivity Windows
+fn sim_kolbe_electrolysis() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 125 \u{2014} Kolbe Electrolysis: Voltage-Dependent Product Selectivity");
+
+    // Panel A: Faradaic efficiency vs current density
+    svg += &label(200.0, 57.0, "A: Faradaic Efficiency vs Current Density", TEXT, 10, "middle");
+    let cx = 70.0; let cy = 70.0; let cw = 260.0; let ch = 290.0;
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"{cw}\" height=\"{ch}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // X: current density 0-50 mA/cm2, Y: FE 0-100%
+    let sx = |x: f64| -> f64 { cx + (x / 50.0) * cw };
+    let sy = |y: f64| -> f64 { cy + ch - (y / 100.0) * ch };
+
+    for i in 0..=5 {
+        let xv = i as f64 * 10.0;
+        svg += &vline(sx(xv), cy, cy + ch, GRID, "0.3");
+        svg += &label(sx(xv), cy + ch + 12.0, &format!("{}", xv as i32), MUTED, 7, "middle");
+    }
+    for i in 0..=5 {
+        let yv = i as f64 * 20.0;
+        svg += &hline(cx, cx + cw, sy(yv), GRID, "0.3");
+        svg += &label(cx - 5.0, sy(yv) + 3.0, &format!("{}%", yv as i32), MUTED, 7, "end");
+    }
+    svg += &label(200.0, cy + ch + 26.0, "Current density (mA/cm\u{00b2})", MUTED, 8, "middle");
+    svg += &label(55.0, cy + ch / 2.0, "FE (%)", MUTED, 7, "middle");
+
+    // Kolbe product (ethane) - rises to >95% above 25 mA/cm2
+    let kolbe_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let j = i as f64 * 0.5;
+        let fe = 95.0 / (1.0 + (-0.3 * (j - 20.0)).exp());
+        (j, fe)
+    }).collect();
+    svg += &polyline_svg(&kolbe_pts, GREEN, "2.5", &sx, &sy);
+
+    // Hofer-Moest (alcohol) - decreases as Kolbe rises
+    let hm_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let j = i as f64 * 0.5;
+        let fe = 70.0 * (-0.08 * j).exp();
+        (j, fe)
+    }).collect();
+    svg += &polyline_svg(&hm_pts, BLUE, "2", &sx, &sy);
+
+    // O2 evolution (always present, low)
+    let o2_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let j = i as f64 * 0.5;
+        let fe = 5.0 + 3.0 * (j / 50.0);
+        (j, fe.min(10.0))
+    }).collect();
+    svg += &polyline_svg(&o2_pts, MUTED, "1.5", &sx, &sy);
+
+    // Threshold annotation
+    svg += &vline(sx(25.0), cy, cy + ch, ACCENT, "1");
+    svg += &label(sx(25.0) + 4.0, cy + 15.0, ">25 mA/cm\u{00b2}", ACCENT, 7, "start");
+    svg += &label(sx(25.0) + 4.0, cy + 27.0, ">95% FE", ACCENT, 7, "start");
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"120\" height=\"50\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>",
+        cx + cw - 130.0, cy + ch - 60.0);
+    svg += &hline(cx + cw - 125.0, cx + cw - 105.0, cy + ch - 45.0, GREEN, "2.5");
+    svg += &label(cx + cw - 100.0, cy + ch - 42.0, "Kolbe (R-R)", GREEN, 7, "start");
+    svg += &hline(cx + cw - 125.0, cx + cw - 105.0, cy + ch - 32.0, BLUE, "2");
+    svg += &label(cx + cw - 100.0, cy + ch - 29.0, "Hofer-Moest", BLUE, 7, "start");
+    svg += &hline(cx + cw - 125.0, cx + cw - 105.0, cy + ch - 19.0, MUTED, "1.5");
+    svg += &label(cx + cw - 100.0, cy + ch - 16.0, "O2 evolution", MUTED, 7, "start");
+
+    // Panel B: Mechanism and spirit application
+    svg += &label(525.0, 57.0, "B: Kolbe Mechanism for Spirit Acids", TEXT, 10, "middle");
+    let bx = 390.0; let by = 70.0; let bw = 270.0; let bh = 290.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Reaction steps
+    let steps: Vec<(&str, &str)> = vec![
+        ("R-COO\u{207b} \u{2192} R-COO\u{00b7} + e\u{207b}", "Anode oxidation"),
+        ("R-COO\u{00b7} \u{2192} R\u{00b7} + CO\u{2082}", "Decarboxylation"),
+        ("2 R\u{00b7} \u{2192} R-R", "Radical coupling"),
+    ];
+    for (i, (rxn, desc)) in steps.iter().enumerate() {
+        let sy_pos = by + 20.0 + i as f64 * 55.0;
+        svg += &format!("<rect x=\"{}\" y=\"{sy_pos}\" width=\"230\" height=\"40\" rx=\"4\" fill=\"{GREEN}\" opacity=\"0.10\" stroke=\"{GREEN}\" stroke-width=\"1\"/>",
+            bx + 20.0);
+        svg += &label(bx + 135.0, sy_pos + 16.0, rxn, GREEN, 8, "middle");
+        svg += &label(bx + 135.0, sy_pos + 30.0, desc, MUTED, 7, "middle");
+    }
+
+    // Spirit application box
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"95\" rx=\"4\" fill=\"{ACCENT}\" opacity=\"0.10\" stroke=\"{ACCENT}\" stroke-width=\"1.5\"/>",
+        bx + 20.0, by + 195.0);
+    svg += &label(bx + 135.0, by + 212.0, "Spirit Application:", ACCENT, 8, "middle");
+    svg += &label(bx + 135.0, by + 228.0, "Acetic acid \u{2192} ethane + CO\u{2082}", GREEN, 7, "middle");
+    svg += &label(bx + 135.0, by + 242.0, "Hexanoic acid \u{2192} decane + CO\u{2082}", BLUE, 7, "middle");
+    svg += &label(bx + 135.0, by + 256.0, "Selective acid removal without", MUTED, 7, "middle");
+    svg += &label(bx + 135.0, by + 268.0, "disturbing ester equilibrium", MUTED, 7, "middle");
+    svg += &label(bx + 135.0, by + 282.0, "Gaseous products self-separate", GREEN, 7, "middle");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Kolbe electrolysis: >95% Faradaic efficiency above 25 mA/cm\u{00b2} for carboxylate coupling",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Selective acid removal from spirit \u{2014} gaseous products (alkane + CO\u{2082}) self-separate",
         GREEN, 8, "middle");
 
     svg.push_str("</svg>");
