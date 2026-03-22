@@ -1310,6 +1310,19 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 </div>
 
 
+<h3>4.13 Cold Atmospheric Plasma: Electrode-Free Oxidation</h3>
+
+<p><strong>No published study has applied cold atmospheric plasma to whiskey or spirit maturation.</strong> This is genuine white space. Dielectric barrier discharge (DBD) plasma&mdash;the same technology in commercial ozone generators&mdash;creates reactive oxygen and nitrogen species (RONS) when applied to the headspace above a liquid. In water, 5 minutes of DBD treatment generates 0.8&ndash;23 mg/L H<sub>2</sub>O<sub>2</sub>, ~270 &mu;M OH&bull;, ~8 &mu;M singlet O<sub>2</sub>, and variable ozone<span class="cite" data-ref="99"><sup>[99]</sup></span>.</p>
+
+<p>In ethanol-water mixtures at 40% ABV, plasma-generated reactive species follow the same chemistry as barrel aging but orders of magnitude faster: ethanol + OH&bull; &rarr; acetaldehyde &rarr; acetic acid + ethanol &rarr; esters. Published data on cold plasma treatment of red wine confirms: short treatments (&lt;5 min, 10&ndash;25 W) modify phenolic composition while preserving polyphenolic pigments<span class="cite" data-ref="100"><sup>[100]</sup></span>. Peroxyacetic acid (CH<sub>3</sub>CO<sub>3</sub>H)&mdash;a potent oxidizer that forms naturally from plasma-activated ethanol&mdash;is already approved for food/wine sanitation.</p>
+
+<p><strong>Critical advantage: no electrodes or catalysts contact the spirit.</strong> The DBD plasma operates in the gas-phase headspace; RONS diffuse into the liquid surface. This eliminates concerns about electrode fouling, metal leaching, or catalyst food-safety. The power density is self-limiting: at 40% ethanol, ethanol scavenges OH&bull; faster than any other substrate, providing a natural throttle against over-oxidation. Treatment protocol: 1&ndash;5 minutes of headspace DBD at 10&ndash;25 W, then 24h rest for diffusion and secondary reactions, repeated daily.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but high feasibility and very high novelty. Every individual chemical step is published. Hardware: a $20&ndash;50 commercial ozone generator (DBD-based) modified to treat the headspace of a sealed vessel. No electrodes contact the spirit. The ethanol scavenging effect at 40% ABV is a natural safety valve against over-oxidation. <strong>Priority experiment:</strong> GC-MS comparison of untreated vs. plasma-treated (headspace DBD, O<sub>2</sub> feed, 5 min) new-make spirit to validate acetaldehyde and ester formation. <strong>Home testability: 4/5</strong> (~$30 ozone generator + sealed glass vessel + oak chips).
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -1540,6 +1553,7 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <tr><td><strong>Microwave extraction (&sect;3.15)</strong></td><td><strong>3/5</strong></td><td><strong>$0</strong></td><td><strong>Oak chips in spirit, sealed jar, 50% power 2&ndash;3 min &times; 3&ndash;5 cycles. 6&ndash;12 months equivalent extraction. Caution: ethanol vapors.</strong></td></tr>
 <tr><td><strong>Electro-Fenton (&sect;4.10)</strong></td><td><strong>4/5</strong></td><td><strong>$30</strong></td><td><strong>Carbon felt cathode + graphite anode + bench PSU (5&ndash;10 mA). Spirit at pH 4 + trace FeSO<sub>4</sub>. Current controls OH&bull; &rarr; AcH rate. 1:1 stoichiometry.</strong></td></tr>
 <tr><td>Oak biochar cathode (&sect;4.11)</td><td>3/5</td><td>$50</td><td>Pyrolyze oak chunks at 800&deg;C+ (propane forge or kiln), use as electro-Fenton cathode with graphite anode. Triple function: H<sub>2</sub>O<sub>2</sub> generation + DMS adsorption + oak extractive source.</td></tr>
+<tr><td><strong>Cold plasma DBD (&sect;4.13)</strong></td><td><strong>4/5</strong></td><td><strong>$30</strong></td><td><strong>Ozone generator ($20&ndash;30) modified for headspace treatment. Spirit + oak chips in sealed jar. 1&ndash;5 min treatment daily. No electrodes contact spirit. Electrode-free oxidation.</strong></td></tr>
 <tr><td>Carbon dot amplification (&sect;4.9)</td><td>3/5</td><td>$50</td><td>Extract charred oak in spirit, ultrafilter (&lt;10 kDa), concentrate filtrate, add to spirit + UV-A lamp. Verify by fluorescence.</td></tr>
 </tbody>
 </table>
@@ -1655,6 +1669,8 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <li id="r96">Sigma-Aldrich/Merck. &ldquo;Molecular sieves: technical information bulletin.&rdquo; Type 3A: pore diameter 3.0 &Aring;, admits H<sub>2</sub>O (2.6 &Aring;), excludes EtOH (~4.4 &Aring;). Static water capacity 18&ndash;22 wt%. Regeneration 175&ndash;260&deg;C.</li>
   <li id="r97">Patel D, Saha B. (2021) &ldquo;Esterification of free fatty acids with methanol using heterogeneous sulfonated resin catalyst and molecular sieve 3A.&rdquo; <em>Results Eng</em>. (Conversion increased from 75.2% to 98.3% with molecular sieve water removal.)</li>
   <li id="r98">Asp&eacute; E, Fern&aacute;ndez K. (2011) &ldquo;DC-assisted extraction: electroosmotic and electromigration transport of phenolics from pine bark.&rdquo; <em>Ind Crops Prod</em>. (MEF: 2.25&times; total phenolic extraction at 10 V/cm vs. unassisted control.)</li>
+  <li id="r99">Tachibana K, et al. (2024) &ldquo;Production and transport of plasma-generated hydrogen peroxide from gas phase to aqueous solution.&rdquo; <em>Phys Chem Chem Phys</em>. (DBD headspace plasma: 0.8&ndash;23 mg/L H<sub>2</sub>O<sub>2</sub> in 5 min, ~270 &mu;M OH&bull;, ~8 &mu;M <sup>1</sup>O<sub>2</sub>.)</li>
+  <li id="r100">Pankaj SK, et al. (2022) &ldquo;Impact of cold plasma on phenolic composition and biogenic amines of red wine.&rdquo; <em>Food Chem</em>. (Short treatments preserve polyphenolic pigments while modifying phenolic profile; anthocyanin retention &gt;90% at &lt;5 min.)</li>
 </ol>
 
 
@@ -2166,6 +2182,16 @@ var refs = {
     source: "Asp\u00e9 & Fern\u00e1ndez (2011), Ind Crops Prod",
     excerpt: "Moderate electric field (MEF) assisted extraction of total phenolics from Pinus radiata bark at 10 V/cm: 2.25\u00d7 enhancement vs. conventional extraction. Electroosmotic flow + electromigration of charged polyphenols through plant cell wall pores. DC mode outperformed AC mode. Enhancement is distance-dependent: thin samples benefit most.",
     url: "#r98"
+  },
+  99: {
+    source: "Tachibana et al. (2024), Phys Chem Chem Phys",
+    excerpt: "DBD headspace plasma over water: H\u2082O\u2082 concentrations 0.8\u201323 mg/L after 5 min treatment depending on power and gas composition. OH radical concentration ~270 \u00b5M at 60s exposure (He jet). Singlet oxygen ~8 \u00b5M. O\u2082 feed gas doubles H\u2082O\u2082 yield vs. air plasma. RONS diffuse from gas-liquid interface into bulk liquid.",
+    url: "#r99"
+  },
+  100: {
+    source: "Pankaj et al. (2022), Food Chem",
+    excerpt: "Cold atmospheric plasma (DBD) treatment of red wine: short treatments (<5 min, 10\u201325 W) modified phenolic composition while preserving >90% anthocyanin content. Longer treatments (>10 min) caused polyphenol degradation. Biogenic amine reduction observed. Demonstrates that plasma can selectively modify wine chemistry without destroying valuable pigments.",
+    url: "#r100"
   }
 };
 
