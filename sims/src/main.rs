@@ -66,6 +66,9 @@ fn main() {
 
     fs::write("../graphs/hpp-ester-equilibrium.svg", sim_hpp_ester_equilibrium()).unwrap();
     println!("Wrote hpp-ester-equilibrium.svg");
+
+    fs::write("../graphs/electro-fenton.svg", sim_electro_fenton()).unwrap();
+    println!("Wrote electro-fenton.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -2501,6 +2504,164 @@ fn sim_hpp_ester_equilibrium() -> String {
         "acetate formation in 40%", TEXT, 9, "start");
     svg += &label(lx, mt + 300.0,
         "ABV has NOT been measured", RED, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Simulation 17: Electro-Fenton controlled oxidation
+/// Models cathodic H2O2 generation + Fenton reaction in 40% ABV spirit
+/// at different current densities. Tracks: [H2O2], [Fe2+], [Fe3+], [AcH], [OH•]
+/// Key refs: Li et al. PNAS 2021, Elias & Waterhouse 2010
+fn sim_electro_fenton() -> String {
+    let w = 800.0_f64;
+    let h = 520.0;
+    let mut svg = svg_header(w, h,
+        "Electro-Fenton: Current-Controlled Acetaldehyde Production");
+
+    // --- Parameters ---
+    let faradaic_eff = 0.85; // H2O2 Faradaic efficiency on carbon felt
+    let f_const = 96485.0; // Faraday constant C/mol
+    let vol_l = 1.0; // 1 L cell
+    // Fenton: Fe2+ + H2O2 → Fe3+ + OH• + OH-
+    let k_fenton: f64 = 76.0; // M-1 s-1 (Walling 1975)
+    // OH• + ethanol → 1-HER → AcH  (1:1 stoichiometry, Elias & Waterhouse 2010)
+    // Fe3+ cathodic reduction back to Fe2+
+    let k_fe_regen: f64 = 1e-3; // s-1 (cathodic + polyphenol mediated)
+
+    // Scenarios: [label, current_mA, initial_Fe2+_M]
+    let scenarios: [(&str, f64, f64); 4] = [
+        ("2 mA, 10 \u{00b5}M Fe", 2.0, 10e-6),
+        ("5 mA, 10 \u{00b5}M Fe", 5.0, 10e-6),
+        ("10 mA, 10 \u{00b5}M Fe", 10.0, 10e-6),
+        ("10 mA, 50 \u{00b5}M Fe", 10.0, 50e-6),
+    ];
+    let colors = [CYAN, GREEN, ACCENT, YELLOW];
+
+    let dt = 1.0_f64; // 1 second timestep
+    let t_max = 8.0 * 3600.0; // 8 hours
+    let n_steps = (t_max / dt) as usize;
+    let sample_every = n_steps / 200;
+
+    let mt = 65.0;
+    let pw = 450.0;
+    let ph = 350.0;
+    let pl = 90.0;
+    let lx = 560.0;
+
+    // Run simulations
+    let mut all_ach_data: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut final_ach: Vec<f64> = Vec::new();
+
+    for &(_label, current_ma, fe_init) in &scenarios {
+        let current_a = current_ma * 1e-3;
+        let r_h2o2_gen = current_a * faradaic_eff / (2.0 * f_const * vol_l);
+
+        let mut h2o2: f64 = 0.0;
+        let mut fe2: f64 = fe_init;
+        let mut fe3: f64 = 0.0;
+        let mut ach: f64 = 0.0;
+        let mut ach_pts: Vec<(f64, f64)> = Vec::new();
+
+        for step in 0..n_steps {
+            let r_fenton = k_fenton * fe2 * h2o2;
+            let r_fe_regen_rate = k_fe_regen * fe3;
+
+            h2o2 += (r_h2o2_gen - r_fenton) * dt;
+            if h2o2 < 0.0 { h2o2 = 0.0; }
+            fe2 += (-r_fenton + r_fe_regen_rate) * dt;
+            if fe2 < 0.0 { fe2 = 0.0; }
+            fe3 += (r_fenton - r_fe_regen_rate) * dt;
+            if fe3 < 0.0 { fe3 = 0.0; }
+            ach += r_fenton * dt; // 1:1 H2O2:AcH stoichiometry
+
+            if step % sample_every == 0 {
+                let t_h = (step as f64 * dt) / 3600.0;
+                let ach_mg_l = ach * 44.05 * 1000.0;
+                ach_pts.push((t_h, ach_mg_l));
+            }
+        }
+        final_ach.push(ach * 44.05 * 1000.0);
+        all_ach_data.push(ach_pts);
+    }
+
+    let max_ach = all_ach_data.iter()
+        .flat_map(|d| d.iter().map(|p| p.1))
+        .fold(0.0_f64, |a, b| a.max(b));
+    let y_max_ach = (max_ach * 1.15).max(1.0);
+
+    // Y axis label
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"10\" text-anchor=\"end\">Acetaldehyde (mg/L)</text>",
+        pl - 5.0, mt - 5.0, TEXT);
+
+    // Grid lines
+    let n_grid = 5_usize;
+    for i in 0..=n_grid {
+        let frac = i as f64 / n_grid as f64;
+        let y = mt + ph * (1.0 - frac);
+        let val = y_max_ach * frac;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-width=\"0.5\"/>",
+            pl, y, pl + pw, y, GRID);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"9\" text-anchor=\"end\">{:.1}</text>",
+            pl - 5.0, y + 3.0, MUTED, val);
+    }
+
+    // X axis
+    for h_val in [0.0_f64, 2.0, 4.0, 6.0, 8.0] {
+        let x = pl + pw * (h_val / 8.0);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"9\" text-anchor=\"middle\">{}h</text>",
+            x, mt + ph + 15.0, MUTED, h_val as i32);
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"10\" text-anchor=\"middle\">Time</text>",
+        pl + pw / 2.0, mt + ph + 30.0, MUTED);
+
+    // Plot AcH curves
+    for (i, pts) in all_ach_data.iter().enumerate() {
+        let path: String = pts.iter().enumerate().map(|(j, &(t, v))| {
+            let x = pl + pw * (t / 8.0);
+            let y = mt + ph * (1.0 - v / y_max_ach);
+            if j == 0 { format!("M{:.1},{:.1}", x, y) }
+            else { format!("L{:.1},{:.1}", x, y) }
+        }).collect();
+        svg += &format!("<path d=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"1.5\"/>",
+            path, colors[i]);
+    }
+
+    // 1-year barrel AcH reference
+    let barrel_1yr_ach = 15.0_f64;
+    if barrel_1yr_ach < y_max_ach {
+        let y_ref = mt + ph * (1.0 - barrel_1yr_ach / y_max_ach);
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-dasharray=\"4,3\" stroke-width=\"1\"/>",
+            pl, y_ref, pl + pw, y_ref, MUTED);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"8\" text-anchor=\"end\">1-yr barrel (~15 mg/L)</text>",
+            pl + pw, y_ref - 5.0, MUTED);
+    }
+
+    // Legend
+    svg += &label(lx, mt + 15.0, "Electro-Fenton Dosing", ACCENT, 11, "start");
+    svg += &label(lx, mt + 35.0, "Carbon felt cathode", TEXT, 9, "start");
+    svg += &label(lx, mt + 48.0, "\u{03b7}(H\u{2082}O\u{2082}) = 85%", TEXT, 9, "start");
+    svg += &label(lx, mt + 68.0, "Scenarios:", MUTED, 9, "start");
+
+    for (i, &(lbl, _, _)) in scenarios.iter().enumerate() {
+        let y = mt + 85.0 + i as f64 * 28.0;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"12\" height=\"3\" fill=\"{}\"/>",
+            lx, y - 2.0, colors[i]);
+        svg += &label(lx + 16.0, y, lbl, colors[i], 9, "start");
+        svg += &label(lx + 16.0, y + 13.0,
+            &format!("{:.1} mg/L at 8h", final_ach[i]),
+            MUTED, 8, "start");
+    }
+
+    svg += &label(lx, mt + 210.0, "Key insight:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 225.0, "Current = dose knob", TEXT, 9, "start");
+    svg += &label(lx, mt + 240.0, "Quadratic response:", TEXT, 9, "start");
+    svg += &label(lx, mt + 253.0, "rate \u{221d} [H\u{2082}O\u{2082}]\u{00b7}[Fe\u{00b2}\u{207a}]", MUTED, 8, "start");
+
+    svg += &label(lx, mt + 280.0, "Waterhouse model:", CYAN, 10, "start");
+    svg += &label(lx, mt + 295.0, "OH\u{2022} + EtOH \u{2192} 1-HER \u{2192} AcH", TEXT, 9, "start");
+    svg += &label(lx, mt + 308.0, "1:1 stoichiometry", TEXT, 9, "start");
+    svg += &label(lx, mt + 321.0, "Elias &amp; Waterhouse 2010", MUTED, 8, "start");
 
     svg.push_str("</svg>");
     svg
