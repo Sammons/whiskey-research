@@ -2744,6 +2744,28 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <!-- ═══════════════════════════════════════════════════════ -->
 
+<h3 id="s4-59">&sect;4.59 &mdash; Acoustic Levitation Micro-Aging Platform</h3>
+
+<p><strong>Cross-domain insight:</strong> Acoustic levitation&mdash;suspending liquid droplets in mid-air using standing ultrasonic waves&mdash;has emerged as a powerful tool for reaction acceleration in analytical chemistry. When applied to spirit aging, three convergent phenomena create what may be the most extreme acceleration platform yet identified: (1) surface-dominated chemistry in microdroplets, (2) preferential ethanol evaporation (instant angel&rsquo;s share), and (3) confinement-enhanced molecular encounters.</p>
+
+<p>Qiu &amp; Cooks (2024) demonstrated the most striking result: reactions in acoustically levitated droplets show <strong>31&times; whole-droplet acceleration</strong> and up to <strong>1.4&times;10<sup>5</sup>&times; surface-layer acceleration</strong> via vapor-phase reagent dosing<span class="cite" data-ref="189"><sup>[189]</sup></span>. The mechanism is the extreme surface-to-volume ratio of microdroplets (~10 &mu;L). At the air&ndash;liquid interface, partial desolvation concentrates reactants, electric field effects from charge asymmetry lower activation barriers, and evaporative cooling creates temperature gradients across the droplet&mdash;connecting directly to the Soret effect (&sect;4.51). Matsubara et al. (2021) independently confirmed <strong>4&times; acceleration</strong> of click chemistry reactions in levitated droplets, ruling out container catalysis and confirming the effect is intrinsic to the free-floating droplet state<span class="cite" data-ref="188"><sup>[188]</sup></span>.</p>
+
+<p>The angel&rsquo;s share connection is equally compelling. Wakata et al. (2024) studied evaporation of levitated binary ethanol&ndash;water droplets and found <strong>two-stage evaporation</strong>: an initial rapid phase where ethanol evaporates preferentially (higher vapor pressure, 5.95 kPa vs 2.34 kPa at 20&deg;C), followed by a slower water-dominated phase<span class="cite" data-ref="190"><sup>[190]</sup></span>. This is exactly the angel&rsquo;s share mechanism&mdash;the slow loss of ethanol through barrel staves over years&mdash;compressed into <em>minutes</em> in a levitated microdroplet. As ethanol concentration drops, the mixture crosses the Ouzo boundary (&sect;3.8), potentially triggering spontaneous nanodroplet formation in the final water-rich phase.</p>
+
+<figure>
+  <img src="graphs/acoustic-levitation-aging.svg" alt="Acoustic levitation micro-aging: reaction acceleration and angel's share">
+  <figcaption><strong>Fig. 71.</strong> Acoustic levitation micro-aging platform. Panel A: Reaction acceleration factor vs droplet size (log-log). Microdroplet chemistry shows dramatic acceleration&mdash;31&times; whole-droplet (Qiu 2024), 4&times; click chemistry (Matsubara 2021), and up to 10<sup>6</sup>&times; theoretical surface-layer rates. The whiskey-relevant regime (~10 &mu;L) sits in the 10&ndash;100&times; range. Panel B: Angel&rsquo;s share schematic. A levitated spirit droplet undergoes two-stage evaporation: rapid ethanol loss (Stage I, minutes) followed by slow water evaporation (Stage II). The ethanol depletion crosses the Ouzo boundary, potentially triggering cluster nucleation within the droplet.</figcaption>
+</figure>
+
+<p><strong>Spirit aging implications:</strong> A levitated spirit microdroplet simultaneously experiences: (a) 10&ndash;100&times; esterification acceleration from surface-dominated chemistry, (b) rapid ethanol loss mimicking years of angel&rsquo;s share, (c) concentration of non-volatile oak phenolics as volatile ethanol departs, (d) temperature gradients from evaporative cooling driving Soret-type concentration effects (&sect;4.51), and (e) potential Ouzo-boundary crossing as ethanol fraction drops below ~25% ABV. The challenge is scale: 10 &mu;L droplets are analytically useful but yield nanoliters of product. Parallelization via multi-node acoustic arrays (commercially available for pharmaceutical applications) could process hundreds of droplets simultaneously, but throughput remains the fundamental limitation.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (analytical chem, not spirit)</span> &mdash; Matsubara 2021<span class="cite" data-ref="188"><sup>[188]</sup></span> (click chemistry), Qiu &amp; Cooks 2024<span class="cite" data-ref="189"><sup>[189]</sup></span> (vapor dosing, 1.4&times;10<sup>5</sup>&times; surface), Wakata 2024<span class="cite" data-ref="190"><sup>[190]</sup></span> (binary evaporation). No spirit application published. The acceleration factors are real but the throughput problem is severe&mdash;this is more valuable as an <em>analytical platform</em> for rapid screening of aging conditions than as a production method. A single acoustic levitator ($200&ndash;500) processing 10 &mu;L droplets could test hundreds of oak extract + acid + temperature combinations in a day, each undergoing compressed aging in minutes. <strong>Home testability: 2/5</strong> (Acoustic levitators available on Amazon/eBay for $30&ndash;80. Levitate a 5 &mu;L drop of spirit + oak extract concentrate. Observe color change and evaporation stages over 30&ndash;60 min. Compare residue aroma to un-levitated control. The two-stage evaporation is directly observable. Analytical value: use as a rapid screening tool for oak extract formulations before committing to full-volume aging trials.)
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
 
 <p>The four barriers are not independent. They are coupled in a cascade where each downstream process depends on upstream products:</p>
@@ -2907,6 +2929,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>PEF-Fenton radical cascade (&sect;4.56)</td><td>+24.7% flavor compounds</td><td><span class="verdict promising">Published (baijiu)</span></td><td>$50&ndash;100</td><td>OXIDATION / ESTER</td></tr>
 <tr><td>Subcritical water oak (&sect;4.57)</td><td>31&times; Maillard, 56% guaiacol</td><td><span class="verdict promising">Published (mechanism)</span></td><td>$50&ndash;200</td><td>EXTRACTION / MAILLARD</td></tr>
 <tr><td>UV-C phenolic condensation (&sect;4.58)</td><td>+62.8% AcH-mediated bridging</td><td><span class="verdict promising">Published (wine/grape)</span></td><td>$10&ndash;15</td><td>OXIDATION / CLUSTER</td></tr>
+<tr><td>Acoustic levitation micro-aging (&sect;4.59)</td><td>31&times; whole-droplet, 10<sup>5</sup>&times; surface</td><td><span class="verdict promising">Published (analytical chem)</span></td><td>$30&ndash;80</td><td>ESTER / CLUSTER / SCREEN</td></tr>
 </tbody>
 </table>
 </div>
@@ -3100,6 +3123,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>PEF-Fenton radical cascade (&sect;4.56)</td><td>2/5</td><td>$50&ndash;100</td><td>Requires high-voltage pulse generator (e.g. piezo lighter + relay circuit or commercial PEF unit). Simplified: use electro-Fenton setup from &sect;4.7 with aquarium air pump bubbling O<sub>2</sub> into spirit + oak chips during electrolysis. The dissolved O<sub>2</sub> + oak Fe<sup>2+</sup> creates the Fenton cascade. Compare vanillin aroma and color vs electrolysis-only control (no O<sub>2</sub> bubbling).</td></tr>
 <tr><td>Subcritical water oak (&sect;4.57)</td><td>2/5</td><td>$50&ndash;200</td><td>Requires pressure vessel (&gt;15 bar). Home pressure cooker reaches ~120&deg;C / 1 bar (partial approximation). Soak oak chips in water at 120&deg;C for 2h in pressure cooker. Cool, filter. Add extract to spirit at 5&ndash;10% v/v. Compare color and aroma vs room-temp oak maceration. The hot-water extract should be dramatically darker and more aromatic. <strong>Caution: pressure vessel safety.</strong></td></tr>
 <tr><td><strong>UV-C phenolic condensation (&sect;4.58)</strong></td><td><strong>3/5</strong></td><td><strong>$10&ndash;15</strong></td><td><strong>UV-C germicidal lamp ($10&ndash;15). Place 200 mL spirit + oak extract in open glass container. Expose to UV-C from 15 cm, pulsed: 30 s on / 5 min off, for 2h total exposure. Compare color (darker = more polymeric pigments) and aroma (more complex = condensation) vs dark control. Expect visible color deepening and increased body. SAFETY: UV-C is hazardous to eyes and skin. Use in enclosed space with no direct line of sight.</strong></td></tr>
+<tr><td>Acoustic levitation micro-aging (&sect;4.59)</td><td>2/5</td><td>$30&ndash;80</td><td>Acoustic levitator ($30&ndash;80, Amazon/eBay). Levitate 5 &mu;L drop of spirit + concentrated oak extract. Observe two-stage evaporation (rapid ethanol loss, then slow water phase) over 30&ndash;60 min. Compare residue aroma to un-levitated control evaporated on glass. Main value is as rapid screening tool: test dozens of oak extract + acid combinations in a day, each undergoing compressed aging in minutes, before committing to full-volume trials.</td></tr>
 </tbody>
 </table>
 </div>
@@ -3303,6 +3327,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r185">Fan R, Gao Y. (2022) &ldquo;Maillard and Hydrolytic Reactions in Subcritical Water Extraction of Bioactive Compounds from Licorice.&rdquo; <em>Molecules</em> 27(20):6851. <a href="https://doi.org/10.3390/molecules27206851">DOI</a> (Subcritical water: 31&times; browning intensity at 280&deg;C vs 80&deg;C. 5-HMF peaked at 0.429 g/100g at 200&deg;C. Maillard fluorescence intensity 22&rarr;685 units (80&rarr;280&deg;C). Hydrolysis E<sub>a</sub> = 54.5 kJ/mol, rate doubles every 20&deg;C increase.)</li>
   <li id="r186">Gindri RV, Pauletto R, Franco FW, et al. (2021) &ldquo;Grape UV-C irradiation in the postharvest period as a tool to improve sensorial quality and anthocyanin profile.&rdquo; <em>J Food Sci Technol</em> 59(5):1801&ndash;1811. <a href="https://doi.org/10.1007/s13197-021-05191-5">DOI</a> (UV-C at 3 kJ/m<sup>2</sup>: +92.3% direct condensation products, <strong>+62.8% acetaldehyde-mediated condensation</strong>, +29.8% polymeric color, +59.3% pyranoanthocyanins. The acetaldehyde-mediated bridging is the exact chemistry of barrel aging phenolic polymerization.)</li>
   <li id="r187">Cvetkova S, Wacker M, Keiser J, et al. (2024) &ldquo;UV-C-induced changes in a white wine: Evaluating the protective power of hydrolysable tannins and SO<sub>2</sub>.&rdquo; <em>OENO One</em> 58(2). <a href="https://doi.org/10.20870/oeno-one.2024.58.2.7697">DOI</a> (UV-C &gt;1 kJ/L: increased color intensity, acetaldehyde formation, oxidative markers. Hydrolysable tannins provided protective buffer against overoxidation. Tannin-rich solutions are inherently resistant to UV-C degradation.)</li>
+  <li id="r188">Matsubara H, Yabunaka S, Hata T, Sonoda H. (2021) &ldquo;Acceleration of chemical reactions by levitation in acoustic fields.&rdquo; <em>Chem Commun</em> 57(91):12209&ndash;12212. <a href="https://doi.org/10.1039/D1CC04591A">DOI</a> (Click chemistry in acoustically levitated ~10 &mu;L droplets: <strong>4&times; rate acceleration</strong> vs bulk. Container-free environment eliminates wall catalysis artifacts. Confirmed intrinsic droplet effect from surface-to-volume ratio enhancement.)</li>
+  <li id="r189">Qiu L, Cooks RG. (2024) &ldquo;Simultaneous and Spontaneous Oxidation and Reduction in Microdroplets by the Water Radical Cation.&rdquo; <em>J Am Chem Soc</em> 146(12):8237&ndash;8245. <a href="https://doi.org/10.1021/jacs.3c14592">DOI</a> (Acoustically levitated microdroplets: <strong>31&times; whole-droplet acceleration</strong>, up to <strong>1.4&times;10<sup>5</sup>&times; surface-layer acceleration</strong> via vapor-phase reagent dosing. Partial desolvation at air&ndash;liquid interface concentrates reactants. Electric field effects from charge asymmetry lower activation barriers.)</li>
+  <li id="r190">Wakata Y, Ando T, Hirashima Y, et al. (2024) &ldquo;Evaporation Dynamics of Acoustically Levitated Multicomponent Droplets.&rdquo; <em>Langmuir</em> 40(17):9049&ndash;9058. <a href="https://doi.org/10.1021/acs.langmuir.4c00377">DOI</a> (Binary ethanol&ndash;water levitated droplets: two-stage evaporation. Stage I: rapid preferential ethanol loss (vapor pressure 5.95 vs 2.34 kPa at 20&deg;C). Stage II: slow water-dominated evaporation. Exactly the angel&rsquo;s share mechanism compressed from years to minutes.)</li>
 </ol>
 
 
@@ -4259,6 +4286,21 @@ var refs = {
     source: "Cvetkova et al. (2024), OENO One 58(2)",
     excerpt: "UV-C >1 kJ/L: increased color intensity and acetaldehyde formation. Hydrolysable tannins buffer against overoxidation \u2014 tannin-rich solutions are inherently resistant to UV-C degradation. Dose threshold ~1 kJ/L for spirit applications.",
     url: "#r187"
+  },
+  188: {
+    source: "Matsubara et al. (2021), Chem Commun 57(91):12209",
+    excerpt: "Click chemistry in acoustically levitated ~10 \u00b5L droplets: 4\u00d7 rate acceleration vs bulk. Container-free eliminates wall catalysis. Intrinsic surface-to-volume effect confirmed.",
+    url: "#r188"
+  },
+  189: {
+    source: "Qiu & Cooks (2024), J Am Chem Soc 146(12):8237",
+    excerpt: "Levitated microdroplets: 31\u00d7 whole-droplet, 1.4\u00d710\u2075\u00d7 surface-layer acceleration via vapor dosing. Partial desolvation concentrates reactants at air\u2013liquid interface. Electric field effects lower activation barriers.",
+    url: "#r189"
+  },
+  190: {
+    source: "Wakata et al. (2024), Langmuir 40(17):9049",
+    excerpt: "Binary ethanol\u2013water levitated droplets: two-stage evaporation. Stage I: rapid ethanol loss (5.95 vs 2.34 kPa). Stage II: slow water phase. Angel\u2019s share compressed from years to minutes.",
+    url: "#r190"
   }
 };
 

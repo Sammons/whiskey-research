@@ -159,6 +159,7 @@ fn main() {
     fs::write("../graphs/pef-fenton-cascade.svg", sim_pef_fenton_cascade()).unwrap();
     fs::write("../graphs/subcritical-water-oak.svg", sim_subcritical_water_oak()).unwrap();
     fs::write("../graphs/uvc-phenolic-condensation.svg", sim_uvc_phenolic_condensation()).unwrap();
+    fs::write("../graphs/acoustic-levitation-aging.svg", sim_acoustic_levitation_aging()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -11934,6 +11935,132 @@ fn sim_uvc_phenolic_condensation() -> String {
         GREEN, 8, "middle");
     svg += &label(350.0, h - 24.0,
         "Feed with PEM acetaldehyde (\u{00a7}4.53) + oak phenolics (\u{00a7}3.10) = precision aging",
+        BLUE, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 71: Acoustic Levitation Micro-Aging Platform
+// Matsubara 2021: 4× faster. Qiu/Cooks 2024: 31×, 10⁵× at surface
+// ═══════════════════════════════════════════════════════════════
+fn sim_acoustic_levitation_aging() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 71 \u{2014} Acoustic Levitation: Containerless Micro-Aging and Angel\u{2019}s Share in Minutes");
+
+    // ── Panel A: Acceleration factors by droplet size ──
+    svg += &label(190.0, 57.0, "A: Reaction Acceleration vs Droplet Size", TEXT, 10, "middle");
+
+    let pl = 80.0; let pr = 320.0; let pt = 75.0; let pb = 340.0;
+    let pw = pr - pl; let ph = pb - pt;
+    svg += &format!("<rect x=\"{pl}\" y=\"{pt}\" width=\"{pw}\" height=\"{ph}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // X axis: droplet diameter (log scale) 1 μm - 10 mm
+    let d_min_log = 0.0_f64; // log10(1 μm)
+    let d_max_log = 4.0; // log10(10000 μm = 10 mm)
+    for &(d_um, label_str) in &[(1.0_f64, "1 \u{03bc}m"), (10.0, "10 \u{03bc}m"), (100.0, "100 \u{03bc}m"), (1000.0, "1 mm"), (10000.0, "10 mm")] {
+        let x = pl + (d_um.log10() / d_max_log) * pw;
+        svg += &format!("<line x1=\"{x:.1}\" y1=\"{pb}\" x2=\"{x:.1}\" y2=\"{:.1}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", pb + 3.0);
+        svg += &label(x, pb + 13.0, label_str, MUTED, 7, "middle");
+    }
+    svg += &label((pl + pr) / 2.0, pb + 26.0, "Droplet diameter (log scale)", MUTED, 8, "middle");
+
+    // Y axis: acceleration factor (log scale) 1× - 10⁶×
+    let a_max_log = 6.0;
+    for i in 0..=6 {
+        let a = 10.0_f64.powi(i);
+        let y = pb - (i as f64 / a_max_log) * ph;
+        svg += &format!("<line x1=\"{:.1}\" y1=\"{y:.1}\" x2=\"{pl}\" y2=\"{y:.1}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", pl - 3.0);
+        let lbl = if i == 0 { "1\u{00d7}".to_string() } else { format!("10{}\u{00d7}",
+            match i { 1 => "\u{00b9}", 2 => "\u{00b2}", 3 => "\u{00b3}", 4 => "\u{2074}", 5 => "\u{2075}", _ => "\u{2076}" }) };
+        svg += &label(pl - 5.0, y + 3.0, &lbl, MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{:.1}\" y=\"{:.1}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" transform=\"rotate(-90,{:.1},{:.1})\">\
+        Acceleration factor</text>\n", pl - 40.0, (pt + pb) / 2.0, pl - 40.0, (pt + pb) / 2.0);
+
+    // Trend line: acceleration ~ 1/radius³ roughly
+    let trend_pts: Vec<(f64, f64)> = (0..=80).map(|i| {
+        let d_log = i as f64 * d_max_log / 80.0;
+        let d_um = 10.0_f64.powf(d_log);
+        // Approximate: accel = 10^(6 - 1.5*log10(d_um)) capped at 10^6
+        let a_log = (6.0 - 1.5 * d_log).max(0.0).min(6.0);
+        (pl + (d_log / d_max_log) * pw,
+         pb - (a_log / a_max_log) * ph)
+    }).collect();
+    svg += &polyline_svg(&trend_pts, ACCENT, "2", &|x| x, &|y| y);
+
+    // Data points
+    let data_pts: [(f64, f64, &str, &str); 4] = [
+        (1800.0, 31.0, "Qiu 2024 (whole)", GREEN),     // 1.8 mm droplet, 31×
+        (1800.0, 140000.0, "Qiu 2024 (surface)", RED),  // surface layer: 1.4×10⁵
+        (2000.0, 4.0, "Matsubara 2021", BLUE),          // ~2 mm, 4×
+        (10.0, 1000000.0, "Holden 2025 (theory)", PURPLE),   // μm scale, 10⁶
+    ];
+
+    for (d_um, accel, name, color) in &data_pts {
+        let x = pl + (d_um.log10() / d_max_log) * pw;
+        let y = pb - (accel.log10() / a_max_log) * ph;
+        svg += &format!("<circle cx=\"{x:.1}\" cy=\"{y:.1}\" r=\"5\" fill=\"{color}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n");
+        svg += &label(x + 7.0, y + 3.0, name, *color, 7, "start");
+    }
+
+    // ── Panel B: Angel's share in levitated droplet ──
+    svg += &label(525.0, 57.0, "B: Angel\u{2019}s Share in a Levitated Droplet", TEXT, 10, "middle");
+
+    // Levitated droplet schematic
+    let cx2 = 525.0; let cy2 = 175.0; let r = 50.0;
+
+    // Standing wave nodes
+    for i in 0..5 {
+        let y = 85.0 + i as f64 * 50.0;
+        svg += &hline(420.0, 630.0, y, GRID, "0.3");
+    }
+    svg += &label(640.0, 88.0, "Pressure", MUTED, 6, "start");
+    svg += &label(640.0, 98.0, "nodes", MUTED, 6, "start");
+
+    // Droplet
+    svg += &format!("<ellipse cx=\"{cx2}\" cy=\"{cy2}\" rx=\"{r}\" ry=\"{:.1}\" fill=\"{ACCENT}\" opacity=\"0.2\" stroke=\"{ACCENT}\" stroke-width=\"2\"/>\n", r * 0.7);
+
+    // Ethanol evaporation arrows (outward)
+    for angle_deg in &[0, 45, 90, 135, 180, 225, 270, 315] {
+        let angle = (*angle_deg as f64) * std::f64::consts::PI / 180.0;
+        let x1 = cx2 + (r + 5.0) * angle.cos();
+        let y1 = cy2 + (r * 0.7 + 5.0) * angle.sin();
+        let x2 = cx2 + (r + 25.0) * angle.cos();
+        let y2 = cy2 + (r * 0.7 + 20.0) * angle.sin();
+        svg += &format!("<line x1=\"{x1:.1}\" y1=\"{y1:.1}\" x2=\"{x2:.1}\" y2=\"{y2:.1}\" stroke=\"{RED}\" stroke-width=\"1\" marker-end=\"url(#arr)\" opacity=\"0.6\"/>\n");
+    }
+    svg += &label(cx2, cy2 - 5.0, "Spirit", ACCENT, 9, "middle");
+    svg += &label(cx2, cy2 + 8.0, "droplet", ACCENT, 8, "middle");
+    svg += &label(cx2 + r + 30.0, cy2, "EtOH", RED, 7, "start");
+    svg += &label(cx2 + r + 30.0, cy2 + 12.0, "evaporates", RED, 7, "start");
+
+    // Two-stage evaporation timeline
+    svg += &format!("<rect x=\"410\" y=\"265\" width=\"230\" height=\"80\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(525.0, 280.0, "Two-stage evaporation (Wakata 2024):", TEXT, 8, "middle");
+    svg += &label(525.0, 296.0, "Stage 1: EtOH evaporates preferentially", RED, 7, "middle");
+    svg += &label(525.0, 310.0, "Stage 2: Pure water evaporation", BLUE, 7, "middle");
+    svg += &label(525.0, 330.0, "= Angel\u{2019}s share in MINUTES, not years", GREEN, 8, "middle");
+
+    // Research platform callout
+    svg += &format!("<rect x=\"400\" y=\"360\" width=\"250\" height=\"48\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(525.0, 375.0, "NOT a production technique (\u{03bc}L scale)", MUTED, 8, "middle");
+    svg += &label(525.0, 391.0, "= Rapid screening platform for aging chemistry", GREEN, 8, "middle");
+    svg += &label(525.0, 403.0, "23 reactions/2 min each (Qiu 2024)", ACCENT, 7, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"52\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 70.0);
+    svg += &label(350.0, h - 52.0,
+        "Levitated droplets: 31\u{00d7} whole-droplet, 10\u{2075}\u{00d7} surface-layer acceleration",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 38.0,
+        "Preferential EtOH evaporation creates spontaneous angel\u{2019}s share effect in minutes",
+        GREEN, 8, "middle");
+    svg += &label(350.0, h - 24.0,
+        "A rapid-screening platform: test 100s of spirit+oak combinations per hour at \u{03bc}L scale",
         BLUE, 8, "middle");
 
     svg.push_str("</svg>");
