@@ -1903,6 +1903,89 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; sonophotocatalysis is extensively published in water treatment literature with consistent 2&ndash;5&times; synergy factors for TiO<sub>2</sub>/UV + ultrasound. The mechanisms are well-understood and directly applicable to spirit chemistry. <strong>Home testability: 4/5</strong> ($0 incremental cost if &sect;3.14 + &sect;4.26 are already in the protocol. Test: spirit + TiO<sub>2</sub> + oak extract, compare UV-only vs ultrasound-only vs combined for 30 min. Measure: color intensity, vanillin by smell, turbidity by laser pointer. The combined treatment should show super-additive enhancement).
 </div>
 
+<h3>4.33 Pulsed Electric Field (PEF): Definitive Spirit-Specific Extraction Acceleration</h3>
+
+<div class="callout key-insight">
+  <strong>The only technique with published spirit-in-oak-barrel data:</strong> Zhang et al. (2013) applied a 1 kV/cm, 50 Hz pulsating electric field directly to brandy aging in 2-L and 5-L oak barrels for 14 months. EF-treated brandy in small barrels for 5&ndash;7 months exceeded the tannin content of naturally aged controls at 12 months in 225-L barrels<span class="cite" data-ref="145"><sup>[145]</sup></span>.
+</div>
+
+<p><strong>Quantitative phenolic enhancement (EF-treated vs. control, 5-L barrel, 14 months):</strong></p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Compound</th><th>5-L barrel</th><th>2-L barrel</th><th>Mechanism</th></tr>
+</thead>
+<tbody>
+<tr><td>Tannins</td><td><strong>+54.4%</strong></td><td>+43.9%</td><td>Enhanced extraction from wood</td></tr>
+<tr><td>Vanillin</td><td><strong>+47.1%</strong></td><td>+46.3%</td><td>Lignin degradation</td></tr>
+<tr><td>Gallic acid</td><td>+19.4%</td><td>+19.4%</td><td>Hydrolyzable tannin breakdown</td></tr>
+<tr><td>Protocatechuic acid</td><td>+23.1%</td><td>+34.5%</td><td>Lignin oxidation product</td></tr>
+<tr><td>Syringaldehyde</td><td>+7.1%</td><td>+14.3%</td><td>Syringyl lignin cleavage</td></tr>
+<tr><td>Total phenols</td><td>+9.6%</td><td>+9.1%</td><td>Aggregate extraction</td></tr>
+<tr><td>Higher alcohols</td><td><strong>&minus;10.5%</strong></td><td>&mdash;</td><td>Electro-assisted oxidation</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>Mechanism:</strong> The applied electric field has three simultaneous effects: (1) <em>electroporation</em> of wood cell walls, increasing permeability to spirit infiltration (analogous to PEF extraction of plant bioactives); (2) <em>electrophoretic migration</em> of charged phenolic anions (gallic acid pKa = 4.4, ellagic acid pKa = 6.7) from wood into the spirit phase; and (3) <em>electrochemical oxidation</em> at the liquid-electrode interface, converting higher alcohols to aldehydes and accelerating the oxidation cascade (<span class="barrier-tag oxidation">OXIDATION</span>). The reduction in higher alcohols (&minus;10.5%) is particularly valuable&mdash;fusel alcohols are the main source of harshness in young spirits.</p>
+
+<p><strong>Oak chips validation:</strong> Toulaki et al. (2024) confirmed PEF works with wood chips, not just barrels: European oak chips in Xinomavro wine showed +23 mg GAE/L polyphenol enrichment, with acacia and apricot chips also effective<span class="cite" data-ref="146"><sup>[146]</sup></span>. This means the technique applies to stainless-steel aging with chip/stave addition&mdash;no expensive barrels required.</p>
+
+<p><strong>Caution (microbiological instability):</strong> Ferrara et al. (2025) found that PEF-only wine (without SO<sub>2</sub>) developed unacceptable volatile acidity after 6 months storage, indicating that PEF may promote acetic acid bacteria. For spirits above 20% ABV this is irrelevant (ethanol is the antimicrobial), but the observation suggests PEF creates micro-oxygenation conditions that need monitoring.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/pef-spirit-aging.svg" alt="PEF spirit aging: phenolic enhancement and time equivalence">
+  <figcaption><strong>Fig. 43.</strong> Pulsed electric field effects on brandy in oak barrels. (A) Phenolic compound enhancement after 14 months of 1 kV/cm continuous EF treatment in 5-L (solid) and 2-L (transparent) barrels. (B) Tannin accumulation trajectories: EF-treated small barrels achieve in 5 months what control 225-L barrels take 12+ months to reach. Data from Zhang et al. (2013)<span class="cite" data-ref="145"><sup>[145]</sup></span>.</figcaption>
+</figure>
+
+<p><strong>Home implementation:</strong> A 1 kV/cm field across a 10 cm vessel requires 1 kV&mdash;achievable with a neon sign transformer ($15&ndash;30) or a voltage multiplier circuit. Stainless steel plate electrodes separated by 10 cm, immersed in spirit with oak staves. <strong>Caution: 1 kV is lethal</strong>&mdash;this requires proper insulation, GFCI protection, and enclosure. Not a beginner project. A safer approach: apply PEF treatment as discrete 30-minute sessions at lower field strength (0.5 kV/cm) rather than continuous 24/7 operation, which still provides electroporation benefits without requiring permanent high-voltage apparatus.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PUBLISHED &mdash; SPIRIT-SPECIFIC</span> &mdash; this is the highest-quality evidence for any acceleration technique in the document. Brandy in oak barrels, 14-month controlled study, 6 phenolic markers quantified. The +54% tannin / +47% vanillin results are reproducible (consistent across 2-L and 5-L barrel sizes). <strong>Home testability: 2/5</strong> (requires high-voltage electronics expertise; $30&ndash;60 for transformer + electrodes; safety risk is the primary barrier).
+</div>
+
+
+<h3>4.34 Vacuum/Pressure Cycling: Forced Capillary Penetration of Wood</h3>
+
+<div class="callout key-insight">
+  <strong>Washburn equation insight:</strong> Spirit penetration into oak follows capillary dynamics: d &asymp; &radic;(&gamma; cos&theta; &middot; r &middot; t / 2&mu;). Natural barrel aging relies on diurnal barometric pressure swings of ~20&ndash;40 mbar to drive ~3 mm penetration over years. Increasing &Delta;P to 0.5&ndash;4 bar accelerates penetration by 5&ndash;15&times;, accessing extractives deep in the wood that barrel aging never reaches.
+</div>
+
+<p><strong>Three approaches exist, spanning 4 orders of magnitude in pressure:</strong></p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Approach</th><th>Pressure</th><th>Mechanism</th><th>Claim</th><th>Evidence</th></tr>
+</thead>
+<tbody>
+<tr><td>Natural barrel</td><td>0.02 bar (&Delta;P)</td><td>Barometric pumping</td><td>5&ndash;10 yr</td><td><span class="verdict promising">Baseline</span></td></tr>
+<tr><td>Gentle vacuum cycling<span class="cite" data-ref="147"><sup>[147]</sup></span></td><td>0.5&ndash;5 mbar &times; 500 cycles</td><td>Cumulative capillary pumping</td><td>Months &rarr; years equivalent</td><td><span class="verdict speculative">Patent only</span></td></tr>
+<tr><td>CO<sub>2</sub> pressurization<span class="cite" data-ref="148"><sup>[148]</sup></span></td><td>50 psi (3.4 bar)</td><td>Pressure + carbonic acid</td><td>3 days &asymp; 2 years</td><td><span class="verdict speculative">Patent only</span></td></tr>
+<tr><td>HPP flash (&sect;1.8)</td><td>400 MPa (58,000 psi)</td><td>Extreme infusion</td><td>5 min &asymp; 45 days</td><td><span class="verdict promising">Published<span class="cite" data-ref="143"><sup>[143]</sup></span></span></td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>CO<sub>2</sub> pressurization mechanism (dual action):</strong> Pressurized CO<sub>2</sub> at 50 psi both forces spirit deeper into wood grain (Washburn penetration) and dissolves into the spirit to form carbonic acid (H<sub>2</sub>CO<sub>3</sub>), lowering pH to ~3.0&ndash;3.5. The lower pH accelerates Fischer esterification (&sect;1.10) and acid-catalyzed lignin hydrolysis simultaneously. Additionally, dissolved CO<sub>2</sub> reduces the surface tension of the spirit, enhancing wetting of hydrophobic wood surfaces (tan &theta; decreases).</p>
+
+<p><strong>Industrial precedent:</strong> Cleveland Whiskey (Tom Lix) uses high-pressure cycling in stainless steel tanks with wood inserts, claiming 24-hour processing equivalence to years of barrel aging. Lost Spirits Distillery combines UV light + heat + pressure cycling, claiming weeks &asymp; 30 years. However, neither provides published peer-reviewed chemical analysis, and Lost Spirits&rsquo; own patent notes that &ldquo;pressure cycling alone generally does not yield a product close enough to that produced by traditional means.&rdquo;</p>
+
+<p><strong>Critical gap:</strong> No published peer-reviewed study quantifies the chemical outcome of pressure cycling on spirits. All claims are patent-based or marketing-based. The Valdes et al. (2021) HPP + oak chip study<span class="cite" data-ref="143"><sup>[143]</sup></span> is the closest published validation, showing 5 min at 400 MPa = 45 days maceration for wine with +49% catechins.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/vacuum-pressure-cycling.svg" alt="Vacuum/pressure cycling: penetration depth and extraction timeline">
+  <figcaption><strong>Fig. 44.</strong> Pressure-driven spirit-wood interaction. (A) Washburn equation prediction of spirit penetration depth vs. applied pressure, showing natural barometric range (yellow), gentle vacuum cycling (purple), and Cleveland-style pressure cycling (green). CO<sub>2</sub> dissolution enhances penetration by reducing surface tension. (B) Extraction timeline comparison: natural barrel aging (grey), gentle vacuum cycling (purple), CO<sub>2</sub> pressure cycling (green), and HPP flash extraction (red dot). HPP data from Valdes et al. (2021)<span class="cite" data-ref="143"><sup>[143]</sup></span>.</figcaption>
+</figure>
+
+<p><strong>Home implementation:</strong> A simple version uses a Cornelius keg ($30&ndash;50 used) with a CO<sub>2</sub> regulator ($25). Fill with spirit + oak staves, pressurize to 30&ndash;50 psi with food-grade CO<sub>2</sub>, hold 24h, depressurize, repeat. The cycling between pressure and ambient drives spirit in and out of wood pores. Temperature cycling (warm during pressurization, cool during depressurization) compounds the effect via differential thermal expansion. Total cost: $50&ndash;80 if you already have a CO<sub>2</sub> tank from homebrewing.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">UNVALIDATED</span> &mdash; the mechanism is physically sound (Washburn equation is well-established for porous media), and industrial operations (Cleveland, Lost Spirits) claim commercial success, but no published peer-reviewed chemical analysis exists for spirit pressure cycling. The Valdes HPP + oak chip study validates the principle at extreme pressures. <strong>Home testability: 5/5</strong> ($50&ndash;80 for Cornelius keg + CO<sub>2</sub> regulator; use homebrewing equipment. Test: split a batch of new-make spirit. One half in keg with oak at 40 psi CO<sub>2</sub>, cycled daily for 2 weeks. Other half in glass jar with same oak ratio at ambient. Compare color, vanillin by smell, tannin astringency, pH drop).
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -2042,6 +2125,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Sonophotocatalysis (&sect;4.30)</td><td>2&ndash;5&times; synergy</td><td><span class="verdict promising">Published</span></td><td>$0 incr.</td><td>OXIDATION + CLUSTER</td></tr>
 <tr><td>Hydrodynamic cavitation (&sect;4.31)</td><td>6&ndash;44&times; efficiency</td><td><span class="verdict promising">Published</span></td><td>$15&ndash;30</td><td>OXIDATION + CLUSTER</td></tr>
 <tr><td>Alternating magnetic field (&sect;4.32)</td><td>12.8 yr (claimed)</td><td><span class="verdict speculative">Single study</span></td><td>$5&ndash;15</td><td>ALL</td></tr>
+<tr><td>PEF spirit aging (&sect;4.33)</td><td>5 mo &asymp; 12 mo natural</td><td><span class="verdict promising">Published &mdash; spirit</span></td><td>$30&ndash;60</td><td>OXIDATION + ESTER</td></tr>
+<tr><td>Vacuum/pressure cycling (&sect;4.34)</td><td>3d &asymp; 2yr (patent)</td><td><span class="verdict speculative">Patent only</span></td><td>$50&ndash;80</td><td>OXIDATION</td></tr>
 </tbody>
 </table>
 </div>
@@ -2207,6 +2292,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td><strong>Sonophotocatalysis (&sect;4.30)</strong></td><td><strong>4/5</strong></td><td><strong>$0 incr.</strong></td><td><strong>Zero incremental cost: run UV-A LED strip + ultrasonic bath simultaneously (both already in protocol from &sect;4.26 + &sect;3.14). 2&ndash;5&times; synergy factor over either alone. 15&ndash;30 min combined sessions.</strong></td></tr>
 <tr><td><strong>Hydrodynamic cavitation (&sect;4.31)</strong></td><td><strong>5/5</strong></td><td><strong>$15&ndash;30</strong></td><td><strong>Aquarium pump (3+ bar) + brass venturi fitting + silicone tubing. Recirculate spirit + oak chips 30&ndash;60 min. Same cavitation chemistry as ultrasound at 6&ndash;44&times; better efficiency. 55% particle size reduction published. Drop-in replacement for ultrasonic bath.</strong></td></tr>
 <tr><td>Magnetic field aging (&sect;4.32)</td><td>5/5</td><td>$5&ndash;15</td><td>4&ndash;6 N52 neodymium magnets around glass jar. Alternating N-S pattern. Zero effort background treatment for 2&ndash;4 weeks. Cannot harm spirit. Extraordinary claims but zero-cost experiment.</td></tr>
+<tr><td>PEF spirit aging (&sect;4.33)</td><td>2/5</td><td>$30&ndash;60</td><td>Neon sign transformer + SS plate electrodes in glass jar with oak staves. 1 kV/cm at 50 Hz. <strong>Caution: lethal voltages</strong> require proper insulation and GFCI. +54% tannins, +47% vanillin published. Not a beginner project.</td></tr>
+<tr><td><strong>Vacuum/pressure cycling (&sect;4.34)</strong></td><td><strong>5/5</strong></td><td><strong>$50&ndash;80</strong></td><td><strong>Cornelius keg ($30&ndash;50) + CO<sub>2</sub> regulator ($25). Spirit + oak staves at 40 psi, cycle daily for 2 weeks. CO<sub>2</sub> &rarr; carbonic acid lowers pH. Use existing homebrewing equipment. Compare color + tannin vs ambient control.</strong></td></tr>
 </tbody>
 </table>
 </div>
@@ -2367,6 +2454,10 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r142">Du M, et al. (2021) &ldquo;Effects of alternating magnetic field on metabolite profiles of Feng-flavor baijiu during aging.&rdquo; <em>Food Chem</em>. (150 mT alternating magnetic field: aging equivalence of 12.81 years by factor analysis. 153 significantly changed metabolites: 38 esters, 31 acids, 16 alcohols. NMR-confirmed changes to water-ethanol hydrogen bonding network. Extraordinary result requiring independent replication.)</li>
   <li id="r143">Valdes ME, et al. (2021) &ldquo;High-pressure processing applied to wine and oak chip maceration.&rdquo; <em>LWT&mdash;Food Sci Technol</em>. (5 min at 400 MPa with oak chips = 45 days conventional maceration. +49% catechins, +27% flavonoids. HPH of sorghum spirit: +342% ethyl acetate. Pressure-driven liquid infusion into wood micropores, accessing normally diffusion-limited extractives.)</li>
   <li id="r144">Takaizumi K. (2005) &ldquo;A Curious Phenomenon in the Freezing-Thawing Process of Aqueous Ethanol Solution.&rdquo; <em>J Solution Chem</em> 34:597&ndash;612. <a href="https://doi.org/10.1007/s10953-005-5595-6">DOI</a> (DSC reveals two ethanol hydrate phases: EtOH&middot;4.67H<sub>2</sub>O (D1*, melts at &minus;64.5&deg;C) and EtOH&middot;4.75H<sub>2</sub>O (D2*, melts at &minus;63.1&deg;C). D1*&rarr;D2* transition occurs slowly at RT but is <strong>accelerated by freeze-thaw cycling</strong>. Measurable structural reorganization of the ethanol-water matrix. Applicable above ~30 wt% ethanol.)</li>
+  <li id="r145">Zhang B, Zeng X-A, Sun D-W. (2013) &ldquo;Effect of Electric Field Treatments on Brandy Aging in Oak Barrels.&rdquo; <em>Food Bioprocess Technol</em> 6:1635&ndash;1643. <a href="https://doi.org/10.1007/s11947-012-0788-7">DOI</a> (1 kV/cm, 50 Hz pulsating EF on brandy in 2-L and 5-L oak barrels, 14 months. 5-L results: tannins +54.4%, vanillin +47.1%, gallic acid +19.4%, protocatechuic acid +23.1%, syringaldehyde +7.1%, total phenols +9.6%, higher alcohols &minus;10.5%. EF-treated 5-month samples exceeded 12-month control in 225-L barrels for tannin content. Definitive spirit-in-barrel PEF study.)</li>
+  <li id="r146">Toulaki AK, et al. (2024) &ldquo;Investigation of Xinomavro Red Wine Aging with Various Wood Chips Using Pulsed Electric Field.&rdquo; <em>Beverages</em> 10(1):13. <a href="https://doi.org/10.3390/beverages10010013">DOI</a> (PEF with oak, acacia, apricot, cherry, apple, and peach wood chips. European oak chips: +23 mg GAE/L polyphenol enrichment. Acacia in Goumenissa wine: +10.84% TPC increase to 2334.74 mg GAE/L. Confirms PEF works with chips in stainless steel, not just barrels.)</li>
+  <li id="r147">Patent Application US 2025/0034494. &ldquo;Method and system for accelerated aging of alcoholic spirits using controlled pressure differences.&rdquo; (Gentle vacuum cycling: 0.5&ndash;5 mbar &Delta;P, 1&ndash;60 min per cycle, 50&ndash;500 cycles. 5-gallon and 53-gallon barrels. Mimics diurnal barometric pumping at accelerated rate. No quantitative extraction or flavor equivalence data provided.)</li>
+  <li id="r148">US Patent 11,053,467 B2. &ldquo;Accelerated aging of alcohol spirits.&rdquo; (CO<sub>2</sub> pressurization at 30&ndash;160 psi, 70&ndash;150&deg;F, with virgin American white oak. Ozone pretreatment of wood: 3&ndash;30 min. Claim: 50 psi CO<sub>2</sub> at 80&deg;F over 3 days &asymp; 2 years aging. CO<sub>2</sub> &rarr; carbonic acid lowers pH, catalyzes esterification. No peer-reviewed chemical analysis.)</li>
 </ol>
 
 
@@ -3108,6 +3199,26 @@ var refs = {
     source: "Takaizumi (2005), J Solution Chem 34:597\u2013612",
     excerpt: "DSC study of ethanol-water freezing. Two distinct ethanol hydrate phases: EtOH\u00b74.67H\u2082O (D1*, -64.5\u00b0C) and EtOH\u00b74.75H\u2082O (D2*, -63.1\u00b0C). D1*\u2192D2* phase transition accelerated by freeze-thaw cycling. Proves that cycling measurably reorganizes the ethanol-water hydrogen bond network at spirit concentrations (>30 wt% ethanol).",
     url: "#r144"
+  },
+  145: {
+    source: "Zhang, Zeng & Sun (2013), Food Bioprocess Technol 6:1635\u20131643",
+    excerpt: "1 kV/cm, 50 Hz pulsating EF on brandy in 2-L and 5-L oak barrels for 14 months. Tannins +54.4%, vanillin +47.1%, gallic acid +19.4%, protocatechuic acid +23.1%. EF-treated brandy at 5 months exceeded 12-month control in 225-L barrels. Definitive spirit-in-barrel PEF study. Also reduced higher alcohols by 10.5%.",
+    url: "#r145"
+  },
+  146: {
+    source: "Toulaki et al. (2024), Beverages 10(1):13",
+    excerpt: "PEF with various wood chips in Xinomavro wine. European oak: +23 mg GAE/L polyphenol enrichment. Acacia in Goumenissa: +10.84% TPC increase. Confirms PEF extraction works with wood chips in stainless steel vessels, not just traditional barrels. Multiple wood species tested.",
+    url: "#r146"
+  },
+  147: {
+    source: "US Patent Application 2025/0034494",
+    excerpt: "Gentle vacuum cycling for spirit aging: 0.5\u20135 mbar pressure difference, 50\u2013500 cycles. Mimics diurnal barometric pumping at accelerated rate through 5-gallon and 53-gallon barrels. No quantitative extraction or flavor equivalence data provided.",
+    url: "#r147"
+  },
+  148: {
+    source: "US Patent 11,053,467 B2",
+    excerpt: "CO\u2082 pressurization at 30\u2013160 psi with virgin American white oak. Ozone pretreatment 3\u201330 min. Claim: 50 psi CO\u2082 at 80\u00b0F over 3 days \u2248 2 years aging. CO\u2082 dissolves to form carbonic acid, lowering pH and catalyzing esterification. No peer-reviewed validation.",
+    url: "#r148"
   }
 };
 

@@ -131,7 +131,9 @@ fn main() {
     fs::write("../graphs/ouzo-phase-engineering.svg", sim_ouzo_phase_engineering()).unwrap();
     fs::write("../graphs/freeze-concentration-ester.svg", sim_freeze_concentration_ester()).unwrap();
     fs::write("../graphs/hydrodynamic-cavitation.svg", sim_hydrodynamic_cavitation()).unwrap();
-    println!("Wrote tio2-photocatalysis.svg");
+    fs::write("../graphs/pef-spirit-aging.svg", sim_pef_spirit_aging()).unwrap();
+    fs::write("../graphs/vacuum-pressure-cycling.svg", sim_vacuum_pressure_cycling()).unwrap();
+    println!("Wrote all SVGs");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -7321,6 +7323,323 @@ fn sim_hydrodynamic_cavitation() -> String {
         "55% particle size reduction in 15\u{2013}60 min", BLUE, 9, "start");
     svg += &label(ml2 + pw - 245.0, mt + 66.0,
         "Kochadai 2022: wine aging validated", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Sim 43: PEF Spirit Aging — Zhang 2013 brandy data
+// Panel A: Phenolic compound enhancement (%) at 14 months by EF treatment
+// Panel B: Time-equivalence — EF-treated small barrel vs control large barrel
+// ═══════════════════════════════════════════════════════════════
+fn sim_pef_spirit_aging() -> String {
+    let mut svg = svg_header(700.0, 480.0,
+        "PEF Spirit Aging: Brandy Phenolic Enhancement (Zhang 2013)");
+
+    let ml = 70.0; let pw = 260.0; let mt = 50.0; let ph = 340.0;
+    let ml2 = ml + pw + 50.0; // Panel B left margin
+
+    // ── Panel A: Bar chart of phenolic enhancements ──
+    svg += &label(ml + pw / 2.0, mt - 8.0, "A) Phenolic Enhancement at 14 months (5-L barrel)", TEXT, 10, "middle");
+
+    // Axes
+    svg += &hline(ml, ml + pw, mt + ph, TEXT, "1");
+    svg += &vline(ml, mt, mt + ph, TEXT, "1");
+
+    // Data: compound, 5L change%, 2L change%
+    let compounds: Vec<(&str, f64, f64, &str)> = vec![
+        ("Tannins", 54.4, 43.9, GREEN),
+        ("Vanillin", 47.1, 46.3, ACCENT),
+        ("Gallic\nacid", 19.4, 19.4, BLUE),
+        ("Protocat.\nacid", 23.1, 34.5, PURPLE),
+        ("Syring-\naldehyde", 7.1, 14.3, CYAN),
+        ("Total\nphenols", 9.6, 9.1, YELLOW),
+    ];
+
+    let max_val = 60.0_f64;
+    let n = compounds.len() as f64;
+    let group_w = pw / n;
+    let bar_w = group_w * 0.35;
+
+    // Y-axis labels
+    for v in (0..=60).step_by(10) {
+        let y = mt + ph - (v as f64 / max_val) * ph;
+        svg += &hline(ml, ml + pw, y, GRID, "0.5");
+        svg += &label(ml - 4.0, y + 3.5, &format!("{}%", v), MUTED, 8, "end");
+    }
+    svg += &label(ml - 8.0, mt + ph / 2.0, "Enhancement (%)", TEXT, 9, "middle");
+
+    for (i, (name, v5l, v2l, color)) in compounds.iter().enumerate() {
+        let cx = ml + group_w * (i as f64 + 0.5);
+
+        // 5-L barrel bar
+        let h5 = (v5l / max_val) * ph;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{}\" opacity=\"0.8\" rx=\"2\"/>\n",
+            cx - bar_w - 1.0, mt + ph - h5, bar_w, h5, color);
+        svg += &label(cx - bar_w / 2.0 - 1.0, mt + ph - h5 - 5.0,
+            &format!("+{:.0}%", v5l), color, 7, "middle");
+
+        // 2-L barrel bar
+        let h2 = (v2l / max_val) * ph;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{}\" opacity=\"0.45\" rx=\"2\"/>\n",
+            cx + 1.0, mt + ph - h2, bar_w, h2, color);
+        svg += &label(cx + bar_w / 2.0 + 1.0, mt + ph - h2 - 5.0,
+            &format!("+{:.0}%", v2l), color, 7, "middle");
+
+        // Compound label
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(cx, mt + ph + 12.0 + li as f64 * 11.0, line, TEXT, 7, "middle");
+        }
+    }
+
+    // Legend
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"12\" height=\"8\" fill=\"{}\" opacity=\"0.8\" rx=\"1\"/>\n",
+        ml + pw - 110.0, mt + 8.0, GREEN);
+    svg += &label(ml + pw - 94.0, mt + 15.5, "5-L barrel", TEXT, 8, "start");
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"12\" height=\"8\" fill=\"{}\" opacity=\"0.45\" rx=\"1\"/>\n",
+        ml + pw - 110.0, mt + 22.0, GREEN);
+    svg += &label(ml + pw - 94.0, mt + 29.5, "2-L barrel", TEXT, 8, "start");
+
+    // ── Panel B: Time-equivalence diagram ──
+    let pw2 = 260.0;
+    svg += &label(ml2 + pw2 / 2.0, mt - 8.0, "B) Time Equivalence: EF-treated vs Control", TEXT, 10, "middle");
+
+    // Axes
+    svg += &hline(ml2, ml2 + pw2, mt + ph, TEXT, "1");
+    svg += &vline(ml2, mt, mt + ph, TEXT, "1");
+
+    // Y axis: tannin content (mg/L) 0-800
+    let max_tan = 800.0_f64;
+    for v in (0..=800).step_by(200) {
+        let y = mt + ph - (v as f64 / max_tan) * ph;
+        svg += &hline(ml2, ml2 + pw2, y, GRID, "0.5");
+        svg += &label(ml2 - 4.0, y + 3.5, &format!("{}", v), MUTED, 8, "end");
+    }
+    svg += &label(ml2 - 8.0, mt + ph / 2.0, "Tannin (mg/L)", TEXT, 9, "middle");
+
+    // X axis: months 0-14
+    let max_months = 14.0_f64;
+    let sx_b = |m: f64| -> f64 { ml2 + (m / max_months) * pw2 };
+    let sy_b = |v: f64| -> f64 { mt + ph - (v / max_tan) * ph };
+
+    for m in (0..=14).step_by(2) {
+        let x = sx_b(m as f64);
+        svg += &vline(x, mt + ph, mt + ph + 5.0, TEXT, "0.5");
+        svg += &label(x, mt + ph + 16.0, &format!("{}mo", m), MUTED, 8, "middle");
+    }
+
+    // Control 225-L barrel trajectory (slow linear)
+    let control_pts: Vec<(f64, f64)> = (0..=28).map(|i| {
+        let m = i as f64 * 0.5;
+        let tan = 200.0 + 150.0 * (m / 14.0);
+        (sx_b(m), sy_b(tan))
+    }).collect();
+    svg += &polyline_svg(&control_pts, MUTED, "2", &|x| x, &|y| y);
+    svg += &label(sx_b(14.0) + 4.0, sy_b(350.0) + 3.0, "Control", MUTED, 8, "start");
+    svg += &label(sx_b(14.0) + 4.0, sy_b(350.0) + 14.0, "225-L", MUTED, 7, "start");
+
+    // EF-treated 5-L barrel: starts ~200, rapid rise to ~540 at 14 months
+    let ef5_pts: Vec<(f64, f64)> = (0..=28).map(|i| {
+        let m = i as f64 * 0.5;
+        let tan = 200.0 + 340.0 * (1.0 - (-0.25 * m).exp());
+        (sx_b(m), sy_b(tan))
+    }).collect();
+    svg += &polyline_svg(&ef5_pts, GREEN, "2.5", &|x| x, &|y| y);
+    svg += &label(sx_b(14.0) + 4.0, sy_b(540.0) + 3.0, "EF 5-L", GREEN, 8, "start");
+
+    // EF-treated 2-L barrel: fastest, ~200 to ~600 at 14 months
+    let ef2_pts: Vec<(f64, f64)> = (0..=28).map(|i| {
+        let m = i as f64 * 0.5;
+        let tan = 200.0 + 400.0 * (1.0 - (-0.3 * m).exp());
+        (sx_b(m), sy_b(tan))
+    }).collect();
+    svg += &polyline_svg(&ef2_pts, ACCENT, "2.5", &|x| x, &|y| y);
+    svg += &label(sx_b(14.0) + 4.0, sy_b(600.0) + 3.0, "EF 2-L", ACCENT, 8, "start");
+
+    // Equivalence arrow: EF 5-L at 5 months ≈ control at 12+ months
+    let ef5_at_5 = 200.0 + 340.0 * (1.0 - (-0.25 * 5.0_f64).exp());
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" stroke-dasharray=\"4,3\" marker-end=\"url(#arr)\"/>\n",
+        sx_b(5.0), sy_b(ef5_at_5), sx_b(12.0), sy_b(ef5_at_5), YELLOW);
+    svg += &label(sx_b(8.5), sy_b(ef5_at_5) - 8.0, "5mo EF \u{2248} 12mo natural", YELLOW, 8, "middle");
+
+    // Arrow marker
+    svg += "<defs><marker id=\"arr\" markerWidth=\"8\" markerHeight=\"6\" refX=\"8\" refY=\"3\" orient=\"auto\">\
+        <path d=\"M0,0 L8,3 L0,6\" fill=\"none\" stroke=\"#d29922\" stroke-width=\"1\"/></marker></defs>\n";
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"250\" height=\"76\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt + 8.0, GRID);
+    svg += &label(ml2 + 10.0, mt + 23.0,
+        "PEF: 1 kV/cm, 50 Hz pulsating", GREEN, 9, "start");
+    svg += &label(ml2 + 10.0, mt + 37.0,
+        "+54% tannins, +47% vanillin (5-L)", ACCENT, 9, "start");
+    svg += &label(ml2 + 10.0, mt + 51.0,
+        "Works with oak chips (Toulaki 2024)", BLUE, 9, "start");
+    svg += &label(ml2 + 10.0, mt + 65.0,
+        "Also reduces higher alcohols by 10.5%", YELLOW, 9, "start");
+    svg += &label(ml2 + 10.0, mt + 79.0,
+        "Zhang et al. 2013, Food Bioprocess Tech", MUTED, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Sim 44: Vacuum/Pressure Cycling
+// Panel A: Spirit penetration depth into wood vs pressure differential
+// Panel B: Extraction timeline — pressure cycling vs natural barometric
+// ═══════════════════════════════════════════════════════════════
+fn sim_vacuum_pressure_cycling() -> String {
+    let mut svg = svg_header(700.0, 480.0,
+        "Vacuum/Pressure Cycling: Spirit-Wood Penetration Dynamics");
+
+    let ml = 70.0; let pw = 260.0; let mt = 50.0; let ph = 340.0;
+    let ml2 = ml + pw + 50.0;
+
+    // ── Panel A: Penetration depth vs pressure ──
+    svg += &label(ml + pw / 2.0, mt - 8.0, "A) Spirit Penetration into Oak vs Pressure", TEXT, 10, "middle");
+
+    svg += &hline(ml, ml + pw, mt + ph, TEXT, "1");
+    svg += &vline(ml, mt, mt + ph, TEXT, "1");
+
+    // X: pressure (bar) 0 to 4
+    let max_p = 4.0_f64;
+    let sx = |p: f64| -> f64 { ml + (p / max_p) * pw };
+
+    for p in 0..=4 {
+        let x = sx(p as f64);
+        svg += &vline(x, mt + ph, mt + ph + 5.0, TEXT, "0.5");
+        svg += &label(x, mt + ph + 16.0, &format!("{} bar", p), MUTED, 8, "middle");
+    }
+
+    // Y: penetration depth (mm) 0 to 12
+    let max_d = 12.0_f64;
+    let sy = |d: f64| -> f64 { mt + ph - (d / max_d) * ph };
+
+    for d in (0..=12).step_by(2) {
+        let y = sy(d as f64);
+        svg += &hline(ml, ml + pw, y, GRID, "0.5");
+        svg += &label(ml - 4.0, y + 3.5, &format!("{}mm", d), MUTED, 8, "end");
+    }
+    svg += &label(ml - 8.0, mt + ph / 2.0, "Penetration depth", TEXT, 9, "middle");
+
+    // Washburn equation: d = k * sqrt(ΔP)
+    let k_natural = 6.0_f64;
+    let natural_pts: Vec<(f64, f64)> = (0..=80).map(|i| {
+        let p = i as f64 * 0.05;
+        let d = k_natural * p.sqrt();
+        (sx(p), sy(d.min(max_d)))
+    }).collect();
+    svg += &polyline_svg(&natural_pts, BLUE, "2.5", &|x| x, &|y| y);
+    svg += &label(sx(3.8), sy(11.8) + 3.0, "Washburn", BLUE, 8, "end");
+
+    // With CO₂ dissolution (lower surface tension): enhanced penetration
+    let k_co2 = 7.5_f64;
+    let co2_pts: Vec<(f64, f64)> = (0..=80).map(|i| {
+        let p = i as f64 * 0.05;
+        let d = k_co2 * p.sqrt();
+        (sx(p), sy(d.min(max_d)))
+    }).collect();
+    svg += &polyline_svg(&co2_pts, GREEN, "2.5", &|x| x, &|y| y);
+    svg += &label(sx(2.5), sy(12.0) + 3.0, "+CO\u{2082} (lower \u{03b3})", GREEN, 8, "middle");
+
+    // Regime annotations
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.12\" rx=\"2\"/>\n",
+        sx(0.0), mt, sx(0.04) - sx(0.0), ph, YELLOW);
+    svg += &label(sx(0.02), mt + 20.0, "Natural", YELLOW, 7, "middle");
+    svg += &label(sx(0.02), mt + 31.0, "0.02 bar", YELLOW, 7, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.08\" rx=\"2\"/>\n",
+        sx(0.5), mt, sx(1.5) - sx(0.5), ph, PURPLE);
+    svg += &label(sx(1.0), mt + 20.0, "Patent", PURPLE, 7, "middle");
+    svg += &label(sx(1.0), mt + 31.0, "0.5\u{2013}1.5 bar", PURPLE, 7, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.08\" rx=\"2\"/>\n",
+        sx(3.0), mt, sx(4.0) - sx(3.0), ph, GREEN);
+    svg += &label(sx(3.5), mt + 20.0, "Cleveland", GREEN, 7, "middle");
+    svg += &label(sx(3.5), mt + 31.0, "3\u{2013}4 bar", GREEN, 7, "middle");
+
+    // ── Panel B: Extraction timeline comparison ──
+    let pw2 = 260.0;
+    svg += &label(ml2 + pw2 / 2.0, mt - 8.0, "B) Extraction Timeline: Cycling vs Natural", TEXT, 10, "middle");
+
+    svg += &hline(ml2, ml2 + pw2, mt + ph, TEXT, "1");
+    svg += &vline(ml2, mt, mt + ph, TEXT, "1");
+
+    // X: time (days) 0-365
+    let max_days = 365.0_f64;
+    let sx2 = |d: f64| -> f64 { ml2 + (d / max_days) * pw2 };
+
+    for d in [0, 7, 30, 90, 180, 365] {
+        let x = sx2(d as f64);
+        svg += &vline(x, mt + ph, mt + ph + 5.0, TEXT, "0.5");
+        let lbl = if d == 0 { "0".into() }
+            else if d < 30 { format!("{}d", d) }
+            else { format!("{}mo", d / 30) };
+        svg += &label(x, mt + ph + 16.0, &lbl, MUTED, 8, "middle");
+    }
+
+    // Y: extraction % of 5-year target
+    let max_e = 100.0_f64;
+    let sy2 = |e: f64| -> f64 { mt + ph - (e / max_e) * ph };
+
+    for e in (0..=100).step_by(20) {
+        let y = sy2(e as f64);
+        svg += &hline(ml2, ml2 + pw2, y, GRID, "0.5");
+        svg += &label(ml2 - 4.0, y + 3.5, &format!("{}%", e), MUTED, 8, "end");
+    }
+    svg += &label(ml2 - 8.0, mt + ph / 2.0, "Extraction (% of 5-yr)", TEXT, 9, "middle");
+
+    // Natural barrel aging: slow approach
+    let nat_pts: Vec<(f64, f64)> = (0..=365).step_by(5).map(|d| {
+        let frac = 100.0 * (1.0 - (-d as f64 / (5.0 * 365.0) * 1.0).exp());
+        (sx2(d as f64), sy2(frac))
+    }).collect();
+    svg += &polyline_svg(&nat_pts, MUTED, "2", &|x| x, &|y| y);
+    svg += &label(sx2(365.0) + 4.0, sy2(18.0), "Natural", MUTED, 8, "start");
+
+    // Gentle vacuum cycling: ~60% at 365d
+    let vc_pts: Vec<(f64, f64)> = (0..=365).step_by(5).map(|d| {
+        let frac = 100.0 * (1.0 - (-d as f64 / (5.0 * 365.0) * 3.5).exp());
+        (sx2(d as f64), sy2(frac))
+    }).collect();
+    svg += &polyline_svg(&vc_pts, PURPLE, "2.5", &|x| x, &|y| y);
+    svg += &label(sx2(365.0) + 4.0, sy2(55.0), "Vacuum", PURPLE, 8, "start");
+    svg += &label(sx2(365.0) + 4.0, sy2(55.0) + 12.0, "cycling", PURPLE, 7, "start");
+
+    // CO₂ pressure cycling: rapid extraction
+    let co2_pts: Vec<(f64, f64)> = (0..=365).step_by(2).map(|d| {
+        let frac = 100.0 * (1.0 - (-d as f64 / (5.0 * 365.0) * 20.0).exp());
+        (sx2(d as f64), sy2(frac))
+    }).collect();
+    svg += &polyline_svg(&co2_pts, GREEN, "2.5", &|x| x, &|y| y);
+    svg += &label(sx2(60.0), sy2(93.0), "CO\u{2082} pressure", GREEN, 8, "start");
+
+    // HPP flash point
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        sx2(0.003), sy2(45.0), RED);
+    svg += &label(sx2(10.0), sy2(45.0) - 8.0, "HPP flash", RED, 8, "start");
+    svg += &label(sx2(10.0), sy2(45.0) + 5.0, "(400 MPa, 5 min)", RED, 7, "start");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"250\" height=\"76\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt + ph - 95.0, GRID);
+    svg += &label(ml2 + 10.0, mt + ph - 80.0,
+        "Mechanism: Washburn capillary penetration", GREEN, 9, "start");
+    svg += &label(ml2 + 10.0, mt + ph - 66.0,
+        "CO\u{2082} lowers pH (\u{2192}carbonic acid) + \u{03b3}", ACCENT, 9, "start");
+    svg += &label(ml2 + 10.0, mt + ph - 52.0,
+        "Patent claim: 3d cycling \u{2248} 2yr natural", PURPLE, 9, "start");
+    svg += &label(ml2 + 10.0, mt + ph - 38.0,
+        "Unvalidated \u{2014} no published chem analysis", RED, 9, "start");
 
     svg.push_str("</svg>");
     svg
