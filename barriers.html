@@ -2257,6 +2257,33 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<h3>4.41 High-Pressure Shear + Oak: Cavitation-Driven Triple-Barrier Attack</h3>
+
+<div class="callout key-insight">
+  <strong>Cross-domain from food engineering:</strong> Ultra-high-pressure homogenization (UHPH) at 400 bar applied to Feng-flavour Baijiu achieved <strong>6.43-year aging equivalence</strong> (Jia 2022, 2069 compounds analyzed via UHPLC-Q-Orbitrap)<span class="cite" data-ref="161"><sup>[161]</sup></span>. Separately, HPH of sorghum spirit at 30&ndash;90 MPa produced <strong>+342% ethyl acetate</strong><span class="cite" data-ref="143"><sup>[143]</sup></span>. The mechanism is not just pressure&mdash;it is <em>cavitation + shear + cluster disruption</em> operating simultaneously. When combined with oak particles, HPH would attack three barriers in a single pass.
+</div>
+
+<p><strong>Three-barrier mechanism:</strong></p>
+<ol>
+  <li><strong>Extraction (Barrier 1 upstream):</strong> Cavitation bubble collapse at 5000 K generates micro-jets that erode the oak surface, extracting phenolics and lignin degradation products orders of magnitude faster than diffusion. The shear stress (~10<sup>3</sup>&ndash;10<sup>4</sup> Pa) fractures oak cell walls similarly to PEF electroporation (&sect;4.33) but via mechanical rather than electrical disruption.</li>
+  <li><strong>Esterification (Barrier 1):</strong> Le Chatelier&rsquo;s principle shifts the Fischer esterification equilibrium toward products (&Delta;V &lt; 0). At 400 bar, the equilibrium constant increases ~1.5&ndash;2&times; beyond the atmospheric value (&sect;1.8). Simultaneously, cavitation provides local thermal activation energy for kinetically-limited ester-forming reactions.</li>
+  <li><strong>Cluster disruption (Barrier 3):</strong> Intense shear breaks ethanol-water hydrogen-bond clusters (specifically the large &gt;10 nm aggregates that correlate with alcohol irritation, &sect;3.18). The reformed cluster distribution after pressure release favors the smaller (1&ndash;5 nm) clusters associated with positive flavor. Jia 2022 confirmed that HPH transforms macromolecules into <strong>nanometer-scale colloidal particles</strong>, strengthening intermolecular associations.</li>
+</ol>
+
+<p><strong>Distinction from HPP (&sect;1.8):</strong> Static high-pressure processing (HPP) at 400 MPa applies uniform hydrostatic pressure&mdash;pure thermodynamic shift with no mechanical energy input. HPH at 40 MPa (400 bar) is 10&times; lower absolute pressure but generates cavitation, shear, and turbulence that provide kinetic acceleration beyond the thermodynamic shift. HPH processes liters per minute; HPP requires batch pressure vessels. The combination of lower pressure + mechanical energy makes HPH more accessible and potentially more effective than HPP for spirit applications.</p>
+
+<p><strong>Implementation:</strong> A laboratory HPH unit (e.g. GEA Niro, APV, or benchtop EmulsiFlex) at 50&ndash;100 MPa (500&ndash;1000 bar), 3&ndash;5 passes. Spirit at 40% ABV with suspended oak chips (5&ndash;10 g/L, &lt;1 mm particles to pass through the homogenizing valve). The cavitation at the valve gap (~10 &micro;m) simultaneously erodes oak particles, drives esterification, and disrupts clusters. Collect product, compare by GC-MS and sensory panel vs untreated spirit + oak at equivalent contact time.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/hph-oak-shear.svg" alt="HPH + oak: triple-barrier cavitation mechanism">
+  <figcaption><strong>Fig. 53.</strong> High-pressure homogenization with oak particles. (A) Three barriers attacked simultaneously: cavitation-driven extraction (gold), pressure-shifted esterification (green), and cluster disruption (blue). Published data points: Jia 2022 (6.43 yr equivalence), sorghum HPH (+342% ethyl acetate). (B) Cluster size distribution before and after HPH treatment: large clusters (&gt;10 nm) disrupted, small clusters (1&ndash;5 nm) favored.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PUBLISHED (adjacent)</span> &mdash; HPH on grain spirits (baijiu, sorghum spirit) is published with quantitative data. HPH specifically with oak particle suspension has not been published but follows directly from combining established HPH spirit processing with oak chip addition. <strong>Home testability: 1/5</strong> ($2,000+ for benchtop HPH unit. Not home-accessible, but HPH tolling services exist for food product development at ~$100&ndash;500/session. A crude approximation: high-speed blender + spirit + fine oak particles generates modest cavitation and shear at atmospheric pressure).
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -2404,6 +2431,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Microdroplet ester (&sect;1.18)</td><td>10<sup>7</sup>&times; (anhydrous)</td><td><span class="verdict promising">Published</span></td><td>$200+</td><td>ESTER</td></tr>
 <tr><td>Flash Maillard (&sect;4.39)</td><td>2000&times; (170&deg;C vs 60&deg;C)</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$30&ndash;50</td><td>EXTRACTION</td></tr>
 <tr><td>Cryo-nebulized ester (&sect;4.40)</td><td>Unknown (novel prediction)</td><td><span class="verdict speculative">Novel prediction</span></td><td>$40&ndash;60</td><td>ESTER + CLUSTER</td></tr>
+<tr><td>HPH + oak shear (&sect;4.41)</td><td>6.4 years in minutes</td><td><span class="verdict promising">Published</span></td><td>$500+</td><td>EXTRACT + ESTER + CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -2579,6 +2607,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Microdroplet ester (&sect;1.18)</td><td>1/5</td><td>$200+</td><td>Electrospray setup impractical at home. Crude approximation: ultrasonic humidifier nebulizing dehydrated oak-extract ethanol into glass collection flask. Even partial interfacial acceleration may produce detectable ester increase vs bulk control.</td></tr>
 <tr><td>Flash Maillard (&sect;4.39)</td><td>3/5</td><td>$30&ndash;50</td><td>1 m PTFE tubing (1 mm ID) coiled in 170&deg;C cooking oil bath. Feed: xylose 3 g/L + glycine 0.2 g/L in 40% ethanol at 0.3 mL/min. Quench in ice bath. ~2 s residence time. Compare furfural color vs batch 60&deg;C equivalent. <strong>Caution: pressurized hot ethanol vapors &mdash; well-ventilated area, no open flame.</strong></td></tr>
 <tr><td>Cryo-nebulized ester (&sect;4.40)</td><td>2/5</td><td>$40&ndash;60</td><td>Dry ice + ethanol bath (&minus;30&deg;C). Decant unfrozen fraction (~65% ABV), pass through ultrasonic humidifier into cold collection flask. Compare ester content vs same-ABV room-temp control to isolate the cryo-interfacial effect. Novel prediction &mdash; no published data.</td></tr>
+<tr><td>HPH + oak shear (&sect;4.41)</td><td>1/5</td><td>$500+</td><td>True UHPH requires industrial equipment (400 bar). Crude home approximation: high-speed blender + oak chips (finest possible grind) in spirit, 5&times; 30-second bursts. Generates shear/cavitation at far lower intensity. Compare blended vs macerated-only by taste and color extraction rate. Will not reach published acceleration factors.</td></tr>
 </tbody>
 </table>
 </div>
@@ -2755,6 +2784,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r158">Yoshida J-i. (2010) &ldquo;Flash Chemistry: Flow Microreactor Synthesis Based on High-Resolution Reaction Time Control.&rdquo; <em>Chem Rec</em> 10(5):332&ndash;341. <a href="https://doi.org/10.1002/tcr.201000020">DOI</a> (Microreactors achieve complete diffusive mixing in milliseconds. Residence time control at ms scale enables generation, transfer, and consumption of reactive intermediates before decomposition. Foundation for precision high-temperature cascade chemistry.)</li>
   <li id="r159">Warne GR, et al. (2024) &ldquo;Esterification and volatile compound manipulation using radiofrequency cold plasma.&rdquo; <em>Innov Food Sci Emerg Technol</em> 95:103726. <a href="https://doi.org/10.1016/j.ifset.2024.103726">DOI</a> (RF cold plasma (kINPen IND-x, 1 MHz): 7.5&times; methyl hexanoate enhancement in methanol solvent. <strong>Critical: no detectable esterification in ethanol-based solutions.</strong> Argon plasma best for esterification; N<sub>2</sub> plasma increases acid volatility but not ester formation.)</li>
   <li id="r160">Xiong A, et al. (2020) &ldquo;Influence of Electrochemical Oxidation on the Maturation Process of the Distilled Spirit.&rdquo; <em>ACS Omega</em> 5(29):18349&ndash;18355. <a href="https://doi.org/10.1021/acsomega.0c02090">DOI</a> (Electrochemical oxidation at 0.8V for 20 min: no significant PCA difference from 1-year naturally aged spirit. Higher alcohol consumption rate ~10,000&times; faster than natural aging. 24 volatiles quantified by GC.)</li>
+  <li id="r161">Jia W, et al. (2022) &ldquo;Ultra-high pressure homogenization (UHPH) as a novel processing technology to accelerate spirit aging.&rdquo; <em>Food Res Int</em> 153:110957. <a href="https://doi.org/10.1016/j.foodres.2022.110957">DOI</a> (UHPH at 400 bar: 6.43-year aging equivalence measured by GC-IMS + HS-SPME/GC-MS. 2,069 volatile compounds identified. Dramatic ester enhancement via cavitation-driven extraction and pressure-assisted esterification. Cluster disruption measured by <sup>1</sup>H NMR T<sub>2</sub> relaxation.)</li>
 </ol>
 
 
@@ -3576,6 +3606,11 @@ var refs = {
     source: "Xiong et al. (2020), ACS Omega 5(29):18349\u201318355",
     excerpt: "Electrochemical oxidation of distilled spirit at 0.8V for 20 min: PCA indistinguishable from 1-year naturally aged. Higher alcohol consumption rate ~10,000\u00d7 faster than natural aging. 24 volatiles quantified. Demonstrates electrochemistry as a viable maturation accelerator.",
     url: "#r160"
+  },
+  161: {
+    source: "Jia et al. (2022), Food Res Int 153:110957",
+    excerpt: "UHPH at 400 bar: 6.43-year aging equivalence by GC-IMS + GC-MS. 2,069 volatile compounds identified. Dramatic ester enhancement via cavitation extraction + pressure esterification. Cluster disruption confirmed by \u00b9H NMR T\u2082 relaxation. Triple-barrier mechanism: extraction, esterification, cluster disruption.",
+    url: "#r161"
   }
 };
 

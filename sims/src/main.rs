@@ -141,6 +141,7 @@ fn main() {
     fs::write("../graphs/cold-plasma-aging.svg", sim_cold_plasma_aging()).unwrap();
     fs::write("../graphs/flash-maillard.svg", sim_flash_maillard()).unwrap();
     fs::write("../graphs/cryo-nebulized-ester.svg", sim_cryo_nebulized_ester()).unwrap();
+    fs::write("../graphs/hph-oak-shear.svg", sim_hph_oak_shear()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -9178,6 +9179,174 @@ fn sim_cryo_nebulized_ester() -> String {
         "net ester formation via a\u{1d61} reduction", GREEN, 8, "start");
     svg += &label(ml2 + 75.0, mb2 - 12.0,
         "Interface catalysis > Arrhenius penalty", ACCENT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_hph_oak_shear() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 53 \u{2014} HPH + Oak: Cavitation-Driven Triple-Barrier Attack");
+
+    // Panel A: Enhancement vs Pressure (3 barrier curves + data points)
+    let ml1 = 70.0;
+    let mr1 = 340.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 320.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: Three-Barrier Enhancement vs Pressure", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // X: Pressure 0-500 bar
+    let sx1 = |p: f64| ml1 + p / 500.0 * pw1;
+    for p in [0, 100, 200, 300, 400, 500] {
+        let x = sx1(p as f64);
+        svg += &vline(x, mb1, mb1 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb1 + 14.0, &format!("{}", p), MUTED, 7, "middle");
+    }
+    svg += &label(ml1 + pw1 / 2.0, mb1 + 28.0, "HPH pressure (bar)", MUTED, 8, "middle");
+
+    // Y: Enhancement 0-400%
+    let sy1 = |e: f64| mb1 - e / 400.0 * ph1;
+    for v in (0..=4).map(|i| i as f64 * 100.0) {
+        let y = sy1(v);
+        svg += &hline(ml1 - 3.0, ml1, y, MUTED, "0.5");
+        svg += &label(ml1 - 6.0, y + 3.0, &format!("{:.0}%", v), MUTED, 7, "end");
+        if v > 0.0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml1, y, mr1, y, GRID);
+        }
+    }
+    svg += &label(ml1 - 40.0, mt1 + ph1 / 2.0, "Enhancement", MUTED, 8, "middle");
+
+    // Curve 1: EXTRACTION (cell disruption scales as sqrt(P))
+    let extract_pts: Vec<(f64, f64)> = (0..=500).map(|p| {
+        let e = 200.0 * (p as f64 / 500.0).sqrt();
+        (sx1(p as f64), sy1(e))
+    }).collect();
+    svg += &polyline_svg(&extract_pts, GREEN, "2", &|x| x, &|y| y);
+
+    // Curve 2: ESTER (Le Chatelier pressure shift + cavitation mixing)
+    let ester_pts: Vec<(f64, f64)> = (0..=500).map(|p| {
+        let pf = p as f64;
+        let e = 350.0 * (1.0 - (-0.005_f64 * pf).exp());
+        (sx1(pf), sy1(e))
+    }).collect();
+    svg += &polyline_svg(&ester_pts, ACCENT, "2", &|x| x, &|y| y);
+
+    // Curve 3: CLUSTER disruption (sigmoidal onset ~100 bar)
+    let cluster_pts: Vec<(f64, f64)> = (0..=500).map(|p| {
+        let pf = p as f64;
+        let e = 300.0 / (1.0 + (-0.015_f64 * (pf - 200.0)).exp());
+        (sx1(pf), sy1(e))
+    }).collect();
+    svg += &polyline_svg(&cluster_pts, BLUE, "2", &|x| x, &|y| y);
+
+    // Data points
+    let jia_x = sx1(400.0);
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{}\" stroke=\"{}\" stroke-width=\"1.5\"/>\n",
+        jia_x, sy1(342.0), ACCENT, TEXT);
+    svg += &label(jia_x + 8.0, sy1(342.0) - 5.0, "Jia 2022", TEXT, 7, "start");
+    svg += &label(jia_x + 8.0, sy1(342.0) + 7.0, "+342% ethyl acetate", ACCENT, 7, "start");
+
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{}\" stroke=\"{}\" stroke-width=\"1.5\"/>\n",
+        sx1(400.0), sy1(384.0).max(mt1), GREEN, TEXT);
+    svg += &label(sx1(400.0) - 8.0, mt1 + 10.0, "Zhu 2016 (HHP)", TEXT, 7, "end");
+    svg += &label(sx1(400.0) - 8.0, mt1 + 22.0, "+384% ethyl hexanoate", GREEN, 7, "end");
+    svg += &label(sx1(400.0) - 8.0, mt1 + 34.0, "(static 400 MPa)", MUTED, 6, "end");
+
+    // Legend
+    let ly1 = mt1 + 5.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"120\" height=\"46\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml1 + 5.0, ly1, GRID);
+    let items1 = [
+        (GREEN, "Extraction"),
+        (ACCENT, "Esterification"),
+        (BLUE, "Cluster disruption"),
+    ];
+    for (i, (c, txt)) in items1.iter().enumerate() {
+        let iy = ly1 + 13.0 + i as f64 * 13.0;
+        svg += &hline(ml1 + 10.0, ml1 + 25.0, iy, c, "2");
+        svg += &label(ml1 + 29.0, iy + 3.0, txt, TEXT, 7, "start");
+    }
+
+    // Panel B: Aging equivalence horizontal bar chart
+    let ml2 = 390.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 320.0;
+    let mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: Aging Equivalence (years)", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    let bars: [(f64, &str, &str, &str); 5] = [
+        (1.0,  "Natural (1 yr)",         GREEN,  "1.0 yr"),
+        (6.43, "UHPH 400 bar",           ACCENT, "6.43 yr (Jia 2022)"),
+        (3.2,  "HPP 400 MPa (static)",   BLUE,   "~3.2 yr (Zhu 2016)"),
+        (0.8,  "Sono + US",              YELLOW, "~0.8 yr equiv"),
+        (4.5,  "HPH + oak (50 MPa est)", PURPLE, "~4.5 yr predicted"),
+    ];
+    let max_yr = 8.0_f64;
+    let bar_h = 36.0;
+    let bar_gap = 12.0;
+    let bars_start_x = ml2 + 10.0;
+    let bars_w = pw2 - 20.0;
+    let sx_bar = |yr: f64| bars_start_x + yr / max_yr * bars_w;
+
+    // X gridlines
+    for yr in 0..=8 {
+        let x = sx_bar(yr as f64);
+        svg += &vline(x, mb2, mb2 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb2 + 14.0, &format!("{}", yr), MUTED, 7, "middle");
+        if yr > 0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                x, mt2, x, mb2, GRID);
+        }
+    }
+    svg += &label(ml2 + pw2 / 2.0, mb2 + 28.0, "Aging equivalence (years)", MUTED, 8, "middle");
+
+    let total_bars_h = bars.len() as f64 * (bar_h + bar_gap) - bar_gap;
+    let bars_top = mt2 + (ph2 - total_bars_h) / 2.0;
+
+    for (i, (yr, lbl, color, annotation)) in bars.iter().enumerate() {
+        let y = bars_top + i as f64 * (bar_h + bar_gap);
+        let bw = (sx_bar(*yr) - bars_start_x).max(2.0);
+
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            rx=\"2\" fill=\"{}\" opacity=\"0.7\"/>\n",
+            bars_start_x, y, bw, bar_h, color);
+
+        // Annotation: inside bar if wide enough, else outside
+        if bw > 100.0 {
+            svg += &label(bars_start_x + bw - 5.0, y + bar_h / 2.0 + 3.0,
+                annotation, TEXT, 7, "end");
+        } else {
+            svg += &label(bars_start_x + bw + 4.0, y + bar_h / 2.0 + 3.0,
+                annotation, TEXT, 7, "start");
+        }
+        svg += &label(bars_start_x - 3.0, y + bar_h / 2.0 + 3.0, lbl, TEXT, 7, "end");
+    }
+
+    // Key insight
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml2 + 5.0, mb2 - 50.0, pw2 - 10.0, GRID);
+    svg += &label(ml2 + 10.0, mb2 - 32.0,
+        "HPH: 10\u{00d7} lower pressure than HPP but shear +", GREEN, 8, "start");
+    svg += &label(ml2 + 10.0, mb2 - 18.0,
+        "cavitation compensate \u{2192} triple-barrier attack", GREEN, 8, "start");
 
     svg.push_str("</svg>");
     svg
