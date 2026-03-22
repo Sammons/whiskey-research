@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Ouzo Phase Engineering: Unified Clustering Framework</text>
+<text x="215" y="40" fill="#e6edf3" font-size="11" text-anchor="middle">A. Spirit Phase Diagram (2D Projection)</text>
+<line x1="70" y1="425" x2="360" y2="425" stroke="#8b949e" stroke-width="1"/>
+<line x1="70" y1="45" x2="70" y2="425" stroke="#8b949e" stroke-width="1"/>
+<line x1="99" y1="45" x2="99" y2="425" stroke="#30363d" stroke-width="0.5"/>
+<text x="99" y="438" fill="#8b949e" font-size="8" text-anchor="middle">20%</text>
+<line x1="157" y1="45" x2="157" y2="425" stroke="#30363d" stroke-width="0.5"/>
+<text x="157" y="438" fill="#8b949e" font-size="8" text-anchor="middle">30%</text>
+<line x1="215" y1="45" x2="215" y2="425" stroke="#30363d" stroke-width="0.5"/>
+<text x="215" y="438" fill="#8b949e" font-size="8" text-anchor="middle">40%</text>
+<line x1="273" y1="45" x2="273" y2="425" stroke="#30363d" stroke-width="0.5"/>
+<text x="273" y="438" fill="#8b949e" font-size="8" text-anchor="middle">50%</text>
+<line x1="331" y1="45" x2="331" y2="425" stroke="#30363d" stroke-width="0.5"/>
+<text x="331" y="438" fill="#8b949e" font-size="8" text-anchor="middle">60%</text>
+<line x1="70" y1="349" x2="360" y2="349" stroke="#30363d" stroke-width="0.5"/>
+<text x="66" y="352.5" fill="#8b949e" font-size="8" text-anchor="end">100</text>
+<line x1="70" y1="273" x2="360" y2="273" stroke="#30363d" stroke-width="0.5"/>
+<text x="66" y="276.5" fill="#8b949e" font-size="8" text-anchor="end">200</text>
+<line x1="70" y1="197" x2="360" y2="197" stroke="#30363d" stroke-width="0.5"/>
+<text x="66" y="200.5" fill="#8b949e" font-size="8" text-anchor="end">300</text>
+<line x1="70" y1="121" x2="360" y2="121" stroke="#30363d" stroke-width="0.5"/>
+<text x="66" y="124.5" fill="#8b949e" font-size="8" text-anchor="end">400</text>
+<text x="215" y="453" fill="#e6edf3" font-size="10" text-anchor="middle">Ethanol (% ABV)</text>
+<text x="20" y="235" fill="#e6edf3" font-size="10" text-anchor="middle" transform="rotate(-90,20,235)">Oak Extractives (mg/L)</text>
+<path d="M 70.0,372.3 L 70.0,372.3 L 72.9,370.8 L 75.8,369.3 L 78.7,367.7 L 81.6,366.0 L 84.5,364.3 L 87.4,362.5 L 90.3,360.6 L 93.2,358.6 L 96.1,356.6 L 99.0,354.6 L 101.9,352.4 L 104.8,350.2 L 107.7,347.9 L 110.6,345.6 L 113.5,343.2 L 116.4,340.7 L 119.3,338.2 L 122.2,335.6 L 125.1,333.0 L 128.0,330.3 L 130.9,327.5 L 133.8,324.8 L 136.7,321.9 L 139.6,319.1 L 142.5,316.2 L 145.4,313.3 L 148.3,310.4 L 151.2,307.4 L 154.1,304.5 L 157.0,301.5 L 159.9,298.5 L 162.8,295.6 L 165.7,292.6 L 168.6,289.7 L 171.5,286.8 L 174.4,283.9 L 177.3,281.1 L 180.2,278.2 L 183.1,275.5 L 186.0,272.7 L 188.9,270.0 L 191.8,267.4 L 194.7,264.8 L 197.6,262.3 L 200.5,259.8 L 203.4,257.4 L 206.3,255.1 L 209.2,252.8 L 212.1,250.6 L 215.0,248.4 L 217.9,246.4 L 220.8,244.4 L 223.7,242.4 L 226.6,240.5 L 229.5,238.7 L 232.4,237.0 L 235.3,235.3 L 238.2,233.7 L 241.1,232.2 L 244.0,230.7 L 246.9,229.3 L 249.8,228.0 L 252.7,226.7 L 255.6,225.4 L 258.5,224.3 L 261.4,223.1 L 264.3,222.1 L 267.2,221.0 L 270.1,220.1 L 273.0,219.1 L 275.9,218.3 L 278.8,217.4 L 281.7,216.6 L 284.6,215.9 L 287.5,215.1 L 290.4,214.5 L 293.3,213.8 L 296.2,213.2 L 299.1,212.6 L 302.0,212.1 L 304.9,211.6 L 307.8,211.1 L 310.7,210.6 L 313.6,210.1 L 316.5,209.7 L 319.4,209.3 L 322.3,209.0 L 325.2,208.6 L 328.1,208.3 L 331.0,208.0 L 333.9,207.7 L 336.8,207.4 L 339.7,207.1 L 342.6,206.9 L 345.5,206.6 L 348.4,206.4 L 351.3,206.2 L 354.2,206.0 L 357.1,205.8 L 360.0,205.6 L 360.0,87.5 L 357.1,87.8 L 354.2,88.1 L 351.3,88.4 L 348.4,88.7 L 345.5,89.0 L 342.6,89.4 L 339.7,89.8 L 336.8,90.2 L 333.9,90.6 L 331.0,91.1 L 328.1,91.6 L 325.2,92.1 L 322.3,92.6 L 319.4,93.2 L 316.5,93.8 L 313.6,94.5 L 310.7,95.1 L 307.8,95.9 L 304.9,96.6 L 302.0,97.4 L 299.1,98.3 L 296.2,99.2 L 293.3,100.1 L 290.4,101.1 L 287.5,102.1 L 284.6,103.2 L 281.7,104.4 L 278.8,105.6 L 275.9,106.9 L 273.0,108.3 L 270.1,109.7 L 267.2,111.2 L 264.3,112.8 L 261.4,114.4 L 258.5,116.2 L 255.6,118.0 L 252.7,119.9 L 249.8,121.9 L 246.9,123.9 L 244.0,126.1 L 241.1,128.4 L 238.2,130.8 L 235.3,133.2 L 232.4,135.8 L 229.5,138.5 L 226.6,141.2 L 223.7,144.1 L 220.8,147.1 L 217.9,150.2 L 215.0,153.4 L 212.1,156.7 L 209.2,160.1 L 206.3,163.6 L 203.4,167.2 L 200.5,170.9 L 197.6,174.7 L 194.7,178.6 L 191.8,182.5 L 188.9,186.6 L 186.0,190.7 L 183.1,194.9 L 180.2,199.2 L 177.3,203.5 L 174.4,207.9 L 171.5,212.4 L 168.6,216.8 L 165.7,221.4 L 162.8,225.9 L 159.9,230.4 L 157.0,235.0 L 154.1,239.6 L 151.2,244.1 L 148.3,248.6 L 145.4,253.2 L 142.5,257.6 L 139.6,262.1 L 136.7,266.5 L 133.8,270.8 L 130.9,275.1 L 128.0,279.3 L 125.1,283.4 L 122.2,287.5 L 119.3,291.4 L 116.4,295.3 L 113.5,299.1 L 110.6,302.8 L 107.7,306.4 L 104.8,309.9 L 101.9,313.3 L 99.0,316.6 L 96.1,319.8 L 93.2,322.9 L 90.3,325.9 L 87.4,328.8 L 84.5,331.5 L 81.6,334.2 L 78.7,336.8 L 75.8,339.2 L 72.9,341.6 L 70.0,343.9 Z" fill="#3fb950" opacity="0.15"/>
+<path d="M 70.0,343.9 L 70.0,343.9 L 72.9,341.6 L 75.8,339.2 L 78.7,336.8 L 81.6,334.2 L 84.5,331.5 L 87.4,328.8 L 90.3,325.9 L 93.2,322.9 L 96.1,319.8 L 99.0,316.6 L 101.9,313.3 L 104.8,309.9 L 107.7,306.4 L 110.6,302.8 L 113.5,299.1 L 116.4,295.3 L 119.3,291.4 L 122.2,287.5 L 125.1,283.4 L 128.0,279.3 L 130.9,275.1 L 133.8,270.8 L 136.7,266.5 L 139.6,262.1 L 142.5,257.6 L 145.4,253.2 L 148.3,248.6 L 151.2,244.1 L 154.1,239.6 L 157.0,235.0 L 159.9,230.4 L 162.8,225.9 L 165.7,221.4 L 168.6,216.8 L 171.5,212.4 L 174.4,207.9 L 177.3,203.5 L 180.2,199.2 L 183.1,194.9 L 186.0,190.7 L 188.9,186.6 L 191.8,182.5 L 194.7,178.6 L 197.6,174.7 L 200.5,170.9 L 203.4,167.2 L 206.3,163.6 L 209.2,160.1 L 212.1,156.7 L 215.0,153.4 L 217.9,150.2 L 220.8,147.1 L 223.7,144.1 L 226.6,141.2 L 229.5,138.5 L 232.4,135.8 L 235.3,133.2 L 238.2,130.8 L 241.1,128.4 L 244.0,126.1 L 246.9,123.9 L 249.8,121.9 L 252.7,119.9 L 255.6,118.0 L 258.5,116.2 L 261.4,114.4 L 264.3,112.8 L 267.2,111.2 L 270.1,109.7 L 273.0,108.3 L 275.9,106.9 L 278.8,105.6 L 281.7,104.4 L 284.6,103.2 L 287.5,102.1 L 290.4,101.1 L 293.3,100.1 L 296.2,99.2 L 299.1,98.3 L 302.0,97.4 L 304.9,96.6 L 307.8,95.9 L 310.7,95.1 L 313.6,94.5 L 316.5,93.8 L 319.4,93.2 L 322.3,92.6 L 325.2,92.1 L 328.1,91.6 L 331.0,91.1 L 333.9,90.6 L 336.8,90.2 L 339.7,89.8 L 342.6,89.4 L 345.5,89.0 L 348.4,88.7 L 351.3,88.4 L 354.2,88.1 L 357.1,87.8 L 360.0,87.5 L 360.0,45.0 L 70.0,45.0 Z" fill="#d29922" opacity="0.10"/>
+<polyline points="70.0,343.9 72.9,341.6 75.8,339.2 78.7,336.8 81.6,334.2 84.5,331.5 87.4,328.8 90.3,325.9 93.2,322.9 96.1,319.8 99.0,316.6 101.9,313.3 104.8,309.9 107.7,306.4 110.6,302.8 113.5,299.1 116.4,295.3 119.3,291.4 122.2,287.5 125.1,283.4 128.0,279.3 130.9,275.1 133.8,270.8 136.7,266.5 139.6,262.1 142.5,257.6 145.4,253.2 148.3,248.6 151.2,244.1 154.1,239.6 157.0,235.0 159.9,230.4 162.8,225.9 165.7,221.4 168.6,216.8 171.5,212.4 174.4,207.9 177.3,203.5 180.2,199.2 183.1,194.9 186.0,190.7 188.9,186.6 191.8,182.5 194.7,178.6 197.6,174.7 200.5,170.9 203.4,167.2 206.3,163.6 209.2,160.1 212.1,156.7 215.0,153.4 217.9,150.2 220.8,147.1 223.7,144.1 226.6,141.2 229.5,138.5 232.4,135.8 235.3,133.2 238.2,130.8 241.1,128.4 244.0,126.1 246.9,123.9 249.8,121.9 252.7,119.9 255.6,118.0 258.5,116.2 261.4,114.4 264.3,112.8 267.2,111.2 270.1,109.7 273.0,108.3 275.9,106.9 278.8,105.6 281.7,104.4 284.6,103.2 287.5,102.1 290.4,101.1 293.3,100.1 296.2,99.2 299.1,98.3 302.0,97.4 304.9,96.6 307.8,95.9 310.7,95.1 313.6,94.5 316.5,93.8 319.4,93.2 322.3,92.6 325.2,92.1 328.1,91.6 331.0,91.1 333.9,90.6 336.8,90.2 339.7,89.8 342.6,89.4 345.5,89.0 348.4,88.7 351.3,88.4 354.2,88.1 357.1,87.8 360.0,87.5" fill="none" stroke="#d29922" stroke-width="2"/>
+<polyline points="70.0,372.3 72.9,370.8 75.8,369.3 78.7,367.7 81.6,366.0 84.5,364.3 87.4,362.5 90.3,360.6 93.2,358.6 96.1,356.6 99.0,354.6 101.9,352.4 104.8,350.2 107.7,347.9 110.6,345.6 113.5,343.2 116.4,340.7 119.3,338.2 122.2,335.6 125.1,333.0 128.0,330.3 130.9,327.5 133.8,324.8 136.7,321.9 139.6,319.1 142.5,316.2 145.4,313.3 148.3,310.4 151.2,307.4 154.1,304.5 157.0,301.5 159.9,298.5 162.8,295.6 165.7,292.6 168.6,289.7 171.5,286.8 174.4,283.9 177.3,281.1 180.2,278.2 183.1,275.5 186.0,272.7 188.9,270.0 191.8,267.4 194.7,264.8 197.6,262.3 200.5,259.8 203.4,257.4 206.3,255.1 209.2,252.8 212.1,250.6 215.0,248.4 217.9,246.4 220.8,244.4 223.7,242.4 226.6,240.5 229.5,238.7 232.4,237.0 235.3,235.3 238.2,233.7 241.1,232.2 244.0,230.7 246.9,229.3 249.8,228.0 252.7,226.7 255.6,225.4 258.5,224.3 261.4,223.1 264.3,222.1 267.2,221.0 270.1,220.1 273.0,219.1 275.9,218.3 278.8,217.4 281.7,216.6 284.6,215.9 287.5,215.1 290.4,214.5 293.3,213.8 296.2,213.2 299.1,212.6 302.0,212.1 304.9,211.6 307.8,211.1 310.7,210.6 313.6,210.1 316.5,209.7 319.4,209.3 322.3,209.0 325.2,208.6 328.1,208.3 331.0,208.0 333.9,207.7 336.8,207.4 339.7,207.1 342.6,206.9 345.5,206.6 348.4,206.4 351.3,206.2 354.2,206.0 357.1,205.8 360.0,205.6" fill="none" stroke="#3fb950" stroke-width="1.5"/>
+<text x="273" y="349" fill="#8b949e" font-size="9" text-anchor="middle">Molecular</text>
+<text x="273" y="364.2" fill="#8b949e" font-size="8" text-anchor="middle">solution</text>
+<text x="226.60000000000002" y="212.2" fill="#3fb950" font-size="10" text-anchor="middle">Pre-Ouzo</text>
+<text x="226.60000000000002" y="231.2" fill="#3fb950" font-size="8" text-anchor="middle">(structured)</text>
+<text x="157" y="90.60000000000002" fill="#d29922" font-size="10" text-anchor="middle">Ouzo</text>
+<text x="157" y="109.60000000000002" fill="#d29922" font-size="8" text-anchor="middle">(metastable)</text>
+<polyline points="348.4,402.2 319.4,364.2 284.6,311.0 261.4,235.0 244.0,181.8 226.6,136.2" fill="none" stroke="#8b949e" stroke-width="2"/>
+<circle cx="348.4" cy="402.2" r="3" fill="#8b949e"/>
+<text x="348.4" y="416.2" fill="#8b949e" font-size="7" text-anchor="middle">New make</text>
+<polyline points="348.4,402.2 331.0,273.0 302.0,212.2 215.0,197.0 186.0,189.4 197.6,174.2" fill="none" stroke="#e8a665" stroke-width="2.5"/>
+<circle cx="197.6" cy="174.2" r="4" fill="#e8a665"/>
+<polyline points="215.0,235.0 145.4,235.0 215.0,219.8 145.4,219.8 215.0,204.6 145.4,204.6 197.6,189.4" fill="none" stroke="#58a6ff" stroke-width="2"/>
+<text x="310.79999999999995" y="242.6" fill="#e8a665" font-size="7" text-anchor="start">Rapid extraction</text>
+<text x="249.8" y="211" fill="#e8a665" font-size="7" text-anchor="middle">Dilution → Ouzo crossing</text>
+<text x="168.60000000000002" y="246.4" fill="#58a6ff" font-size="7" text-anchor="middle">Evaporative cycling</text>
+<line x1="75" y1="55" x2="92" y2="55" stroke="#8b949e" stroke-width="2"/>
+<text x="96" y="59" fill="#e6edf3" font-size="7" text-anchor="start">Barrel aging (15 yr)</text>
+<line x1="75" y1="67" x2="92" y2="67" stroke="#e8a665" stroke-width="2.5"/>
+<text x="96" y="71" fill="#e6edf3" font-size="7" text-anchor="start">Accelerated protocol</text>
+<line x1="75" y1="79" x2="92" y2="79" stroke="#58a6ff" stroke-width="2"/>
+<text x="96" y="83" fill="#e6edf3" font-size="7" text-anchor="start">Evaporative cycling</text>
+<text x="545" y="40" fill="#e6edf3" font-size="11" text-anchor="middle">B. Technique Phase-Space Mapping</text>
+<line x1="400" y1="425" x2="690" y2="425" stroke="#8b949e" stroke-width="1"/>
+<line x1="400" y1="45" x2="400" y2="425" stroke="#8b949e" stroke-width="1"/>
+<text x="436.25" y="435" fill="#8b949e" font-size="7" text-anchor="middle">Move left</text>
+<text x="436.25" y="445" fill="#8b949e" font-size="7" text-anchor="middle">(reduce ethanol)</text>
+<text x="508.75" y="435" fill="#8b949e" font-size="7" text-anchor="middle">Shift boundary</text>
+<text x="508.75" y="445" fill="#8b949e" font-size="7" text-anchor="middle">(salting out)</text>
+<text x="581.25" y="435" fill="#8b949e" font-size="7" text-anchor="middle">Apply force</text>
+<text x="581.25" y="445" fill="#8b949e" font-size="7" text-anchor="middle">(external field)</text>
+<text x="653.75" y="435" fill="#8b949e" font-size="7" text-anchor="middle">Microscale</text>
+<text x="653.75" y="445" fill="#8b949e" font-size="7" text-anchor="middle">(nucleation)</text>
+<rect x="405.0" y="198.7" width="62.5" height="112.7" fill="#58a6ff" opacity="0.2" rx="6" stroke="#58a6ff" stroke-width="1"/>
+<text x="436.25" y="251" fill="#58a6ff" font-size="8" text-anchor="middle">Proof dilution</text>
+<text x="436.25" y="264" fill="#8b949e" font-size="7" text-anchor="middle">§3.1</text>
+<rect x="405.0" y="325.3" width="62.5" height="112.7" fill="#58a6ff" opacity="0.2" rx="6" stroke="#58a6ff" stroke-width="1"/>
+<text x="436.25" y="377.6666666666667" fill="#58a6ff" font-size="8" text-anchor="middle">Evaporative SS</text>
+<text x="436.25" y="390.6666666666667" fill="#8b949e" font-size="7" text-anchor="middle">§4.28</text>
+<rect x="477.5" y="72.0" width="62.5" height="112.7" fill="#3fb950" opacity="0.2" rx="6" stroke="#3fb950" stroke-width="1"/>
+<text x="508.75" y="124.33333333333334" fill="#3fb950" font-size="8" text-anchor="middle">Ionic strength</text>
+<text x="508.75" y="137.33333333333334" fill="#8b949e" font-size="7" text-anchor="middle">§4.25</text>
+<rect x="477.5" y="198.7" width="62.5" height="112.7" fill="#3fb950" opacity="0.2" rx="6" stroke="#3fb950" stroke-width="1"/>
+<text x="508.75" y="251" fill="#3fb950" font-size="8" text-anchor="middle">Sono-tannin</text>
+<text x="508.75" y="264" fill="#8b949e" font-size="7" text-anchor="middle">§4.24</text>
+<rect x="550.0" y="72.0" width="62.5" height="112.7" fill="#e8a665" opacity="0.2" rx="6" stroke="#e8a665" stroke-width="1"/>
+<text x="581.25" y="124.33333333333334" fill="#e8a665" font-size="8" text-anchor="middle">DEP assembly</text>
+<text x="581.25" y="137.33333333333334" fill="#8b949e" font-size="7" text-anchor="middle">§4.22</text>
+<rect x="550.0" y="198.7" width="62.5" height="112.7" fill="#e8a665" opacity="0.2" rx="6" stroke="#e8a665" stroke-width="1"/>
+<text x="581.25" y="251" fill="#e8a665" font-size="8" text-anchor="middle">Flash nanoprecip</text>
+<text x="581.25" y="264" fill="#8b949e" font-size="7" text-anchor="middle">§3.2</text>
+<rect x="622.5" y="72.0" width="62.5" height="112.7" fill="#bc8cff" opacity="0.2" rx="6" stroke="#bc8cff" stroke-width="1"/>
+<text x="653.75" y="124.33333333333334" fill="#bc8cff" font-size="8" text-anchor="middle">Electrospray</text>
+<text x="653.75" y="137.33333333333334" fill="#8b949e" font-size="7" text-anchor="middle">§4.29</text>
+<rect x="622.5" y="198.7" width="62.5" height="112.7" fill="#bc8cff" opacity="0.2" rx="6" stroke="#bc8cff" stroke-width="1"/>
+<text x="653.75" y="251" fill="#bc8cff" font-size="8" text-anchor="middle">Seeded growth</text>
+<text x="653.75" y="264" fill="#8b949e" font-size="7" text-anchor="middle">§3.4</text>
+<text x="545" y="460" fill="#e6edf3" font-size="10" text-anchor="middle">Phase-Space Mechanism</text>
+<rect x="405.0" y="365.0" width="280.0" height="48" rx="4" fill="#30363d" opacity="0.8"/>
+<text x="410" y="381" fill="#e6edf3" font-size="9" text-anchor="start">All clustering techniques are movements in the</text>
+<text x="410" y="395" fill="#e8a665" font-size="9" text-anchor="start">same phase diagram. Combine orthogonal mechanisms</text>
+<text x="410" y="409" fill="#3fb950" font-size="9" text-anchor="start">for multiplicative (not additive) acceleration.</text>
+</svg>

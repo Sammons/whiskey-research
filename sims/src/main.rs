@@ -128,6 +128,7 @@ fn main() {
     fs::write("../graphs/plasma-activated-ethanol.svg", sim_plasma_activated_ethanol()).unwrap();
     fs::write("../graphs/evaporative-supersaturation.svg", sim_evaporative_supersaturation()).unwrap();
     fs::write("../graphs/electrospray-microdroplet.svg", sim_electrospray_microdroplet()).unwrap();
+    fs::write("../graphs/ouzo-phase-engineering.svg", sim_ouzo_phase_engineering()).unwrap();
     println!("Wrote tio2-photocatalysis.svg");
 }
 
@@ -6762,6 +6763,224 @@ fn sim_electrospray_microdroplet() -> String {
         "Synergy with \u{a7}4.21 + \u{a7}4.28", ACCENT, 9, "start");
     svg += &label(ml2 + pw - 235.0, mt + ph - 22.0,
         "Cost: $50\u{2013}150 (HV supply + needle)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 40: Ouzo Phase Diagram Engineering — Unified Clustering Framework
+// ═══════════════════════════════════════════════════════════════
+fn sim_ouzo_phase_engineering() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Ouzo Phase Engineering: Unified Clustering Framework");
+
+    let ml = 70.0; let mr = 20.0; let mt = 45.0; let mb = 55.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // ── Panel A: Pseudo-ternary phase diagram (ethanol % vs congener conc) ──
+    // Simplified 2D projection: x = ethanol %, y = congener concentration
+    svg += &label(ml + pw / 2.0, mt - 5.0,
+        "A. Spirit Phase Diagram (2D Projection)", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let eth_min = 15.0_f64;
+    let eth_max = 65.0_f64;
+    let cong_max = 500.0_f64; // mg/L
+    let sx_a = |e: f64| -> f64 { ml + (e - eth_min) / (eth_max - eth_min) * pw };
+    let sy_a = |c: f64| -> f64 { mt + ph - c / cong_max * ph };
+
+    // Grid
+    for eth in [20.0, 30.0, 40.0, 50.0, 60.0] {
+        svg += &vline(sx_a(eth), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(eth), mt + ph + 13.0, &format!("{:.0}%", eth), MUTED, 8, "middle");
+    }
+    for c in [100.0, 200.0, 300.0, 400.0] {
+        svg += &hline(ml, ml + pw, sy_a(c), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(c) + 3.5, &format!("{:.0}", c), MUTED, 8, "end");
+    }
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Ethanol (% ABV)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 50.0, mt + ph / 2.0, ml - 50.0, mt + ph / 2.0, "Oak Extractives (mg/L)");
+
+    // Phase regions:
+    // 1. Molecular solution (high ethanol, low congener) - clear, no structure
+    // 2. Pre-Ouzo (structured microemulsion, 1.8 nm correlation) - "sweet spot"
+    // 3. Ouzo (metastable emulsion, milky) - too much congener for ethanol
+    // 4. Phase-separated (two distinct liquid phases)
+
+    // Ouzo boundary curve (simplified): congener_max = f(ethanol)
+    // At high ethanol: can dissolve more congener
+    // At low ethanol: congener solubility drops sharply
+    // Pre-Ouzo zone: narrow band below the Ouzo boundary
+
+    // Draw phase regions as filled polygons
+    let mut ouzo_boundary: Vec<(f64, f64)> = Vec::new();
+    let mut pre_ouzo_lower: Vec<(f64, f64)> = Vec::new();
+
+    for i in 0..=100 {
+        let eth = eth_min + (eth_max - eth_min) * i as f64 / 100.0;
+        // Ouzo boundary: sigmoidal solubility curve
+        let ouzo_c = 50.0 + 400.0 / (1.0 + (-0.12 * (eth - 30.0)).exp());
+        // Pre-Ouzo lower: ~70% of Ouzo boundary
+        let pre_ouzo_c = ouzo_c * 0.65;
+
+        ouzo_boundary.push((eth, ouzo_c));
+        pre_ouzo_lower.push((eth, pre_ouzo_c));
+    }
+
+    // Shade pre-Ouzo zone (between lower and boundary)
+    let mut pre_ouzo_path = String::new();
+    pre_ouzo_path += &format!("M {:.1},{:.1} ", sx_a(pre_ouzo_lower[0].0), sy_a(pre_ouzo_lower[0].1));
+    for (eth, c) in &pre_ouzo_lower {
+        pre_ouzo_path += &format!("L {:.1},{:.1} ", sx_a(*eth), sy_a(*c));
+    }
+    for (eth, c) in ouzo_boundary.iter().rev() {
+        pre_ouzo_path += &format!("L {:.1},{:.1} ", sx_a(*eth), sy_a(*c));
+    }
+    pre_ouzo_path += "Z";
+    svg += &format!("<path d=\"{}\" fill=\"{GREEN}\" opacity=\"0.15\"/>\n", pre_ouzo_path);
+
+    // Shade Ouzo zone (above boundary, below phase separation)
+    let mut ouzo_path = String::new();
+    ouzo_path += &format!("M {:.1},{:.1} ", sx_a(ouzo_boundary[0].0), sy_a(ouzo_boundary[0].1));
+    for (eth, c) in &ouzo_boundary {
+        ouzo_path += &format!("L {:.1},{:.1} ", sx_a(*eth), sy_a(*c));
+    }
+    ouzo_path += &format!("L {:.1},{:.1} L {:.1},{:.1} Z",
+        sx_a(eth_max), sy_a(cong_max), sx_a(eth_min), sy_a(cong_max));
+    svg += &format!("<path d=\"{}\" fill=\"{YELLOW}\" opacity=\"0.10\"/>\n", ouzo_path);
+
+    // Draw boundary curves
+    svg += &polyline_svg(&ouzo_boundary, YELLOW, "2", &sx_a, &sy_a);
+    svg += &polyline_svg(&pre_ouzo_lower, GREEN, "1.5", &sx_a, &sy_a);
+
+    // Label regions
+    svg += &label(sx_a(50.0), sy_a(100.0), "Molecular", MUTED, 9, "middle");
+    svg += &label(sx_a(50.0), sy_a(80.0), "solution", MUTED, 8, "middle");
+    svg += &label(sx_a(42.0), sy_a(280.0), "Pre-Ouzo", GREEN, 10, "middle");
+    svg += &label(sx_a(42.0), sy_a(255.0), "(structured)", GREEN, 8, "middle");
+    svg += &label(sx_a(30.0), sy_a(440.0), "Ouzo", YELLOW, 10, "middle");
+    svg += &label(sx_a(30.0), sy_a(415.0), "(metastable)", YELLOW, 8, "middle");
+
+    // Protocol paths through phase diagram:
+    // Path 1: Traditional barrel aging (slow drift right→up over years)
+    let barrel_path = vec![
+        (63.0, 30.0),   // New make, 63% ABV, low extractives
+        (58.0, 80.0),   // Year 1
+        (52.0, 150.0),  // Year 3
+        (48.0, 250.0),  // Year 6
+        (45.0, 320.0),  // Year 10
+        (42.0, 380.0),  // Year 15
+    ];
+    svg += &polyline_svg(&barrel_path, MUTED, "2", &sx_a, &sy_a);
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"3\" fill=\"{MUTED}\"/>\n",
+        sx_a(63.0), sy_a(30.0));
+    svg += &label(sx_a(63.0), sy_a(30.0) + 14.0, "New make", MUTED, 7, "middle");
+
+    // Path 2: Accelerated protocol (rapid extraction, then controlled dilution)
+    let accel_path = vec![
+        (63.0, 30.0),   // Start
+        (60.0, 200.0),  // Rapid extraction (sono + oak, 2 wk)
+        (55.0, 280.0),  // Continue extraction (enzyme)
+        (40.0, 300.0),  // Dilute to 40% (Ouzo crossing!)
+        (35.0, 310.0),  // Further dilute into pre-Ouzo zone
+        (37.0, 330.0),  // Settle at 37% ABV optimal
+    ];
+    svg += &polyline_svg(&accel_path, ACCENT, "2.5", &sx_a, &sy_a);
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{ACCENT}\"/>\n",
+        sx_a(37.0), sy_a(330.0));
+
+    // Path 3: Evaporative cycling (zig-zag through the boundary)
+    let evap_path = vec![
+        (40.0, 250.0),  // Start at 40%
+        (28.0, 250.0),  // Surface ethanol drops (§4.28)
+        (40.0, 270.0),  // Re-mix (nuclei distributed)
+        (28.0, 270.0),  // Surface drops again
+        (40.0, 290.0),  // Re-mix (more nuclei)
+        (28.0, 290.0),  // Final surface drop
+        (37.0, 310.0),  // Settle at 37%
+    ];
+    svg += &polyline_svg(&evap_path, BLUE, "2", &sx_a, &sy_a);
+
+    // Arrow annotations
+    svg += &label(sx_a(56.0) + 3.0, sy_a(240.0),
+        "Rapid extraction", ACCENT, 7, "start");
+    svg += &label(sx_a(46.0), sy_a(300.0) + 14.0,
+        "Dilution \u{2192} Ouzo crossing", ACCENT, 7, "middle");
+    svg += &label(sx_a(32.0), sy_a(235.0),
+        "Evaporative cycling", BLUE, 7, "middle");
+
+    // Legend
+    svg += &hline(ml + 5.0, ml + 22.0, mt + 10.0, MUTED, "2");
+    svg += &label(ml + 26.0, mt + 14.0, "Barrel aging (15 yr)", TEXT, 7, "start");
+    svg += &hline(ml + 5.0, ml + 22.0, mt + 22.0, ACCENT, "2.5");
+    svg += &label(ml + 26.0, mt + 26.0, "Accelerated protocol", TEXT, 7, "start");
+    svg += &hline(ml + 5.0, ml + 22.0, mt + 34.0, BLUE, "2");
+    svg += &label(ml + 26.0, mt + 38.0, "Evaporative cycling", TEXT, 7, "start");
+
+    // ── Panel B: Technique map — how each technique navigates the phase diagram ──
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0,
+        "B. Technique Phase-Space Mapping", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    // Technique categories with their phase-space actions
+    let techniques: [(&str, &str, &str, f64, f64); 8] = [
+        ("Proof dilution", "\u{a7}3.1", BLUE, 0.0, 1.0),       // moves left (↓ ethanol)
+        ("Evaporative SS", "\u{a7}4.28", BLUE, 0.0, 2.0),      // moves left locally
+        ("Ionic strength", "\u{a7}4.25", GREEN, 1.0, 0.0),      // shifts boundary right
+        ("Sono-tannin", "\u{a7}4.24", GREEN, 1.0, 1.0),         // shifts boundary + moves up
+        ("DEP assembly", "\u{a7}4.22", ACCENT, 2.0, 0.0),       // direct clustering force
+        ("Flash nanoprecip", "\u{a7}3.2", ACCENT, 2.0, 1.0),    // rapid crossing
+        ("Electrospray", "\u{a7}4.29", PURPLE, 3.0, 0.0),       // microscale crossing
+        ("Seeded growth", "\u{a7}3.4", PURPLE, 3.0, 1.0),       // nucleation bypass
+    ];
+
+    // Two axes: "Mechanism" (x) and technique ordering (y)
+    let cat_labels = ["Move left\n(reduce ethanol)", "Shift boundary\n(salting out)", "Apply force\n(external field)", "Microscale\n(nucleation)"];
+    let n_cols = 4.0;
+    let n_rows = 2.0;
+    let cell_w = pw / n_cols;
+    let cell_h = ph / (n_rows + 1.0);
+
+    for (i, cat) in cat_labels.iter().enumerate() {
+        let cx = ml2 + cell_w * (i as f64 + 0.5);
+        let lines: Vec<&str> = cat.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(cx, mt + ph + 10.0 + li as f64 * 10.0, line, MUTED, 7, "middle");
+        }
+    }
+
+    for (name, section, color, col, row) in &techniques {
+        let cx = ml2 + cell_w * (*col + 0.5);
+        let cy = mt + cell_h * (*row + 0.5) + 20.0;
+        let bw = cell_w - 10.0;
+        let bh = cell_h - 14.0;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{color}\" opacity=\"0.2\" rx=\"6\" stroke=\"{color}\" stroke-width=\"1\"/>\n",
+            cx - bw / 2.0, cy - bh / 2.0, bw, bh);
+        svg += &label(cx, cy - 4.0, name, color, 8, "middle");
+        svg += &label(cx, cy + 9.0, section, MUTED, 7, "middle");
+    }
+
+    // Title for the mechanism axis
+    svg += &label(ml2 + pw / 2.0, mt + ph + 35.0,
+        "Phase-Space Mechanism", TEXT, 10, "middle");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt + ph - 60.0, pw - 10.0, GRID);
+    svg += &label(ml2 + 10.0, mt + ph - 44.0,
+        "All clustering techniques are movements in the", TEXT, 9, "start");
+    svg += &label(ml2 + 10.0, mt + ph - 30.0,
+        "same phase diagram. Combine orthogonal mechanisms", ACCENT, 9, "start");
+    svg += &label(ml2 + 10.0, mt + ph - 16.0,
+        "for multiplicative (not additive) acceleration.", GREEN, 9, "start");
 
     svg.push_str("</svg>");
     svg
