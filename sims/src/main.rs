@@ -75,6 +75,9 @@ fn main() {
 
     fs::write("../graphs/mol-sieve-ester-shift.svg", sim_mol_sieve_ester_shift()).unwrap();
     println!("Wrote mol-sieve-ester-shift.svg");
+
+    fs::write("../graphs/sono-electro-fenton.svg", sim_sono_electro_fenton()).unwrap();
+    println!("Wrote sono-electro-fenton.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -3021,6 +3024,236 @@ fn sim_mol_sieve_ester_shift() -> String {
     svg += &label(lx, mt + 318.0, "H\u{2082}O: 2.6 \u{00c5} (admitted)", TEXT, 9, "start");
     svg += &label(lx, mt + 331.0, "EtOH: 4.4 \u{00c5} (excluded)", TEXT, 9, "start");
     svg += &label(lx, mt + 344.0, "Capacity: 18\u{2013}22 wt%", TEXT, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_sono_electro_fenton() -> String {
+    // Sono-electro-Fenton: ultrasound + electro-Fenton synergy
+    // Ultrasound enhances O2 mass transfer to cathode -> 3x H2O2 yield
+    // Plus: sonolysis generates ~1-10 uM H2O2/min independently
+    // Plus: acoustic streaming enhances Fenton reaction mixing
+    let w = 800.0_f64;
+    let h = 560.0;
+    let mut svg = svg_header(w, h,
+        "Sono-Electro-Fenton: Synergistic Oxidation Control");
+
+    let f_const = 96485.0_f64;
+    let vol_l = 1.0;
+    let k_fenton = 76.0_f64;
+    let k_fe_regen = 1e-3_f64;
+    let fe_init = 10e-6_f64;
+    let dt = 1.0_f64;
+    let t_max = 4.0 * 3600.0; // 4 hours (shorter, higher intensity)
+    let n_steps = (t_max / dt) as usize;
+    let sample_every = n_steps / 200;
+
+    // Sonolysis H2O2 contribution: ~5 uM/min = 8.3e-8 M/s at 40 W/L, 20 kHz
+    let sono_h2o2_rate = 8.3e-8_f64; // mol/L/s
+
+    struct Scenario {
+        label: &'static str,
+        current_ma: f64,
+        sono_active: bool,
+        sono_o2_boost: f64,    // multiplier on effective O2 supply
+    }
+    let scenarios = [
+        Scenario { label: "Electro-Fenton only (10 mA)", current_ma: 10.0, sono_active: false, sono_o2_boost: 1.0 },
+        Scenario { label: "Sonolysis only (40 W/L)", current_ma: 0.0, sono_active: true, sono_o2_boost: 1.0 },
+        Scenario { label: "Sono-electro-Fenton", current_ma: 10.0, sono_active: true, sono_o2_boost: 3.0 },
+        Scenario { label: "Sono-EF + PDMS O\u{2082}", current_ma: 10.0, sono_active: true, sono_o2_boost: 3.0 },
+    ];
+    let colors = [CYAN, YELLOW, ACCENT, GREEN];
+
+    let mt = 65.0;
+    let pw = 420.0;
+    let ph = 370.0;
+    let pl = 90.0;
+    let lx = 530.0;
+
+    let o2_sat = 0.25e-3_f64;
+    let kla_pdms = 5e-6_f64;
+    let faradaic_eff_base = 0.50_f64; // standard carbon felt
+
+    let mut all_ach: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut all_vanillin: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut final_ach: Vec<f64> = Vec::new();
+
+    for (si, sc) in scenarios.iter().enumerate() {
+        let current_a = sc.current_ma * 1e-3;
+        // Sono boost: 3x H2O2 Faradaic efficiency (Gonzalez-Garcia 2007)
+        let faradaic_eff = (faradaic_eff_base * sc.sono_o2_boost).min(0.95);
+        let r_h2o2_electro = current_a * faradaic_eff / (2.0 * f_const * vol_l);
+
+        let mut o2 = o2_sat;
+        let mut h2o2: f64 = 0.0;
+        let mut fe2 = fe_init;
+        let mut fe3: f64 = 0.0;
+        let mut ach: f64 = 0.0;
+        let mut vanillin: f64 = 0.0001; // 0.1 mM initial
+        let mut ach_pts: Vec<(f64, f64)> = Vec::new();
+        let mut van_pts: Vec<(f64, f64)> = Vec::new();
+
+        // Sono extraction rate: 3-8x passive extraction
+        // Model as first-order approach to vanillin equilibrium
+        let van_eq = 0.001; // 1 mM equilibrium from oak
+        let k_extract_base = 1e-6_f64; // passive extraction rate
+        let k_extract = if sc.sono_active { k_extract_base * 5.0 } else { k_extract_base };
+
+        let has_pdms = si == 3; // last scenario
+
+        for step in 0..n_steps {
+            // O2 dynamics
+            if has_pdms {
+                o2 += kla_pdms * (o2_sat - o2) * dt;
+            }
+            // Sono enhances O2 by acoustic streaming (already in boost factor)
+
+            let o2_factor = (o2 / (o2 + 1e-5)).min(1.0);
+
+            // H2O2 generation: electro + sonolysis
+            let r_h2o2_total = r_h2o2_electro * o2_factor
+                + if sc.sono_active { sono_h2o2_rate } else { 0.0 };
+
+            let o2_consumption = current_a / (4.0 * f_const * vol_l) * o2_factor;
+            o2 -= o2_consumption * dt;
+            if o2 < 0.0 { o2 = 0.0; }
+
+            let r_fenton = k_fenton * fe2 * h2o2;
+            let r_regen = k_fe_regen * fe3;
+
+            h2o2 += (r_h2o2_total - r_fenton) * dt;
+            if h2o2 < 0.0 { h2o2 = 0.0; }
+            fe2 += (-r_fenton + r_regen) * dt;
+            if fe2 < 0.0 { fe2 = 0.0; }
+            fe3 += (r_fenton - r_regen) * dt;
+            if fe3 < 0.0 { fe3 = 0.0; }
+            ach += r_fenton * dt;
+
+            // Vanillin extraction from oak
+            vanillin += k_extract * (van_eq - vanillin) * dt;
+
+            if step % sample_every == 0 {
+                let t_h = (step as f64 * dt) / 3600.0;
+                ach_pts.push((t_h, ach * 44.05 * 1000.0));
+                van_pts.push((t_h, vanillin * 152.15 * 1000.0)); // mg/L
+            }
+        }
+        final_ach.push(ach * 44.05 * 1000.0);
+        all_ach.push(ach_pts);
+        all_vanillin.push(van_pts);
+    }
+
+    // --- Top panel: Acetaldehyde ---
+    let panel_h = 150.0;
+    let max_ach = all_ach.iter()
+        .flat_map(|d| d.iter().map(|p| p.1))
+        .fold(0.0_f64, |a, b| a.max(b));
+    let y_max_ach = (max_ach * 1.15).max(1.0);
+
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"10\" text-anchor=\"end\">AcH (mg/L)</text>",
+        pl - 5.0, mt - 5.0, TEXT);
+
+    for i in 0..=4 {
+        let frac = i as f64 / 4.0;
+        let y = mt + panel_h * (1.0 - frac);
+        let val = y_max_ach * frac;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-width=\"0.5\"/>",
+            pl, y, pl + pw, y, GRID);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"8\" text-anchor=\"end\">{:.0}</text>",
+            pl - 5.0, y + 3.0, MUTED, val);
+    }
+
+    // 1-year barrel reference
+    let barrel_ref = 15.0_f64;
+    if barrel_ref < y_max_ach {
+        let y_ref = mt + panel_h * (1.0 - barrel_ref / y_max_ach);
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-dasharray=\"3,2\" stroke-width=\"0.8\"/>",
+            pl, y_ref, pl + pw, y_ref, MUTED);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"7\">1-yr barrel</text>",
+            pl + 3.0, y_ref - 3.0, MUTED);
+    }
+
+    for (i, pts) in all_ach.iter().enumerate() {
+        let path: String = pts.iter().enumerate().map(|(j, &(t, v))| {
+            let x = pl + pw * (t / 4.0);
+            let y = mt + panel_h * (1.0 - v / y_max_ach);
+            if j == 0 { format!("M{:.1},{:.1}", x, y) }
+            else { format!("L{:.1},{:.1}", x, y) }
+        }).collect();
+        svg += &format!("<path d=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"1.5\"/>",
+            path, colors[i]);
+    }
+
+    // --- Bottom panel: Vanillin extraction ---
+    let panel2_top = mt + panel_h + 60.0;
+    let max_van = all_vanillin.iter()
+        .flat_map(|d| d.iter().map(|p| p.1))
+        .fold(0.0_f64, |a, b| a.max(b));
+    let y_max_van = (max_van * 1.15).max(1.0);
+
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"10\" text-anchor=\"end\">Vanillin (mg/L)</text>",
+        pl - 5.0, panel2_top - 5.0, TEXT);
+
+    for i in 0..=4 {
+        let frac = i as f64 / 4.0;
+        let y = panel2_top + panel_h * (1.0 - frac);
+        let val = y_max_van * frac;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-width=\"0.5\"/>",
+            pl, y, pl + pw, y, GRID);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"8\" text-anchor=\"end\">{:.0}</text>",
+            pl - 5.0, y + 3.0, MUTED, val);
+    }
+
+    for (i, pts) in all_vanillin.iter().enumerate() {
+        let path: String = pts.iter().enumerate().map(|(j, &(t, v))| {
+            let x = pl + pw * (t / 4.0);
+            let y = panel2_top + panel_h * (1.0 - v / y_max_van);
+            if j == 0 { format!("M{:.1},{:.1}", x, y) }
+            else { format!("L{:.1},{:.1}", x, y) }
+        }).collect();
+        svg += &format!("<path d=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"1.5\"/>",
+            path, colors[i]);
+    }
+
+    // X axis (shared)
+    let x_axis_y = panel2_top + panel_h + 15.0;
+    for h_val in [0.0_f64, 1.0, 2.0, 3.0, 4.0] {
+        let x = pl + pw * (h_val / 4.0);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"9\" text-anchor=\"middle\">{}h</text>",
+            x, x_axis_y, MUTED, h_val as i32);
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"10\" text-anchor=\"middle\">Time</text>",
+        pl + pw / 2.0, x_axis_y + 15.0, MUTED);
+
+    // Legend
+    svg += &label(lx, mt + 10.0, "Sono-Electro-Fenton", ACCENT, 11, "start");
+    svg += &label(lx, mt + 28.0, "Dual-panel: oxidation", TEXT, 9, "start");
+    svg += &label(lx, mt + 41.0, "+ extraction synergy", TEXT, 9, "start");
+
+    for (i, sc) in scenarios.iter().enumerate() {
+        let y = mt + 65.0 + i as f64 * 28.0;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"14\" height=\"3\" fill=\"{}\"/>",
+            lx, y - 2.0, colors[i]);
+        svg += &label(lx + 18.0, y, sc.label, colors[i], 8, "start");
+        svg += &label(lx + 18.0, y + 13.0,
+            &format!("{:.1} mg/L AcH at 4h", final_ach[i]),
+            MUTED, 7, "start");
+    }
+
+    svg += &label(lx, mt + 195.0, "Synergy sources:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 212.0, "1. 3\u{00d7} H\u{2082}O\u{2082} yield", TEXT, 8, "start");
+    svg += &label(lx, mt + 225.0, "   (O\u{2082} mass transfer)", MUTED, 7, "start");
+    svg += &label(lx, mt + 240.0, "2. Sonolytic H\u{2082}O\u{2082}", TEXT, 8, "start");
+    svg += &label(lx, mt + 253.0, "   (~5 \u{00b5}M/min free)", MUTED, 7, "start");
+    svg += &label(lx, mt + 268.0, "3. 5\u{00d7} oak extraction", TEXT, 8, "start");
+    svg += &label(lx, mt + 281.0, "   (cavitation + streaming)", MUTED, 7, "start");
+    svg += &label(lx, mt + 296.0, "4. Electrode regeneration", TEXT, 8, "start");
+    svg += &label(lx, mt + 309.0, "   (prevents passivation)", MUTED, 7, "start");
+
+    svg += &label(lx, mt + 340.0, "Gonzalez-Garcia 2007:", CYAN, 9, "start");
+    svg += &label(lx, mt + 355.0, "US + EF = 3\u{00d7} silent EF", TEXT, 8, "start");
 
     svg.push_str("</svg>");
     svg
