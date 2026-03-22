@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 115 — Falling-Film Reactor: Continuous Evaporative Esterification</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Surface Water Activity vs Film Thickness</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="389" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="122" y1="375" x2="122" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="122" y="389" fill="#8b949e" font-size="7" text-anchor="middle">1</text>
+<line x1="174" y1="375" x2="174" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="174" y="389" fill="#8b949e" font-size="7" text-anchor="middle">2</text>
+<line x1="226" y1="375" x2="226" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="226" y="389" fill="#8b949e" font-size="7" text-anchor="middle">3</text>
+<line x1="278" y1="375" x2="278" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="278" y="389" fill="#8b949e" font-size="7" text-anchor="middle">4</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="389" fill="#8b949e" font-size="7" text-anchor="middle">5</text>
+<text x="200" y="403" fill="#8b949e" font-size="8" text-anchor="middle">Film thickness (mm)</text>
+<line x1="67" y1="375" x2="70" y2="375" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0.0</text>
+<line x1="67" y1="313" x2="70" y2="313" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">0.2</text>
+<line x1="67" y1="251" x2="70" y2="251" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">0.4</text>
+<line x1="67" y1="188.99999999999997" x2="70" y2="188.99999999999997" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="191.99999999999997" fill="#8b949e" font-size="7" text-anchor="end">0.6</text>
+<line x1="67" y1="127" x2="70" y2="127" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">0.8</text>
+<line x1="67" y1="65" x2="70" y2="65" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">1.0</text>
+<text x="42" y="220" fill="#8b949e" font-size="7" text-anchor="middle" transform="rotate(-90,42,220)">Surface water activity (aᵂ)</text>
+<polyline points="72.6,104.2 75.2,103.1 77.8,102.1 80.4,101.2 83.0,100.3 85.6,99.5 88.2,98.7 90.8,98.0 93.4,97.3 96.0,96.7 98.6,96.1 101.2,95.5 103.8,95.0 106.4,94.5 109.0,94.0 111.6,93.5 114.2,93.1 116.8,92.7 119.4,92.4 122.0,92.0 124.6,91.7 127.2,91.4 129.8,91.1 132.4,90.9 135.0,90.6 137.6,90.4 140.2,90.1 142.8,89.9 145.4,89.7 148.0,89.6 150.6,89.4 153.2,89.2 155.8,89.1 158.4,88.9 161.0,88.8 163.6,88.7 166.2,88.5 168.8,88.4 171.4,88.3 174.0,88.2 176.6,88.1 179.2,88.0 181.8,88.0 184.4,87.9 187.0,87.8 189.6,87.7 192.2,87.7 194.8,87.6 197.4,87.6 200.0,87.5 202.6,87.5 205.2,87.4 207.8,87.4 210.4,87.3 213.0,87.3 215.6,87.3 218.2,87.2 220.8,87.2 223.4,87.2 226.0,87.1 228.6,87.1 231.2,87.1 233.8,87.1 236.4,87.0 239.0,87.0 241.6,87.0 244.2,87.0 246.8,87.0 249.4,86.9 252.0,86.9 254.6,86.9 257.2,86.9 259.8,86.9 262.4,86.9 265.0,86.9 267.6,86.9 270.2,86.9 272.8,86.8 275.4,86.8 278.0,86.8 280.6,86.8 283.2,86.8 285.8,86.8 288.4,86.8 291.0,86.8 293.6,86.8 296.2,86.8 298.8,86.8 301.4,86.8 304.0,86.8 306.6,86.8 309.2,86.8 311.8,86.8 314.4,86.8 317.0,86.7 319.6,86.7 322.2,86.7 324.8,86.7 327.4,86.7 330.0,86.7" fill="none" stroke="#58a6ff" stroke-width="2.5"/>
+<text x="80" y="90" fill="#58a6ff" font-size="7" text-anchor="start">Gentle (30°C, still air)</text>
+<polyline points="72.6,174.1 75.2,168.8 77.8,163.8 80.4,159.1 83.0,154.7 85.6,150.6 88.2,146.7 90.8,143.1 93.4,139.7 96.0,136.5 98.6,133.5 101.2,130.6 103.8,128.0 106.4,125.5 109.0,123.1 111.6,120.9 114.2,118.8 116.8,116.9 119.4,115.1 122.0,113.3 124.6,111.7 127.2,110.2 129.8,108.8 132.4,107.5 135.0,106.2 137.6,105.0 140.2,103.9 142.8,102.9 145.4,101.9 148.0,101.0 150.6,100.1 153.2,99.3 155.8,98.5 158.4,97.8 161.0,97.1 163.6,96.5 166.2,95.9 168.8,95.4 171.4,94.8 174.0,94.3 176.6,93.9 179.2,93.4 181.8,93.0 184.4,92.6 187.0,92.3 189.6,91.9 192.2,91.6 194.8,91.3 197.4,91.0 200.0,90.8 202.6,90.5 205.2,90.3 207.8,90.1 210.4,89.9 213.0,89.7 215.6,89.5 218.2,89.3 220.8,89.2 223.4,89.0 226.0,88.9 228.6,88.8 231.2,88.6 233.8,88.5 236.4,88.4 239.0,88.3 241.6,88.2 244.2,88.1 246.8,88.0 249.4,87.9 252.0,87.9 254.6,87.8 257.2,87.7 259.8,87.7 262.4,87.6 265.0,87.6 267.6,87.5 270.2,87.5 272.8,87.4 275.4,87.4 278.0,87.3 280.6,87.3 283.2,87.3 285.8,87.2 288.4,87.2 291.0,87.2 293.6,87.1 296.2,87.1 298.8,87.1 301.4,87.1 304.0,87.0 306.6,87.0 309.2,87.0 311.8,87.0 314.4,87.0 317.0,86.9 319.6,86.9 322.2,86.9 324.8,86.9 327.4,86.9 330.0,86.9" fill="none" stroke="#e8a665" stroke-width="2.5"/>
+<text x="80" y="104" fill="#e8a665" font-size="7" text-anchor="start">Moderate (40°C, fan)</text>
+<polyline points="72.6,348.8 75.2,332.9 77.8,318.0 80.4,304.0 83.0,290.8 85.6,278.5 88.2,266.8 90.8,255.9 93.4,245.7 96.0,236.0 98.6,227.0 101.2,218.5 103.8,210.5 106.4,203.0 109.0,196.0 111.6,189.3 114.2,183.1 116.8,177.3 119.4,171.8 122.0,166.6 124.6,161.8 127.2,157.2 129.8,153.0 132.4,149.0 135.0,145.2 137.6,141.6 140.2,138.3 142.8,135.2 145.4,132.2 148.0,129.5 150.6,126.9 153.2,124.5 155.8,122.2 158.4,120.0 161.0,118.0 163.6,116.1 166.2,114.3 168.8,112.7 171.4,111.1 174.0,109.6 176.6,108.2 179.2,106.9 181.8,105.7 184.4,104.5 187.0,103.5 189.6,102.4 192.2,101.5 194.8,100.6 197.4,99.7 200.0,99.0 202.6,98.2 205.2,97.5 207.8,96.9 210.4,96.2 213.0,95.7 215.6,95.1 218.2,94.6 220.8,94.1 223.4,93.7 226.0,93.3 228.6,92.9 231.2,92.5 233.8,92.1 236.4,91.8 239.0,91.5 241.6,91.2 244.2,90.9 246.8,90.7 249.4,90.4 252.0,90.2 254.6,90.0 257.2,89.8 259.8,89.6 262.4,89.4 265.0,89.3 267.6,89.1 270.2,89.0 272.8,88.8 275.4,88.7 278.0,88.6 280.6,88.5 283.2,88.4 285.8,88.3 288.4,88.2 291.0,88.1 293.6,88.0 296.2,87.9 298.8,87.8 301.4,87.8 304.0,87.7 306.6,87.6 309.2,87.6 311.8,87.5 314.4,87.5 317.0,87.4 319.6,87.4 322.2,87.3 324.8,87.3 327.4,87.3 330.0,87.2" fill="none" stroke="#3fb950" stroke-width="2.5"/>
+<text x="80" y="118" fill="#3fb950" font-size="7" text-anchor="start">Aggressive (50°C, vacuum)</text>
+<line x1="70" y1="189" x2="330" y2="189" stroke="#d29922" stroke-width="1.5"/>
+<text x="325" y="184" fill="#d29922" font-size="7" text-anchor="end">Lipase synthesis (aᵂ = 0.6)</text>
+<rect x="75.2" y="65" width="46.8" height="310" fill="#3fb950" opacity="0.10"/>
+<text x="98.60000000000001" y="365" fill="#3fb950" font-size="7" text-anchor="middle">Optimal film</text>
+<text x="540" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Falling-Film Reactor Schematic</text>
+<rect x="400" y="65" width="270.0" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<rect x="460" y="90" width="20" height="250" fill="#e8a665" opacity="0.6"/>
+<text x="450" y="85" fill="#e8a665" font-size="7" text-anchor="middle">Charred oak</text>
+<text x="450" y="355" fill="#e8a665" font-size="7" text-anchor="middle">surface (40°C)</text>
+<rect x="480" y="90" width="5" height="250" fill="#58a6ff" opacity="0.4"/>
+<text x="500" y="170" fill="#58a6ff" font-size="7" text-anchor="start">Thin</text>
+<text x="500" y="182" fill="#58a6ff" font-size="7" text-anchor="start">film</text>
+<text x="500" y="194" fill="#58a6ff" font-size="6" text-anchor="start">(0.3 mm)</text>
+<line x1="485" y1="100" x2="485" y2="330" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="487" y1="120" x2="510" y2="120" stroke="#f85149" stroke-width="0.8" stroke-dasharray="2,2" marker-end="url(#arr)"/>
+<line x1="487" y1="160" x2="510" y2="160" stroke="#f85149" stroke-width="0.8" stroke-dasharray="2,2" marker-end="url(#arr)"/>
+<line x1="487" y1="200" x2="510" y2="200" stroke="#f85149" stroke-width="0.8" stroke-dasharray="2,2" marker-end="url(#arr)"/>
+<line x1="487" y1="240" x2="510" y2="240" stroke="#f85149" stroke-width="0.8" stroke-dasharray="2,2" marker-end="url(#arr)"/>
+<line x1="487" y1="280" x2="510" y2="280" stroke="#f85149" stroke-width="0.8" stroke-dasharray="2,2" marker-end="url(#arr)"/>
+<text x="520" y="200" fill="#f85149" font-size="6" text-anchor="start">EtOH evap.</text>
+<line x1="476" y1="130" x2="484" y2="130" stroke="#3fb950" stroke-width="0.8" marker-end="url(#arr)"/>
+<line x1="476" y1="180" x2="484" y2="180" stroke="#3fb950" stroke-width="0.8" marker-end="url(#arr)"/>
+<line x1="476" y1="230" x2="484" y2="230" stroke="#3fb950" stroke-width="0.8" marker-end="url(#arr)"/>
+<line x1="476" y1="270" x2="484" y2="270" stroke="#3fb950" stroke-width="0.8" marker-end="url(#arr)"/>
+<text x="448" y="230" fill="#3fb950" font-size="6" text-anchor="end">Extract</text>
+<rect x="460" y="345" width="30" height="15" fill="#30363d" stroke="#8b949e"/>
+<text x="475" y="356" fill="#8b949e" font-size="6" text-anchor="middle">Collect</text>
+<text x="560" y="110" fill="#8b949e" font-size="7" text-anchor="start">Recirculate</text>
+<line x1="560" y1="350" x2="560" y2="100" stroke="#8b949e" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+<rect x="400" y="330" width="270" height="50" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="535" y="345" fill="#e6edf3" font-size="7" text-anchor="middle">Three simultaneous mechanisms:</text>
+<text x="535" y="358" fill="#e8a665" font-size="7" text-anchor="middle">1. Extraction from wood  2. EtOH evap → low aᵂ</text>
+<text x="535" y="371" fill="#39d2c0" font-size="7" text-anchor="middle">3. Marangoni self-stirring at film surface</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Falling film over charred oak: continuous extraction + evaporative aᵂ reduction + Marangoni mixing</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Three aging mechanisms in a single geometry — approximated with a rotary evaporator + oak staves</text>
+</svg>

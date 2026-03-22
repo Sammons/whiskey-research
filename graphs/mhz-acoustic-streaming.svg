@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 113 — MHz Acoustic Streaming: Cavitation-Free Mass Transfer Enhancement</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Cavitation Threshold vs Frequency</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="389" fill="#8b949e" font-size="7" text-anchor="middle">10 kHz</text>
+<line x1="135" y1="375" x2="135" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="135" y="389" fill="#8b949e" font-size="7" text-anchor="middle">100 kHz</text>
+<line x1="200" y1="375" x2="200" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="200" y="389" fill="#8b949e" font-size="7" text-anchor="middle">1 MHz</text>
+<line x1="265" y1="375" x2="265" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="265" y="389" fill="#8b949e" font-size="7" text-anchor="middle">10 MHz</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="389" fill="#8b949e" font-size="7" text-anchor="middle">100 MHz</text>
+<text x="200" y="403" fill="#8b949e" font-size="8" text-anchor="middle">Frequency</text>
+<line x1="67" y1="375" x2="70" y2="375" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<line x1="67" y1="313" x2="70" y2="313" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">10</text>
+<line x1="67" y1="251" x2="70" y2="251" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">20</text>
+<line x1="67" y1="189" x2="70" y2="189" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="192" fill="#8b949e" font-size="7" text-anchor="end">30</text>
+<line x1="67" y1="127" x2="70" y2="127" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">40</text>
+<line x1="67" y1="65" x2="70" y2="65" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">50</text>
+<text x="42" y="220" fill="#8b949e" font-size="7" text-anchor="middle" transform="rotate(-90,42,220)">Cavitation threshold (bar)</text>
+<polyline points="70.0,374.1 72.6,374.0 75.2,374.0 77.8,373.9 80.4,373.9 83.0,373.8 85.6,373.7 88.2,373.7 90.8,373.6 93.4,373.5 96.0,373.5 98.6,373.4 101.2,373.3 103.8,373.2 106.4,373.1 109.0,373.0 111.6,372.9 114.2,372.8 116.8,372.7 119.4,372.6 122.0,372.4 124.6,372.3 127.2,372.2 129.8,372.0 132.4,371.9 135.0,371.7 137.6,371.5 140.2,371.3 142.8,371.2 145.4,371.0 148.0,370.7 150.6,370.5 153.2,370.3 155.8,370.1 158.4,369.8 161.0,369.5 163.6,369.2 166.2,368.9 168.8,368.6 171.4,368.3 174.0,367.9 176.6,367.6 179.2,367.2 181.8,366.8 184.4,366.4 187.0,365.9 189.6,365.4 192.2,364.9 194.8,364.4 197.4,363.9 200.0,363.3 202.6,362.7 205.2,362.0 207.8,361.4 210.4,360.7 213.0,359.9 215.6,359.1 218.2,358.3 220.8,357.4 223.4,356.5 226.0,355.6 228.6,354.6 231.2,353.5 233.8,352.4 236.4,351.2 239.0,350.0 241.6,348.7 244.2,347.3 246.8,345.9 249.4,344.3 252.0,342.8 254.6,341.1 257.2,339.3 259.8,337.5 262.4,335.5 265.0,333.5 267.6,331.3 270.2,329.0 272.8,326.6 275.4,324.1 278.0,321.5 280.6,318.7 283.2,315.8 285.8,312.7 288.4,309.5 291.0,306.1 293.6,302.5 296.2,298.7 298.8,294.7 301.4,290.6 304.0,286.2 306.6,281.6 309.2,276.7 311.8,271.6 314.4,266.2 317.0,260.6 319.6,254.6 322.2,248.4 324.8,241.8 327.4,234.9 330.0,227.6" fill="none" stroke="#f85149" stroke-width="2.5"/>
+<text x="166.01288155677807" y="346.4" fill="#f85149" font-size="8" text-anchor="start">Cavitation threshold</text>
+<line x1="70" y1="362.6" x2="330" y2="362.6" stroke="#e8a665" stroke-width="1.5"/>
+<text x="75" y="357.6" fill="#e8a665" font-size="7" text-anchor="start">Typical operating intensity (~2 bar)</text>
+<rect x="70" y="65" width="130" height="310" fill="#f85149" opacity="0.08"/>
+<text x="115.43305028184122" y="80" fill="#f85149" font-size="7" text-anchor="middle">kHz: cavitation</text>
+<rect x="265" y="65" width="65" height="310" fill="#3fb950" opacity="0.08"/>
+<text x="296.0128815567781" y="80" fill="#3fb950" font-size="7" text-anchor="middle">MHz: streaming only</text>
+<text x="540" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: kHz Sonication vs MHz Acoustic Streaming</text>
+<rect x="400" y="65" width="270.0" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="515" y="105" fill="#e6edf3" font-size="7" text-anchor="end">Radical generation</text>
+<rect x="520" y="95" width="117" height="12" fill="#f85149" opacity="0.7"/>
+<text x="640" y="105" fill="#f85149" font-size="6" text-anchor="start">90%</text>
+<rect x="520" y="109" width="6.5" height="12" fill="#3fb950" opacity="0.7"/>
+<text x="529.5" y="119" fill="#3fb950" font-size="6" text-anchor="start">5%</text>
+<text x="515" y="155" fill="#e6edf3" font-size="7" text-anchor="end">Thermal hotspots</text>
+<rect x="520" y="145" width="110.5" height="12" fill="#f85149" opacity="0.7"/>
+<text x="633.5" y="155" fill="#f85149" font-size="6" text-anchor="start">85%</text>
+<rect x="520" y="159" width="3.9" height="12" fill="#3fb950" opacity="0.7"/>
+<text x="526.9" y="169" fill="#3fb950" font-size="6" text-anchor="start">3%</text>
+<text x="515" y="205" fill="#e6edf3" font-size="7" text-anchor="end">Mixing efficiency</text>
+<rect x="520" y="195" width="91" height="12" fill="#f85149" opacity="0.7"/>
+<text x="614" y="205" fill="#f85149" font-size="6" text-anchor="start">70%</text>
+<rect x="520" y="209" width="84.5" height="12" fill="#3fb950" opacity="0.7"/>
+<text x="607.5" y="219" fill="#3fb950" font-size="6" text-anchor="start">65%</text>
+<text x="515" y="255" fill="#e6edf3" font-size="7" text-anchor="end">Aroma preservation</text>
+<rect x="520" y="245" width="52" height="12" fill="#f85149" opacity="0.7"/>
+<text x="575" y="255" fill="#f85149" font-size="6" text-anchor="start">40%</text>
+<rect x="520" y="259" width="123.5" height="12" fill="#3fb950" opacity="0.7"/>
+<text x="646.5" y="269" fill="#3fb950" font-size="6" text-anchor="start">95%</text>
+<text x="515" y="305" fill="#e6edf3" font-size="7" text-anchor="end">Energy efficiency</text>
+<rect x="520" y="295" width="39" height="12" fill="#f85149" opacity="0.7"/>
+<text x="562" y="305" fill="#f85149" font-size="6" text-anchor="start">30%</text>
+<rect x="520" y="309" width="97.5" height="12" fill="#3fb950" opacity="0.7"/>
+<text x="620.5" y="319" fill="#3fb950" font-size="6" text-anchor="start">75%</text>
+<rect x="420" y="340" width="10" height="10" fill="#f85149" opacity="0.7"/>
+<text x="435" y="349" fill="#f85149" font-size="7" text-anchor="start">20–40 kHz (standard)</text>
+<rect x="420" y="355" width="10" height="10" fill="#3fb950" opacity="0.7"/>
+<text x="435" y="364" fill="#3fb950" font-size="7" text-anchor="start">10–100 MHz (SAW)</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">MHz acoustic streaming provides effective mixing without cavitation-induced radical damage</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Preserves delicate aroma esters while accelerating diffusion-limited extraction and equilibration</text>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 111 — Marangoni Self-Stirring: Ethanol Evaporation Drives Convective Mixing</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Marangoni Velocity vs Δγ/Δx</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="389" fill="#8b949e" font-size="7" text-anchor="middle">0.0</text>
+<line x1="135" y1="375" x2="135" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="135" y="389" fill="#8b949e" font-size="7" text-anchor="middle">0.5</text>
+<line x1="200" y1="375" x2="200" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="200" y="389" fill="#8b949e" font-size="7" text-anchor="middle">1.0</text>
+<line x1="265" y1="375" x2="265" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="265" y="389" fill="#8b949e" font-size="7" text-anchor="middle">1.5</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="389" fill="#8b949e" font-size="7" text-anchor="middle">2.0</text>
+<text x="200" y="403" fill="#8b949e" font-size="8" text-anchor="middle">Δγ/Δx (mN/m per cm)</text>
+<line x1="67" y1="375" x2="70" y2="375" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<line x1="67" y1="313" x2="70" y2="313" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">10</text>
+<line x1="67" y1="251" x2="70" y2="251" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">20</text>
+<line x1="67" y1="189" x2="70" y2="189" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="192" fill="#8b949e" font-size="7" text-anchor="end">30</text>
+<line x1="67" y1="127" x2="70" y2="127" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">40</text>
+<line x1="67" y1="65" x2="70" y2="65" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">50</text>
+<text x="42" y="220" fill="#8b949e" font-size="7" text-anchor="middle" transform="rotate(-90,42,220)">Marangoni velocity (mm/s)</text>
+<polyline points="70.0,375.0 76.5,374.0 83.0,372.9 89.5,371.9 96.0,370.9 102.5,369.8 109.0,368.8 115.5,367.8 122.0,366.7 128.5,365.7 135.0,364.7 141.5,363.6 148.0,362.6 154.5,361.6 161.0,360.5 167.5,359.5 174.0,358.5 180.5,357.4 187.0,356.4 193.5,355.4 200.0,354.3 206.5,353.3 213.0,352.3 219.5,351.2 226.0,350.2 232.5,349.2 239.0,348.1 245.5,347.1 252.0,346.1 258.5,345.0 265.0,344.0 271.5,343.0 278.0,341.9 284.5,340.9 291.0,339.9 297.5,338.8 304.0,337.8 310.5,336.8 317.0,335.7 323.5,334.7 330.0,333.7" fill="none" stroke="#58a6ff" stroke-width="2.5"/>
+<text x="80" y="85" fill="#58a6ff" font-size="8" text-anchor="start">0.1 mm film</text>
+<polyline points="70.0,375.0 76.5,369.8 83.0,364.7 89.5,359.5 96.0,354.3 102.5,349.2 109.0,344.0 115.5,338.8 122.0,333.7 128.5,328.5 135.0,323.3 141.5,318.2 148.0,313.0 154.5,307.8 161.0,302.7 167.5,297.5 174.0,292.3 180.5,287.2 187.0,282.0 193.5,276.8 200.0,271.7 206.5,266.5 213.0,261.3 219.5,256.2 226.0,251.0 232.5,245.8 239.0,240.7 245.5,235.5 252.0,230.3 258.5,225.2 265.0,220.0 271.5,214.8 278.0,209.7 284.5,204.5 291.0,199.3 297.5,194.2 304.0,189.0 310.5,183.8 317.0,178.7 323.5,173.5 330.0,168.3" fill="none" stroke="#e8a665" stroke-width="2.5"/>
+<text x="80" y="99" fill="#e8a665" font-size="8" text-anchor="start">0.5 mm film</text>
+<polyline points="70.0,375.0 76.5,354.3 83.0,333.7 89.5,313.0 96.0,292.3 102.5,271.7 109.0,251.0 115.5,230.3 122.0,209.7 128.5,189.0 135.0,168.3 141.5,147.7 148.0,127.0 154.5,106.3 161.0,85.7 167.5,65.0 174.0,65.0 180.5,65.0 187.0,65.0 193.5,65.0 200.0,65.0 206.5,65.0 213.0,65.0 219.5,65.0 226.0,65.0 232.5,65.0 239.0,65.0 245.5,65.0 252.0,65.0 258.5,65.0 265.0,65.0 271.5,65.0 278.0,65.0 284.5,65.0 291.0,65.0 297.5,65.0 304.0,65.0 310.5,65.0 317.0,65.0 323.5,65.0 330.0,65.0" fill="none" stroke="#3fb950" stroke-width="2.5"/>
+<text x="80" y="113" fill="#3fb950" font-size="8" text-anchor="start">2 mm film</text>
+<rect x="76.5" y="65" width="32.5" height="310" fill="#d29922" opacity="0.10"/>
+<text x="92.75" y="77" fill="#d29922" font-size="7" text-anchor="middle">Barrel regime</text>
+<rect x="135" y="65" width="195" height="310" fill="#3fb950" opacity="0.10"/>
+<text x="232.5" y="77" fill="#3fb950" font-size="7" text-anchor="middle">Enhanced: shallow vessel</text>
+<text x="540" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Marangoni Convection in Barrel Cross-Section</text>
+<rect x="400" y="65" width="270.0" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<circle cx="535" cy="200" r="90" fill="none" stroke="#e8a665" stroke-width="2"/>
+<text x="535" y="102" fill="#e8a665" font-size="7" text-anchor="middle">Oak barrel wall</text>
+<ellipse cx="535" cy="220" rx="90" ry="50" fill="#58a6ff" opacity="0.12"/>
+<text x="535" y="225" fill="#58a6ff" font-size="9" text-anchor="middle">Spirit</text>
+<line x1="495" y1="125" x2="495" y2="102" stroke="#f85149" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+<line x1="520" y1="125" x2="520" y2="102" stroke="#f85149" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+<line x1="545" y1="125" x2="545" y2="102" stroke="#f85149" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+<line x1="570" y1="125" x2="570" y2="102" stroke="#f85149" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+<text x="535" y="95" fill="#f85149" font-size="7" text-anchor="middle">EtOH evaporation through wood</text>
+<text x="535" y="145" fill="#d29922" font-size="7" text-anchor="middle">γ low (EtOH-depleted surface)</text>
+<text x="535" y="260" fill="#8b949e" font-size="7" text-anchor="middle">γ high (bulk 40% ABV)</text>
+<rect x="400" y="330" width="270" height="50" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="535" y="345" fill="#e8a665" font-size="8" text-anchor="middle">Surface EtOH depletion → Δγ → Marangoni flow</text>
+<text x="535" y="359" fill="#3fb950" font-size="8" text-anchor="middle">Continuous stirring without mechanical input</text>
+<text x="535" y="373" fill="#39d2c0" font-size="7" text-anchor="middle">Enhanced by shallow vessels (larger SA/V)</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Barrel aging includes a hidden stirring mechanism: ethanol evaporation creates surface tension gradients</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">that drive Marangoni convection — continuous mixing at no energy cost (the “angel’s share” as a pump)</text>
+</svg>

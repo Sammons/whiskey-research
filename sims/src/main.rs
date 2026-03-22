@@ -199,6 +199,11 @@ fn main() {
     fs::write("../graphs/smbr-reactive-chromatography.svg", sim_smbr_reactive_chromatography()).unwrap();
     fs::write("../graphs/ptmsp-membrane.svg", sim_ptmsp_membrane()).unwrap();
     fs::write("../graphs/integrated-separation-train.svg", sim_integrated_separation_train()).unwrap();
+    fs::write("../graphs/marangoni-self-stirring.svg", sim_marangoni_self_stirring()).unwrap();
+    fs::write("../graphs/tannin-pickering-emulsion.svg", sim_tannin_pickering_emulsion()).unwrap();
+    fs::write("../graphs/mhz-acoustic-streaming.svg", sim_mhz_acoustic_streaming()).unwrap();
+    fs::write("../graphs/oak-nanocellulose-scaffold.svg", sim_oak_nanocellulose_scaffold()).unwrap();
+    fs::write("../graphs/falling-film-esterification.svg", sim_falling_film_esterification()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -17008,6 +17013,514 @@ fn sim_integrated_separation_train() -> String {
         ACCENT, 8, "middle");
     svg += &label(350.0, h - 18.0,
         "Dose back at sub-mg/L levels to match natural barrel-aged whiskey ester profiles",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 111: Marangoni Self-Stirring in Barrel Aging
+// ═══════════════════════════════════════════════════════════════
+fn sim_marangoni_self_stirring() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig 111 \u{2014} Marangoni Self-Stirring: Ethanol Evaporation Drives Convective Mixing");
+
+    // Panel A: Marangoni velocity vs surface tension gradient
+    let ax = 70.0;
+    let ay = 65.0;
+    let aw = 260.0;
+    let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Marangoni Velocity vs \u{0394}\u{03b3}/\u{0394}x", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let x_min = 0.0_f64;
+    let x_max = 2.0_f64;
+    let sx = |v: f64| ax + (v - x_min) / (x_max - x_min) * aw;
+    let y_min = 0.0_f64;
+    let y_max = 50.0_f64;
+    let sy = |v: f64| ay + ah - (v - y_min) / (y_max - y_min) * ah;
+
+    for i in 0..=4 {
+        let v = i as f64 * 0.5;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            sx(v), ay + ah, sx(v), ay + ah + 4.0);
+        svg += &label(sx(v), ay + ah + 14.0, &format!("{:.1}", v), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 28.0, "\u{0394}\u{03b3}/\u{0394}x (mN/m per cm)", MUTED, 8, "middle");
+
+    for i in 0..=5 {
+        let v = i as f64 * 10.0;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0, sy(v), ax, sy(v));
+        svg += &label(ax - 5.0, sy(v) + 3.0, &format!("{:.0}", v), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "Marangoni velocity (mm/s)");
+
+    // v_Ma = (dγ/dx · d) / (2μ) for thin-film Marangoni
+    let thicknesses = [(0.1, "0.1 mm film", BLUE), (0.5, "0.5 mm film", ACCENT), (2.0, "2 mm film", GREEN)];
+    for (idx, (d_mm, lbl, color)) in thicknesses.iter().enumerate() {
+        let d_m = d_mm * 1e-3;
+        let mu = 1.5e-3;
+        let pts: Vec<(f64, f64)> = (0..=40).map(|i| {
+            let dgdx_mncm = i as f64 * 0.05;
+            let dgdx_si = dgdx_mncm * 0.1;
+            let v_ma = (dgdx_si * d_m) / (2.0 * mu) * 1000.0;
+            (dgdx_mncm, v_ma.min(y_max))
+        }).collect();
+        svg += &polyline_svg(&pts, color, "2.5", &sx, &sy);
+        svg += &label(ax + 10.0, ay + 20.0 + idx as f64 * 14.0, lbl, color, 8, "start");
+    }
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{}\" fill=\"{YELLOW}\" opacity=\"0.10\"/>\n",
+        sx(0.05), ay, sx(0.3) - sx(0.05), ah);
+    svg += &label(sx(0.175), ay + 12.0, "Barrel regime", YELLOW, 7, "middle");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{}\" fill=\"{GREEN}\" opacity=\"0.10\"/>\n",
+        sx(0.5), ay, sx(2.0) - sx(0.5), ah);
+    svg += &label(sx(1.25), ay + 12.0, "Enhanced: shallow vessel", GREEN, 7, "middle");
+
+    // Panel B: Cross-section schematic
+    let bx = 400.0;
+    svg += &label(540.0, 57.0, "B: Marangoni Convection in Barrel Cross-Section", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{ay}\" width=\"270.0\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let ccx = 535.0;
+    let ccy = 200.0;
+    let cr = 90.0;
+    svg += &format!("<circle cx=\"{ccx}\" cy=\"{ccy}\" r=\"{cr}\" fill=\"none\" stroke=\"{ACCENT}\" stroke-width=\"2\"/>\n");
+    svg += &label(ccx, ccy - cr - 8.0, "Oak barrel wall", ACCENT, 7, "middle");
+    svg += &format!("<ellipse cx=\"{ccx}\" cy=\"{}\" rx=\"{cr}\" ry=\"50\" fill=\"{BLUE}\" opacity=\"0.12\"/>\n", ccy + 20.0);
+    svg += &label(ccx, ccy + 25.0, "Spirit", BLUE, 9, "middle");
+
+    for dx in [-40.0_f64, -15.0, 10.0, 35.0] {
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{RED}\" stroke-width=\"1\" \
+            stroke-dasharray=\"3,2\" marker-end=\"url(#arr)\"/>\n",
+            ccx + dx, ccy - cr + 15.0, ccx + dx, ccy - cr - 8.0);
+    }
+    svg += &label(ccx, ccy - cr - 15.0, "EtOH evaporation through wood", RED, 7, "middle");
+
+    svg += &label(ccx, ccy - 55.0, "\u{03b3} low (EtOH-depleted surface)", YELLOW, 7, "middle");
+    svg += &label(ccx, ccy + 60.0, "\u{03b3} high (bulk 40% ABV)", MUTED, 7, "middle");
+
+    svg += &format!("<rect x=\"{bx}\" y=\"330\" width=\"270\" height=\"50\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(bx + 135.0, 345.0, "Surface EtOH depletion \u{2192} \u{0394}\u{03b3} \u{2192} Marangoni flow", ACCENT, 8, "middle");
+    svg += &label(bx + 135.0, 359.0, "Continuous stirring without mechanical input", GREEN, 8, "middle");
+    svg += &label(bx + 135.0, 373.0, "Enhanced by shallow vessels (larger SA/V)", CYAN, 7, "middle");
+
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Barrel aging includes a hidden stirring mechanism: ethanol evaporation creates surface tension gradients",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "that drive Marangoni convection \u{2014} continuous mixing at no energy cost (the \u{201c}angel\u{2019}s share\u{201d} as a pump)",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 112: Tannin Pickering Emulsion Microreactors
+// ═══════════════════════════════════════════════════════════════
+fn sim_tannin_pickering_emulsion() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig 112 \u{2014} Tannin Nanoparticle Pickering Emulsions as Ester Microreactors");
+
+    let ax = 70.0;
+    let ay = 65.0;
+    let aw = 260.0;
+    let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Aroma Protection by Tannin NP Concentration", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let x_max = 15.0_f64;
+    let sx = |v: f64| ax + v / x_max * aw;
+    let sy = |v: f64| ay + ah - v / 100.0 * ah;
+
+    for i in 0..=5 {
+        let v = i as f64 * 3.0;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            sx(v), ay + ah, sx(v), ay + ah + 4.0);
+        svg += &label(sx(v), ay + ah + 14.0, &format!("{:.0}", v), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 28.0, "Tannic acid NP conc. (mg/mL)", MUTED, 8, "middle");
+
+    for i in 0..=5 {
+        let v = i as f64 * 20.0;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0, sy(v), ax, sy(v));
+        svg += &label(ax - 5.0, sy(v) + 3.0, &format!("{:.0}%", v), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 30.0, ay + ah / 2.0, ax - 30.0, ay + ah / 2.0, "Aroma compounds retained (%)");
+
+    let pts: Vec<(f64, f64)> = (0..=30).map(|i| {
+        let c = i as f64 * 0.5;
+        let ret = 25.0 + 35.0 * (1.0 - (-c * 0.25).exp());
+        (c, ret)
+    }).collect();
+    svg += &polyline_svg(&pts, ACCENT, "2.5", &sx, &sy);
+
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"5\" fill=\"{GREEN}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+        sx(10.0), sy(60.0));
+    svg += &label(sx(10.0) + 8.0, sy(60.0) + 3.0, "60% at 10 mg/mL", GREEN, 7, "start");
+    svg += &label(sx(10.0) + 8.0, sy(60.0) + 14.0, "(SPI-TA NPs)", MUTED, 6, "start");
+
+    svg += &hline(ax, ax + aw, sy(25.0), RED, "1");
+    svg += &label(ax + 5.0, sy(25.0) - 5.0, "No stabilizer: 25%", RED, 7, "start");
+
+    // Panel B: Pickering emulsion schematic
+    let bx = 400.0;
+    svg += &label(540.0, 57.0, "B: Pickering Emulsion Microreactor Concept", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{ay}\" width=\"270.0\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &format!("<rect x=\"{bx}\" y=\"{ay}\" width=\"270\" height=\"{ah}\" fill=\"{BLUE}\" opacity=\"0.06\"/>\n");
+    svg += &label(bx + 135.0, ay + 20.0, "Spirit (40% ABV aqueous phase)", BLUE, 8, "middle");
+
+    let droplets = [(470.0_f64, 170.0_f64, 45.0_f64), (570.0, 230.0, 35.0), (500.0, 300.0, 30.0)];
+    for (dcx, dcy, dr) in &droplets {
+        svg += &format!("<circle cx=\"{dcx}\" cy=\"{dcy}\" r=\"{}\" fill=\"{ACCENT}\" opacity=\"0.25\"/>\n", dr - 5.0);
+        let n_dots = (*dr as i32) * 2 / 3;
+        for j in 0..n_dots {
+            let angle = j as f64 * std::f64::consts::TAU / n_dots as f64;
+            let px = dcx + dr * angle.cos();
+            let py = dcy + dr * angle.sin();
+            svg += &format!("<circle cx=\"{px:.1}\" cy=\"{py:.1}\" r=\"2\" fill=\"{GREEN}\" opacity=\"0.8\"/>\n");
+        }
+    }
+    svg += &label(470.0, 170.0, "Ester", ACCENT, 7, "middle");
+    svg += &label(470.0, 182.0, "core", ACCENT, 7, "middle");
+    svg += &label(570.0, 230.0, "Oil", ACCENT, 7, "middle");
+    svg += &label(570.0, 242.0, "phase", ACCENT, 7, "middle");
+
+    svg += &format!("<circle cx=\"{}\" cy=\"340\" r=\"3\" fill=\"{GREEN}\"/>\n", bx + 20.0);
+    svg += &label(bx + 28.0, 343.0, "Tannin nanoparticle (50\u{2013}500 nm)", GREEN, 7, "start");
+    svg += &format!("<rect x=\"{}\" y=\"354\" width=\"8\" height=\"8\" fill=\"{ACCENT}\" opacity=\"0.4\"/>\n", bx + 17.0);
+    svg += &label(bx + 28.0, 362.0, "Ester-rich oil phase", ACCENT, 7, "start");
+
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Oak tannin nanoparticles self-assemble at oil\u{2013}water interfaces, stabilizing ester-rich",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Pickering droplets: surfactant-free compartments with reduced a\u{1d42} at the interface",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 113: MHz Cavitation-Free Acoustic Streaming
+// ═══════════════════════════════════════════════════════════════
+fn sim_mhz_acoustic_streaming() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig 113 \u{2014} MHz Acoustic Streaming: Cavitation-Free Mass Transfer Enhancement");
+
+    let ax = 70.0;
+    let ay = 65.0;
+    let aw = 260.0;
+    let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Cavitation Threshold vs Frequency", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let f_min_log = 4.0_f64;
+    let f_max_log = 8.0_f64;
+    let sx = |v: f64| ax + (v.log10() - f_min_log) / (f_max_log - f_min_log) * aw;
+    let p_max = 50.0_f64;
+    let sy = |v: f64| ay + ah - v / p_max * ah;
+
+    let freq_labels = [(1e4, "10 kHz"), (1e5, "100 kHz"), (1e6, "1 MHz"), (1e7, "10 MHz"), (1e8, "100 MHz")];
+    for (f, lbl) in &freq_labels {
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            sx(*f), ay + ah, sx(*f), ay + ah + 4.0);
+        svg += &label(sx(*f), ay + ah + 14.0, lbl, MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 28.0, "Frequency", MUTED, 8, "middle");
+
+    for i in 0..=5 {
+        let v = i as f64 * 10.0;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0, sy(v), ax, sy(v));
+        svg += &label(ax - 5.0, sy(v) + 3.0, &format!("{:.0}", v), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "Cavitation threshold (bar)");
+
+    let pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let f = 10.0_f64.powf(f_min_log + i as f64 * (f_max_log - f_min_log) / 100.0);
+        let p_cav = 0.15 * (f / 1e4).powf(0.55);
+        (f, p_cav.min(p_max))
+    }).collect();
+    svg += &polyline_svg(&pts, RED, "2.5", &sx, &sy);
+    svg += &label(sx(3e5), sy(3.0) - 10.0, "Cavitation threshold", RED, 8, "start");
+
+    svg += &hline(ax, ax + aw, sy(2.0), ACCENT, "1.5");
+    svg += &label(ax + 5.0, sy(2.0) - 5.0, "Typical operating intensity (~2 bar)", ACCENT, 7, "start");
+
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{}\" height=\"{ah}\" fill=\"{RED}\" opacity=\"0.08\"/>\n",
+        sx(1e6) - ax);
+    svg += &label(sx(5e4), ay + 15.0, "kHz: cavitation", RED, 7, "middle");
+    svg += &format!("<rect x=\"{}\" y=\"{ay}\" width=\"{}\" height=\"{ah}\" fill=\"{GREEN}\" opacity=\"0.08\"/>\n",
+        sx(1e7), ax + aw - sx(1e7));
+    svg += &label(sx(3e7), ay + 15.0, "MHz: streaming only", GREEN, 7, "middle");
+
+    // Panel B: comparison bars
+    let bx = 400.0;
+    svg += &label(540.0, 57.0, "B: kHz Sonication vs MHz Acoustic Streaming", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{ay}\" width=\"270.0\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let props = [
+        ("Radical generation", 90.0, 5.0),
+        ("Thermal hotspots", 85.0, 3.0),
+        ("Mixing efficiency", 70.0, 65.0),
+        ("Aroma preservation", 40.0, 95.0),
+        ("Energy efficiency", 30.0, 75.0),
+    ];
+
+    let bar_x = bx + 120.0;
+    let bar_w_max = 130.0;
+    let bar_h = 30.0;
+    let bar_gap = 20.0;
+
+    for (i, (prop_name, khz_val, mhz_val)) in props.iter().enumerate() {
+        let by = ay + 30.0 + i as f64 * (bar_h + bar_gap);
+        svg += &label(bar_x - 5.0, by + 10.0, prop_name, TEXT, 7, "end");
+        svg += &format!("<rect x=\"{bar_x}\" y=\"{}\" width=\"{}\" height=\"12\" fill=\"{RED}\" opacity=\"0.7\"/>\n",
+            by, khz_val / 100.0 * bar_w_max);
+        svg += &label(bar_x + khz_val / 100.0 * bar_w_max + 3.0, by + 10.0, &format!("{:.0}%", khz_val), RED, 6, "start");
+        svg += &format!("<rect x=\"{bar_x}\" y=\"{}\" width=\"{}\" height=\"12\" fill=\"{GREEN}\" opacity=\"0.7\"/>\n",
+            by + 14.0, mhz_val / 100.0 * bar_w_max);
+        svg += &label(bar_x + mhz_val / 100.0 * bar_w_max + 3.0, by + 24.0, &format!("{:.0}%", mhz_val), GREEN, 6, "start");
+    }
+
+    svg += &format!("<rect x=\"{}\" y=\"340\" width=\"10\" height=\"10\" fill=\"{RED}\" opacity=\"0.7\"/>\n", bx + 20.0);
+    svg += &label(bx + 35.0, 349.0, "20\u{2013}40 kHz (standard)", RED, 7, "start");
+    svg += &format!("<rect x=\"{}\" y=\"355\" width=\"10\" height=\"10\" fill=\"{GREEN}\" opacity=\"0.7\"/>\n", bx + 20.0);
+    svg += &label(bx + 35.0, 364.0, "10\u{2013}100 MHz (SAW)", GREEN, 7, "start");
+
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "MHz acoustic streaming provides effective mixing without cavitation-induced radical damage",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Preserves delicate aroma esters while accelerating diffusion-limited extraction and equilibration",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 114: Oak Nanocellulose Controlled-Release Scaffold
+// ═══════════════════════════════════════════════════════════════
+fn sim_oak_nanocellulose_scaffold() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig 114 \u{2014} Oak Nanocellulose: High Surface Area Flavor Scaffold");
+
+    let ax = 70.0;
+    let ay = 65.0;
+    let aw = 260.0;
+    let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Specific Surface Area vs Processing Level", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let materials = [
+        ("Oak chip", "5 mm", 0.1_f64, MUTED),
+        ("Milled", "100 \u{03bc}m", 2.0, MUTED),
+        ("Biochar", "800\u{00b0}C", 250.0, ACCENT),
+        ("Oak CNC", "5\u{2013}20 nm", 350.0, GREEN),
+        ("TEMPO-CNC", "modified", 500.0, BLUE),
+    ];
+
+    let bar_w_each = 35.0;
+    let gap = 15.0;
+    let total_bar_w = materials.len() as f64 * (bar_w_each + gap) - gap;
+    let start_x = ax + (aw - total_bar_w) / 2.0;
+    let sa_max = 600.0_f64;
+
+    for (i, (name, subname, sa, color)) in materials.iter().enumerate() {
+        let mbx = start_x + i as f64 * (bar_w_each + gap);
+        let bar_h_px = sa / sa_max * (ah - 40.0);
+        let by = ay + ah - bar_h_px;
+        svg += &format!("<rect x=\"{mbx}\" y=\"{by}\" width=\"{bar_w_each}\" height=\"{bar_h_px}\" fill=\"{color}\" opacity=\"0.7\"/>\n");
+        svg += &label(mbx + bar_w_each / 2.0, by - 5.0, &format!("{:.0}", sa), color, 7, "middle");
+        svg += &label(mbx + bar_w_each / 2.0, ay + ah + 12.0, name, MUTED, 6, "middle");
+        svg += &label(mbx + bar_w_each / 2.0, ay + ah + 22.0, subname, MUTED, 5, "middle");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 22.0, ay + ah / 2.0, ax - 22.0, ay + ah / 2.0, "Surface area (m\u{00b2}/g)");
+
+    svg += &label(ax + aw / 2.0, ay + 15.0, "3,500\u{00d7} increase: chip \u{2192} CNC", YELLOW, 9, "middle");
+
+    // Panel B: Controlled release kinetics
+    let bx = 400.0;
+    svg += &label(540.0, 57.0, "B: Controlled Release from Loaded CNC Scaffold", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{ay}\" width=\"270.0\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let t_max = 48.0_f64;
+    let sx2 = |v: f64| bx + v / t_max * 270.0;
+    let sy2 = |v: f64| ay + ah - v / 100.0 * ah;
+
+    for i in 0..=4 {
+        let v = i as f64 * 12.0;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            sx2(v), ay + ah, sx2(v), ay + ah + 4.0);
+        svg += &label(sx2(v), ay + ah + 14.0, &format!("{:.0} h", v), MUTED, 7, "middle");
+    }
+    svg += &label(bx + 135.0, ay + ah + 28.0, "Time in spirit", MUTED, 8, "middle");
+
+    for i in 0..=5 {
+        let v = i as f64 * 20.0;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            bx - 3.0, sy2(v), bx, sy2(v));
+        svg += &label(bx - 5.0, sy2(v) + 3.0, &format!("{:.0}%", v), MUTED, 7, "end");
+    }
+
+    let pts_direct: Vec<(f64, f64)> = vec![(0.0, 100.0), (48.0, 100.0)];
+    svg += &polyline_svg(&pts_direct, RED, "1.5", &sx2, &sy2);
+    svg += &label(sx2(25.0), sy2(100.0) - 8.0, "Direct addition (instant dump)", RED, 7, "middle");
+
+    let pts_cnc: Vec<(f64, f64)> = (0..=96).map(|i| {
+        let t = i as f64 * 0.5;
+        let rel = 100.0 * (1.0 - (-t * 0.693 / 6.0).exp());
+        (t, rel)
+    }).collect();
+    svg += &polyline_svg(&pts_cnc, GREEN, "2.5", &sx2, &sy2);
+    svg += &label(sx2(20.0), sy2(80.0) + 15.0, "CNC scaffold (t\u{00bd} = 6 h)", GREEN, 8, "start");
+
+    let pts_tempo: Vec<(f64, f64)> = (0..=96).map(|i| {
+        let t = i as f64 * 0.5;
+        let rel = 100.0 * (1.0 - (-t * 0.693 / 12.0).exp());
+        (t, rel)
+    }).collect();
+    svg += &polyline_svg(&pts_tempo, BLUE, "2.5", &sx2, &sy2);
+    svg += &label(sx2(30.0), sy2(55.0) + 15.0, "TEMPO-CNC (t\u{00bd} = 12 h)", BLUE, 8, "start");
+
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Oak-derived cellulose nanocrystals (CNC): 3,500\u{00d7} surface area vs chips, food-grade,",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "load with concentrated barrel extract for controlled release into spirit over hours\u{2013}days",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 115: Reactive Falling-Film Esterification
+// ═══════════════════════════════════════════════════════════════
+fn sim_falling_film_esterification() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig 115 \u{2014} Falling-Film Reactor: Continuous Evaporative Esterification");
+
+    let ax = 70.0;
+    let ay = 65.0;
+    let aw = 260.0;
+    let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Surface Water Activity vs Film Thickness", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let d_max = 5.0_f64;
+    let sx = |v: f64| ax + v / d_max * aw;
+    let sy = |v: f64| ay + ah - v * ah;
+
+    for i in 0..=5 {
+        let v = i as f64;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            sx(v), ay + ah, sx(v), ay + ah + 4.0);
+        svg += &label(sx(v), ay + ah + 14.0, &format!("{:.0}", v), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 28.0, "Film thickness (mm)", MUTED, 8, "middle");
+
+    for i in 0..=5 {
+        let v = i as f64 * 0.2;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0, sy(v), ax, sy(v));
+        svg += &label(ax - 5.0, sy(v) + 3.0, &format!("{:.1}", v), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "Surface water activity (a\u{1d42})");
+
+    let evap_rates = [
+        (1.0_f64, "Gentle (30\u{00b0}C, still air)", BLUE),
+        (5.0, "Moderate (40\u{00b0}C, fan)", ACCENT),
+        (15.0, "Aggressive (50\u{00b0}C, vacuum)", GREEN),
+    ];
+
+    for (idx, (rate_factor, lbl, color)) in evap_rates.iter().enumerate() {
+        let pts: Vec<(f64, f64)> = (1..=100).map(|i| {
+            let d = i as f64 * 0.05;
+            let aw_surf = (0.93 - rate_factor * 0.06 * (-d / 0.8).exp()).max(0.0);
+            (d, aw_surf)
+        }).collect();
+        svg += &polyline_svg(&pts, color, "2.5", &sx, &sy);
+        svg += &label(ax + 10.0, ay + 25.0 + idx as f64 * 14.0, lbl, color, 7, "start");
+    }
+
+    svg += &hline(ax, ax + aw, sy(0.6), YELLOW, "1.5");
+    svg += &label(ax + aw - 5.0, sy(0.6) - 5.0, "Lipase synthesis (a\u{1d42} = 0.6)", YELLOW, 7, "end");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{}\" fill=\"{GREEN}\" opacity=\"0.10\"/>\n",
+        sx(0.1), ay, sx(1.0) - sx(0.1), ah);
+    svg += &label(sx(0.55), ay + ah - 10.0, "Optimal film", GREEN, 7, "middle");
+
+    // Panel B: Schematic
+    let bx = 400.0;
+    svg += &label(540.0, 57.0, "B: Falling-Film Reactor Schematic", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{ay}\" width=\"270.0\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    svg += &format!("<rect x=\"460\" y=\"90\" width=\"20\" height=\"250\" fill=\"{ACCENT}\" opacity=\"0.6\"/>\n");
+    svg += &label(450.0, 85.0, "Charred oak", ACCENT, 7, "middle");
+    svg += &label(450.0, 355.0, "surface (40\u{00b0}C)", ACCENT, 7, "middle");
+    svg += &format!("<rect x=\"480\" y=\"90\" width=\"5\" height=\"250\" fill=\"{BLUE}\" opacity=\"0.4\"/>\n");
+    svg += &label(500.0, 170.0, "Thin", BLUE, 7, "start");
+    svg += &label(500.0, 182.0, "film", BLUE, 7, "start");
+    svg += &label(500.0, 194.0, "(0.3 mm)", BLUE, 6, "start");
+
+    svg += &format!("<line x1=\"485\" y1=\"100\" x2=\"485\" y2=\"330\" stroke=\"{BLUE}\" stroke-width=\"1.5\" \
+        marker-end=\"url(#arr)\"/>\n");
+
+    for dy in [120, 160, 200, 240, 280] {
+        svg += &format!("<line x1=\"487\" y1=\"{dy}\" x2=\"510\" y2=\"{dy}\" stroke=\"{RED}\" stroke-width=\"0.8\" \
+            stroke-dasharray=\"2,2\" marker-end=\"url(#arr)\"/>\n");
+    }
+    svg += &label(520.0, 200.0, "EtOH evap.", RED, 6, "start");
+
+    for dy in [130, 180, 230, 270] {
+        svg += &format!("<line x1=\"476\" y1=\"{dy}\" x2=\"484\" y2=\"{dy}\" stroke=\"{GREEN}\" stroke-width=\"0.8\" \
+            marker-end=\"url(#arr)\"/>\n");
+    }
+    svg += &label(448.0, 230.0, "Extract", GREEN, 6, "end");
+
+    svg += &format!("<rect x=\"460\" y=\"345\" width=\"30\" height=\"15\" fill=\"{GRID}\" stroke=\"{MUTED}\"/>\n");
+    svg += &label(475.0, 356.0, "Collect", MUTED, 6, "middle");
+    svg += &label(560.0, 110.0, "Recirculate", MUTED, 7, "start");
+    svg += &format!("<line x1=\"560\" y1=\"350\" x2=\"560\" y2=\"100\" stroke=\"{MUTED}\" stroke-width=\"1\" \
+        stroke-dasharray=\"4,3\" marker-end=\"url(#arr)\"/>\n");
+
+    svg += &format!("<rect x=\"{bx}\" y=\"330\" width=\"270\" height=\"50\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(bx + 135.0, 345.0, "Three simultaneous mechanisms:", TEXT, 7, "middle");
+    svg += &label(bx + 135.0, 358.0, "1. Extraction from wood  2. EtOH evap \u{2192} low a\u{1d42}", ACCENT, 7, "middle");
+    svg += &label(bx + 135.0, 371.0, "3. Marangoni self-stirring at film surface", CYAN, 7, "middle");
+
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Falling film over charred oak: continuous extraction + evaporative a\u{1d42} reduction + Marangoni mixing",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Three aging mechanisms in a single geometry \u{2014} approximated with a rotary evaporator + oak staves",
         GREEN, 8, "middle");
 
     svg.push_str("</svg>");
