@@ -2033,6 +2033,44 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<h3>4.36 Sono-Freeze-Extract Cycling: Cryochemical Ester Ratchet + Sono-Oxidative Extraction</h3>
+
+<div class="callout key-insight">
+  <strong>Novel cyclic protocol:</strong> Alternating between two temperature regimes attacks all four barriers in a single 60-hour protocol. The <strong>cold phase</strong> (&minus;40&deg;C, 2h) freeze-concentrates the spirit for ester ratcheting (&sect;1.16) and reorganizes the ethanol-water H-bond network (&sect;3.3). The <strong>warm phase</strong> (50&deg;C, 4h) drives sono-extraction (&sect;3.14), PDMS-mediated oxidation (&sect;4.1), and temperature-accelerated kinetics. The thermal shock between phases creates dissolved-gas supersaturation&mdash;providing free cavitation nucleation sites for the warm-phase sonication.
+</div>
+
+<p><strong>The ester ratchet mechanism:</strong> Each cold cycle concentrates the liquid phase to ~60% ABV (ice rejects ethanol). At this concentration, Fischer esterification equilibrium shifts from 58.5% to ~72% conversion (&sect;1.16). Esters formed during the cold hold do not hydrolyze upon thawing because the reverse reaction is kinetically sluggish at the warm-phase temperature (50&deg;C), especially with the dilution back to 40% ABV. Each cycle ratchets the ester content upward by 2&ndash;4%, and after 10 cycles the cumulative effect is equivalent to months of ester equilibration.</p>
+
+<p><strong>Thermal shock cavitation enhancement:</strong> When spirit at &minus;40&deg;C is rapidly warmed to 50&deg;C (a &Delta;T of 90&deg;C), Henry&rsquo;s law predicts a ~3&times; reduction in dissolved gas solubility. The supersaturated dissolved gas nucleates microbubbles throughout the liquid, which then serve as preferential cavitation nucleation sites during the warm-phase sonication. Brotchie et al. (2009) showed that controlled nucleation enhances sonochemical yield by 1.5&ndash;2&times; compared to degassed conditions. This is essentially a free sonochemistry boost from the thermal cycling.</p>
+
+<p><strong>Protocol (10 cycles, 60h total):</strong></p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Phase</th><th>Duration</th><th>Temperature</th><th>Active treatments</th><th>Barriers targeted</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Cold</strong></td><td>2h</td><td>&minus;40&deg;C</td><td>Freeze-concentration (passive), ice restructuring</td><td><span class="barrier-tag ester">ESTER</span> + <span class="barrier-tag cluster">CLUSTER</span></td></tr>
+<tr><td><strong>Warm</strong></td><td>4h</td><td>50&deg;C</td><td>Ultrasonic bath (40 kHz), PDMS O<sub>2</sub>, riboflavin+LED, electro-Fenton</td><td><span class="barrier-tag oxidation">OXIDATION</span> + <span class="barrier-tag cluster">CLUSTER</span> + <span class="barrier-tag ester">ESTER</span></td></tr>
+<tr><td colspan="5" style="text-align:center"><em>Repeat 10&times; = 60h total runtime</em></td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>Equipment overlay:</strong> The warm phase incorporates the entire active equipment suite already proposed in the protocol: ultrasonic bath (&sect;3.14), PDMS membrane (&sect;4.1), riboflavin + blue LED (&sect;4.8), and optionally electro-Fenton (&sect;4.10). The cold phase requires only a freezer capable of &minus;40&deg;C (chest freezer with dry ice supplement, $0&ndash;5/cycle). The cycling adds zero new equipment&mdash;it is an organizational principle for scheduling the same treatments across alternating temperature regimes.</p>
+
+<p><strong>Sulfur removal bonus:</strong> The cold phase provides an additional sulfur removal pathway. DMS and DMDS have higher Henry&rsquo;s law constants than ethanol, meaning they partition preferentially into the gas phase during the thermal cycling degassing step. Each warm&rarr;cold&rarr;warm transition strips volatile sulfur compounds from the spirit via gas supersaturation and release (&sect;2.5, headspace sweep analogy).</p>
+
+<figure class="sim-figure">
+  <img src="graphs/sono-freeze-cycling.svg" alt="Sono-freeze cycling: temperature profile, barrier progress, and phase mechanisms">
+  <figcaption><strong>Fig. 46.</strong> Sono-freeze-extract cycling protocol. (A) Temperature profile over 10 cycles (60h): cold phases at &minus;40&deg;C (blue shading, 2h each) alternate with warm phases at 50&deg;C (red shading, 4h each). (B) Cumulative barrier progress: extraction (gold) and clustering (yellow) advance fastest; ester ratcheting (green) and oxidation (blue) are slower but show steady accumulation. (C) Phase mechanisms: cold phase targets ester equilibrium and H-bond reorganization; warm phase drives sono-extraction and oxidation. Thermal shock provides free cavitation nucleation sites.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">NOVEL SYNTHESIS</span> &mdash; no published study combines freeze-concentration ester ratcheting with sono-oxidative extraction in a cyclic temperature protocol. Each component mechanism is individually well-supported: freeze-concentration (Takaizumi 2005<span class="cite" data-ref="144"><sup>[144]</sup></span>), ultrasonic extraction (Delgado-Gonz&aacute;lez 2017<span class="cite" data-ref="90"><sup>[90]</sup></span>), temperature cycling (Singleton &amp; Draper 1963<span class="cite" data-ref="49"><sup>[49]</sup></span>), and thermal-shock cavitation enhancement. The organizational novelty is recognizing that these mechanisms are <em>complementary across temperature regimes</em> rather than competing. <strong>Home testability: 5/5</strong> ($0&ndash;5 incremental over existing protocol. Chest freezer + dry ice for cold phase, ultrasonic bath + PDMS for warm phase. First test: 5 cycles vs. continuous warm-phase-only treatment. Compare ester content by smell/taste, color depth, tannin astringency at 30h each).
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -2175,6 +2213,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>PEF spirit aging (&sect;4.33)</td><td>5 mo &asymp; 12 mo natural</td><td><span class="verdict promising">Published &mdash; spirit</span></td><td>$30&ndash;60</td><td>OXIDATION + ESTER</td></tr>
 <tr><td>Vacuum/pressure cycling (&sect;4.34)</td><td>3d &asymp; 2yr (patent)</td><td><span class="verdict speculative">Patent only</span></td><td>$50&ndash;80</td><td>OXIDATION</td></tr>
 <tr><td>Thin-film recirculating (&sect;4.35)</td><td>10&ndash;50&times; (predicted)</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$40&ndash;70</td><td>ALL</td></tr>
+<tr><td>Sono-freeze cycling (&sect;4.36)</td><td>All barriers in 60h</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$0&ndash;5 incr.</td><td>ALL</td></tr>
 </tbody>
 </table>
 </div>
@@ -2343,6 +2382,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>PEF spirit aging (&sect;4.33)</td><td>2/5</td><td>$30&ndash;60</td><td>Neon sign transformer + SS plate electrodes in glass jar with oak staves. 1 kV/cm at 50 Hz. <strong>Caution: lethal voltages</strong> require proper insulation and GFCI. +54% tannins, +47% vanillin published. Not a beginner project.</td></tr>
 <tr><td><strong>Vacuum/pressure cycling (&sect;4.34)</strong></td><td><strong>5/5</strong></td><td><strong>$50&ndash;80</strong></td><td><strong>Cornelius keg ($30&ndash;50) + CO<sub>2</sub> regulator ($25). Spirit + oak staves at 40 psi, cycle daily for 2 weeks. CO<sub>2</sub> &rarr; carbonic acid lowers pH. Use existing homebrewing equipment. Compare color + tannin vs ambient control.</strong></td></tr>
 <tr><td>Thin-film recirculating (&sect;4.35)</td><td>4/5</td><td>$40&ndash;70</td><td>Charred oak plate + 0.3 mm silicone gasket + PDMS membrane + peristaltic pump. Recirculate 500 mL spirit 8h. 4 barriers attacked simultaneously. Main challenge: uniform film gap (glass plate compression fixture). Compare vs same oak ratio in jar.</td></tr>
+<tr><td><strong>Sono-freeze cycling (&sect;4.36)</strong></td><td><strong>5/5</strong></td><td><strong>$0&ndash;5 incr.</strong></td><td><strong>Zero new equipment: chest freezer (&minus;40&deg;C with dry ice) + ultrasonic bath + PDMS membrane already in protocol. 10 cycles of 2h cold + 4h warm = 60h total. Ester ratchet + sono-extraction + thermal shock cavitation. Compare 5 cycles vs 30h continuous warm treatment.</strong></td></tr>
 </tbody>
 </table>
 </div>

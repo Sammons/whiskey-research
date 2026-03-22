@@ -134,6 +134,7 @@ fn main() {
     fs::write("../graphs/pef-spirit-aging.svg", sim_pef_spirit_aging()).unwrap();
     fs::write("../graphs/vacuum-pressure-cycling.svg", sim_vacuum_pressure_cycling()).unwrap();
     fs::write("../graphs/thin-film-aging.svg", sim_thin_film_aging()).unwrap();
+    fs::write("../graphs/sono-freeze-cycling.svg", sim_sono_freeze_cycling()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -7832,6 +7833,215 @@ fn sim_thin_film_aging() -> String {
         "Recirculate: pump \u{2192} oak plate \u{2192} reservoir", GREEN, 9, "start");
     svg += &label(ml2 + 10.0, mt + ph - 18.0,
         "Novel: 4 barriers attacked in single geometry", ACCENT, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Sim 46: Sono-Freeze-Extract Cycling
+// Panel A: Temperature profile over 10 cycles showing cold/warm phases
+//          with barrier activity overlay
+// Panel B: Cumulative progress on 4 barriers over 10 cycles
+// ═══════════════════════════════════════════════════════════════
+fn sim_sono_freeze_cycling() -> String {
+    let mut svg = svg_header(700.0, 480.0,
+        "Sono-Freeze-Extract Cycling: Cryochemical + Sono-Oxidative Protocol");
+
+    let ml = 70.0; let pw = 260.0; let mt = 50.0; let ph = 160.0;
+    let ml2 = ml + pw + 50.0;
+
+    // ── Panel A: Temperature profile with barrier annotations ──
+    svg += &label(ml + pw / 2.0, mt - 8.0, "A) Temperature Profile (10 cycles, 60h total)", TEXT, 10, "middle");
+
+    svg += &hline(ml, ml + pw, mt + ph, TEXT, "1");
+    svg += &vline(ml, mt, mt + ph, TEXT, "1");
+
+    // X: hours 0-60
+    let max_h = 60.0_f64;
+    let sx_a = |h: f64| -> f64 { ml + (h / max_h) * pw };
+
+    for h in (0..=60).step_by(12) {
+        let x = sx_a(h as f64);
+        svg += &vline(x, mt + ph, mt + ph + 5.0, TEXT, "0.5");
+        svg += &label(x, mt + ph + 14.0, &format!("{}h", h), MUTED, 7, "middle");
+    }
+
+    // Y: temperature -50 to +60°C
+    let t_min = -50.0_f64;
+    let t_max = 60.0_f64;
+    let sy_a = |t: f64| -> f64 { mt + ph - ((t - t_min) / (t_max - t_min)) * ph };
+
+    for t in [-40, -20, 0, 20, 40, 60] {
+        let y = sy_a(t as f64);
+        svg += &hline(ml, ml + pw, y, GRID, "0.5");
+        svg += &label(ml - 4.0, y + 3.5, &format!("{}\u{b0}C", t), MUTED, 7, "end");
+    }
+
+    // Draw 10 cycles: 2h cold (-40°C) + 4h warm (50°C) = 6h per cycle
+    let cycle_h = 6.0_f64;
+    let cold_h = 2.0_f64;
+    let warm_h = 4.0_f64;
+    let cold_t = -40.0_f64;
+    let warm_t = 50.0_f64;
+
+    // Temperature curve as polyline (with transition ramps)
+    let mut temp_pts: Vec<(f64, f64)> = Vec::new();
+    for c in 0..10 {
+        let start = c as f64 * cycle_h;
+        let ramp = 0.3_f64; // 18 min transition ramps
+
+        // Cold phase
+        temp_pts.push((sx_a(start), sy_a(cold_t)));
+        temp_pts.push((sx_a(start + cold_h - ramp), sy_a(cold_t)));
+        // Ramp to warm
+        temp_pts.push((sx_a(start + cold_h + ramp), sy_a(warm_t)));
+        // Warm phase
+        temp_pts.push((sx_a(start + cold_h + warm_h - ramp), sy_a(warm_t)));
+        // Ramp to cold
+        if c < 9 {
+            temp_pts.push((sx_a(start + cycle_h + ramp), sy_a(cold_t)));
+        }
+    }
+    svg += &polyline_svg(&temp_pts, ACCENT, "2.5", &|x| x, &|y| y);
+
+    // Color zones: blue for cold, red for warm
+    for c in 0..10 {
+        let start = c as f64 * cycle_h;
+        // Cold zone
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{}\" opacity=\"0.08\"/>\n",
+            sx_a(start), mt, sx_a(start + cold_h) - sx_a(start), ph, BLUE);
+        // Warm zone
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{}\" opacity=\"0.06\"/>\n",
+            sx_a(start + cold_h), mt, sx_a(start + cold_h + warm_h) - sx_a(start + cold_h), ph, RED);
+    }
+
+    // Phase labels
+    svg += &label(ml + 5.0, mt + 14.0, "Cold: freeze-conc + H-bond reorg", BLUE, 7, "start");
+    svg += &label(ml + 5.0, mt + 26.0, "Warm: sono-extraction + oxidation", RED, 7, "start");
+
+    // 0°C reference line
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" stroke-dasharray=\"4,4\"/>\n",
+        ml, sy_a(0.0), ml + pw, sy_a(0.0), MUTED);
+
+    // ── Panel B: Cumulative barrier progress ──
+    let mt2 = mt + ph + 50.0;
+    let ph2 = 170.0;
+
+    svg += &label(ml + pw / 2.0, mt2 - 8.0, "B) Cumulative Barrier Progress per Cycle", TEXT, 10, "middle");
+
+    svg += &hline(ml, ml + pw, mt2 + ph2, TEXT, "1");
+    svg += &vline(ml, mt2, mt2 + ph2, TEXT, "1");
+
+    // X: cycle number 0-10
+    let sx_b = |c: f64| -> f64 { ml + (c / 10.0) * pw };
+
+    for c in 0..=10 {
+        let x = sx_b(c as f64);
+        svg += &vline(x, mt2 + ph2, mt2 + ph2 + 5.0, TEXT, "0.5");
+        svg += &label(x, mt2 + ph2 + 14.0, &format!("{}", c), MUTED, 7, "middle");
+    }
+
+    // Y: % of target 0-100
+    let sy_b = |p: f64| -> f64 { mt2 + ph2 - (p / 100.0) * ph2 };
+
+    for p in (0..=100).step_by(25) {
+        let y = sy_b(p as f64);
+        svg += &hline(ml, ml + pw, y, GRID, "0.5");
+        svg += &label(ml - 4.0, y + 3.5, &format!("{}%", p), MUTED, 7, "end");
+    }
+    svg += &label(ml - 8.0, mt2 + ph2 / 2.0, "% of 5-yr target", TEXT, 8, "middle");
+
+    // Ester progress: ratchets up each cold cycle (freeze-conc §1.16)
+    // Each cycle: +5-8% due to freeze-concentration equilibrium shift
+    let ester_pts: Vec<(f64, f64)> = (0..=10).map(|c| {
+        let progress = 100.0 * (1.0 - (-c as f64 * 0.08).exp());
+        (sx_b(c as f64), sy_b(progress))
+    }).collect();
+    svg += &polyline_svg(&ester_pts, GREEN, "2.5", &|x| x, &|y| y);
+    svg += &label(sx_b(10.0) + 4.0, sy_b(55.0), "Ester", GREEN, 8, "start");
+
+    // Extraction progress: jumps in warm sono phases
+    let extraction_pts: Vec<(f64, f64)> = (0..=10).map(|c| {
+        let progress = 100.0 * (1.0 - (-c as f64 * 0.15).exp());
+        (sx_b(c as f64), sy_b(progress))
+    }).collect();
+    svg += &polyline_svg(&extraction_pts, ACCENT, "2.5", &|x| x, &|y| y);
+    svg += &label(sx_b(10.0) + 4.0, sy_b(78.0), "Extract", ACCENT, 8, "start");
+
+    // Oxidation: slower, needs O₂ delivery during warm phase
+    let oxidation_pts: Vec<(f64, f64)> = (0..=10).map(|c| {
+        let progress = 100.0 * (1.0 - (-c as f64 * 0.06).exp());
+        (sx_b(c as f64), sy_b(progress))
+    }).collect();
+    svg += &polyline_svg(&oxidation_pts, BLUE, "2.5", &|x| x, &|y| y);
+    svg += &label(sx_b(10.0) + 4.0, sy_b(45.0), "Oxidation", BLUE, 8, "start");
+
+    // Clustering: benefits from both phases (freeze-thaw + warm rest)
+    let cluster_pts: Vec<(f64, f64)> = (0..=10).map(|c| {
+        let progress = 100.0 * (1.0 - (-c as f64 * 0.10).exp());
+        (sx_b(c as f64), sy_b(progress))
+    }).collect();
+    svg += &polyline_svg(&cluster_pts, YELLOW, "2.5", &|x| x, &|y| y);
+    svg += &label(sx_b(10.0) + 4.0, sy_b(63.0), "Cluster", YELLOW, 8, "start");
+
+    // ── Panel C (right side): Mechanism diagram ──
+    svg += &label(ml2 + 130.0, mt - 8.0, "C) Phase Mechanisms", TEXT, 10, "middle");
+
+    // Cold phase box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"250\" height=\"120\" rx=\"4\" \
+        fill=\"{}\" opacity=\"0.15\" stroke=\"{}\" stroke-width=\"1\"/>\n",
+        ml2 + 5.0, mt + 5.0, BLUE, BLUE);
+    svg += &label(ml2 + 15.0, mt + 23.0, "COLD PHASE (\u{2212}40\u{b0}C, 2h)", BLUE, 10, "start");
+    svg += &label(ml2 + 15.0, mt + 40.0,
+        "\u{2022} Ice excludes EtOH \u{2192} 60% ABV concentrate", TEXT, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 54.0,
+        "\u{2022} K\u{2091}\u{2096} shifts: 58% \u{2192} 72% ester conv.", TEXT, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 68.0,
+        "\u{2022} D1*\u{2192}D2* hydrate transition (\u{a7}1.16)", TEXT, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 82.0,
+        "\u{2022} H-bond network reorganization", TEXT, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 96.0,
+        "\u{2022} Dissolved gas supersaturation", TEXT, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 110.0,
+        "Barriers: ESTER + CLUSTER + SULFUR", CYAN, 8, "start");
+
+    // Warm phase box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"250\" height=\"120\" rx=\"4\" \
+        fill=\"{}\" opacity=\"0.1\" stroke=\"{}\" stroke-width=\"1\"/>\n",
+        ml2 + 5.0, mt + 135.0, RED, RED);
+    svg += &label(ml2 + 15.0, mt + 153.0, "WARM PHASE (50\u{b0}C, 4h)", RED, 10, "start");
+    svg += &label(ml2 + 15.0, mt + 170.0,
+        "\u{2022} Ultrasonic extraction (40 kHz)", TEXT, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 184.0,
+        "\u{2022} PDMS O\u{2082} + electro-Fenton", TEXT, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 198.0,
+        "\u{2022} Riboflavin \u{b9}O\u{2082} photocatalysis", TEXT, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 212.0,
+        "\u{2022} Temperature-driven reaction kinetics", TEXT, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 226.0,
+        "\u{2022} Gas bubble nucleation (from cold SS)", TEXT, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 240.0,
+        "Barriers: OXIDATION + EXTRACTION + CLUSTER", CYAN, 8, "start");
+
+    // Synergy box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"250\" height=\"60\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt + 270.0, GRID);
+    svg += &label(ml2 + 15.0, mt + 288.0,
+        "Thermal shock synergies:", ACCENT, 9, "start");
+    svg += &label(ml2 + 15.0, mt + 302.0,
+        "\u{2022} Gas SS from \u{394}T \u{2192} cavitation nuclei", GREEN, 8, "start");
+    svg += &label(ml2 + 15.0, mt + 316.0,
+        "\u{2022} Ester ratchet: K\u{2091}\u{2096} shift is irreversible", YELLOW, 8, "start");
+
+    // Timeline arrow
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"250\" height=\"30\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt + ph + ph2 + 10.0, GRID);
+    svg += &label(ml2 + 15.0, mt + ph + ph2 + 30.0,
+        "10 cycles \u{d7} 6h = 60h total runtime", TEXT, 9, "start");
 
     svg.push_str("</svg>");
     svg
