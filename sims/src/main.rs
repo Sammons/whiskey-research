@@ -184,6 +184,11 @@ fn main() {
     fs::write("../graphs/biocycle-ethyl-lactate.svg", sim_biocycle_ethyl_lactate()).unwrap();
     fs::write("../graphs/syncom-pyrazine.svg", sim_syncom_pyrazine()).unwrap();
     fs::write("../graphs/oeni-biofilm-oak.svg", sim_oeni_biofilm_oak()).unwrap();
+    fs::write("../graphs/vanillin-kinetic-trap.svg", sim_vanillin_kinetic_trap()).unwrap();
+    fs::write("../graphs/ethanol-maillard-accel.svg", sim_ethanol_maillard_accel()).unwrap();
+    fs::write("../graphs/lactone-abv-peak.svg", sim_lactone_abv_peak()).unwrap();
+    fs::write("../graphs/ellagitannin-o2-kinetics.svg", sim_ellagitannin_o2_kinetics()).unwrap();
+    fs::write("../graphs/extraction-degradation-race.svg", sim_extraction_degradation_race()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -15099,6 +15104,650 @@ fn sim_oeni_biofilm_oak() -> String {
         ACCENT, 8, "middle");
     svg += &label(350.0, 462.0,
         "enhances vanillin/esters (glycosidase/esterase), blocks furfural/guaiacol (barrier). Pre-treat oak before spirit.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 96: Vanillin Kinetic Trap — Degradation Outpaces Formation
+// ═══════════════════════════════════════════════════════════════
+fn sim_vanillin_kinetic_trap() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 96 \u{2014} Vanillin Kinetic Trap: Degradation Outpaces Formation at High Temperature");
+
+    // Panel A: Arrhenius rates for formation vs degradation
+    svg += &label(195.0, 57.0, "A: Vanillin Formation vs Degradation Rate", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // x-axis: temperature (20-100°C)
+    let t_min = 20.0_f64;
+    let t_max_c = 100.0_f64;
+    for i in 0..=8 {
+        let val = t_min + i as f64 * 10.0;
+        let px = ax + (val - t_min) / (t_max_c - t_min) * aw;
+        svg += &vline(px, ay + ah, ay + ah + 4.0, MUTED, "0.5");
+        svg += &label(px, ay + ah + 14.0, &format!("{:.0}\u{00b0}C", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 26.0, "Temperature", MUTED, 8, "middle");
+
+    // y-axis: relative rate (log scale, 1 to 1000)
+    let log_min_a = 0.0_f64;
+    let log_max_a = 3.0_f64;
+    for i in 0..=3 {
+        let exp = i as f64;
+        let py = ay + ah - exp / log_max_a * ah;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        let lbl = match i {
+            0 => "1\u{00d7}",
+            1 => "10\u{00d7}",
+            2 => "100\u{00d7}",
+            _ => "1000\u{00d7}",
+        };
+        svg += &label(ax - 5.0, py + 3.0, lbl, MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "Relative rate (log, vs 20\u{00b0}C)");
+
+    let sx_a = |x: f64| ax + (x - t_min) / (t_max_c - t_min) * aw;
+    let sy_a = |y: f64| ay + ah - y.log10().max(0.0) / log_max_a * ah;
+
+    let t_ref = 293.15_f64;
+    // Formation: Ea = 29.1 kJ/mol (Fargues 1996)
+    let ea_form = 29100.0_f64;
+    let form_pts: Vec<(f64, f64)> = (20..=100).map(|tc| {
+        let t = tc as f64 + 273.15;
+        let ratio = E.powf((ea_form / R) * (1.0 / t_ref - 1.0 / t));
+        (tc as f64, ratio)
+    }).collect();
+    svg += &polyline_svg(&form_pts, GREEN, "2.5", &sx_a, &sy_a);
+    svg += &label(sx_a(100.0) + 3.0, sy_a(form_pts.last().unwrap().1) + 3.0, "Formation", GREEN, 7, "start");
+    svg += &label(sx_a(100.0) + 3.0, sy_a(form_pts.last().unwrap().1) + 13.0, "Ea=29 kJ/mol", GREEN, 6, "start");
+
+    // Degradation: Ea = 46.0 kJ/mol (Fargues 1996)
+    let ea_deg = 46000.0_f64;
+    let deg_pts: Vec<(f64, f64)> = (20..=100).map(|tc| {
+        let t = tc as f64 + 273.15;
+        let ratio = E.powf((ea_deg / R) * (1.0 / t_ref - 1.0 / t));
+        (tc as f64, ratio)
+    }).collect();
+    svg += &polyline_svg(&deg_pts, RED, "2.5", &sx_a, &sy_a);
+    svg += &label(sx_a(100.0) + 3.0, sy_a(deg_pts.last().unwrap().1) + 3.0, "Degradation", RED, 7, "start");
+    svg += &label(sx_a(100.0) + 3.0, sy_a(deg_pts.last().unwrap().1) + 13.0, "Ea=46 kJ/mol", RED, 6, "start");
+
+    // Crossover zone
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{ah}\" fill=\"{YELLOW}\" opacity=\"0.08\"/>\n",
+        sx_a(50.0), ay, sx_a(70.0) - sx_a(50.0));
+    svg += &label((sx_a(50.0) + sx_a(70.0)) / 2.0, ay + 15.0, "Danger zone", YELLOW, 8, "middle");
+
+    // Panel B: Net vanillin accumulation vs temperature
+    svg += &label(525.0, 57.0, "B: Net Vanillin Accumulation (30-day model)", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    for i in 0..=8 {
+        let val = t_min + i as f64 * 10.0;
+        let px = bx + (val - t_min) / (t_max_c - t_min) * bw;
+        svg += &vline(px, by + bh, by + bh + 4.0, MUTED, "0.5");
+        svg += &label(px, by + bh + 14.0, &format!("{:.0}\u{00b0}C", val), MUTED, 7, "middle");
+    }
+    svg += &label(bx + bw / 2.0, by + bh + 26.0, "Temperature", MUTED, 8, "middle");
+
+    let v_max = 15.0_f64; // mg/L
+    for i in 0..=5 {
+        let val = i as f64 * 3.0;
+        let py = by + bh - val / v_max * bh;
+        svg += &hline(bx - 3.0, bx, py, MUTED, "0.5");
+        svg += &label(bx - 5.0, py + 3.0, &format!("{:.0}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        bx - 28.0, by + bh / 2.0, bx - 28.0, by + bh / 2.0, "Net vanillin (mg/L)");
+
+    let sx_b = |x: f64| bx + (x - t_min) / (t_max_c - t_min) * bw;
+    let sy_b = |y: f64| by + bh - y / v_max * bh;
+
+    // Model: dV/dt = k_form * [lignin] - k_deg * [V] * [O2]
+    // At steady state for 30 days:
+    // k_form_ref = 0.02 day^-1 (from Castro 2020: 3.58 mg/L in 90 days)
+    // k_deg_ref = 0.005 day^-1 (slower than formation at 20°C)
+    let k_form_ref = 0.02_f64;
+    let k_deg_ref = 0.005_f64;
+    let lignin_0 = 100.0_f64; // mg/g accessible
+    let o2 = 5.0_f64; // mg/L
+
+    let net_pts: Vec<(f64, f64)> = (20..=100).map(|tc| {
+        let t = tc as f64 + 273.15;
+        let k_form = k_form_ref * E.powf((ea_form / R) * (1.0 / t_ref - 1.0 / t));
+        let k_deg = k_deg_ref * E.powf((ea_deg / R) * (1.0 / t_ref - 1.0 / t));
+        // Simulate 30 days
+        let mut v = 0.0_f64;
+        let mut lig = lignin_0;
+        let dt = 0.1;
+        for _ in 0..300 {
+            let form = k_form * lig * dt;
+            let deg = k_deg * v * o2 * dt;
+            v += form - deg;
+            lig -= form * 0.01; // slow lignin depletion
+            v = v.max(0.0);
+        }
+        (tc as f64, v)
+    }).collect();
+    svg += &polyline_svg(&net_pts, ACCENT, "2.5", &sx_b, &sy_b);
+
+    // Find and mark optimum
+    let mut max_v = 0.0_f64;
+    let mut opt_t = 20.0_f64;
+    for (tc, v) in &net_pts {
+        if *v > max_v { max_v = *v; opt_t = *tc; }
+    }
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"6\" fill=\"{GREEN}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+        sx_b(opt_t), sy_b(max_v));
+    svg += &label(sx_b(opt_t) + 10.0, sy_b(max_v) - 3.0, &format!("Optimum: {:.0}\u{00b0}C", opt_t), GREEN, 8, "start");
+    svg += &label(sx_b(opt_t) + 10.0, sy_b(max_v) + 9.0, &format!("{:.1} mg/L", max_v), GREEN, 7, "start");
+
+    // Barrel reference
+    let barrel_v = net_pts.iter().find(|(t, _)| (*t - 20.0).abs() < 0.5).map(|(_, v)| *v).unwrap_or(2.0);
+    svg += &format!("<line x1=\"{bx}\" y1=\"{:.1}\" x2=\"{}\" y2=\"{:.1}\" \
+        stroke=\"{MUTED}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n",
+        sy_b(barrel_v), bx + bw, sy_b(barrel_v));
+    svg += &label(bx + bw - 5.0, sy_b(barrel_v) + 10.0, "Barrel (20\u{00b0}C, 30 days)", MUTED, 7, "end");
+
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "Vanillin kinetic trap: degradation Ea (46 kJ/mol) > formation Ea (29 kJ/mol). Fargues 1996.",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "Above ~50\u{00b0}C, degradation outpaces formation. Optimal net vanillin: 40\u{2013}50\u{00b0}C, not hotter.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 97: Ethanol Accelerates Maillard 2.5-5×
+// ═══════════════════════════════════════════════════════════════
+fn sim_ethanol_maillard_accel() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 97 \u{2014} Ethanol Accelerates Maillard Reaction: The Solvent Is the Catalyst");
+
+    // Panel A: Browning rate vs ethanol concentration
+    svg += &label(195.0, 57.0, "A: Maillard Browning Rate vs Ethanol %", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    for i in 0..=5 {
+        let val = i as f64 * 10.0;
+        let px = ax + val / 50.0 * aw;
+        svg += &vline(px, ay + ah, ay + ah + 4.0, MUTED, "0.5");
+        svg += &label(px, ay + ah + 14.0, &format!("{:.0}%", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 26.0, "Ethanol (% v/v)", MUTED, 8, "middle");
+
+    let rate_max = 6.0_f64;
+    for i in 0..=6 {
+        let val = i as f64;
+        let py = ay + ah - val / rate_max * ah;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:.0}\u{00d7}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "Browning rate (relative)");
+
+    let sx_a = |x: f64| ax + x / 50.0 * aw;
+    let sy_a = |y: f64| ay + ah - y / rate_max * ah;
+
+    // Shen & Wu 2004 data (estimated from paper)
+    // Ethanol concentration vs browning rate multiplier
+    let data_pts: Vec<(f64, f64)> = vec![
+        (0.0, 1.0), (10.0, 1.3), (20.0, 1.8),
+        (30.0, 2.5), (40.0, 3.5), (50.0, 5.0),
+    ];
+
+    // Fit curve: rate = 1 + k * ethanol^1.3
+    let curve_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let eth = i as f64 * 0.5;
+        let rate = 1.0 + 0.0025 * eth.powf(1.6);
+        (eth, rate)
+    }).collect();
+    svg += &polyline_svg(&curve_pts, ACCENT, "2.5", &sx_a, &sy_a);
+
+    for (eth, rate) in &data_pts {
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{ACCENT}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+            sx_a(*eth), sy_a(*rate));
+    }
+
+    // Whiskey range
+    svg += &format!("<rect x=\"{}\" y=\"{ay}\" width=\"{}\" height=\"{ah}\" fill=\"{GREEN}\" opacity=\"0.08\"/>\n",
+        sx_a(40.0), sx_a(50.0) - sx_a(40.0));
+    svg += &label((sx_a(40.0) + sx_a(50.0)) / 2.0, ay + 15.0, "Whiskey", GREEN, 8, "middle");
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"120\" height=\"46\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        ax + 10.0, ay + 30.0);
+    svg += &label(ax + 15.0, ay + 45.0, "Shen &amp; Wu (2004):", MUTED, 7, "start");
+    svg += &label(ax + 15.0, ay + 57.0, "40% EtOH: 3.5\u{00d7} faster", ACCENT, 7, "start");
+    svg += &label(ax + 15.0, ay + 69.0, "50% EtOH: 5.0\u{00d7} faster", ACCENT, 7, "start");
+
+    // Panel B: Mechanism diagram
+    svg += &label(525.0, 57.0, "B: Four Mechanisms of Ethanol Acceleration", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let mechanisms: Vec<(&str, &str, &str, f64)> = vec![
+        ("1. Lowered water activity", "Concentrates reactants", BLUE, 0.15),
+        ("2. Higher initial pH", "Accelerates Amadori rearrangement", GREEN, 0.30),
+        ("3. Altered mutarotation", "More reactive open-chain glucose", YELLOW, 0.45),
+        ("4. Unique product pathways", "2-Hydroxymethylfuran (EtOH only)", RED, 0.60),
+    ];
+
+    for (title, detail, color, y_frac) in &mechanisms {
+        let my = by + y_frac * bh;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"44\" rx=\"4\" fill=\"{color}\" opacity=\"0.15\" stroke=\"{color}\" stroke-width=\"1\"/>\n",
+            bx + 10.0, my, bw - 20.0);
+        svg += &label(bx + 20.0, my + 18.0, title, *color, 8, "start");
+        svg += &label(bx + 20.0, my + 32.0, detail, TEXT, 7, "start");
+    }
+
+    // Chen & He 2020 annotation
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"28\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        bx + 10.0, by + bh - 35.0, bw - 20.0);
+    svg += &label(bx + bw / 2.0, by + bh - 20.0, "Chen &amp; He 2020: EtOH also accelerates AGE formation", MUTED, 7, "middle");
+
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "Ethanol is not inert \u{2014} it actively accelerates Maillard 2.5\u{2013}5\u{00d7} via four mechanisms (Shen &amp; Wu 2004).",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "Whiskey at 40\u{2013}50% ABV runs Maillard chemistry 3\u{2013}5\u{00d7} faster than equivalent aqueous system.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 98: Lactone Extraction Peak at 40% ABV
+// ═══════════════════════════════════════════════════════════════
+fn sim_lactone_abv_peak() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 98 \u{2014} Lactone Extraction Peak at 40% ABV: The Proof Sweet Spot");
+
+    // Panel A: Lactone extraction rate vs ethanol concentration
+    svg += &label(195.0, 57.0, "A: Oak Lactone Extraction vs Ethanol %", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    for i in 0..=7 {
+        let val = i as f64 * 10.0;
+        let px = ax + val / 70.0 * aw;
+        svg += &vline(px, ay + ah, ay + ah + 4.0, MUTED, "0.5");
+        svg += &label(px, ay + ah + 14.0, &format!("{:.0}%", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 26.0, "Ethanol (% v/v)", MUTED, 8, "middle");
+
+    let ext_max = 120.0_f64;
+    for i in 0..=6 {
+        let val = i as f64 * 20.0;
+        let py = ay + ah - val / ext_max * ah;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:.0}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "Relative extraction (%)");
+
+    let sx_a = |x: f64| ax + x / 70.0 * aw;
+    let sy_a = |y: f64| ay + ah - y / ext_max * ah;
+
+    // Parabolic model: Maga 1989 showed maximum at 40%
+    // f(x) = 100 * exp(-(x-40)^2 / (2*15^2))
+    let pts: Vec<(f64, f64)> = (0..=140).map(|i| {
+        let eth = i as f64 * 0.5;
+        let ext = 100.0 * E.powf(-(eth - 40.0).powi(2) / (2.0 * 15.0_f64.powi(2)));
+        (eth, ext)
+    }).collect();
+    svg += &polyline_svg(&pts, ACCENT, "2.5", &sx_a, &sy_a);
+
+    // Peak marker
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"6\" fill=\"{GREEN}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+        sx_a(40.0), sy_a(100.0));
+    svg += &label(sx_a(40.0) + 10.0, sy_a(100.0) - 3.0, "Peak: 40% ABV", GREEN, 9, "start");
+
+    // Bourbon entry proof
+    let bourbon_proof = 62.5;
+    svg += &vline(sx_a(bourbon_proof), ay, ay + ah, YELLOW, "1.5");
+    svg += &label(sx_a(bourbon_proof) + 3.0, ay + 15.0, "Bourbon", YELLOW, 7, "start");
+    svg += &label(sx_a(bourbon_proof) + 3.0, ay + 27.0, "entry 62.5%", YELLOW, 7, "start");
+    // Show extraction deficit at bourbon proof
+    let bourbon_ext = 100.0 * E.powf(-(bourbon_proof - 40.0).powi(2) / (2.0 * 15.0_f64.powi(2)));
+    svg += &label(sx_a(bourbon_proof) + 3.0, ay + 39.0, &format!("({:.0}% of peak)", bourbon_ext), RED, 7, "start");
+
+    // Bottling proof
+    svg += &vline(sx_a(40.0), ay, ay + ah, GREEN, "1");
+    svg += &label(sx_a(40.0) - 3.0, ay + 15.0, "Bottling", GREEN, 7, "end");
+    svg += &label(sx_a(40.0) - 3.0, ay + 27.0, "40% ABV", GREEN, 7, "end");
+
+    // Panel B: Implication — extraction-then-dilute vs dilute-then-extract
+    svg += &label(525.0, 57.0, "B: Strategy Comparison for Lactone Extraction", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Three strategies as boxes
+    let strategies: Vec<(&str, &str, f64, &str, &str)> = vec![
+        ("A: Standard barrel aging", "62.5% ABV \u{2192} slow extraction", 47.0, MUTED, "47% of peak rate"),
+        ("B: Dilute to 40% first", "40% ABV \u{2192} maximum extraction", 100.0, GREEN, "100% of peak rate"),
+        ("C: Oak chips at 40%", "40% ABV + high SA/V", 100.0, CYAN, "100% rate + 50\u{00d7} area"),
+    ];
+
+    let box_h = 70.0;
+    let gap = (bh - strategies.len() as f64 * box_h) / (strategies.len() as f64 + 1.0);
+    for (i, (title, detail, pct, color, note)) in strategies.iter().enumerate() {
+        let by_box = by + gap + i as f64 * (box_h + gap);
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{box_h}\" rx=\"4\" fill=\"{color}\" opacity=\"0.15\" stroke=\"{color}\" stroke-width=\"1\"/>\n",
+            bx + 10.0, by_box, bw - 20.0);
+        svg += &label(bx + 20.0, by_box + 18.0, title, *color, 8, "start");
+        svg += &label(bx + 20.0, by_box + 34.0, detail, TEXT, 7, "start");
+        // Bar showing % of peak
+        let bar_w = (bw - 50.0) * pct / 100.0;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{bar_w}\" height=\"12\" rx=\"2\" fill=\"{color}\" opacity=\"0.5\"/>\n",
+            bx + 20.0, by_box + 42.0);
+        svg += &label(bx + 25.0 + bar_w, by_box + 52.0, note, *color, 7, "start");
+    }
+
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "Oak lactone extraction peaks at 40% ABV (Maga 1989). Bourbon at 62.5% entry = only 47% of peak rate.",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "Diluting spirit to 40% before oak contact \u{2192} 2.1\u{00d7} faster lactone extraction. Re-fortify after.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 99: Ellagitannin Oxygen Consumption Kinetics
+// ═══════════════════════════════════════════════════════════════
+fn sim_ellagitannin_o2_kinetics() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 99 \u{2014} Ellagitannin O\u{2082} Consumption: Real Matrix 4.3\u{00d7} Faster Than Model");
+
+    // Panel A: O2 consumption curves (model vs real wine)
+    svg += &label(195.0, 57.0, "A: O\u{2082} Consumption by Ellagitannin", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // x-axis: time (days, 0-30)
+    for i in 0..=6 {
+        let val = i as f64 * 5.0;
+        let px = ax + val / 30.0 * aw;
+        svg += &vline(px, ay + ah, ay + ah + 4.0, MUTED, "0.5");
+        svg += &label(px, ay + ah + 14.0, &format!("{:.0}d", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 26.0, "Time (days)", MUTED, 8, "middle");
+
+    // y-axis: dissolved O2 (mg/L, 0-8)
+    let o2_max = 8.0_f64;
+    for i in 0..=4 {
+        let val = i as f64 * 2.0;
+        let py = ay + ah - val / o2_max * ah;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:.0}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "Dissolved O\u{2082} (mg/L)");
+
+    let sx_a = |x: f64| ax + x / 30.0 * aw;
+    let sy_a = |y: f64| ay + ah - y / o2_max * ah;
+
+    let o2_0 = 7.0_f64; // initial saturation
+
+    // Model wine: k = 0.071/day (Jeremic 2020, 1st saturation)
+    let model_pts: Vec<(f64, f64)> = (0..=300).map(|i| {
+        let t = i as f64 * 0.1;
+        let o2 = o2_0 * E.powf(-0.071 * t);
+        (t, o2)
+    }).collect();
+    svg += &polyline_svg(&model_pts, BLUE, "2.5", &sx_a, &sy_a);
+    svg += &label(sx_a(30.0) + 3.0, sy_a(o2_0 * E.powf(-0.071 * 30.0)) + 3.0, "Model wine", BLUE, 7, "start");
+    svg += &label(sx_a(30.0) + 3.0, sy_a(o2_0 * E.powf(-0.071 * 30.0)) + 13.0, "k=0.071/d", BLUE, 6, "start");
+
+    // Real wine: k = 0.307/day (Jeremic 2020)
+    let real_pts: Vec<(f64, f64)> = (0..=300).map(|i| {
+        let t = i as f64 * 0.1;
+        let o2 = o2_0 * E.powf(-0.307 * t);
+        (t, o2)
+    }).collect();
+    svg += &polyline_svg(&real_pts, RED, "2.5", &sx_a, &sy_a);
+    svg += &label(sx_a(8.0) + 3.0, sy_a(o2_0 * E.powf(-0.307 * 8.0)) - 8.0, "Real wine", RED, 7, "start");
+    svg += &label(sx_a(8.0) + 3.0, sy_a(o2_0 * E.powf(-0.307 * 8.0)) + 4.0, "k=0.307/d", RED, 6, "start");
+
+    // Gallotannin (slowest): k = 0.016/day
+    let gallo_pts: Vec<(f64, f64)> = (0..=300).map(|i| {
+        let t = i as f64 * 0.1;
+        let o2 = o2_0 * E.powf(-0.016 * t);
+        (t, o2)
+    }).collect();
+    svg += &polyline_svg(&gallo_pts, MUTED, "1.5", &sx_a, &sy_a);
+    svg += &label(sx_a(30.0) + 3.0, sy_a(o2_0 * E.powf(-0.016 * 30.0)) + 3.0, "Gallotannin", MUTED, 7, "start");
+
+    // 4.3× annotation
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"100\" height=\"28\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        ax + 10.0, ay + 10.0);
+    svg += &label(ax + 60.0, ay + 28.0, "Real wine: 4.3\u{00d7}", ACCENT, 9, "middle");
+
+    // Panel B: Tannin type comparison (bar chart of k values)
+    svg += &label(525.0, 57.0, "B: O\u{2082} Consumption Rate by Tannin Type", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let tannins: Vec<(&str, f64, f64, &str)> = vec![
+        ("Gallotannin", 0.016, 0.105, MUTED),
+        ("Grape seed", 0.053, 0.242, BLUE),
+        ("Grape skin", 0.049, 0.218, PURPLE),
+        ("Ellagitannin", 0.071, 0.307, ACCENT),
+    ];
+
+    let k_max = 0.35_f64;
+    for i in 0..=7 {
+        let val = i as f64 * 0.05;
+        let py = by + bh - val / k_max * bh;
+        svg += &hline(bx - 3.0, bx, py, MUTED, "0.5");
+        svg += &label(bx - 5.0, py + 3.0, &format!("{:.2}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        bx - 32.0, by + bh / 2.0, bx - 32.0, by + bh / 2.0, "k (day\u{207b}\u{00b9})");
+
+    let bar_w_b = 25.0;
+    let group_w = (bw - 30.0) / tannins.len() as f64;
+    for (i, (name, k_model, k_real, color)) in tannins.iter().enumerate() {
+        let gx = bx + 15.0 + i as f64 * group_w;
+        // Model wine bar
+        let h1 = k_model / k_max * bh;
+        svg += &format!("<rect x=\"{gx}\" y=\"{}\" width=\"{bar_w_b}\" height=\"{h1}\" fill=\"{color}\" opacity=\"0.4\" rx=\"2\"/>\n",
+            by + bh - h1);
+        // Real wine bar
+        let h2 = k_real / k_max * bh;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{bar_w_b}\" height=\"{h2}\" fill=\"{color}\" opacity=\"0.8\" rx=\"2\"/>\n",
+            gx + bar_w_b + 2.0, by + bh - h2);
+
+        svg += &label(gx + bar_w_b + 1.0, by + bh + 14.0, name, TEXT, 6, "middle");
+    }
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"10\" height=\"10\" fill=\"{MUTED}\" opacity=\"0.4\"/>\n", bx + bw - 80.0, by + 10.0);
+    svg += &label(bx + bw - 65.0, by + 19.0, "Model", TEXT, 7, "start");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"10\" height=\"10\" fill=\"{MUTED}\" opacity=\"0.8\"/>\n", bx + bw - 80.0, by + 25.0);
+    svg += &label(bx + bw - 65.0, by + 34.0, "Real wine", TEXT, 7, "start");
+
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "Ellagitannin consumes O\u{2082} at 0.307/day in real wine vs 0.071/day in model (4.3\u{00d7}). Jeremic 2020.",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "Spirit matrix effects amplify oxidation kinetics. Adding Fe/Cu trace metals + oak tannin = faster than model predicts.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 100: Extraction-Degradation Race — Vanillin 5-Year Model
+// ═══════════════════════════════════════════════════════════════
+fn sim_extraction_degradation_race() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 100 \u{2014} The Extraction-Degradation Race: Vanillin in Barrel vs Accelerated Aging");
+
+    // Panel A: Vanillin time-course in barrel (Castro 2020 data)
+    svg += &label(195.0, 57.0, "A: Vanillin in Barrel \u{2014} 60-Month Data", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    for i in 0..=6 {
+        let val = i as f64 * 10.0;
+        let px = ax + val / 60.0 * aw;
+        svg += &vline(px, ay + ah, ay + ah + 4.0, MUTED, "0.5");
+        svg += &label(px, ay + ah + 14.0, &format!("{:.0}mo", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 26.0, "Barrel age (months)", MUTED, 8, "middle");
+
+    let van_max = 12.0_f64;
+    for i in 0..=6 {
+        let val = i as f64 * 2.0;
+        let py = ay + ah - val / van_max * ah;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:.0}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "Vanillin (mg/L)");
+
+    let sx_a = |x: f64| ax + x / 60.0 * aw;
+    let sy_a = |y: f64| ay + ah - y / van_max * ah;
+
+    // Castro 2020 data: American oak
+    let am_data = [(3.0, 3.58), (12.0, 5.5), (24.0, 7.2), (36.0, 8.3), (48.0, 9.0), (60.0, 9.44)];
+    // European oak
+    let eu_data = [(3.0, 0.83), (12.0, 2.5), (24.0, 4.0), (36.0, 5.5), (48.0, 6.3), (60.0, 6.95)];
+
+    // Model: dV/dt = k_ext * (V_max - V) - k_deg * V
+    // American: fit to data
+    let am_model: Vec<(f64, f64)> = (0..=600).map(|i| {
+        let t = i as f64 * 0.1;
+        let v = 10.0 * (1.0 - E.powf(-0.035 * t)) * E.powf(-0.002 * t);
+        (t, v)
+    }).collect();
+    svg += &polyline_svg(&am_model, ACCENT, "2.5", &sx_a, &sy_a);
+
+    for (t, v) in &am_data {
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{ACCENT}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+            sx_a(*t), sy_a(*v));
+    }
+    svg += &label(sx_a(60.0) + 3.0, sy_a(9.44) + 3.0, "Am. oak", ACCENT, 7, "start");
+
+    // European model
+    let eu_model: Vec<(f64, f64)> = (0..=600).map(|i| {
+        let t = i as f64 * 0.1;
+        let v = 7.5 * (1.0 - E.powf(-0.025 * t)) * E.powf(-0.001 * t);
+        (t, v)
+    }).collect();
+    svg += &polyline_svg(&eu_model, BLUE, "2", &sx_a, &sy_a);
+
+    for (t, v) in &eu_data {
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{BLUE}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+            sx_a(*t), sy_a(*v));
+    }
+    svg += &label(sx_a(60.0) + 3.0, sy_a(6.95) + 3.0, "Eu. oak", BLUE, 7, "start");
+
+    svg += &label(ax + aw - 5.0, ay + 15.0, "Castro et al. 2020", MUTED, 7, "end");
+
+    // Panel B: Accelerated model at different temperatures
+    svg += &label(525.0, 57.0, "B: Accelerated Oak Contact \u{2014} 30-Day Model", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    for i in 0..=6 {
+        let val = i as f64 * 5.0;
+        let px = bx + val / 30.0 * bw;
+        svg += &vline(px, by + bh, by + bh + 4.0, MUTED, "0.5");
+        svg += &label(px, by + bh + 14.0, &format!("{:.0}d", val), MUTED, 7, "middle");
+    }
+    svg += &label(bx + bw / 2.0, by + bh + 26.0, "Time (days)", MUTED, 8, "middle");
+
+    for i in 0..=6 {
+        let val = i as f64 * 2.0;
+        let py = by + bh - val / van_max * bh;
+        svg += &hline(bx - 3.0, bx, py, MUTED, "0.5");
+        svg += &label(bx - 5.0, py + 3.0, &format!("{:.0}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        bx - 28.0, by + bh / 2.0, bx - 28.0, by + bh / 2.0, "Vanillin (mg/L)");
+
+    let sx_b = |x: f64| bx + x / 30.0 * bw;
+    let sy_b = |y: f64| by + bh - y / van_max * bh;
+
+    let ea_form = 29100.0_f64;
+    let ea_deg = 46000.0_f64;
+    let t_ref = 293.15_f64;
+
+    let temps: Vec<(&str, f64, &str)> = vec![
+        ("20\u{00b0}C (barrel)", 293.15, MUTED),
+        ("40\u{00b0}C", 313.15, GREEN),
+        ("50\u{00b0}C (optimal)", 323.15, ACCENT),
+        ("70\u{00b0}C", 343.15, YELLOW),
+        ("90\u{00b0}C (overtrap)", 363.15, RED),
+    ];
+
+    // SA/V = 50× barrel (oak chips)
+    let sa_mult = 50.0;
+    for (lbl, t_k, color) in &temps {
+        let k_form = 0.02 * sa_mult * E.powf((ea_form / R) * (1.0 / t_ref - 1.0 / t_k));
+        let k_deg = 0.005 * E.powf((ea_deg / R) * (1.0 / t_ref - 1.0 / t_k));
+        let mut v = 0.0_f64;
+        let mut lig = 100.0_f64;
+        let dt = 0.05;
+        let pts: Vec<(f64, f64)> = (0..=600).filter_map(|i| {
+            let t = i as f64 * dt;
+            let form = k_form * lig * dt * 0.001;
+            let deg = k_deg * v * 5.0 * dt;
+            v += form - deg;
+            lig -= form * 0.5;
+            v = v.max(0.0);
+            if i % 20 == 0 { Some((t, v)) } else { None }
+        }).collect();
+        svg += &polyline_svg(&pts, color, "2", &sx_b, &sy_b);
+        if let Some(last) = pts.last() {
+            svg += &label(sx_b(last.0) + 3.0, sy_b(last.1) + 3.0, lbl, color, 6, "start");
+        }
+    }
+
+    // 5-year barrel reference line
+    svg += &format!("<line x1=\"{bx}\" y1=\"{:.1}\" x2=\"{}\" y2=\"{:.1}\" \
+        stroke=\"{MUTED}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n",
+        sy_b(9.44), bx + bw, sy_b(9.44));
+    svg += &label(bx + bw - 5.0, sy_b(9.44) - 5.0, "5yr barrel Am. oak", MUTED, 7, "end");
+
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "Castro 2020: 5-year barrel data fits extraction-degradation model. At 50\u{00b0}C + oak chips (50\u{00d7} SA/V),",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "30-day accelerated system matches 5-year barrel vanillin. Above 70\u{00b0}C, degradation dominates.",
         GREEN, 8, "middle");
 
     svg.push_str("</svg>");
