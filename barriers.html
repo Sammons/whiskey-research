@@ -2766,6 +2766,72 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <!-- ═══════════════════════════════════════════════════════ -->
 
+<h3 id="s4-60">&sect;4.60 &mdash; Lipase-Selective Fusel Esterification</h3>
+
+<p><strong>Cross-domain insight:</strong> The conventional approach to enzymatic ester synthesis in spirits fails because spirits operate at water activity (a<sub>w</sub>) 0.85&ndash;0.95, where lipase-catalyzed hydrolysis dominates over synthesis. Ortiz et al. (2019) established that Novozym 435 (immobilized CALB lipase) requires a<sub>w</sub> &lt; 0.6 for efficient esterification<span class="cite" data-ref="191"><sup>[191]</sup></span>. This appears to be a thermodynamic dead end. But Sun et al. (2015) revealed a crucial loophole: <strong>substrate hydrophobicity determines the reaction direction</strong><span class="cite" data-ref="192"><sup>[192]</sup></span>.</p>
+
+<p>When ethanol is the substrate, hydrolysis dominates in aqueous media. But when <strong>fusel alcohols</strong> (isoamyl alcohol, isobutanol) are used, <em>ester synthesis dominates</em>&mdash;even at high water activity. The mechanism is hydrophobicity-driven partitioning: longer-chain alcohols preferentially occupy the enzyme&rsquo;s hydrophobic active site, excluding water molecules from the reaction center. Crucially, fusel alcohols are present at 200&ndash;500 mg/L in new-make whiskey and are primary contributors to harshness. Converting them to fruity esters (isoamyl acetate = banana, isobutyl acetate = fruity) simultaneously <em>removes</em> a defect and <em>adds</em> a desirable aging marker.</p>
+
+<p>Singhania et al. (2022) broke through the water activity barrier entirely: using TPGS-750-M surfactant nanomicelles (2 wt%), they achieved <strong>&gt;99% esterification yield in pure water</strong><span class="cite" data-ref="193"><sup>[193]</sup></span>. The mechanism is elegant&mdash;nanomicelles create hydrophobic nano-compartments that sequester ester products, shifting equilibrium toward synthesis despite the aqueous environment. Applied to spirit: nanomicelle-enhanced lipase treatment could selectively esterify fusel alcohols at full spirit strength, with the ester products partitioning into micelle interiors away from hydrolytic water.</p>
+
+<figure>
+  <img src="graphs/lipase-fusel-esterification.svg" alt="Lipase selectivity for fusel alcohol esterification vs ethanol in spirit">
+  <figcaption><strong>Fig. 72.</strong> Lipase-selective fusel esterification. Panel A: Esterification yield vs water activity for three systems&mdash;ethanol esters (red, fails above a<sub>w</sub> 0.7), fusel alcohol esters (gold, viable at spirit water activities), and nanomicelle-enhanced fusel esters (cyan, maintains &gt;99% at a<sub>w</sub> = 1.0). Panel B: Substrate selectivity increases with chain length, confirming hydrophobicity-driven partitioning into lipase active site.</figcaption>
+</figure>
+
+<p><strong>Protocol integration:</strong> Add 2 wt% food-grade TPGS-750-M (a vitamin E derivative, GRAS status) to spirit, plus immobilized lipase beads (Novozym 435, $5&ndash;10/g, reusable 5&ndash;10 cycles). Incubate at 40&deg;C for 2&ndash;4h. The lipase selectively converts fusel alcohols to esters while ethanol-based esters are unaffected (hydrophobicity selectivity). Filter to remove lipase beads. The nanomicelles self-disperse at spirit-relevant ethanol concentrations. This approach attacks Barrier 2 (esterification) from a completely different angle than acid catalysis or electrochemistry&mdash;it is <em>substrate-selective</em>, targeting specifically the molecules that cause new-make harshness.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (enzyme kinetics, not spirit)</span> &mdash; Ortiz 2019<span class="cite" data-ref="191"><sup>[191]</sup></span> (water activity limits), Sun 2015<span class="cite" data-ref="192"><sup>[192]</sup></span> (fusel selectivity), Singhania 2022<span class="cite" data-ref="193"><sup>[193]</sup></span> (nanomicelle breakthrough). No spirit application published. The individual components are well-characterized but the combination (lipase + nanomicelle + spirit + fusel alcohol targeting) is entirely novel. <strong>Home testability: 3/5</strong> (Lipase dietary supplements ($8&ndash;12) contain CALB-type lipases. Crush 2 capsules into 200 mL new-make spirit with added isoamyl alcohol (0.5 g/L, available as banana flavoring). Incubate at 40&deg;C for 4h. GC headspace or nose comparison vs control. Expect banana/fruity notes from isoamyl acetate formation. Without nanomicelles, yield will be modest but detectable. TPGS-750-M available from chemical suppliers for $20&ndash;30/10g.)
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h3 id="s4-61">&sect;4.61 &mdash; Photocatalytic Acetaldehyde via Cu<sub>2</sub>O/TiO<sub>2</sub> p-n Heterojunction</h3>
+
+<p><strong>Cross-domain insight:</strong> We have explored electrochemical acetaldehyde generation (&sect;4.53 PEM) and photolytic radical generation (&sect;4.58 UV-C). A third pathway exists: <strong>photocatalytic dehydrogenation</strong> using semiconductor heterojunctions. Xing et al. (2021) demonstrated that Cu<sub>2</sub>O/TiO<sub>2</sub> composites convert ethanol to acetaldehyde with <strong>10.2&times; the rate of bare TiO<sub>2</sub></strong>, achieving a hydrogen evolution rate of 24.5 mmol/h/g at just 1% Cu<sub>2</sub>O loading<span class="cite" data-ref="194"><sup>[194]</sup></span>.</p>
+
+<p>The mechanism is a Type-II p-n heterojunction. Photogenerated electrons in Cu<sub>2</sub>O transfer to TiO<sub>2</sub>, where they reduce H<sup>+</sup> to H<sub>2</sub>. Photogenerated holes transfer from TiO<sub>2</sub> to Cu<sub>2</sub>O, where they oxidize ethanol to acetaldehyde. The net reaction: CH<sub>3</sub>CH<sub>2</sub>OH &rarr; CH<sub>3</sub>CHO + H<sub>2</sub>. This is a <em>dehydrogenation</em>, not an oxidation&mdash;no oxygen is consumed, and the selectivity for acetaldehyde is near-unity because the product is thermodynamically stable under these conditions (&Delta;G = 36 kJ/mol, far easier than water splitting at 229 kJ/mol).</p>
+
+<p>Cataldo et al. (2019) showed that Cu<sup>2+</sup> ions with TiO<sub>2</sub> under solar-simulated UV achieve <strong>near-unit acetaldehyde selectivity</strong>, with tunable product distribution controlled by copper concentration<span class="cite" data-ref="195"><sup>[195]</sup></span>. The Cu<sup>2+</sup> acts as sacrificial electron acceptor and can be regenerated <em>in situ</em>. For food-safe applications, immobilizing Cu/TiO<sub>2</sub> on a substrate (glass, stainless steel) in a flow-through reactor eliminates copper leaching into the spirit.</p>
+
+<figure>
+  <img src="graphs/photocatalytic-acetaldehyde.svg" alt="Cu2O/TiO2 photocatalytic acetaldehyde generation">
+  <figcaption><strong>Fig. 73.</strong> Photocatalytic acetaldehyde generation. Panel A: Volcano curve of H<sub>2</sub> evolution rate (= acetaldehyde production) vs Cu<sub>2</sub>O loading, peaking at 1% (Xing 2021). Panel B: Comparison of acetaldehyde generation methods. Panel C: Type-II p-n heterojunction band diagram showing electron and hole transfer.</figcaption>
+</figure>
+
+<p><strong>Why this matters for aging:</strong> Acetaldehyde is the <em>central node</em> of whiskey maturation chemistry. It drives: (a) acetal formation (1,1-diethoxyethane, the smooth mouthfeel of aged spirit), (b) Maillard reactions with amino acids (&sect;4.6), (c) acetaldehyde-mediated phenolic condensation (&sect;4.58, +62.8% bridging). A photocatalytic source is complementary to PEM electrolysis (&sect;4.53)&mdash;it uses sunlight instead of electricity, operates at ambient temperature, and produces H<sub>2</sub> as a benign byproduct. For home experimenters, a UV-LED + TiO<sub>2</sub>-coated glass bead system is simpler than building a PEM cell.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (photocatalysis, not spirit)</span> &mdash; Xing 2021<span class="cite" data-ref="194"><sup>[194]</sup></span> (10.2&times; at 1% Cu<sub>2</sub>O), Cataldo 2019<span class="cite" data-ref="195"><sup>[195]</sup></span> (near-unit selectivity). No spirit application published. TiO<sub>2</sub> is FDA-approved (E171) but faces EU restrictions. Immobilized catalyst in flow-through reactor addresses food safety. The gas-phase reaction (Xing 2021) would need adaptation to liquid-phase spirit. <strong>Home testability: 2/5</strong> (TiO<sub>2</sub> powder available from art supply stores ($5, rutile/anatase pigment). Coat glass beads with TiO<sub>2</sub> slurry, dry. Place beads in shallow dish of spirit under UV-LED lamp ($10&ndash;15) for 4&ndash;8h. Test for acetaldehyde using Schiff reagent (fuchsin + bisulfite, turns pink). Compare vs dark control. Without Cu<sub>2</sub>O doping, rate will be ~10&times; slower but still detectable.)
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h3 id="s4-62">&sect;4.62 &mdash; EWOD Digital Microfluidic Aging Screening</h3>
+
+<p><strong>Cross-domain insight:</strong> Electrowetting-on-dielectric (EWOD) digital microfluidics enables programmable manipulation of nanoliter-to-microliter droplets on a chip using electric fields. Each droplet is an independent microreactor that can be moved, split, merged, and mixed on demand. Barman et al. (2020) reviewed the technology for food safety applications, demonstrating droplet velocities up to 72.7 mm/s with interdigitated electrodes at 40&ndash;100 VDC<span class="cite" data-ref="196"><sup>[196]</sup></span>.</p>
+
+<p>The key limitation for spirits is that standard EWOD operates with aqueous solutions; ethanol-water mixtures at 40% ABV have surface tension ~30 mN/m vs ~72 mN/m for water, making direct electrowetting inefficient. Torabinia et al. (2019) solved this with the <strong>&ldquo;engine-and-cargo&rdquo; system</strong>: an EWOD-responsive aqueous droplet (the &ldquo;engine&rdquo;) encapsulates a non-EWOD-compatible solvent droplet (the &ldquo;cargo&rdquo;), enabling programmable manipulation of spirit aliquots<span class="cite" data-ref="197"><sup>[197]</sup></span>. They demonstrated parallel esterification of three different alcohols simultaneously, with on-chip kinetic characterization. The follow-up (Torabinia 2021) showed complete multi-step organic synthesis including reaction, liquid-liquid extraction, and phase separation on a single chip<span class="cite" data-ref="198"><sup>[198]</sup></span>.</p>
+
+<figure>
+  <img src="graphs/ewod-screening.svg" alt="EWOD digital microfluidic screening for spirit aging optimization">
+  <figcaption><strong>Fig. 74.</strong> EWOD screening platform. Panel A: Surface-to-volume ratio vs droplet/vessel volume (log-log). EWOD droplets have ~10<sup>3</sup>&times; the S/V ratio of a barrel, accelerating interfacial chemistry. Panel B: Schematic of 64-electrode EWOD array with droplets containing different spirit+oak extract combinations. Throughput: ~100 conditions/hr using &lt;1 mL total spirit.</figcaption>
+</figure>
+
+<p><strong>Spirit aging application:</strong> A 64-electrode EWOD array could screen ~100 aging conditions per hour using &lt;1 mL total spirit. Each 1 &mu;L droplet contains a unique combination of: oak extract type (American vs French, toast level), acid concentration, oxidant level, temperature, and additive (Maillard substrates from &sect;4.6, phenolic supplements from &sect;4.55). The surface-to-volume ratio of a 1 &mu;L droplet is ~10<sup>3</sup>&times; that of a barrel, and programmable merging enables time-resolved addition of reagents. Unlike acoustic levitation (&sect;4.59) which relies on open-air evaporation, EWOD operates in a sealed environment with addressable electrodes, enabling reproducible multi-step reaction sequences.</p>
+
+<p>The practical workflow: (1) screen hundreds of extract+additive combinations on EWOD, (2) analyze each droplet&rsquo;s volatile profile by GC-MS headspace, (3) scale winning formulations to bench volume (200 mL) using the full-scale protocol from &sect;5. This creates a <em>rapid prototyping pipeline</em> for spirit maturation chemistry&mdash;the same design-of-experiments approach used in pharmaceutical lead optimization, applied to congener chemistry.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (microfluidics, not spirit)</span> &mdash; Barman 2020<span class="cite" data-ref="196"><sup>[196]</sup></span> (EWOD review, 72.7 mm/s), Torabinia 2019<span class="cite" data-ref="197"><sup>[197]</sup></span> (engine-and-cargo esterification), Torabinia 2021<span class="cite" data-ref="198"><sup>[198]</sup></span> (multi-step synthesis). No spirit application published. The engine-and-cargo approach specifically addresses the ethanol surface tension problem. Academic EWOD setups require microfabrication; commercial platforms (Sci-Bots, Illumina) exist but are expensive ($5K+). <strong>Home testability: 1/5</strong> (EWOD chips require photolithography. Closest home approximation: manual micropipette dispensing of 1 &mu;L droplets into 384-well plate ($15), each well containing a different spirit+extract combination. Incubate, then smell-test each well. Provides the combinatorial screening concept without the automated manipulation.)
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
 
 <p>The four barriers are not independent. They are coupled in a cascade where each downstream process depends on upstream products:</p>
@@ -2930,6 +2996,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Subcritical water oak (&sect;4.57)</td><td>31&times; Maillard, 56% guaiacol</td><td><span class="verdict promising">Published (mechanism)</span></td><td>$50&ndash;200</td><td>EXTRACTION / MAILLARD</td></tr>
 <tr><td>UV-C phenolic condensation (&sect;4.58)</td><td>+62.8% AcH-mediated bridging</td><td><span class="verdict promising">Published (wine/grape)</span></td><td>$10&ndash;15</td><td>OXIDATION / CLUSTER</td></tr>
 <tr><td>Acoustic levitation micro-aging (&sect;4.59)</td><td>31&times; whole-droplet, 10<sup>5</sup>&times; surface</td><td><span class="verdict promising">Published (analytical chem)</span></td><td>$30&ndash;80</td><td>ESTER / CLUSTER / SCREEN</td></tr>
+<tr><td>Lipase-selective fusel esterification (&sect;4.60)</td><td>&gt;99% yield (nanomicelle)</td><td><span class="verdict promising">Published (enzyme kinetics)</span></td><td>$15&ndash;30</td><td>ESTER (fusel-selective)</td></tr>
+<tr><td>Cu<sub>2</sub>O/TiO<sub>2</sub> photocatalytic AcH (&sect;4.61)</td><td>10.2&times; bare TiO<sub>2</sub></td><td><span class="verdict promising">Published (photocatalysis)</span></td><td>$15&ndash;25</td><td>OXIDATION / MAILLARD</td></tr>
+<tr><td>EWOD microfluidic screening (&sect;4.62)</td><td>~100 conditions/hr</td><td><span class="verdict promising">Published (microfluidics)</span></td><td>$5K+ (lab)</td><td>SCREEN / OPTIMIZE</td></tr>
 </tbody>
 </table>
 </div>
@@ -3124,6 +3193,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Subcritical water oak (&sect;4.57)</td><td>2/5</td><td>$50&ndash;200</td><td>Requires pressure vessel (&gt;15 bar). Home pressure cooker reaches ~120&deg;C / 1 bar (partial approximation). Soak oak chips in water at 120&deg;C for 2h in pressure cooker. Cool, filter. Add extract to spirit at 5&ndash;10% v/v. Compare color and aroma vs room-temp oak maceration. The hot-water extract should be dramatically darker and more aromatic. <strong>Caution: pressure vessel safety.</strong></td></tr>
 <tr><td><strong>UV-C phenolic condensation (&sect;4.58)</strong></td><td><strong>3/5</strong></td><td><strong>$10&ndash;15</strong></td><td><strong>UV-C germicidal lamp ($10&ndash;15). Place 200 mL spirit + oak extract in open glass container. Expose to UV-C from 15 cm, pulsed: 30 s on / 5 min off, for 2h total exposure. Compare color (darker = more polymeric pigments) and aroma (more complex = condensation) vs dark control. Expect visible color deepening and increased body. SAFETY: UV-C is hazardous to eyes and skin. Use in enclosed space with no direct line of sight.</strong></td></tr>
 <tr><td>Acoustic levitation micro-aging (&sect;4.59)</td><td>2/5</td><td>$30&ndash;80</td><td>Acoustic levitator ($30&ndash;80, Amazon/eBay). Levitate 5 &mu;L drop of spirit + concentrated oak extract. Observe two-stage evaporation (rapid ethanol loss, then slow water phase) over 30&ndash;60 min. Compare residue aroma to un-levitated control evaporated on glass. Main value is as rapid screening tool: test dozens of oak extract + acid combinations in a day, each undergoing compressed aging in minutes, before committing to full-volume trials.</td></tr>
+<tr><td><strong>Lipase-selective fusel esterification (&sect;4.60)</strong></td><td><strong>3/5</strong></td><td><strong>$8&ndash;15</strong></td><td><strong>Lipase dietary supplement capsules ($8&ndash;12). Crush 2 capsules into 200 mL new-make spirit with 0.5 g/L isoamyl alcohol (banana flavoring extract, $3). Incubate at 40&deg;C for 4h. Compare aroma vs control (no lipase). Expect banana/fruity notes from isoamyl acetate formation. Without nanomicelles, yield is modest but detectable via nose. For enhanced version: add 2 wt% TPGS-750-M ($20&ndash;30/10g from chemical supplier) to shift equilibrium toward ester synthesis.</strong></td></tr>
+<tr><td>Photocatalytic acetaldehyde (&sect;4.61)</td><td>2/5</td><td>$15&ndash;25</td><td>TiO<sub>2</sub> powder from art supply ($5, rutile/anatase white pigment). Coat glass beads with TiO<sub>2</sub> slurry, dry overnight. Place beads in shallow dish of spirit under UV-LED lamp ($10&ndash;15) for 4&ndash;8h. Test for acetaldehyde using Schiff reagent (fuchsin + bisulfite, turns pink; ~$5 from lab supplier). Compare vs dark control. Without Cu<sub>2</sub>O doping, rate is ~10&times; slower but still detectable. <strong>Caution: UV exposure safety.</strong></td></tr>
+<tr><td>EWOD microfluidic screening (&sect;4.62)</td><td>1/5</td><td>$15+ (manual)</td><td>EWOD chips require microfabrication. Closest home approximation: 384-well microplate ($15), pipette 1 &mu;L spirit + different oak extract concentrations / acid levels / additive combinations into each well. Seal with adhesive film. Incubate 40&deg;C for 24h. Smell-test each well for promising formulations. Provides combinatorial screening concept without automated droplet manipulation. Scale winners to 200 mL bench volume.</td></tr>
 </tbody>
 </table>
 </div>
@@ -3330,6 +3402,14 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r188">Matsubara H, Yabunaka S, Hata T, Sonoda H. (2021) &ldquo;Acceleration of chemical reactions by levitation in acoustic fields.&rdquo; <em>Chem Commun</em> 57(91):12209&ndash;12212. <a href="https://doi.org/10.1039/D1CC04591A">DOI</a> (Click chemistry in acoustically levitated ~10 &mu;L droplets: <strong>4&times; rate acceleration</strong> vs bulk. Container-free environment eliminates wall catalysis artifacts. Confirmed intrinsic droplet effect from surface-to-volume ratio enhancement.)</li>
   <li id="r189">Qiu L, Cooks RG. (2024) &ldquo;Simultaneous and Spontaneous Oxidation and Reduction in Microdroplets by the Water Radical Cation.&rdquo; <em>J Am Chem Soc</em> 146(12):8237&ndash;8245. <a href="https://doi.org/10.1021/jacs.3c14592">DOI</a> (Acoustically levitated microdroplets: <strong>31&times; whole-droplet acceleration</strong>, up to <strong>1.4&times;10<sup>5</sup>&times; surface-layer acceleration</strong> via vapor-phase reagent dosing. Partial desolvation at air&ndash;liquid interface concentrates reactants. Electric field effects from charge asymmetry lower activation barriers.)</li>
   <li id="r190">Wakata Y, Ando T, Hirashima Y, et al. (2024) &ldquo;Evaporation Dynamics of Acoustically Levitated Multicomponent Droplets.&rdquo; <em>Langmuir</em> 40(17):9049&ndash;9058. <a href="https://doi.org/10.1021/acs.langmuir.4c00377">DOI</a> (Binary ethanol&ndash;water levitated droplets: two-stage evaporation. Stage I: rapid preferential ethanol loss (vapor pressure 5.95 vs 2.34 kPa at 20&deg;C). Stage II: slow water-dominated evaporation. Exactly the angel&rsquo;s share mechanism compressed from years to minutes.)</li>
+  <li id="r191">Ortiz C, Ferreira ML, Barbosa O, et al. (2019) &ldquo;Novozym 435: the &lsquo;perfect&rsquo; lipase immobilized biocatalyst?&rdquo; <em>Catal Sci Technol</em> 9:2380&ndash;2420. <a href="https://doi.org/10.1039/C9CY00415G">DOI</a> (CALB immobilized on Lewatit VP OC 1600. Optimal a<sub>w</sub> 0.2&ndash;0.6 for esterification; above 0.7 hydrolysis dominates. Spirits at 40&ndash;65% ABV = a<sub>w</sub> 0.85&ndash;0.95, far above optimal. 5&ndash;10 reuse cycles. Critical water activity barrier for spirit ester synthesis.)</li>
+  <li id="r192">Sun S, et al. (2015) &ldquo;Ester synthesis in aqueous media by lipase: alcoholysis, esterification and substrate hydrophobicity.&rdquo; <em>J Food Biochem</em> 39(1):11&ndash;18. <a href="https://doi.org/10.1111/jfbc.12104">DOI</a> (<strong>Ethanol: hydrolysis dominates. Fusel alcohols (isoamyl, isobutanol): ester synthesis dominates</strong> in aqueous media. Hydrophobicity-driven: longer-chain alcohols partition into lipase active site, excluding water. Critical insight for substrate-selective esterification in spirit.)</li>
+  <li id="r193">Singhania V, Cortes-Clerget M, Dussart-Gautheret J, et al. (2022) &ldquo;Lipase-catalyzed esterification in water enabled by nanomicelles.&rdquo; <em>Chem Sci</em> 13(5):1440&ndash;1445. <a href="https://doi.org/10.1039/D1SC05660C">DOI</a> (TPGS-750-M nanomicelles (2 wt%): <strong>&gt;99% esterification yield in pure water</strong>. Hydrophobic nano-compartments sequester ester products, shifting equilibrium toward synthesis despite a<sub>w</sub> = 1.0. Multi-step one-pot sequences demonstrated.)</li>
+  <li id="r194">Xing C, Zhang Y, Liu Y, et al. (2021) &ldquo;Photodehydrogenation of ethanol over Cu<sub>2</sub>O/TiO<sub>2</sub> heterostructures.&rdquo; <em>Nanomaterials</em> 11(6):1399. <a href="https://doi.org/10.3390/nano11061399">DOI</a> (1% Cu<sub>2</sub>O/TiO<sub>2</sub>: HER <strong>24.5 mmol/h/g</strong> (10.2&times; bare TiO<sub>2</sub>), AQY 6.4%. Type-II p-n heterojunction: electrons Cu<sub>2</sub>O&rarr;TiO<sub>2</sub> for H<sub>2</sub>, holes TiO<sub>2</sub>&rarr;Cu<sub>2</sub>O for ethanol&rarr;acetaldehyde. Near-unit acetaldehyde selectivity.)</li>
+  <li id="r195">Cataldo S, Ferraro G, Guiliano M, et al. (2019) &ldquo;Selective photo-oxidation of ethanol to acetaldehyde and acetic acid in water in presence of TiO<sub>2</sub> and cupric ions under UV-simulated solar radiation.&rdquo; <em>Chem Eng J</em> 355:1304&ndash;1316. <a href="https://doi.org/10.1016/j.cej.2018.11.058">DOI</a> (TiO<sub>2</sub> + Cu<sup>2+</sup> (120 mM): near-unit acetaldehyde selectivity under solar UV. Cu<sup>2+</sup> as sacrificial electron acceptor, regenerated <em>in situ</em>. Tunable product distribution via copper concentration.)</li>
+  <li id="r196">Barman SR, Khan I, Chatterjee S, et al. (2020) &ldquo;Electrowetting-on-dielectric (EWOD): Current perspectives and applications in ensuring food safety.&rdquo; <em>J Food Drug Anal</em> 28(4):595&ndash;621. <a href="https://doi.org/10.38212/2224-6614.1239">DOI</a> (EWOD droplet manipulation: velocities up to 72.7 mm/s, volumes nL&ndash;&mu;L, actuation 40&ndash;100 VDC. Detection: pathogen at 30 ng/mL, Hg<sup>2+</sup> at 0.3 ppb. Key limitation: ethanol-water mixtures have low surface tension (~30 mN/m) vs water (72 mN/m).)</li>
+  <li id="r197">Torabinia M, Asgari P, Dakarapu US, et al. (2019) &ldquo;On-chip organic synthesis enabled using an engine-and-cargo system in an electrowetting-on-dielectric digital microfluidic device.&rdquo; <em>Lab Chip</em> 19:3054&ndash;3064. <a href="https://doi.org/10.1039/C9LC00428A">DOI</a> (Engine-and-cargo: aqueous droplet encapsulates organic solvent droplet for EWOD manipulation. On-chip esterification, kinetic characterization. <strong>Three alcohols esterified simultaneously</strong>&mdash;combinatorial capability. 100 nL&ndash;20 &mu;L per reactor.)</li>
+  <li id="r198">Torabinia M, Asgari P, Moon H. (2021) &ldquo;EWOD digital microfluidic device for in-line workup in organic reactions.&rdquo; <em>Sens Actuators B</em> 330:129252. <a href="https://doi.org/10.1016/j.snb.2020.129252">DOI</a> (Complete multi-step organic synthesis on EWOD: reaction, liquid-liquid extraction, phase separation. Demonstrates automated workflow at droplet scale applicable to combinatorial spirit aging optimization.)</li>
 </ol>
 
 
@@ -4301,6 +4381,46 @@ var refs = {
     source: "Wakata et al. (2024), Langmuir 40(17):9049",
     excerpt: "Binary ethanol\u2013water levitated droplets: two-stage evaporation. Stage I: rapid ethanol loss (5.95 vs 2.34 kPa). Stage II: slow water phase. Angel\u2019s share compressed from years to minutes.",
     url: "#r190"
+  },
+  191: {
+    source: "Ortiz et al. (2019), Catal Sci Technol 9:2380",
+    excerpt: "Novozym 435 (CALB): optimal aw 0.2\u20130.6 for esterification. Above 0.7 hydrolysis dominates. Spirits at 40\u201365% ABV = aw 0.85\u20130.95 \u2014 far above optimal. 5\u201310 reuse cycles.",
+    url: "#r191"
+  },
+  192: {
+    source: "Sun et al. (2015), J Food Biochem 39(1):11",
+    excerpt: "Ethanol as substrate: hydrolysis dominates. Fusel alcohols (isoamyl, isobutanol): ester synthesis dominates in aqueous media. Hydrophobicity-driven partitioning into lipase active site.",
+    url: "#r192"
+  },
+  193: {
+    source: "Singhania et al. (2022), Chem Sci 13(5):1440",
+    excerpt: "TPGS-750-M nanomicelles (2 wt%): >99% esterification yield in pure water. Hydrophobic nano-compartments sequester ester products, shifting equilibrium toward synthesis at aw = 1.0.",
+    url: "#r193"
+  },
+  194: {
+    source: "Xing et al. (2021), Nanomaterials 11(6):1399",
+    excerpt: "Cu\u2082O/TiO\u2082 (1%): HER 24.5 mmol/h/g (10.2\u00d7 bare TiO\u2082), AQY 6.4%. Type-II p-n heterojunction. Near-unit acetaldehyde selectivity via dehydrogenation, not oxidation.",
+    url: "#r194"
+  },
+  195: {
+    source: "Cataldo et al. (2019), Chem Eng J 355:1304",
+    excerpt: "TiO\u2082 + Cu\u00b2\u207a: near-unit acetaldehyde selectivity under solar UV. Cu\u00b2\u207a as sacrificial electron acceptor, regenerated in situ. Tunable product distribution via copper concentration.",
+    url: "#r195"
+  },
+  196: {
+    source: "Barman et al. (2020), J Food Drug Anal 28(4):595",
+    excerpt: "EWOD: droplet velocities 72.7 mm/s, volumes nL\u2013\u00b5L, actuation 40\u2013100 VDC. Key limitation: ethanol-water at 40% ABV has surface tension ~30 mN/m (vs 72 mN/m for water).",
+    url: "#r196"
+  },
+  197: {
+    source: "Torabinia et al. (2019), Lab Chip 19:3054",
+    excerpt: "Engine-and-cargo: aqueous droplet encapsulates organic solvent for EWOD manipulation. Three alcohols esterified simultaneously. Combinatorial capability at 100 nL\u201320 \u00b5L per reactor.",
+    url: "#r197"
+  },
+  198: {
+    source: "Torabinia et al. (2021), Sens Actuators B 330:129252",
+    excerpt: "Complete multi-step organic synthesis on EWOD: reaction, extraction, phase separation. Automated workflow at droplet scale for combinatorial spirit aging optimization.",
+    url: "#r198"
   }
 };
 

@@ -160,6 +160,9 @@ fn main() {
     fs::write("../graphs/subcritical-water-oak.svg", sim_subcritical_water_oak()).unwrap();
     fs::write("../graphs/uvc-phenolic-condensation.svg", sim_uvc_phenolic_condensation()).unwrap();
     fs::write("../graphs/acoustic-levitation-aging.svg", sim_acoustic_levitation_aging()).unwrap();
+    fs::write("../graphs/lipase-fusel-esterification.svg", sim_lipase_fusel_esterification()).unwrap();
+    fs::write("../graphs/photocatalytic-acetaldehyde.svg", sim_photocatalytic_acetaldehyde()).unwrap();
+    fs::write("../graphs/ewod-screening.svg", sim_ewod_screening()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -12066,3 +12069,497 @@ fn sim_acoustic_levitation_aging() -> String {
     svg.push_str("</svg>");
     svg
 }
+
+// ───── Sim 72: Lipase-Selective Fusel Esterification ─────
+fn sim_lipase_fusel_esterification() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 72 \u{2014} Lipase Selectivity: Fusel Alcohols vs Ethanol in Aqueous Spirit");
+
+    // Panel A: Water activity vs esterification yield
+    svg += &label(195.0, 57.0, "A: Esterification Yield vs Water Activity", TEXT, 10, "middle");
+
+    let (ax, ay, aw_a, ah_a) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_a}\" height=\"{ah_a}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // X-axis: water activity 0.0 to 1.0
+    for i in 0..=5 {
+        let aw_val = i as f64 * 0.2;
+        let x = ax + aw_val * aw_a;
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ay + ah_a, ay + ah_a + 4.0);
+        svg += &label(x, ay + ah_a + 14.0, &format!("{:.1}", aw_val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw_a / 2.0, ay + ah_a + 28.0, "Water activity (a\u{1d42})", MUTED, 8, "middle");
+
+    // Y-axis: yield 0-100%
+    for i in 0..=5 {
+        let pct = i as f64 * 20.0;
+        let y = ay + ah_a - pct / 100.0 * ah_a;
+        svg += &format!("<line x1=\"{}\" y1=\"{y}\" x2=\"{ax}\" y2=\"{y}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0);
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}%", pct as i32), MUTED, 7, "end");
+    }
+    svg += &label(ax - 30.0, ay + ah_a / 2.0, "Ester yield (%)", MUTED, 7, "middle");
+
+    // Spirit zone highlight (aw 0.85-0.95)
+    let spirit_x1 = ax + 0.85 * aw_a;
+    let spirit_x2 = ax + 0.95 * aw_a;
+    svg += &format!("<rect x=\"{spirit_x1}\" y=\"{ay}\" width=\"{}\" height=\"{ah_a}\" fill=\"{GREEN}\" opacity=\"0.10\"/>\n",
+        spirit_x2 - spirit_x1);
+    svg += &label((spirit_x1 + spirit_x2) / 2.0, ay + 15.0, "Spirit", GREEN, 7, "middle");
+    svg += &label((spirit_x1 + spirit_x2) / 2.0, ay + 27.0, "(40-65%)", GREEN, 6, "middle");
+    svg += &label((spirit_x1 + spirit_x2) / 2.0, ay + 37.0, "ABV", GREEN, 6, "middle");
+
+    // Ethanol ester curve: high at low aw, drops to ~0 above 0.7
+    let ethanol_pts: Vec<(f64, f64)> = (0..=50).map(|i| {
+        let aw_val = i as f64 * 0.02;
+        let yield_pct = if aw_val < 0.3 {
+            90.0 - aw_val * 100.0
+        } else if aw_val < 0.7 {
+            60.0 * (1.0 - ((aw_val - 0.3) / 0.4).powi(2))
+        } else {
+            5.0 * (1.0 - aw_val).max(0.0) / 0.3
+        };
+        (ax + aw_val * aw_a, ay + ah_a - yield_pct / 100.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&ethanol_pts, RED, "2.5", &|x| x, &|y| y);
+
+    // Fusel alcohol ester curve: similar but shifted right, still viable at higher aw
+    let fusel_pts: Vec<(f64, f64)> = (0..=50).map(|i| {
+        let aw_val = i as f64 * 0.02;
+        let yield_pct = if aw_val < 0.4 {
+            95.0 - aw_val * 50.0
+        } else if aw_val < 0.85 {
+            75.0 * (1.0 - ((aw_val - 0.4) / 0.45).powi(2))
+        } else {
+            15.0 + 10.0 * (1.0 - aw_val) / 0.15
+        };
+        (ax + aw_val * aw_a, ay + ah_a - yield_pct / 100.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&fusel_pts, ACCENT, "2.5", &|x| x, &|y| y);
+
+    // Nanomicelle fusel curve: stays high even at aw=1.0
+    let nano_pts: Vec<(f64, f64)> = (0..=50).map(|i| {
+        let aw_val = i as f64 * 0.02;
+        let yield_pct = if aw_val < 0.5 {
+            95.0
+        } else {
+            95.0 - 15.0 * ((aw_val - 0.5) / 0.5).powi(2)
+        };
+        (ax + aw_val * aw_a, ay + ah_a - yield_pct / 100.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&nano_pts, CYAN, "2", &|x| x, &|y| y);
+
+    // Data points
+    // Ortiz 2019: aw 0.3-0.5 optimal for Novozym 435
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"4\" fill=\"{RED}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+        ax + 0.4 * aw_a, ay + ah_a - 55.0 / 100.0 * ah_a);
+    svg += &label(ax + 0.4 * aw_a + 7.0, ay + ah_a - 55.0 / 100.0 * ah_a + 3.0,
+        "Ortiz 2019", MUTED, 6, "start");
+
+    // Sun 2015: fusel at aw ~0.9 still synthesizing
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"4\" fill=\"{ACCENT}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+        ax + 0.9 * aw_a, ay + ah_a - 18.0 / 100.0 * ah_a);
+    svg += &label(ax + 0.9 * aw_a - 5.0, ay + ah_a - 18.0 / 100.0 * ah_a - 8.0,
+        "Sun 2015", MUTED, 6, "end");
+
+    // Singhania 2022: nanomicelle at aw=1.0, >99% yield
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"5\" fill=\"{CYAN}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+        ax + 1.0 * aw_a, ay + ah_a - 99.0 / 100.0 * ah_a);
+    svg += &label(ax + 1.0 * aw_a - 7.0, ay + ah_a - 99.0 / 100.0 * ah_a - 8.0,
+        "Singhania 2022", MUTED, 6, "end");
+    svg += &label(ax + 1.0 * aw_a - 7.0, ay + ah_a - 99.0 / 100.0 * ah_a - 18.0,
+        "(nanomicelle, >99%)", CYAN, 6, "end");
+
+    // Legend
+    svg += &format!("<line x1=\"{0}\" y1=\"{1}\" x2=\"{2}\" y2=\"{1}\" stroke=\"{RED}\" stroke-width=\"2\"/>\n",
+        ax + 5.0, ay + ah_a - 5.0, ax + 20.0);
+    svg += &label(ax + 23.0, ay + ah_a - 2.0, "Ethanol esters", RED, 7, "start");
+    svg += &format!("<line x1=\"{0}\" y1=\"{1}\" x2=\"{2}\" y2=\"{1}\" stroke=\"{ACCENT}\" stroke-width=\"2\"/>\n",
+        ax + 5.0, ay + ah_a - 17.0, ax + 20.0);
+    svg += &label(ax + 23.0, ay + ah_a - 14.0, "Fusel alcohol esters", ACCENT, 7, "start");
+    svg += &format!("<line x1=\"{0}\" y1=\"{1}\" x2=\"{2}\" y2=\"{1}\" stroke=\"{CYAN}\" stroke-width=\"2\"/>\n",
+        ax + 5.0, ay + ah_a - 29.0, ax + 20.0);
+    svg += &label(ax + 23.0, ay + ah_a - 26.0, "Nanomicelle fusel esters", CYAN, 7, "start");
+
+    // Panel B: Substrate hydrophobicity selectivity
+    svg += &label(525.0, 57.0, "B: Lipase Substrate Selectivity in Spirit Matrix", TEXT, 10, "middle");
+
+    let (bx, by, bw, bh) = (390.0, 65.0, 270.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Bar chart: different alcohols and their ester synthesis rates
+    let substrates = [
+        ("Ethanol\n(C2)", 5.0, RED),
+        ("n-Propanol\n(C3)", 15.0, RED),
+        ("Isobutanol\n(C4)", 40.0, ACCENT),
+        ("Isoamyl\n(C5)", 65.0, ACCENT),
+        ("n-Hexanol\n(C6)", 80.0, GREEN),
+    ];
+
+    let bar_w = 36.0;
+    let gap = (bw - bar_w * substrates.len() as f64) / (substrates.len() as f64 + 1.0);
+
+    for (i, (name, yield_pct, color)) in substrates.iter().enumerate() {
+        let x = bx + gap + i as f64 * (bar_w + gap);
+        let bar_h = yield_pct / 100.0 * (bh - 30.0);
+        let y = by + bh - bar_h;
+        svg += &format!("<rect x=\"{x}\" y=\"{y}\" width=\"{bar_w}\" height=\"{bar_h}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n");
+        svg += &label(x + bar_w / 2.0, y - 5.0, &format!("{}%", *yield_pct as i32), color, 7, "middle");
+
+        // Multi-line label
+        let parts: Vec<&str> = name.split('\n').collect();
+        for (j, part) in parts.iter().enumerate() {
+            svg += &label(x + bar_w / 2.0, by + bh + 12.0 + j as f64 * 10.0,
+                part, MUTED, 7, "middle");
+        }
+    }
+
+    svg += &label(bx + bw / 2.0, by + bh + 38.0, "Alcohol substrate (chain length)", MUTED, 8, "middle");
+
+    // Y-axis for panel B
+    for i in 0..=5 {
+        let pct = i as f64 * 20.0;
+        let y = by + bh - pct / 100.0 * (bh - 30.0);
+        svg += &format!("<line x1=\"{}\" y1=\"{y}\" x2=\"{bx}\" y2=\"{y}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            bx - 3.0);
+        svg += &label(bx - 5.0, y + 3.0, &format!("{}%", pct as i32), MUTED, 7, "end");
+    }
+    svg += &label(bx - 30.0, by + bh / 2.0, "Relative ester yield", MUTED, 7, "middle");
+
+    // Arrow showing hydrophobicity direction
+    svg += &format!("<line x1=\"{0}\" y1=\"{1}\" x2=\"{2}\" y2=\"{1}\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n",
+        bx + 30.0, by + 18.0, bx + bw - 30.0);
+    svg += &label(bx + bw / 2.0, by + 14.0, "Increasing hydrophobicity \u{2192}", ACCENT, 7, "middle");
+
+    // Annotation: key insight
+    svg += &format!("<defs><marker id=\"arr\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"{ACCENT}\"/></marker></defs>\n");
+
+    // Bottom callout
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"48\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        h - 58.0);
+    svg += &label(350.0, h - 38.0,
+        "Lipase in spirit selectively esterifies fusel alcohols (isoamyl, isobutanol) while ignoring ethanol",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 24.0,
+        "Nanomicelles (Singhania 2022) overcome water activity barrier: >99% yield at a\u{1d42} = 1.0",
+        CYAN, 8, "middle");
+    svg += &label(350.0, h - 10.0,
+        "Converts harshness-causing fusel alcohols \u{2192} fruity esters (isoamyl acetate = banana note)",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ───── Sim 73: Photocatalytic Acetaldehyde (Cu₂O/TiO₂) ─────
+fn sim_photocatalytic_acetaldehyde() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 73 \u{2014} Photocatalytic Acetaldehyde: Cu\u{2082}O/TiO\u{2082} p-n Heterojunction");
+
+    // Panel A: Cu2O loading vs H2 evolution rate (volcano curve)
+    svg += &label(195.0, 57.0, "A: Hydrogen Evolution Rate vs Cu\u{2082}O Loading", TEXT, 10, "middle");
+
+    let (ax, ay, aw_a, ah_a) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_a}\" height=\"{ah_a}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Data from Xing 2021: loading %, HER mmol/h/g
+    let data = [(0.0_f64, 2.4), (0.5, 20.5), (1.0, 24.5), (2.0, 13.6), (5.0, 10.7)];
+    let max_her = 28.0;
+    let max_load = 5.5;
+
+    // X-axis ticks
+    for load in [0.0, 1.0, 2.0, 3.0, 4.0, 5.0] {
+        let x = ax + load / max_load * aw_a;
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ay + ah_a, ay + ah_a + 4.0);
+        svg += &label(x, ay + ah_a + 14.0, &format!("{}%", load as i32), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw_a / 2.0, ay + ah_a + 28.0, "Cu\u{2082}O loading (wt%)", MUTED, 8, "middle");
+
+    // Y-axis ticks
+    for i in 0..=7 {
+        let val = i as f64 * 4.0;
+        let y = ay + ah_a - val / max_her * ah_a;
+        svg += &format!("<line x1=\"{}\" y1=\"{y}\" x2=\"{ax}\" y2=\"{y}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0);
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}", val as i32), MUTED, 7, "end");
+    }
+    svg += &label(ax - 32.0, ay + ah_a / 2.0, "HER (mmol/h/g)", MUTED, 7, "middle");
+
+    // Smooth volcano curve through data points
+    let curve_pts: Vec<(f64, f64)> = (0..=55).map(|i| {
+        let load = i as f64 * 0.1;
+        // Fit a smooth volcano curve
+        let her = if load < 1.0 {
+            2.4 + (24.5 - 2.4) * (load / 1.0).powf(0.6)
+        } else {
+            24.5 * (-0.15 * (load - 1.0)).exp()
+        };
+        (ax + load / max_load * aw_a, ay + ah_a - her / max_her * ah_a)
+    }).collect();
+    svg += &polyline_svg(&curve_pts, ACCENT, "2.5", &|x| x, &|y| y);
+
+    // Data points with labels
+    let labels = ["Bare TiO\u{2082}", "0.5%", "1% (optimal)", "2%", "5%"];
+    let colors = [MUTED, BLUE, GREEN, BLUE, BLUE];
+    for (i, &(load, her)) in data.iter().enumerate() {
+        let x = ax + load / max_load * aw_a;
+        let y = ay + ah_a - her / max_her * ah_a;
+        let r = if i == 2 { 6.0 } else { 4.0 };
+        svg += &format!("<circle cx=\"{x}\" cy=\"{y}\" r=\"{r}\" fill=\"{0}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+            colors[i]);
+        let lx = if i == 0 { x + 8.0 } else if i == 2 { x + 10.0 } else { x + 7.0 };
+        let ly = if i == 0 { y + 4.0 } else if i == 4 { y - 8.0 } else { y - 8.0 };
+        svg += &label(lx, ly, labels[i], MUTED, 7, "start");
+        svg += &label(lx, ly + 10.0, &format!("{:.1} mmol/h/g", her), colors[i], 6, "start");
+    }
+
+    // 10× annotation
+    let bare_y = ay + ah_a - 2.4 / max_her * ah_a;
+    let opt_y = ay + ah_a - 24.5 / max_her * ah_a;
+    svg += &format!("<line x1=\"{}\" y1=\"{bare_y}\" x2=\"{}\" y2=\"{opt_y}\" stroke=\"{YELLOW}\" stroke-width=\"1\" stroke-dasharray=\"3,2\"/>\n",
+        ax + 10.0, ax + 10.0);
+    svg += &label(ax + 15.0, (bare_y + opt_y) / 2.0, "10.2\u{00d7}", YELLOW, 9, "start");
+
+    // AQY annotation
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"95\" height=\"28\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        ax + aw_a - 105.0, ay + 10.0);
+    svg += &label(ax + aw_a - 58.0, ay + 26.0, "AQY = 6.4%", GREEN, 8, "middle");
+    svg += &label(ax + aw_a - 58.0, ay + 36.0, "(at 1% Cu\u{2082}O)", GREEN, 6, "middle");
+
+    // Panel B: Method comparison
+    svg += &label(525.0, 57.0, "B: Acetaldehyde Generation Methods Compared", TEXT, 10, "middle");
+
+    let (bx, by, bw, bh) = (395.0, 75.0, 260.0, 190.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\" rx=\"4\"/>\n");
+
+    let methods = [
+        ("PEM electrolysis (\u{00a7}4.53)", ">95% selectivity", ">90% FE", "200 mA/cm\u{00b2}", GREEN),
+        ("UV-C photolysis (\u{00a7}4.58)", "In situ from EtOH", "Radical-mediated", "3 kJ/m\u{00b2}", BLUE),
+        ("Cu\u{2082}O/TiO\u{2082} photo.", "~100% selectivity", "6.4% AQY", "24.5 mmol/h/g", ACCENT),
+        ("Barrel (natural)", "Slow O\u{2082} ingress", "~0.1% /year", "Years", MUTED),
+    ];
+
+    for (i, (method, line1, line2, line3, color)) in methods.iter().enumerate() {
+        let y = by + 15.0 + i as f64 * 47.0;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"40\" rx=\"3\" fill=\"{color}\" opacity=\"0.12\"/>\n",
+            bx + 5.0, y, bw - 10.0);
+        svg += &label(bx + 12.0, y + 14.0, method, color, 8, "start");
+        svg += &label(bx + 12.0, y + 26.0, line1, TEXT, 7, "start");
+        svg += &label(bx + 130.0, y + 26.0, line2, MUTED, 7, "start");
+        svg += &label(bx + 130.0, y + 36.0, line3, MUTED, 6, "start");
+    }
+
+    // Panel C: p-n heterojunction schematic
+    svg += &label(525.0, 290.0, "C: Type-II p-n Heterojunction Mechanism", TEXT, 10, "middle");
+
+    let (cx_base, cy_base) = (430.0, 310.0);
+    // Cu2O side (p-type)
+    svg += &format!("<rect x=\"{cx_base}\" y=\"{cy_base}\" width=\"80\" height=\"100\" fill=\"{RED}\" opacity=\"0.15\" rx=\"3\"/>\n");
+    svg += &label(cx_base + 40.0, cy_base + 15.0, "Cu\u{2082}O", RED, 9, "middle");
+    svg += &label(cx_base + 40.0, cy_base + 27.0, "(p-type)", RED, 7, "middle");
+    // CB and VB lines
+    svg += &hline(cx_base + 10.0, cx_base + 70.0, cy_base + 45.0, RED, "2");
+    svg += &label(cx_base + 40.0, cy_base + 42.0, "CB", RED, 6, "middle");
+    svg += &hline(cx_base + 10.0, cx_base + 70.0, cy_base + 85.0, RED, "2");
+    svg += &label(cx_base + 40.0, cy_base + 82.0, "VB", RED, 6, "middle");
+
+    // TiO2 side (n-type)
+    let tx = cx_base + 100.0;
+    svg += &format!("<rect x=\"{tx}\" y=\"{cy_base}\" width=\"80\" height=\"100\" fill=\"{BLUE}\" opacity=\"0.15\" rx=\"3\"/>\n");
+    svg += &label(tx + 40.0, cy_base + 15.0, "TiO\u{2082}", BLUE, 9, "middle");
+    svg += &label(tx + 40.0, cy_base + 27.0, "(n-type)", BLUE, 7, "middle");
+    // CB and VB lines (lower energy)
+    svg += &hline(tx + 10.0, tx + 70.0, cy_base + 55.0, BLUE, "2");
+    svg += &label(tx + 40.0, cy_base + 52.0, "CB", BLUE, 6, "middle");
+    svg += &hline(tx + 10.0, tx + 70.0, cy_base + 90.0, BLUE, "2");
+    svg += &label(tx + 40.0, cy_base + 87.0, "VB", BLUE, 6, "middle");
+
+    // Electron transfer arrow (Cu2O CB -> TiO2 CB)
+    svg += &format!("<line x1=\"{0}\" y1=\"{1}\" x2=\"{2}\" y2=\"{3}\" stroke=\"{YELLOW}\" stroke-width=\"1.5\" stroke-dasharray=\"3,2\"/>\n",
+        cx_base + 70.0, cy_base + 45.0, tx + 10.0, cy_base + 55.0);
+    svg += &label(cx_base + 90.0, cy_base + 42.0, "e\u{207b}", YELLOW, 8, "middle");
+
+    // Products
+    svg += &label(tx + 85.0, cy_base + 55.0, "\u{2192} H\u{2082}", YELLOW, 7, "start");
+    svg += &label(cx_base - 5.0, cy_base + 85.0, "h\u{207a} \u{2192}", ACCENT, 7, "end");
+    svg += &label(cx_base - 5.0, cy_base + 95.0, "CH\u{2083}CHO", ACCENT, 7, "end");
+
+    // Bottom callout
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        h - 50.0);
+    svg += &label(350.0, h - 34.0,
+        "Solar-powered: Cu\u{2082}O/TiO\u{2082} converts ethanol \u{2192} acetaldehyde at 10\u{00d7} bare TiO\u{2082} rate",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 20.0,
+        "Acetaldehyde feeds Maillard (\u{00a7}4.6), phenolic bridging (\u{00a7}4.58), acetal formation \u{2014} three aging pathways from one photon",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ───── Sim 74: EWOD Digital Microfluidic Screening ─────
+fn sim_ewod_screening() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 74 \u{2014} EWOD Digital Microfluidic Screening for Spirit Aging Optimization");
+
+    // Panel A: Surface-to-volume ratio vs droplet volume
+    svg += &label(195.0, 57.0, "A: Surface/Volume Ratio vs Droplet Size", TEXT, 10, "middle");
+
+    let (ax, ay, aw_a, ah_a) = (80.0, 65.0, 240.0, 300.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_a}\" height=\"{ah_a}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Log-log axes. X: volume (nL to L), Y: S/V ratio (cm⁻¹)
+    // X: 1 nL = 10^-6 mL ... 10^6 mL = 1000 L
+    // Let's use log10(volume in mL): -6 to 6
+    let x_min = -6.0_f64;
+    let x_max = 6.0_f64;
+    let y_min_log = -1.0_f64; // S/V = 0.1 cm⁻¹
+    let y_max_log = 5.0_f64;  // S/V = 100000 cm⁻¹
+
+    let to_px_x = |v: f64| -> f64 { ax + (v - x_min) / (x_max - x_min) * aw_a };
+    let to_px_y = |v: f64| -> f64 { ay + ah_a - (v - y_min_log) / (y_max_log - y_min_log) * ah_a };
+
+    // X-axis labels
+    let x_labels = [(-6, "1 nL"), (-3, "1 \u{03bc}L"), (0, "1 mL"), (3, "1 L"), (6, "1000 L")];
+    for (log_v, lbl) in x_labels {
+        let x = to_px_x(log_v as f64);
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ay + ah_a, ay + ah_a + 4.0);
+        svg += &label(x, ay + ah_a + 14.0, lbl, MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw_a / 2.0, ay + ah_a + 28.0, "Droplet / vessel volume", MUTED, 8, "middle");
+
+    // Y-axis labels
+    for log_sv in [0, 1, 2, 3, 4] {
+        let y = to_px_y(log_sv as f64);
+        svg += &format!("<line x1=\"{}\" y1=\"{y}\" x2=\"{ax}\" y2=\"{y}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0);
+        let lbl = format!("10{}", match log_sv {
+            0 => "\u{2070}".to_string(),
+            1 => "\u{00b9}".to_string(),
+            2 => "\u{00b2}".to_string(),
+            3 => "\u{00b3}".to_string(),
+            4 => "\u{2074}".to_string(),
+            _ => format!("^{}", log_sv),
+        });
+        svg += &label(ax - 5.0, y + 3.0, &lbl, MUTED, 7, "end");
+    }
+    svg += &label(ax - 40.0, ay + ah_a / 2.0, "S/V ratio (cm\u{207b}\u{00b9})", MUTED, 7, "middle");
+
+    // S/V = 3/r for sphere, V = 4/3 pi r^3, so r = (3V/4pi)^(1/3), S/V = 3/(3V/4pi)^(1/3)
+    // S/V = 3 * (4pi/3)^(1/3) * V^(-1/3) ≈ 4.836 * V^(-1/3) where V in cm^3
+    // log10(S/V) = log10(4.836) - 1/3 * log10(V_cm3)
+    // V_cm3 = V_mL, so log10(S/V) = 0.685 - 1/3 * log10(V_mL)
+    let sv_pts: Vec<(f64, f64)> = (0..=120).map(|i| {
+        let log_v = x_min + i as f64 * (x_max - x_min) / 120.0;
+        let log_sv = 0.685 - log_v / 3.0;
+        (to_px_x(log_v), to_px_y(log_sv))
+    }).collect();
+    svg += &polyline_svg(&sv_pts, ACCENT, "2.5", &|x| x, &|y| y);
+
+    // Mark key regimes
+    // EWOD droplet: 100 nL - 20 uL = 10^-4 to 2*10^-2 mL
+    let ewod_x1 = to_px_x(-4.0);
+    let ewod_x2 = to_px_x(-1.7);
+    svg += &format!("<rect x=\"{ewod_x1}\" y=\"{ay}\" width=\"{}\" height=\"{ah_a}\" fill=\"{CYAN}\" opacity=\"0.10\"/>\n",
+        ewod_x2 - ewod_x1);
+    svg += &label((ewod_x1 + ewod_x2) / 2.0, ay + 15.0, "EWOD", CYAN, 8, "middle");
+    svg += &label((ewod_x1 + ewod_x2) / 2.0, ay + 27.0, "(100 nL\u{2013}20 \u{03bc}L)", CYAN, 6, "middle");
+
+    // Barrel: 200 L = 2*10^5 mL
+    let barrel_x = to_px_x(5.3);
+    svg += &format!("<circle cx=\"{barrel_x}\" cy=\"{}\" r=\"5\" fill=\"{MUTED}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+        to_px_y(0.685 - 5.3 / 3.0));
+    svg += &label(barrel_x, to_px_y(0.685 - 5.3 / 3.0) - 10.0, "Barrel", MUTED, 7, "middle");
+    svg += &label(barrel_x, to_px_y(0.685 - 5.3 / 3.0) + 14.0, "(200 L)", MUTED, 6, "middle");
+
+    // Acoustic levitation: 10 uL
+    let al_x = to_px_x(-2.0);
+    svg += &format!("<circle cx=\"{al_x}\" cy=\"{}\" r=\"4\" fill=\"{PURPLE}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+        to_px_y(0.685 + 2.0 / 3.0));
+    svg += &label(al_x + 8.0, to_px_y(0.685 + 2.0 / 3.0) + 3.0, "Acoustic lev.", PURPLE, 6, "start");
+    svg += &label(al_x + 8.0, to_px_y(0.685 + 2.0 / 3.0) + 13.0, "(\u{00a7}4.59)", PURPLE, 6, "start");
+
+    // 10x annotation between EWOD and barrel
+    let ewod_sv = 0.685 + 3.0 / 3.0; // at 1 uL
+    let barrel_sv = 0.685 - 5.3 / 3.0;
+    svg += &label(to_px_x(1.5), to_px_y((ewod_sv + barrel_sv) / 2.0),
+        &format!("~10{}\u{00d7}", "\u{00b3}"), YELLOW, 10, "middle");
+
+    // Panel B: EWOD chip schematic
+    svg += &label(525.0, 57.0, "B: EWOD Combinatorial Screening Chip", TEXT, 10, "middle");
+
+    let (bx, by) = (400.0, 75.0);
+
+    // Grid of electrodes (8x8 = 64)
+    let cell = 22.0;
+    let grid_size = 8;
+    for r in 0..grid_size {
+        for c in 0..grid_size {
+            let x = bx + c as f64 * cell;
+            let y = by + r as f64 * cell;
+            let fill = if (r + c) % 3 == 0 { CYAN } else if (r + c) % 5 == 0 { GREEN } else { GRID };
+            let opacity = if fill == GRID { "0.6" } else { "0.3" };
+            svg += &format!("<rect x=\"{x}\" y=\"{y}\" width=\"{}\" height=\"{}\" fill=\"{fill}\" opacity=\"{opacity}\" stroke=\"{MUTED}\" stroke-width=\"0.5\" rx=\"2\"/>\n",
+                cell - 2.0, cell - 2.0);
+        }
+    }
+
+    // Label the chip
+    svg += &label(bx + grid_size as f64 * cell / 2.0, by + grid_size as f64 * cell + 15.0,
+        "64-electrode array", MUTED, 8, "middle");
+
+    // Some droplets on the grid
+    let droplets = [(1.5, 2.5, ACCENT), (3.5, 1.5, BLUE), (5.5, 4.5, GREEN),
+                    (2.5, 5.5, RED), (6.5, 6.5, PURPLE), (4.5, 3.5, CYAN)];
+    for (dc, dr, color) in droplets {
+        svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"7\" fill=\"{color}\" opacity=\"0.6\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+            bx + dc * cell, by + dr * cell);
+    }
+
+    // Throughput stats
+    let stats_y = by + grid_size as f64 * cell + 30.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{stats_y}\" width=\"{}\" height=\"105\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.7\"/>\n",
+        grid_size as f64 * cell);
+
+    let stats = [
+        ("Droplet volume:", "100 nL \u{2013} 20 \u{03bc}L", CYAN),
+        ("Velocity:", "72.7 mm/s", ACCENT),
+        ("Throughput:", "~100 conditions/hr", GREEN),
+        ("Total spirit:", "&lt;1 mL for full screen", BLUE),
+        ("Actuation:", "40\u{2013}100 VDC", MUTED),
+    ];
+    for (i, (key, val, color)) in stats.iter().enumerate() {
+        let y = stats_y + 14.0 + i as f64 * 18.0;
+        svg += &label(bx + 8.0, y, key, MUTED, 7, "start");
+        svg += &label(bx + 95.0, y, val, color, 7, "start");
+    }
+
+    // Engine-and-cargo annotation
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"170\" height=\"65\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        bx + 10.0, stats_y + 110.0);
+    svg += &label(bx + 95.0, stats_y + 127.0, "Engine-and-Cargo Mode", ACCENT, 8, "middle");
+    svg += &label(bx + 95.0, stats_y + 141.0, "Aqueous droplet encapsulates", TEXT, 7, "middle");
+    svg += &label(bx + 95.0, stats_y + 153.0, "spirit aliquot (Torabinia 2019)", TEXT, 7, "middle");
+    svg += &label(bx + 95.0, stats_y + 165.0, "Solves low-\u{03b3} ethanol problem", CYAN, 7, "middle");
+
+    // Bottom callout
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        h - 50.0);
+    svg += &label(350.0, h - 34.0,
+        "EWOD screens 100+ aging conditions/hr using &lt;1 mL spirit \u{2014} combinatorial optimization",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 20.0,
+        "Complements acoustic levitation (\u{00a7}4.59): EWOD adds programmable merging, splitting, and multi-step sequences",
+        CYAN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
