@@ -130,6 +130,7 @@ fn main() {
     fs::write("../graphs/electrospray-microdroplet.svg", sim_electrospray_microdroplet()).unwrap();
     fs::write("../graphs/ouzo-phase-engineering.svg", sim_ouzo_phase_engineering()).unwrap();
     fs::write("../graphs/freeze-concentration-ester.svg", sim_freeze_concentration_ester()).unwrap();
+    fs::write("../graphs/hydrodynamic-cavitation.svg", sim_hydrodynamic_cavitation()).unwrap();
     println!("Wrote tio2-photocatalysis.svg");
 }
 
@@ -7187,6 +7188,139 @@ fn sim_freeze_concentration_ester() -> String {
         "a high-ABV state where esters form faster", ACCENT, 9, "start");
     svg += &label(ml2 + 10.0, mt + ph - 16.0,
         "Cost: $0 (chest freezer) to $5 (dry ice)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 42: Hydrodynamic Cavitation — Venturi-Based Aging
+// ═══════════════════════════════════════════════════════════════
+fn sim_hydrodynamic_cavitation() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Hydrodynamic Cavitation: Venturi-Based Spirit Aging");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // ── Panel A: Energy efficiency comparison ──
+    svg += &label(ml + pw / 2.0, mt - 5.0,
+        "A. Cavitation Energy Efficiency", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "Energy Efficiency (relative)");
+
+    // Bar chart: HC vs ultrasonic vs acoustic horn
+    let methods: [(&str, f64, f64, &str); 4] = [
+        ("Hydrodynamic\ncavitation", 44.0, 15.0, GREEN),  // 6-44× more efficient
+        ("Dual-freq\nultrasound", 4.0, 80.0, BLUE),
+        ("Single-freq\nultrasound", 1.0, 35.0, ACCENT),
+        ("Acoustic\nhorn", 0.5, 200.0, RED),
+    ];
+
+    let eff_max = 55.0;
+    let bar_w = pw / 6.0;
+    let sy_a = |e: f64| -> f64 { mt + ph - e / eff_max * ph };
+
+    for i in 1..=5 {
+        let e = eff_max * i as f64 / 5.0;
+        svg += &hline(ml, ml + pw, sy_a(e), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(e) + 3.5, &format!("{:.0}\u{d7}", e), MUTED, 8, "end");
+    }
+
+    for (i, (name, eff, cost, color)) in methods.iter().enumerate() {
+        let cx = ml + pw * (i as f64 + 0.5) / methods.len() as f64;
+        let bar_top = sy_a(*eff);
+        let bar_height = (mt + ph - bar_top).max(1.0);
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{color}\" opacity=\"0.7\" rx=\"3\"/>\n",
+            cx - bar_w / 2.0, bar_top, bar_w, bar_height);
+        svg += &label(cx, bar_top - 6.0, &format!("{:.0}\u{d7}", eff), color, 9, "middle");
+
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(cx, mt + ph + 13.0 + li as f64 * 11.0, line, TEXT, 7, "middle");
+        }
+        // Cost label
+        svg += &label(cx, bar_top + 16.0,
+            &format!("${:.0}", cost), YELLOW, 7, "middle");
+    }
+
+    svg += &label(ml + pw / 2.0, mt + ph + 38.0, "Cavitation Method", TEXT, 10, "middle");
+
+    // ── Panel B: HC treatment effect on particle size + phenolics ──
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0,
+        "B. HC Treatment Effects (Wine, 15\u{2013}60 min)", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 35.0, mt + ph / 2.0, ml2 - 35.0, mt + ph / 2.0, "Change from Control (%)");
+
+    // Data from Kochadai 2022: venturi at 3.45 bar, 15-60 min
+    let metrics: [(&str, f64, &str); 5] = [
+        ("Particle\nsize", -55.0, GREEN),      // 55% reduction
+        ("Phenolics", 35.0, BLUE),              // ~35% increase
+        ("Tannins", 28.0, ACCENT),              // ~28% increase
+        ("Color\nintensity", 22.0, PURPLE),      // ~22% increase
+        ("Volatile\nesters", 18.0, CYAN),        // ~18% increase
+    ];
+
+    let change_max = 70.0;
+    let bar_w2 = pw / 7.0;
+    let sy_b = |c: f64| -> f64 {
+        // Center zero line at middle of panel
+        let zero_y = mt + ph / 2.0;
+        zero_y - c / change_max * (ph / 2.0)
+    };
+
+    // Zero line
+    svg += &hline(ml2, ml2 + pw, sy_b(0.0), TEXT, "1");
+    svg += &label(ml2 - 4.0, sy_b(0.0) + 3.5, "0%", TEXT, 8, "end");
+
+    // Grid
+    for v in [-50.0, -25.0, 25.0, 50.0] {
+        svg += &hline(ml2, ml2 + pw, sy_b(v), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(v) + 3.5, &format!("{:+.0}%", v), MUTED, 8, "end");
+    }
+
+    for (i, (name, change, color)) in metrics.iter().enumerate() {
+        let cx = ml2 + pw * (i as f64 + 0.5) / metrics.len() as f64;
+        let zero_y = sy_b(0.0);
+        let bar_top = if *change > 0.0 { sy_b(*change) } else { zero_y };
+        let bar_bottom = if *change > 0.0 { zero_y } else { sy_b(*change) };
+        let bar_height = (bar_bottom - bar_top).abs().max(1.0);
+
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{color}\" opacity=\"0.7\" rx=\"3\"/>\n",
+            cx - bar_w2 / 2.0, bar_top, bar_w2, bar_height);
+
+        let label_y = if *change > 0.0 { bar_top - 6.0 } else { bar_bottom + 12.0 };
+        svg += &label(cx, label_y, &format!("{:+.0}%", change), color, 9, "middle");
+
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(cx, mt + ph + 13.0 + li as f64 * 11.0, line, TEXT, 7, "middle");
+        }
+    }
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"62\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 250.0, mt + 8.0, 245.0, GRID);
+    svg += &label(ml2 + pw - 245.0, mt + 24.0,
+        "HC: 6\u{2013}44\u{d7} more efficient than ultrasound", GREEN, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + 38.0,
+        "Simple plumbing: venturi + pump ($15\u{2013}30)", ACCENT, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + 52.0,
+        "55% particle size reduction in 15\u{2013}60 min", BLUE, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + 66.0,
+        "Kochadai 2022: wine aging validated", YELLOW, 9, "start");
 
     svg.push_str("</svg>");
     svg

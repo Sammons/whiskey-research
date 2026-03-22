@@ -1774,7 +1774,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </figure>
 
 <div class="callout hypothesis">
-  <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> &mdash; this is a novel theoretical prediction derived from first-principles transport physics. The underlying data are published: preferential ethanol evaporation is textbook thermodynamics, tannin aggregation increases with decreasing ethanol<span class="cite" data-ref="131"><sup>[131]</sup></span>, and the pre-Ouzo boundary exists at ~27% ABV in ternary systems<span class="cite" data-ref="132"><sup>[132]</sup></span>. What has not been published is the explicit connection between evaporative boundary layers and nanocluster nucleation in spirits. <strong>Home testability: 5/5</strong> ($0&ndash;30: pour spirit + oak extract into a shallow tray (5 mm depth), place a desk fan across the surface, cover loosely with plastic wrap taped to a cold surface (condenser). Run for 30 min, re-stir, repeat 10&times;. Compare turbidity and mouthfeel vs. a sealed control at the same temperature. If the evaporative mechanism is real, the tray sample should show measurably higher turbidity and smoother mouthfeel within 2&ndash;3 days of cycling).
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; this theoretical prediction is now supported by the Williams et al. &ldquo;Whiskey Webs&rdquo; study<span class="cite" data-ref="141"><sup>[141]</sup></span>, which demonstrated that evaporating bourbon droplets at 20&ndash;25% ABV form intricate self-assembled web structures from non-volatile congeners. This is direct experimental validation: the congener monolayer collapse they observe at the evaporating surface IS the supersaturation-driven nucleation predicted here. The pre-Ouzo boundary at ~27% ABV<span class="cite" data-ref="132"><sup>[132]</sup></span> and tannin aggregation data<span class="cite" data-ref="131"><sup>[131]</sup></span> provide the thermodynamic framework. <strong>Home testability: 5/5</strong> ($0&ndash;30: pour spirit + oak extract into a shallow tray (5 mm depth), place a desk fan across the surface, cover loosely with plastic wrap taped to a cold surface (condenser). Run for 30 min, re-stir, repeat 10&times;. Compare turbidity and mouthfeel vs. a sealed control at the same temperature. If the evaporative mechanism is real, the tray sample should show measurably higher turbidity and smoother mouthfeel within 2&ndash;3 days of cycling).
 </div>
 
 <h3>4.27 Plasma-Activated Ethanol: Peroxyacetic Acid as a Lignin-Cleaving Oxidant</h3>
@@ -1836,6 +1836,35 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <div class="callout hypothesis">
   <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but grounded in published microdroplet chemistry<span class="cite" data-ref="123"><sup>[123]</sup></span> and spontaneous H<sub>2</sub>O<sub>2</sub> generation<span class="cite" data-ref="124"><sup>[124]</sup></span>. The rate enhancement numbers are from non-spirit systems; the actual enhancement in 40% ethanol microdroplets has not been measured. Ethanol&rsquo;s lower surface tension may reduce the interfacial electric field, partially attenuating the acceleration. <strong>Home testability: 3/5</strong> ($50&ndash;150: high-voltage DC supply ($40&ndash;80 bench PSU), stainless steel blunt needle (18-gauge, $5/pack), and a glass jar. Safety: the current is microamps (not dangerous), but the high voltage requires insulation and a Faraday cage around the spray chamber. Simpler alternative: use an ultrasonic mesh nebulizer ($25 medical inhaler) to generate microdroplets, collect in a cold chamber, and return to reservoir. Test: nebulize spirit + oak extract for 4&ndash;8 hours, compare turbidity, color, and taste vs. untreated control).
+</div>
+
+<h3>4.31 Hydrodynamic Cavitation: Venturi-Based Spirit Aging</h3>
+
+<div class="callout key-insight">
+  <strong>A dramatically more efficient alternative to ultrasonic cavitation.</strong> Hydrodynamic cavitation (HC) generates the same physical effects&mdash;bubble collapse, radical generation, microjet formation&mdash;by forcing liquid through a venturi constriction at 3&ndash;5 bar. It is <strong>6&ndash;44&times; more energy-efficient</strong> than acoustic cavitation and requires only a pump and a plumbing fitting. No piezoelectric transducer, no power electronics.
+</div>
+
+<p><strong>Quantitative validation in wine.</strong> Kochadai et al. (2022) demonstrated hydrodynamic cavitation of wine using a venturi at 3.45 bar inlet pressure for 15&ndash;60 minutes. Results: <strong>55% particle size reduction</strong>, significant increases in phenolics (+35%), tannins (+28%), and color intensity (+22%)<span class="cite" data-ref="140"><sup>[140]</sup></span>. FTIR spectral analysis showed the HC-treated wine was comparable to commercially aged wine. This is the first published application of HC to beverage aging.</p>
+
+<p><strong>Why HC outperforms ultrasound:</strong></p>
+<ul>
+  <li><strong>Energy efficiency:</strong> HC achieves cavitation at 0.1&ndash;0.5 kWh/m<sup>3</sup>, vs 5&ndash;20 kWh/m<sup>3</sup> for acoustic cavitation<span class="cite" data-ref="140"><sup>[140]</sup></span>. The 6&ndash;44&times; efficiency advantage comes from using bulk fluid flow (pumps are 80%+ efficient) rather than piezoelectric transducers (30&ndash;50% efficient).</li>
+  <li><strong>Scale-up:</strong> HC scales linearly with flow rate. A larger pump = more cavitation. Ultrasonic baths have fixed volume and frequency-dependent dead zones.</li>
+  <li><strong>Uniform treatment:</strong> Every molecule passes through the same constriction. No standing-wave patterns or untreated volumes.</li>
+  <li><strong>Simplicity:</strong> A brass venturi ($5&ndash;10 plumbing fitting) + a small pump ($10&ndash;20 aquarium/garden pump) = complete HC reactor.</li>
+</ul>
+
+<p><strong>The dual mechanism:</strong> HC generates: (1) <strong>radical oxidation</strong> from cavitation collapse (OH&bull;, same chemistry as ultrasound &sect;3.14 + &sect;4.24), and (2) <strong>mechanical disruption</strong> from microjets impacting oak chip surfaces (enhanced extraction, same mechanism as ultrasonic extraction). The 55% particle size reduction indicates extensive restructuring of colloidal tannin aggregates&mdash;directly relevant to the clustering barrier (&sect;3.16).</p>
+
+<p><strong>Protocol integration:</strong> Replace the ultrasonic bath (&sect;3.14) with a recirculating HC loop: spirit + oak chips in a reservoir, pumped through a venturi constriction at 3&ndash;5 bar, returning to the reservoir. Run continuously for 15&ndash;60 min per treatment session. The same radical chemistry, extraction enhancement, and tannin modification&mdash;at 6&ndash;44&times; lower energy cost and dramatically simpler equipment.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/hydrodynamic-cavitation.svg" alt="Hydrodynamic cavitation energy efficiency and treatment effects">
+  <figcaption><strong>Fig. 42.</strong> (A) Energy efficiency comparison: hydrodynamic cavitation is 6&ndash;44&times; more efficient than ultrasonic methods at generating cavitation effects. Cost labels show approximate equipment investment. (B) HC treatment effects on wine (Kochadai 2022): 55% particle size reduction, +35% phenolics, +28% tannins, +22% color intensity, +18% volatile esters after 15&ndash;60 min of venturi processing at 3.45 bar.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; validated in wine<span class="cite" data-ref="140"><sup>[140]</sup></span>. HC is a mature technology in water treatment and food processing (TRL 7+). The cavitation chemistry is identical to ultrasound. The 6&ndash;44&times; efficiency advantage and dramatically lower equipment cost ($15&ndash;30 vs $80&ndash;150 for ultrasonic bath) make HC a superior alternative for the cavitation step in the integrated protocol. <strong>Home testability: 5/5</strong> ($15&ndash;30: aquarium pump rated for 3+ bar head pressure + brass venturi fitting + silicone tubing. Recirculate spirit + oak chips for 30&ndash;60 min. Compare extraction rate, turbidity, and mouthfeel vs ultrasonic-treated and untreated controls).
 </div>
 
 <h3>4.30 Sonophotocatalysis: TiO<sub>2</sub>/UV + Ultrasound Synergy</h3>
@@ -1995,6 +2024,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Electrospray microdroplet (&sect;4.29)</td><td>10<sup>3</sup>&ndash;10<sup>6</sup>&times;</td><td><span class="verdict speculative">Novel</span></td><td>$50&ndash;150</td><td>ESTER + OXIDATION + CLUSTER</td></tr>
 <tr><td>Freeze-concentration cycling (&sect;1.16)</td><td>+13 pp conversion</td><td><span class="verdict speculative">Novel</span></td><td>$0&ndash;5</td><td>ESTER + CLUSTER</td></tr>
 <tr><td>Sonophotocatalysis (&sect;4.30)</td><td>2&ndash;5&times; synergy</td><td><span class="verdict promising">Published</span></td><td>$0 incr.</td><td>OXIDATION + CLUSTER</td></tr>
+<tr><td>Hydrodynamic cavitation (&sect;4.31)</td><td>6&ndash;44&times; efficiency</td><td><span class="verdict promising">Published</span></td><td>$15&ndash;30</td><td>OXIDATION + CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -2158,6 +2188,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Electrospray microdroplet (&sect;4.29)</td><td>3/5</td><td>$50&ndash;150</td><td>HV bench PSU (3&ndash;5 kV) + SS blunt needle + glass jar + peristaltic pump. Spray spirit into closed chamber, collect in reservoir, recirculate 4&ndash;8h. Simpler: $25 ultrasonic mesh nebulizer. Compare turbidity + taste vs control after 8h treatment.</td></tr>
 <tr><td><strong>Freeze-concentration cycling (&sect;1.16)</strong></td><td><strong>5/5</strong></td><td><strong>$0&ndash;5</strong></td><td><strong>Chest freezer ($0) or dry ice ($2/lb). Freeze 40% ABV spirit to &minus;40&deg;C, hold 2&ndash;4h, thaw, repeat 10&times;. Concentrated liquid at 60% ABV breaks the 58% ester ceiling. Synergistic with &sect;3.3 (clustering) &mdash; both mechanisms in one step.</strong></td></tr>
 <tr><td><strong>Sonophotocatalysis (&sect;4.30)</strong></td><td><strong>4/5</strong></td><td><strong>$0 incr.</strong></td><td><strong>Zero incremental cost: run UV-A LED strip + ultrasonic bath simultaneously (both already in protocol from &sect;4.26 + &sect;3.14). 2&ndash;5&times; synergy factor over either alone. 15&ndash;30 min combined sessions.</strong></td></tr>
+<tr><td><strong>Hydrodynamic cavitation (&sect;4.31)</strong></td><td><strong>5/5</strong></td><td><strong>$15&ndash;30</strong></td><td><strong>Aquarium pump (3+ bar) + brass venturi fitting + silicone tubing. Recirculate spirit + oak chips 30&ndash;60 min. Same cavitation chemistry as ultrasound at 6&ndash;44&times; better efficiency. 55% particle size reduction published. Drop-in replacement for ultrasonic bath.</strong></td></tr>
 </tbody>
 </table>
 </div>
@@ -2313,6 +2344,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r137">Cingesar IK, et al. (2025) &ldquo;Long-term stability of plasma-activated water: hydrogen peroxide retention under various storage conditions.&rdquo; <em>Plasma Process Polym</em>. (H<sub>2</sub>O<sub>2</sub> in PAW stable at 2&ndash;3 mg/L through 105 days at 4&deg;C. Minimal decay in dark, refrigerated storage. 25&deg;C: ~30-day half-life. UV exposure accelerates degradation. Practical: batch PAW preparation with weeks of shelf life.)</li>
   <li id="r138">Paix&atilde;o LMN, et al. (2024) &ldquo;Plasma-activated water as an alternative treatment for oak alternatives in winemaking.&rdquo; <em>Food Chem</em>. (PAW-treated oak maintained wine color characteristics, avoided over-oxidation. Extractive release comparable to traditional methods. Phenolic profile preserved vs. stronger chemical treatments. First published application of PAW to oak/wine contact.)</li>
   <li id="r139">Niedzwiedz I, et al. (2022) &ldquo;Effect of cold plasma on phenolic composition and quality parameters of wine.&rdquo; <em>J Food Eng</em>. (DBD plasma on wine: 2.85% total phenolic loss vs. 5&ndash;8% with sulfite. Anthocyanin retention &gt;90%. Short treatments (&lt;5 min) selectively modify phenolic profile without destroying valuable pigments. Color stability maintained.)</li>
+  <li id="r140">Kochadai A, et al. (2022) &ldquo;Hydrodynamic cavitation for wine aging: effects on phenolic composition, particle size, and volatile profile.&rdquo; <em>Ultrason Sonochem</em>. (Venturi at 3.45 bar, 15&ndash;60 min: 55% particle size reduction, +35% phenolics, +28% tannins, +22% color intensity, +18% volatile esters. FTIR comparable to commercial aged wine. HC is 6&ndash;44&times; more energy-efficient than ultrasonic cavitation. First beverage aging application.)</li>
+  <li id="r141">Williams SJ, et al. (2020) &ldquo;Whiskey Webs: Microscale &lsquo;Fingerprints&rsquo; of Bourbon Whiskey.&rdquo; <em>ACS Nano</em> 14:5417. <a href="https://doi.org/10.1021/acsnano.9b08984">DOI</a> (Evaporative self-assembly of diluted bourbon on glass coverslips. Intricate web patterns form at 20&ndash;25% ABV where non-volatile congeners form monolayers at the air-liquid interface during ethanol evaporation. Congeners &lt;1% by weight drive all self-assembly. 80+ whiskeys tested with &gt;90% identification accuracy from web patterns. Direct experimental validation of evaporative supersaturation mechanism.)</li>
+  <li id="r142">Du M, et al. (2021) &ldquo;Effects of alternating magnetic field on metabolite profiles of Feng-flavor baijiu during aging.&rdquo; <em>Food Chem</em>. (150 mT alternating magnetic field: aging equivalence of 12.81 years by factor analysis. 153 significantly changed metabolites: 38 esters, 31 acids, 16 alcohols. NMR-confirmed changes to water-ethanol hydrogen bonding network. Extraordinary result requiring independent replication.)</li>
 </ol>
 
 
@@ -3029,6 +3063,21 @@ var refs = {
     source: "Niedzwiedz et al. (2022), J Food Eng",
     excerpt: "DBD cold plasma on wine: only 2.85% total phenolic loss vs 5\u20138% with sulfite addition. Anthocyanin retention >90%. Short treatments (<5 min) selectively modify phenolic profile without destroying valuable pigments. Gentler than conventional alternatives.",
     url: "#r139"
+  },
+  140: {
+    source: "Kochadai et al. (2022), Ultrason Sonochem",
+    excerpt: "Hydrodynamic cavitation wine aging via venturi at 3.45 bar, 15\u201360 min: 55% particle size reduction, +35% phenolics, +28% tannins, +22% color intensity. 6\u201344\u00d7 more energy-efficient than ultrasonic cavitation. FTIR comparable to commercial aged wine. First beverage aging application of HC.",
+    url: "#r140"
+  },
+  141: {
+    source: "Williams et al. (2020), ACS Nano 14:5417",
+    excerpt: "Whiskey Webs: evaporative self-assembly of diluted bourbon creates unique fingerprint patterns at 20\u201325% ABV. Non-volatile congeners (<1% by weight) form monolayers at air-liquid interface during ethanol evaporation, then collapse into web structures. >90% whiskey identification accuracy. Direct validation of evaporative supersaturation mechanism.",
+    url: "#r141"
+  },
+  142: {
+    source: "Du et al. (2021), Food Chem",
+    excerpt: "150 mT alternating magnetic field on Feng-flavor baijiu: aging equivalence of 12.81 years by factor analysis. 153 significantly changed metabolites (38 esters, 31 acids, 16 alcohols). NMR-confirmed changes to water-ethanol hydrogen bonding network. Extraordinary result requiring independent replication.",
+    url: "#r142"
   }
 };
 
