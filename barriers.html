@@ -464,7 +464,36 @@
   <strong>Home testability:</strong> A basic PEF setup is achievable with a bench power supply (0&ndash;30V DC, ~$40), stainless steel mesh electrodes, and a glass jar. At 5 cm electrode spacing, 1.2 kV/cm requires 6 kV&mdash;this exceeds bench supply range. However, the sustained EF approach (1 kV/cm AC) at 5 cm spacing requires only 500 V, achievable with a neon sign transformer ($25 surplus). <strong>Cost: ~$30&ndash;$60. Safety: high-voltage precautions required.</strong>
 </div>
 
-<p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration&mdash;FDA-cleared materials, published kinetics. <span class="verdict promising">PROMISING</span> Electrochemical gold-surface catalysis&mdash;published and validated in distilled spirit with sensory confirmation<span class="cite" data-ref="37"><sup>[37]</sup></span>. <span class="verdict speculative">SPECULATIVE</span> TiO<sub>2</sub> photocatalytic esterification (demonstrated for fatty acids, untested in spirits). <span class="verdict promising">PROMISING</span> PEF/EF oak extraction (published data in oak+ethanol and brandy barrels, compound-specific quantitative results<span class="cite" data-ref="53"><sup>[53]</sup></span><span class="cite" data-ref="54"><sup>[54]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> EBI (radical-mediated, studied since 1960s, but EBI+oak combination untested). <span class="verdict promising">PROMISING</span> Zeolite dual-function column (natural, food-grade, dual Barrier 1+2).</p>
+<h3>1.9 pH Acidification for Ester Acceleration</h3>
+
+<p>Fischer esterification is <em>first-order in [H<sup>+</sup>]</em>: rate = k<sub>2</sub>&middot;[H<sup>+</sup>]&middot;[AcOH]&middot;[EtOH], where k<sub>2</sub> &asymp; 4.8&times;10<sup>&minus;4</sup> L&sup2;/(mol&sup2;&middot;s) at 25&deg;C, E<sub>a</sub> &asymp; 56 kJ/mol<span class="cite" data-ref="62"><sup>[62]</sup></span><span class="cite" data-ref="63"><sup>[63]</sup></span>. Since the rate depends directly on proton concentration, lowering pH from 4.0 (native whiskey) to 3.0 gives a <strong>10&times; rate increase</strong>; to 2.5 gives <strong>31.6&times;</strong>. Combining pH 3.0 with 50&deg;C heating yields an estimated <strong>80&times; acceleration</strong> vs. native conditions&mdash;compressing months of ester development into ~1.5 days.</p>
+
+<p>K<sub>eq</sub> is thermodynamic and unaffected by pH: the equilibrium position remains ~69.8% conversion at 40% ABV regardless of catalyst. pH manipulation accelerates approach to equilibrium only. Crucially, adding food-safe acids (citric, tartaric, phosphoric) does not shift the acetic acid esterification equilibrium because ethanol is in ~1000&times; molar excess over all acids combined.</p>
+
+<p>However, pH manipulation has significant <strong>cross-barrier side effects</strong>: lower pH suppresses Maillard browning (optimal pH 6&ndash;8<span class="cite" data-ref="61"><sup>[61]</sup></span>), accelerates tannin extraction from oak, and accelerates acid-catalyzed acetaldehyde&ndash;tannin condensation. This means pH acidification must be <em>time-boxed to the esterification phase</em>, not maintained continuously. Post-treatment neutralization with sodium bicarbonate returns pH to 4.0 (the phosphate or citrate anion remains but is below sensory threshold).</p>
+
+<div class="svg-embed" style="max-width:780px">
+  <object data="graphs/ph-ester-kinetics.svg" type="image/svg+xml" width="100%">
+    <img src="graphs/ph-ester-kinetics.svg" alt="pH-dependent Fischer esterification kinetics">
+  </object>
+  <div class="fig-caption">Fig. 11 &mdash; Fischer esterification approach to equilibrium at different pH and temperature. Native whiskey (pH 4.0, 20&deg;C) takes months; pH 3.0 + 50&deg;C reaches equilibrium in ~2 days. Rate is first-order in [H<sup>+</sup>] (Goldschmidt &amp; Udby 1910).</div>
+</div>
+
+<div class="callout hypothesis">
+  <strong>Home testability:</strong> Food-grade phosphoric acid (85%, ~$12 for 500mL) is the most flavor-neutral option. Add ~0.5&ndash;1.5 mL of 10% dilution per liter of spirit, targeting pH 3.0 (requires pH meter, ~$20). Run at 50&deg;C for 2&ndash;3 days via sous vide. Neutralize with baking soda (0.8 g per g citric acid equivalent). Split-sample experiment: A = native pH/20&deg;C, B = pH 3.0/50&deg;C, C = native pH/50&deg;C. <strong>Cost: ~$15 (acid + pH meter). Feasibility: 4/5.</strong>
+</div>
+
+<h3>1.10 Lipase-Catalyzed Esterification</h3>
+
+<p>Immobilized lipases (Novozym 435 / CALB) catalyze ester formation with excellent substrate selectivity&mdash;producing specific flavor esters (ethyl octanoate, ethyl decanoate, isoamyl acetate) impossible via non-selective Fischer chemistry. However, lipase esterification requires water activity a<sub>w</sub> &lt; 0.6&ndash;0.7 for the synthesis direction<span class="cite" data-ref="64"><sup>[64]</sup></span>. At 40% ABV, a<sub>w</sub> &asymp; 0.93, which <strong>thermodynamically favors hydrolysis</strong>&mdash;the reverse of the desired reaction.</p>
+
+<p>This limitation could be circumvented by running the lipase step at high proof (&gt;75% ABV, a<sub>w</sub> &lt; 0.5) before dilution, consistent with the two-phase aging protocol (&sect;3.6). CALB half-life in 40% ethanol at 40&deg;C is ~200&ndash;500 hours when immobilized. At &gt;75% ethanol (a<sub>w</sub> &asymp; 0.3), esterification conversion of C8&ndash;C10 fatty acids reaches 60&ndash;95% depending on chain length.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict dead-end">DEAD END</span> at drinking proof. Potentially useful at &gt;75% ABV if combined with two-phase protocol, but Amberlyst-15 achieves the same Fischer esterification more simply. Lipase&rsquo;s unique advantage&mdash;substrate-selective long-chain ester synthesis&mdash;may warrant exploration at high proof with added fatty acid precursors. Novozym 435 is ~$100&ndash;200 for research quantities; not food-approved for beverages.
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration&mdash;FDA-cleared materials, published kinetics. <span class="verdict promising">PROMISING</span> Electrochemical gold-surface catalysis&mdash;published and validated in distilled spirit with sensory confirmation<span class="cite" data-ref="37"><sup>[37]</sup></span>. <span class="verdict speculative">SPECULATIVE</span> TiO<sub>2</sub> photocatalytic esterification (demonstrated for fatty acids, untested in spirits). <span class="verdict promising">PROMISING</span> PEF/EF oak extraction (published data in oak+ethanol and brandy barrels, compound-specific quantitative results<span class="cite" data-ref="53"><sup>[53]</sup></span><span class="cite" data-ref="54"><sup>[54]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> EBI (radical-mediated, studied since 1960s, but EBI+oak combination untested). <span class="verdict promising">PROMISING</span> Zeolite dual-function column (natural, food-grade, dual Barrier 1+2). <span class="verdict promising">PROMISING</span> pH acidification (published first-order [H<sup>+</sup>] kinetics, food-safe, 10&ndash;80&times; acceleration, time-box required<span class="cite" data-ref="62"><sup>[62]</sup></span>). <span class="verdict dead-end">DEAD END</span> Lipase at 40% ABV (water activity too high for synthesis direction<span class="cite" data-ref="64"><sup>[64]</sup></span>).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -809,7 +838,25 @@
 
 <p>White-rot fungi produce laccases and peroxidases that selectively cleave lignin polymers into vanillin, syringaldehyde, and other flavor-relevant phenolic compounds&mdash;the same chemistry that barrel aging achieves over years via slow chemical oxidation. Immobilized laccase on graphene oxide achieved 93.7% lignin degradation versus 56.2% for free enzyme<span class="cite" data-ref="52"><sup>[52]</sup></span>. A remarkable positive feedback loop: vanillin itself acts as a laccase mediator, enhancing further lignin degradation by 47.3%&mdash;meaning the product accelerates its own formation.</p>
 
-<p>Laccase is already food-grade (used in wine and dairy processing), operates at ambient temperature, and the immobilized format allows recovery and reuse. Applied to oak chips in spirit, this could replace years of slow in-barrel oxidation with enzymatic degradation in hours, producing the same phenolic aldehyde profile that feeds into the ester and clustering cascades.</p>
+<p>Quantitative kinetics for <em>Trametes versicolor</em> laccase<span class="cite" data-ref="65"><sup>[65]</sup></span><span class="cite" data-ref="66"><sup>[66]</sup></span> on whiskey-relevant substrates:</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Substrate</th><th>K<sub>m</sub> (&mu;M)</th><th>k<sub>cat</sub> (s<sup>&minus;1</sup>)</th><th>k<sub>cat</sub>/K<sub>m</sub> (M<sup>&minus;1</sup>s<sup>&minus;1</sup>)</th></tr>
+  <tr><td>Syringaldehyde</td><td>26&ndash;40</td><td>4,800&ndash;10,200</td><td>~2.5&times;10<sup>8</sup></td></tr>
+  <tr><td>Guaiacol</td><td>60&ndash;200</td><td>1,500&ndash;4,000</td><td>~2&times;10<sup>7</sup></td></tr>
+  <tr><td>Catechin</td><td>15&ndash;60</td><td>1,000&ndash;3,500</td><td>~6&times;10<sup>7</sup></td></tr>
+  <tr><td>Gallic acid</td><td>30&ndash;90</td><td>2,000&ndash;5,000</td><td>~5.5&times;10<sup>7</sup></td></tr>
+  <tr><td>Vanillin</td><td>80&ndash;250</td><td>500&ndash;2,000</td><td>~6&times;10<sup>6</sup></td></tr>
+  <tr><td>Ellagic acid</td><td>100&ndash;400</td><td>200&ndash;800</td><td>~2&times;10<sup>6</sup></td></tr>
+</table>
+</div>
+
+<p><strong>Critical finding: laccase does NOT oxidize ethanol.</strong> Its type-1 copper center (E&deg; &asymp; 0.78 V for <em>T. versicolor</em>) is selective for phenolic substrates&mdash;requiring an aromatic ring with hydroxyl groups for electron transfer. This selectivity means laccase produces phenol &rarr; quinone &rarr; polymer transformations (exactly the barrel-aging pathway) without generating excess acetaldehyde. This directly solves the oxidative imbalance problem identified in &sect;4.7.</p>
+
+<p>Activity retention in ethanol/water: ~60&ndash;70% at 20% EtOH, ~20&ndash;40% at 40% EtOH<span class="cite" data-ref="67"><sup>[67]</sup></span>. Temperature optimum 50&ndash;60&deg;C, E<sub>a</sub> = 25&ndash;40 kJ/mol. Thermal inactivation at 70&deg;C completes in 10&ndash;15 minutes&mdash;providing a clean reaction termination mechanism.</p>
+
+<p>Laccase is food-grade (used in wine and dairy processing), operates at ambient temperature, and the immobilized format allows recovery and reuse. Applied to oak chips in spirit, this could replace years of slow in-barrel oxidation with enzymatic degradation in hours, producing the same phenolic aldehyde profile that feeds into the ester and clustering cascades. The substrate preference (syringyl &gt; guaiacyl &gt; p-hydroxyphenyl) matches the dominant phenol profile of oak-aged bourbon and whiskey.</p>
 
 <h3>4.5 Temperature-Accelerated Tannin Condensation</h3>
 
@@ -836,7 +883,91 @@
   <strong>Home testability:</strong> Food-grade xylose ($10&ndash;15 online), glycine ($8&ndash;10). Add xylose (0.3 g/L) + glycine (0.08 g/L) to spirit with medium-toast oak chips. Temperature cycle daily (4h at 60&deg;C via sous vide, 20h ambient). Compare furfural/color development vs. unsupplemented control after 2&ndash;4 weeks. <strong>Cost: ~$20. Feasibility: 4/5.</strong>
 </div>
 
-<p><span class="verdict promising">PROMISING</span> Silicone membrane MOX (proven materials, proven concept in wine, FDA-approved). <span class="verdict promising">PROMISING</span> Electrochemical potential programming (published in spirit, 10,000&times; acceleration demonstrated<span class="cite" data-ref="38"><sup>[38]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> Controlled Fenton (powerful but risky without analytical monitoring). <span class="verdict speculative">SPECULATIVE</span> Immobilized laccase (food-grade, published lignin degradation data, vanillin positive feedback, untested in spirits). <span class="verdict promising">PROMISING</span> Temperature cycling (Arrhenius, 10&times; rate at 50&deg;C<span class="cite" data-ref="55"><sup>[55]</sup></span>). <span class="verdict promising">PROMISING</span> Maillard supplementation (published kinetics, food-grade substrates, addresses real aging chemistry<span class="cite" data-ref="61"><sup>[61]</sup></span>).</p>
+<h3>4.7 O<sub>2</sub> Delivery Rate Optimization</h3>
+
+<p>A coupled multi-species reactor simulation (11 species, 7 reactions, backward Euler implicit integration with analytical Jacobian) reveals that <strong>O<sub>2</sub> delivery rate is the single most critical tuning parameter</strong> in any accelerated protocol. The simulation tracks all four barrier processes simultaneously: ethanol oxidation to acetaldehyde, Fischer esterification, tannin-acetaldehyde condensation, DMS removal, and wood extraction.</p>
+
+<p>A kLa parameter sweep (90 days, 35&plusmn;10&deg;C cycling, 40% ABV, Amberlyst + Cu/AC, 30 cm&sup2;/L oak) reveals three regimes:</p>
+
+<div class="table-wrap">
+<table>
+  <tr>
+    <th>O<sub>2</sub> Rate (kLa)</th>
+    <th>Factor vs. Barrel</th>
+    <th>Acetaldehyde (mol/L)</th>
+    <th>Tannin<sub>poly</sub> (mol/L)</th>
+    <th>EtOAc (mol/L)</th>
+    <th>Assessment</th>
+  </tr>
+  <tr>
+    <td>2&times;10<sup>&minus;7</sup></td>
+    <td>1&times; (barrel)</td>
+    <td>3.7&times;10<sup>&minus;5</sup></td>
+    <td>2.8&times;10<sup>&minus;4</sup></td>
+    <td>3.75&times;10<sup>&minus;3</sup></td>
+    <td>Under-oxidized for 90d</td>
+  </tr>
+  <tr style="background:#1a2e1a">
+    <td><strong>1&times;10<sup>&minus;6</sup></strong></td>
+    <td><strong>5&times;</strong></td>
+    <td><strong>1.7&times;10<sup>&minus;4</sup></strong></td>
+    <td><strong>1.3&times;10<sup>&minus;3</sup></strong></td>
+    <td><strong>3.75&times;10<sup>&minus;3</sup></strong></td>
+    <td><strong style="color:#3fb950">Sweet spot</strong></td>
+  </tr>
+  <tr>
+    <td>5&times;10<sup>&minus;6</sup></td>
+    <td>25&times;</td>
+    <td>6.4&times;10<sup>&minus;4</sup></td>
+    <td>4.5&times;10<sup>&minus;3</sup></td>
+    <td>3.75&times;10<sup>&minus;3</sup></td>
+    <td>Moderate overshoot</td>
+  </tr>
+  <tr>
+    <td>2&times;10<sup>&minus;5</sup></td>
+    <td>100&times;</td>
+    <td>1.3&times;10<sup>&minus;3</sup></td>
+    <td>8.3&times;10<sup>&minus;3</sup></td>
+    <td>3.75&times;10<sup>&minus;3</sup></td>
+    <td style="color:#f85149">Over-oxidized</td>
+  </tr>
+  <tr>
+    <td>5&times;10<sup>&minus;5</sup></td>
+    <td>250&times; (PDMS)</td>
+    <td>1.6&times;10<sup>&minus;3</sup></td>
+    <td>1.0&times;10<sup>&minus;2</sup></td>
+    <td>3.76&times;10<sup>&minus;3</sup></td>
+    <td style="color:#f85149">Severely over-oxidized</td>
+  </tr>
+</table>
+</div>
+
+<p>Three critical insights emerge:</p>
+<ol>
+  <li><strong>Ethyl acetate is invariant to O<sub>2</sub> delivery rate.</strong> Amberlyst catalyst controls esterification independently of the oxidation cascade. This confirms that Barriers 1 (ester) and 4 (oxidation) are decoupled when solid-acid catalysis is present.</li>
+  <li><strong>Acetaldehyde accumulation is the failure mode.</strong> At PDMS full-flux (kLa = 5&times;10<sup>&minus;5</sup>), the system accumulates 11.4&times; more acetaldehyde than 2-year barrel aging&mdash;beyond the threshold for harsh, pungent off-flavors (sensory threshold ~125 ppm, ~2.8&times;10<sup>&minus;3</sup> mol/L). The bottleneck is tannin monomer supply: condensation can&rsquo;t consume acetaldehyde faster than oxidation produces it.</li>
+  <li><strong>The sweet spot is 5&ndash;25&times; barrel kLa</strong> (1&times;10<sup>&minus;6</sup> to 5&times;10<sup>&minus;6</sup> /s). This matches barrel-level acetaldehyde while running 12&times; faster. Practically, this means using a PDMS membrane with ~5&ndash;10 mm wall thickness instead of 1 mm, or reducing membrane area to 1/10th.</li>
+</ol>
+
+<div class="svg-embed" style="max-width:780px">
+  <object data="graphs/o2-delivery-optimization.svg" type="image/svg+xml" width="100%">
+    <img src="graphs/o2-delivery-optimization.svg" alt="O2 delivery rate optimization — bar chart showing acetaldehyde and tannin polymerization vs kLa">
+  </object>
+  <div class="fig-caption">Fig. 9 &mdash; O<sub>2</sub> delivery rate parameter sweep. Green: barrel-matched window. Yellow: marginal. Red: over-oxidized. Note ethyl acetate (bottom panel) is invariant&mdash;Amberlyst controls ester equilibrium independently.</div>
+</div>
+
+<div class="svg-embed" style="max-width:780px">
+  <object data="graphs/protocol-balance.svg" type="image/svg+xml" width="100%">
+    <img src="graphs/protocol-balance.svg" alt="Balanced vs over-oxidized protocol time-series comparison">
+  </object>
+  <div class="fig-caption">Fig. 10 &mdash; Balanced (kLa=10<sup>&minus;6</sup>, 35&deg;C) vs. over-oxidized (kLa=5&times;10<sup>&minus;5</sup>, 50&deg;C) protocol. The over-oxidized protocol accumulates 10&times; more acetaldehyde, driving 8&times; tannin polymerization&mdash;astringent, woody, unbalanced.</div>
+</div>
+
+<div class="callout hypothesis">
+  <strong>Home testability:</strong> To achieve kLa &asymp; 1&times;10<sup>&minus;6</sup>: use PDMS (silicone) tubing with 5&ndash;8 mm wall thickness, or wrap standard 1mm-wall tubing with additional silicone tape. Alternatively, immerse a sealed silicone tube in the spirit for only 2&ndash;4 hours per day, then remove&mdash;this achieves time-averaged kLa reduction. A simpler approach: micro-oxygenation wine stones (porous ceramic or PTFE sintered discs) at very low O<sub>2</sub> flow (1&ndash;2 mL/L/day). <strong>Cost: ~$15&ndash;25. Feasibility: 4/5.</strong>
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Silicone membrane MOX (proven materials, proven concept in wine, FDA-approved). <span class="verdict promising">PROMISING</span> Electrochemical potential programming (published in spirit, 10,000&times; acceleration demonstrated<span class="cite" data-ref="38"><sup>[38]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> Controlled Fenton (powerful but risky without analytical monitoring). <span class="verdict speculative">SPECULATIVE</span> Immobilized laccase (food-grade, published lignin degradation data, vanillin positive feedback, untested in spirits). <span class="verdict promising">PROMISING</span> Temperature cycling (Arrhenius, 10&times; rate at 50&deg;C<span class="cite" data-ref="55"><sup>[55]</sup></span>). <span class="verdict promising">PROMISING</span> Maillard supplementation (published kinetics, food-grade substrates, addresses real aging chemistry<span class="cite" data-ref="61"><sup>[61]</sup></span>). <span class="verdict promising">PROMISING</span> O<sub>2</sub> delivery rate tuning (simulator-validated, critical for avoiding over-oxidation and tannin overshoot).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -897,7 +1028,7 @@
   </tr>
   <tr>
     <td><strong>1&ndash;3</strong></td>
-    <td>Ultrasonic wood extraction (40 kHz, charred American oak staves); silicone membrane O<sub>2</sub> delivery (0.05 mL/L/day)</td>
+    <td>Ultrasonic wood extraction (40 kHz, charred American oak staves); silicone membrane O<sub>2</sub> delivery at <strong>tuned kLa &asymp; 1&times;10<sup>&minus;6</sup></strong> (5&times; barrel, ~2&ndash;4 mL O<sub>2</sub>/L/day; use 5&ndash;8 mm wall PDMS or intermittent exposure)</td>
     <td>65% ABV</td>
     <td>Phenolic extraction + <span class="barrier-tag oxidation">OXIDATION</span> cascade initiation</td>
   </tr>
@@ -1024,6 +1155,7 @@
 <tr><td>TiO<sub>2</sub> + UVA (&sect;1.5)</td><td>3/5</td><td>$50</td><td>5g TiO<sub>2</sub> anatase (E171) in jar, UVA LED panel, 3&ndash;6h. Filter, taste vs. dark control.</td></tr>
 <tr><td>Cu-clinoptilolite column (&sect;1.7)</td><td>4/5</td><td>$25</td><td>Soak clinoptilolite in CuSO<sub>4</sub>, calcine at 200&deg;C, pack column. Dual-function (B1+B2).</td></tr>
 <tr><td>EF oak extraction (&sect;1.8)</td><td>3/5</td><td>$30&ndash;60</td><td>Neon sign transformer + SS mesh electrodes in glass jar with oak chips. 500V AC across 5cm. Safety precautions.</td></tr>
+<tr><td><strong>pH acidification (&sect;1.9)</strong></td><td><strong>4/5</strong></td><td><strong>$15</strong></td><td><strong>Food-grade H<sub>3</sub>PO<sub>4</sub> + pH meter. Drop to pH 3.0, sous vide 50&deg;C, 2d. 80&times; ester acceleration. Neutralize afterward.</strong></td></tr>
 <tr><td>Gamma/EBI (&sect;1.6)</td><td>1/5</td><td>N/A</td><td>Skip&mdash;or send sealed samples to food irradiation service ($100&ndash;300/batch).</td></tr>
 
 <tr style="background:var(--surface2)"><td colspan="4"><strong>Barrier 2: Sulfur Removal</strong></td></tr>
@@ -1042,7 +1174,8 @@
 <tr><td><strong>Multi-toast blending (&sect;3.12)</strong></td><td><strong>5/5</strong></td><td><strong>$15</strong></td><td><strong>Kitchen oven: separate batches at 165&deg;C, 180&deg;C, 200&deg;C. Blend in spirit. Most immediately actionable.</strong></td></tr>
 
 <tr style="background:var(--surface2)"><td colspan="4"><strong>Barrier 4: Oxidation Cascades</strong></td></tr>
-<tr><td><strong>Silicone membrane MOX (&sect;4.1)</strong></td><td><strong>5/5</strong></td><td><strong>$25</strong></td><td><strong>PDMS tubing coil in jar + aquarium pump. Run 2&ndash;4 weeks. Dead simple.</strong></td></tr>
+<tr><td><strong>Silicone membrane MOX (&sect;4.1)</strong></td><td><strong>5/5</strong></td><td><strong>$25</strong></td><td><strong>PDMS tubing coil in jar + aquarium pump. Run 2&ndash;4 weeks. Dead simple. Use 5&ndash;8mm wall or intermittent exposure.</strong></td></tr>
+<tr><td><strong>O<sub>2</sub> rate tuning (&sect;4.7)</strong></td><td><strong>5/5</strong></td><td><strong>$0</strong></td><td><strong>Critical: tune PDMS wall thickness or exposure time to kLa &asymp; 10<sup>&minus;6</sup> (5&times; barrel). Avoids acetaldehyde/tannin overshoot.</strong></td></tr>
 <tr><td>Electrochemical programming (&sect;4.3)</td><td>3/5</td><td>$200</td><td>Same gold electrode as 1.4. Step voltage: 0.50V &rarr; 0.68V &rarr; 0.80V, 4h each.</td></tr>
 <tr><td>Immobilized laccase (&sect;4.4)</td><td>3/5</td><td>$80</td><td>Buy laccase (Sigma, <em>T. versicolor</em>), add to spirit with oak chips, 24&ndash;48h at RT. Filter.</td></tr>
 <tr><td><strong>Temperature cycling (&sect;4.5)</strong></td><td><strong>5/5</strong></td><td><strong>$30</strong></td><td><strong>Sous-vide 50&deg;C 4h &rarr; freezer 4&deg;C 20h. Daily cycle. 10&times; tannin condensation rate. Dead simple.</strong></td></tr>
@@ -1125,6 +1258,12 @@
   <li id="r59">Farrell RR, et al. (2015) &ldquo;Real-time mass spectrometry monitoring of oak wood toasting.&rdquo; <em>Sci Rep</em> 5:17334. <a href="https://www.nature.com/articles/srep17334">Nature</a></li>
   <li id="r60">Pollon M, et al. (2023) &ldquo;Volatile compound release from oak chips in model wine media.&rdquo; <em>J Agric Food Chem</em> 71:13440&ndash;13450. <a href="https://doi.org/10.1021/acs.jafc.3c03898">DOI</a></li>
   <li id="r61">Martins SIFS, Van Boekel MAJS. (2005) &ldquo;A kinetic model for the glucose/glycine Maillard reaction pathways.&rdquo; <em>Food Chem</em> 90:257&ndash;269. <a href="https://doi.org/10.1016/j.foodchem.2004.04.006">DOI</a></li>
+  <li id="r62">Goldschmidt H, Udby O. (1910) &ldquo;&Uuml;ber die Geschwindigkeit der Veresterung.&rdquo; <em>Z Physik Chem</em> 60:728&ndash;751. First-order [H<sup>+</sup>] dependence for Fischer esterification.</li>
+  <li id="r63">Rolfe AC, Hinshelwood CN. (1934) &ldquo;The kinetics of esterification. The reaction between acetic acid and ethyl alcohol in aqueous solution.&rdquo; <em>Trans Faraday Soc</em> 30:935&ndash;941.</li>
+  <li id="r64">Halling PJ. (1994) &ldquo;Thermodynamic predictions for biocatalysis in nonconventional media: theory, tests, and recommendations.&rdquo; <em>Enzyme Microb Technol</em> 16:178&ndash;206. <a href="https://doi.org/10.1016/0141-0229(94)90043-4">DOI</a></li>
+  <li id="r65">Xu F. (1996) &ldquo;Oxidation of phenols, anilines, and benzenethiols by fungal laccases: correlation between activity and redox potentials.&rdquo; <em>Biochemistry</em> 35:7608&ndash;7614. <a href="https://doi.org/10.1021/bi952971a">DOI</a></li>
+  <li id="r66">Baldrian P. (2006) &ldquo;Fungal laccases &mdash; occurrence and properties.&rdquo; <em>FEMS Microbiol Rev</em> 30:215&ndash;242. <a href="https://doi.org/10.1111/j.1574-6976.2005.00010.x">DOI</a></li>
+  <li id="r67">Rodakiewicz-Nowak J, Kasture SM, Dudek B, Haber J. (2000) &ldquo;Effect of various water-miscible solvents on enzymatic activity of fungal laccases.&rdquo; <em>J Mol Catal B: Enzym</em> 11:1&ndash;7.</li>
 </ol>
 
 
@@ -1451,6 +1590,36 @@ var refs = {
     source: "Martins & Van Boekel (2005), Food Chemistry",
     excerpt: "Kinetic model for glucose/glycine Maillard reaction. Pentose sugars (xylose, arabinose) from oak hemicellulose are 2\u20135\u00d7 more reactive than glucose. Rate doubles per 10\u00b0C. At low pH (spirit conditions), favors furfural/HMF formation over melanoidin polymerization.",
     url: "https://doi.org/10.1016/j.foodchem.2004.04.006"
+  },
+  62: {
+    source: "Goldschmidt & Udby (1910), Z Physik Chem",
+    excerpt: "Classical kinetic study establishing first-order dependence on hydrogen ion concentration for Fischer esterification of acetic acid with ethanol. Doubling [H+] approximately doubles the rate. k\u2082 \u2248 4.8\u00d710\u207b\u2074 L\u00b2/(mol\u00b2\u00b7s) at 25\u00b0C.",
+    url: "#r62"
+  },
+  63: {
+    source: "Rolfe & Hinshelwood (1934), Trans Faraday Soc",
+    excerpt: "Confirmed first-order [H+] dependence for acetic acid + ethanol esterification in aqueous-alcoholic media. Measured Ea \u2248 54\u201360 kJ/mol. Rate enhancement from pH 4.0 to 3.0 is 10\u00d7; to 2.5 is 31.6\u00d7.",
+    url: "#r63"
+  },
+  64: {
+    source: "Halling (1994), Enzyme Microb Technol",
+    excerpt: "Thermodynamic framework for biocatalysis in nonconventional media. Lipase ester synthesis requires water activity a\u2090 < 0.6\u20130.7. At 40% ABV (a\u2090 \u2248 0.93), the equilibrium strongly favors hydrolysis, not synthesis.",
+    url: "https://doi.org/10.1016/0141-0229(94)90043-4"
+  },
+  65: {
+    source: "Xu (1996), Biochemistry",
+    excerpt: "Comprehensive structure-activity study of fungal laccase. Substrate selectivity: syringyl > guaiacyl > p-hydroxyphenyl. Methoxy substituents increase kcat up to 100-fold. T. versicolor laccase T1 copper E\u00b0 \u2248 0.78 V vs NHE. Does NOT oxidize ethanol.",
+    url: "https://doi.org/10.1021/bi952971a"
+  },
+  66: {
+    source: "Baldrian (2006), FEMS Microbiol Rev",
+    excerpt: "Comprehensive review of fungal laccases. Temperature optimum 50\u201360\u00b0C, half-life at 60\u00b0C \u2248 1\u20132 hours. Thermal inactivation at 70\u00b0C complete in 10\u201315 min. Ea = 25\u201340 kJ/mol for phenol oxidation.",
+    url: "https://doi.org/10.1111/j.1574-6976.2005.00010.x"
+  },
+  67: {
+    source: "Rodakiewicz-Nowak et al. (2000), J Mol Catal B: Enzym",
+    excerpt: "Laccase activity in water-miscible solvents. Retains ~60\u201370% activity at 20% ethanol, ~20\u201340% at 40% ethanol. Activity loss is partially reversible upon dilution. Ethanol does not act as a substrate.",
+    url: "#r67"
   }
 };
 

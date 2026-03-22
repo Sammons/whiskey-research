@@ -42,6 +42,15 @@ fn main() {
 
     fs::write("../graphs/pef-extraction.svg", sim_pef_extraction()).unwrap();
     println!("Wrote pef-extraction.svg");
+
+    fs::write("../graphs/o2-delivery-optimization.svg", sim_o2_delivery_optimization()).unwrap();
+    println!("Wrote o2-delivery-optimization.svg");
+
+    fs::write("../graphs/protocol-balance.svg", sim_protocol_balance()).unwrap();
+    println!("Wrote protocol-balance.svg");
+
+    fs::write("../graphs/ph-ester-kinetics.svg", sim_ph_ester_kinetics()).unwrap();
+    println!("Wrote ph-ester-kinetics.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -867,6 +876,440 @@ fn sim_pef_extraction() -> String {
         svg.push_str(&format!("<rect x=\"{lx}\" y=\"{}\" width=\"14\" height=\"10\" fill=\"{color}\" opacity=\"0.8\" rx=\"2\"/>\n", ly - 8.0));
         svg += &label(lx + 18.0, ly, lbl, TEXT, 10, "start");
     }
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Simulation 9: O₂ Delivery Rate Optimization
+/// Shows how acetaldehyde accumulation and tannin polymerization respond to kLa,
+/// revealing the optimal O₂ delivery window. Data from backward-Euler coupled
+/// reactor simulation (whiskey-simulator), 90 days, 35±10°C cycling, 40% ABV,
+/// Amberlyst + Cu/AC, 30 cm²/L wood.
+fn sim_o2_delivery_optimization() -> String {
+    let kla_labels = ["Barrel\n2e-7", "5\u{d7}\n1e-6", "25\u{d7}\n5e-6", "100\u{d7}\n2e-5", "PDMS\n5e-5"];
+    let barrel_2yr_ach = 1.217e-4;
+    let barrel_2yr_tpoly = 2.209e-3;
+
+    // Results from dockerized simulator kLa sweep (90 days, 35°C cycling)
+    let acetaldehyde = [3.745e-5, 1.738e-4, 6.390e-4, 1.277e-3, 1.588e-3];
+    let tannin_poly  = [2.849e-4, 1.299e-3, 4.504e-3, 8.341e-3, 1.002e-2];
+    let ethyl_acetate = [3.746e-3, 3.745e-3, 3.747e-3, 3.753e-3, 3.757e-3];
+
+    let (w, h) = (780.0, 500.0);
+    let ml = 90.0;
+    let mr = 30.0;
+    let panel_h = 120.0;
+    let pw = w - ml - mr;
+    let mt = 55.0;
+    let n = kla_labels.len();
+    let bar_gap = pw / n as f64;
+    let bar_w = bar_gap * 0.65;
+
+    let sx = |i: usize| -> f64 { ml + i as f64 * bar_gap + bar_gap * 0.5 };
+
+    let mut svg = svg_header(w, h, "O\u{2082} Delivery Rate Optimization \u{2014} 90 Day Accelerated Protocol");
+
+    // Panel 1: Acetaldehyde
+    let p1_top = mt;
+    let p1_bot = mt + panel_h;
+    let ach_max = 2.0e-3;
+    svg += &label(ml - 5.0, p1_top + 12.0, "Acetaldehyde (mol/L)", ACCENT, 11, "end");
+    for frac in [0.25, 0.5, 0.75, 1.0] {
+        let gy = p1_bot - frac * panel_h;
+        svg += &hline(ml, ml + pw, gy, GRID, "0.5");
+        svg += &label(ml - 5.0, gy + 3.0, &format!("{:.1e}", frac * ach_max), MUTED, 8, "end");
+    }
+    svg += &hline(ml, ml + pw, p1_bot, MUTED, "1");
+    let target_y = p1_bot - (barrel_2yr_ach / ach_max) * panel_h;
+    svg.push_str(&format!("<line x1=\"{ml}\" y1=\"{target_y:.1}\" x2=\"{}\" y2=\"{target_y:.1}\" \
+        stroke=\"{YELLOW}\" stroke-width=\"1.5\" stroke-dasharray=\"6,4\"/>\n", ml + pw));
+    svg += &label(ml + pw + 3.0, target_y + 3.0, "2yr barrel", YELLOW, 8, "start");
+    for (i, &val) in acetaldehyde.iter().enumerate() {
+        let x = sx(i) - bar_w / 2.0;
+        let bh = (val / ach_max) * panel_h;
+        let y = p1_bot - bh;
+        let color = if val <= barrel_2yr_ach * 2.0 { GREEN } else if val <= barrel_2yr_ach * 5.0 { YELLOW } else { RED };
+        svg.push_str(&format!("<rect x=\"{x:.1}\" y=\"{y:.1}\" width=\"{bar_w:.1}\" height=\"{bh:.1}\" \
+            fill=\"{color}\" opacity=\"0.75\" rx=\"3\"/>\n"));
+        svg += &label(sx(i), y - 4.0, &format!("{:.1e}", val), color, 8, "middle");
+    }
+
+    // Panel 2: Tannin polymeric
+    let p2_top = p1_bot + 30.0;
+    let p2_bot = p2_top + panel_h;
+    let tp_max = 1.2e-2;
+    svg += &label(ml - 5.0, p2_top + 12.0, "Polymeric Tannin (mol/L)", ACCENT, 11, "end");
+    for frac in [0.25, 0.5, 0.75, 1.0] {
+        let gy = p2_bot - frac * panel_h;
+        svg += &hline(ml, ml + pw, gy, GRID, "0.5");
+        svg += &label(ml - 5.0, gy + 3.0, &format!("{:.1e}", frac * tp_max), MUTED, 8, "end");
+    }
+    svg += &hline(ml, ml + pw, p2_bot, MUTED, "1");
+    let target_y2 = p2_bot - (barrel_2yr_tpoly / tp_max) * panel_h;
+    svg.push_str(&format!("<line x1=\"{ml}\" y1=\"{target_y2:.1}\" x2=\"{}\" y2=\"{target_y2:.1}\" \
+        stroke=\"{YELLOW}\" stroke-width=\"1.5\" stroke-dasharray=\"6,4\"/>\n", ml + pw));
+    svg += &label(ml + pw + 3.0, target_y2 + 3.0, "2yr barrel", YELLOW, 8, "start");
+    for (i, &val) in tannin_poly.iter().enumerate() {
+        let x = sx(i) - bar_w / 2.0;
+        let bh = (val / tp_max) * panel_h;
+        let y = p2_bot - bh;
+        let color = if val <= barrel_2yr_tpoly * 1.5 { GREEN } else if val <= barrel_2yr_tpoly * 3.0 { YELLOW } else { RED };
+        svg.push_str(&format!("<rect x=\"{x:.1}\" y=\"{y:.1}\" width=\"{bar_w:.1}\" height=\"{bh:.1}\" \
+            fill=\"{color}\" opacity=\"0.75\" rx=\"3\"/>\n"));
+        svg += &label(sx(i), y - 4.0, &format!("{:.1e}", val), color, 8, "middle");
+    }
+
+    // Panel 3: Ethyl acetate (constant — key insight)
+    let p3_top = p2_bot + 30.0;
+    let p3_bot = p3_top + panel_h * 0.7;
+    let ea_min = 3.70e-3;
+    let ea_max = 3.80e-3;
+    svg += &label(ml - 5.0, p3_top + 12.0, "Ethyl Acetate (mol/L)", ACCENT, 11, "end");
+    svg += &hline(ml, ml + pw, p3_bot, MUTED, "1");
+    for frac in [0.0, 0.5, 1.0] {
+        let gy = p3_bot - frac * (p3_bot - p3_top);
+        svg += &label(ml - 5.0, gy + 3.0, &format!("{:.3e}", ea_min + frac * (ea_max - ea_min)), MUTED, 8, "end");
+    }
+    for (i, &val) in ethyl_acetate.iter().enumerate() {
+        let x = sx(i) - bar_w / 2.0;
+        let frac = ((val - ea_min) / (ea_max - ea_min)).max(0.05);
+        let bh = frac * (p3_bot - p3_top);
+        let y = p3_bot - bh;
+        svg.push_str(&format!("<rect x=\"{x:.1}\" y=\"{y:.1}\" width=\"{bar_w:.1}\" height=\"{bh:.1}\" \
+            fill=\"{BLUE}\" opacity=\"0.75\" rx=\"3\"/>\n"));
+        svg += &label(sx(i), y - 4.0, &format!("{:.3e}", val), BLUE, 8, "middle");
+    }
+    svg += &label(ml + pw * 0.5, p3_bot + 15.0,
+        "Ethyl acetate invariant to O\u{2082} rate \u{2014} Amberlyst controls esterification independently",
+        MUTED, 9, "middle");
+
+    // X-axis labels
+    for (i, lbl) in kla_labels.iter().enumerate() {
+        let parts: Vec<&str> = lbl.split('\n').collect();
+        svg += &label(sx(i), p3_bot + 32.0, parts[0], TEXT, 10, "middle");
+        if parts.len() > 1 {
+            svg += &label(sx(i), p3_bot + 44.0, &format!("kLa={}", parts[1]), MUTED, 8, "middle");
+        }
+    }
+
+    // Sweet spot highlight box
+    svg.push_str(&format!("<rect x=\"{}\" y=\"{mt}\" width=\"{}\" height=\"{}\" \
+        fill=\"{GREEN}\" opacity=\"0.07\" rx=\"5\"/>\n",
+        sx(1) - bar_gap * 0.55, bar_gap * 1.1, p3_bot - mt));
+    svg += &label(sx(1), mt - 5.0, "\u{2b06} Sweet spot: 5\u{2013}25\u{d7} barrel", GREEN, 10, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Simulation 10: Protocol balance — time-series comparison of barrel-matched
+/// accelerated protocol (kLa=1e-6, 35°C cycling) vs. over-oxidized protocol
+/// (kLa=5e-5, 50°C). Simplified coupled ODE (forward Euler with clamping).
+fn sim_protocol_balance() -> String {
+    let dt = 300.0;
+    let total = 90.0 * 86400.0;
+
+    struct Scenario { label: &'static str, color: &'static str, kla: f64, temp_c: f64 }
+    let scenarios = [
+        Scenario { label: "Balanced (kLa=1e-6, 35\u{b0}C)", color: GREEN, kla: 1e-6, temp_c: 35.0 },
+        Scenario { label: "Over-oxidized (kLa=5e-5, 50\u{b0}C)", color: RED, kla: 5e-5, temp_c: 50.0 },
+    ];
+
+    let t_ref = 293.15;
+    let abv = 0.40;
+    let water = 55.5 * (1.0 - abv);
+    let o2_sat = 2.7e-4 * (1.0 - 0.5 * abv);
+    let ethanol = abv * 789.0 / 46.07;
+
+    let n_pts = 200;
+    let sample_interval = total / n_pts as f64;
+
+    let (w, h) = (780.0, 480.0);
+    let ml = 80.0;
+    let mr = 195.0;
+    let mt = 55.0;
+    let panel_h = 90.0;
+    let pw = w - ml - mr;
+
+    let mut svg = svg_header(w, h, "Balanced vs. Over-Oxidized Protocol \u{2014} 90 Day Comparison");
+
+    let panel_titles = ["Acetaldehyde (mol/L)", "Ethyl Acetate (mol/L)",
+                        "Polymeric Tannin (mol/L)", "DMS (\u{d7}initial)"];
+
+    let mut all_series: Vec<Vec<Vec<f64>>> = Vec::new();
+
+    for sc in &scenarios {
+        let t_k = sc.temp_c + 273.15;
+        let k_ox = 2.5e-7 * E.powf((70_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+        let k_ox2 = 5.0e-6 * E.powf((55_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+        let kf = 2.5e-5 * E.powf((35_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+        let kr = kf / 4.0;
+        let k_cond = 1.0e-4 * E.powf((60_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+        let k_dms = 1.0e-5 * E.powf((40_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+        let k_wood = 2.0e-7 * 5.0 * E.powf((50_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+
+        let mut ach = 0.0_f64;
+        let mut acoh = 0.0083_f64;
+        let mut etoac = 0.0_f64;
+        let mut o2 = o2_sat;
+        let mut tan_m = 0.0_f64;
+        let mut tan_p = 0.0_f64;
+        let mut dms = 1.5e-5_f64;
+        let dms_init = dms;
+
+        let mut series = vec![Vec::new(); 4];
+        let mut next_sample = 0.0_f64;
+
+        let n_steps = (total / dt) as usize;
+        for _ in 0..n_steps {
+            let r1 = k_ox * ethanol * o2.max(0.0);
+            let r2 = k_ox2 * ach.max(0.0) * o2.max(0.0);
+            let r3 = kf * acoh.max(0.0) * ethanol - kr * etoac.max(0.0) * water;
+            let r4 = k_cond * tan_m.max(0.0) * ach.max(0.0);
+            let r5 = k_dms * dms.max(0.0);
+            let r6 = sc.kla * (o2_sat - o2);
+            let r7 = k_wood * (3.0e-3 - tan_m).max(0.0);
+
+            ach += (r1 - r2 - r4) * dt;
+            acoh += (r2 - r3) * dt;
+            etoac += r3 * dt;
+            o2 += (r6 - r1 - r2) * dt;
+            tan_m += (r7 - r4) * dt;
+            tan_p += r4 * dt;
+            dms -= r5 * dt;
+
+            for v in [&mut ach, &mut acoh, &mut etoac, &mut o2, &mut tan_m, &mut tan_p, &mut dms] {
+                if *v < 0.0 { *v = 0.0; }
+            }
+
+            next_sample += dt;
+            if next_sample >= sample_interval {
+                series[0].push(ach);
+                series[1].push(etoac);
+                series[2].push(tan_p);
+                series[3].push(if dms_init > 0.0 { dms / dms_init } else { 0.0 });
+                next_sample -= sample_interval;
+            }
+        }
+        all_series.push(series);
+    }
+
+    let mut y_maxes = [0.0_f64; 4];
+    for series in &all_series {
+        for (pi, vals) in series.iter().enumerate() {
+            for &v in vals { if v > y_maxes[pi] { y_maxes[pi] = v; } }
+        }
+    }
+    y_maxes[3] = 1.0;
+    for ym in y_maxes.iter_mut() { *ym *= 1.15; }
+
+    for (pi, title) in panel_titles.iter().enumerate() {
+        let pt = mt + pi as f64 * (panel_h + 15.0);
+        let pb = pt + panel_h;
+
+        svg += &label(ml - 5.0, pt + 12.0, title, TEXT, 10, "end");
+        svg += &hline(ml, ml + pw, pb, MUTED, "0.8");
+        svg += &vline(ml, pt, pb, MUTED, "0.8");
+        for g in [0.25, 0.5, 0.75, 1.0] {
+            svg += &hline(ml, ml + pw, pb - g * panel_h, GRID, "0.3");
+        }
+
+        for (si, sc) in scenarios.iter().enumerate() {
+            let vals = &all_series[si][pi];
+            let ym = y_maxes[pi];
+            let points_str: String = vals.iter().enumerate()
+                .map(|(i, &v)| {
+                    let x = ml + (i as f64 / vals.len() as f64) * pw;
+                    let y = pb - (v / ym) * panel_h;
+                    format!("{:.1},{:.1}", x, y)
+                })
+                .collect::<Vec<_>>()
+                .join(" ");
+            svg.push_str(&format!("<polyline points=\"{points_str}\" fill=\"none\" stroke=\"{}\" \
+                stroke-width=\"1.8\" stroke-linejoin=\"round\"/>\n", sc.color));
+        }
+
+        let ym = y_maxes[pi];
+        if pi == 3 {
+            svg += &label(ml - 5.0, pb + 3.0, "0", MUTED, 8, "end");
+            svg += &label(ml - 5.0, pt + 3.0, "1.0", MUTED, 8, "end");
+        } else {
+            svg += &label(ml - 5.0, pb + 3.0, "0", MUTED, 8, "end");
+            svg += &label(ml - 5.0, pt + 3.0, &format!("{:.1e}", ym), MUTED, 8, "end");
+        }
+    }
+
+    let bot = mt + 3.0 * (panel_h + 15.0) + panel_h;
+    for frac in [0.0, 0.25, 0.5, 0.75, 1.0] {
+        svg += &label(ml + frac * pw, bot + 14.0, &format!("{:.0}d", frac * 90.0), MUTED, 9, "middle");
+    }
+
+    let lx = ml + pw + 15.0;
+    for (i, sc) in scenarios.iter().enumerate() {
+        let ly = mt + 10.0 + i as f64 * 20.0;
+        svg.push_str(&format!("<line x1=\"{lx}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" \
+            stroke=\"{}\" stroke-width=\"2.5\"/>\n", lx + 20.0, sc.color));
+        svg += &label(lx + 25.0, ly + 4.0, sc.label, TEXT, 9, "start");
+    }
+    svg += &label(lx, mt + 60.0, "Key insight:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 75.0, "Balanced protocol matches", TEXT, 9, "start");
+    svg += &label(lx, mt + 88.0, "barrel acetaldehyde while", TEXT, 9, "start");
+    svg += &label(lx, mt + 101.0, "avoiding tannin overshoot.", TEXT, 9, "start");
+    svg += &label(lx, mt + 120.0, "Over-oxidized accumulates", RED, 9, "start");
+    svg += &label(lx, mt + 133.0, "10\u{d7} acetaldehyde \u{2192} 8\u{d7}", RED, 9, "start");
+    svg += &label(lx, mt + 146.0, "tannin polymerization.", RED, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Simulation 11: pH-dependent Fischer esterification kinetics
+/// Rate = k₂ × [H+] × [AcOH] × [EtOH], first-order in [H+]
+/// (Goldschmidt & Udby 1910, Rolfe & Hinshelwood 1934)
+/// Ea ≈ 56 kJ/mol, K_eq = 4.0
+fn sim_ph_ester_kinetics() -> String {
+    let ea = 56_000.0; // J/mol
+    let k2_ref = 4.8e-4; // L²/(mol²·s) at 25°C (298K), catalytic rate constant
+    let t_ref = 298.15;
+    let k_eq = 4.0;
+    let abv = 0.40;
+    let ethanol = abv * 789.0 / 46.07; // mol/L
+    let water = 55.5 * (1.0 - abv); // mol/L
+    let acoh_init = 5.0e-3; // mol/L (~300 mg/L acetic acid)
+
+    // Scenarios: pH × temperature combinations
+    struct Scenario {
+        label: &'static str,
+        ph: f64,
+        temp_c: f64,
+        color: &'static str,
+        dash: &'static str,
+    }
+
+    let scenarios = [
+        Scenario { label: "pH 4.0, 20\u{b0}C (native whiskey)", ph: 4.0, temp_c: 20.0, color: MUTED, dash: "" },
+        Scenario { label: "pH 3.0, 20\u{b0}C (10\u{d7} [H+])", ph: 3.0, temp_c: 20.0, color: BLUE, dash: "" },
+        Scenario { label: "pH 4.0, 50\u{b0}C (heat only)", ph: 4.0, temp_c: 50.0, color: YELLOW, dash: "6,4" },
+        Scenario { label: "pH 3.0, 50\u{b0}C (combined)", ph: 3.0, temp_c: 50.0, color: GREEN, dash: "" },
+        Scenario { label: "pH 2.5, 50\u{b0}C (aggressive)", ph: 2.5, temp_c: 50.0, color: CYAN, dash: "4,2" },
+    ];
+
+    let dt = 600.0; // 10 min steps
+    let total = 30.0 * 86400.0; // 30 days
+    let n_pts = 300;
+    let sample_interval = total / n_pts as f64;
+
+    let (w, h) = (780.0, 420.0);
+    let ml = 80.0;
+    let mr = 230.0;
+    let mt = 55.0;
+    let mb = 40.0;
+    let pw = w - ml - mr;
+    let ph_plot = h - mt - mb;
+
+    let mut svg = svg_header(w, h,
+        "pH-Dependent Ester Kinetics \u{2014} Fischer Esterification at Different pH & Temperature");
+
+    // Grid
+    for frac in [0.0, 0.25, 0.5, 0.75, 1.0] {
+        let gy = mt + (1.0 - frac) * ph_plot;
+        svg += &hline(ml, ml + pw, gy, GRID, "0.5");
+        svg += &label(ml - 5.0, gy + 3.0, &format!("{:.0}%", frac * 100.0), MUTED, 9, "end");
+    }
+    svg += &hline(ml, ml + pw, mt + ph_plot, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph_plot, MUTED, "1");
+
+    // Equilibrium line
+    // At 40% ABV, equilibrium conversion = K*ethanol / (water + K*ethanol)
+    let eq_frac = k_eq * ethanol / (water + k_eq * ethanol);
+    let eq_y = mt + (1.0 - eq_frac) * ph_plot;
+    svg.push_str(&format!("<line x1=\"{ml}\" y1=\"{eq_y:.1}\" x2=\"{}\" y2=\"{eq_y:.1}\" \
+        stroke=\"{ACCENT}\" stroke-width=\"1.5\" stroke-dasharray=\"8,4\"/>\n", ml + pw));
+    svg += &label(ml + pw + 3.0, eq_y + 3.0, &format!("Equilibrium ({:.1}%)", eq_frac * 100.0), ACCENT, 9, "start");
+
+    // Y-axis label
+    svg += &label(ml - 45.0, mt + ph_plot / 2.0, "% of Acetic Acid \u{2192} Ethyl Acetate", TEXT, 10, "middle");
+
+    // X-axis labels
+    for frac in [0.0, 0.25, 0.5, 0.75, 1.0] {
+        let x = ml + frac * pw;
+        svg += &label(x, mt + ph_plot + 15.0, &format!("{:.0}d", frac * 30.0), MUTED, 9, "middle");
+    }
+    svg += &label(ml + pw / 2.0, mt + ph_plot + 32.0, "Time (days)", MUTED, 10, "middle");
+
+    // Run each scenario
+    for sc in &scenarios {
+        let t_k = sc.temp_c + 273.15;
+        let k2 = k2_ref * E.powf((ea / R) * (1.0 / t_ref - 1.0 / t_k));
+        let h_plus = 10.0_f64.powf(-sc.ph);
+        let kf = k2 * h_plus; // effective rate constant for forward
+        let kr = kf / k_eq;
+
+        let mut acoh: f64 = acoh_init;
+        let mut etoac: f64 = 0.0;
+        let mut points: Vec<(f64, f64)> = Vec::new();
+        let mut t = 0.0_f64;
+        let mut next_sample = 0.0_f64;
+
+        points.push((ml, mt + ph_plot)); // start at 0%
+
+        let n_steps = (total / dt) as usize;
+        for _ in 0..n_steps {
+            let r = kf * acoh.max(0.0) * ethanol - kr * etoac.max(0.0) * water;
+            acoh -= r * dt;
+            etoac += r * dt;
+            if acoh < 0.0 { acoh = 0.0; }
+            if etoac < 0.0 { etoac = 0.0; }
+
+            t += dt;
+            next_sample += dt;
+            if next_sample >= sample_interval {
+                let conv = etoac / acoh_init;
+                let x = ml + (t / total) * pw;
+                let y = mt + (1.0 - conv) * ph_plot;
+                points.push((x, y));
+                next_sample -= sample_interval;
+            }
+        }
+
+        let points_str: String = points.iter()
+            .map(|(x, y)| format!("{:.1},{:.1}", x, y))
+            .collect::<Vec<_>>()
+            .join(" ");
+
+        if sc.dash.is_empty() {
+            svg.push_str(&format!("<polyline points=\"{points_str}\" fill=\"none\" stroke=\"{}\" \
+                stroke-width=\"2\" stroke-linejoin=\"round\"/>\n", sc.color));
+        } else {
+            svg.push_str(&format!("<polyline points=\"{points_str}\" fill=\"none\" stroke=\"{}\" \
+                stroke-width=\"2\" stroke-linejoin=\"round\" stroke-dasharray=\"{}\"/>\n", sc.color, sc.dash));
+        }
+    }
+
+    // Legend
+    let lx = ml + pw + 15.0;
+    for (i, sc) in scenarios.iter().enumerate() {
+        let ly = mt + 15.0 + i as f64 * 22.0;
+        if sc.dash.is_empty() {
+            svg.push_str(&format!("<line x1=\"{lx}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" \
+                stroke=\"{}\" stroke-width=\"2.5\"/>\n", lx + 22.0, sc.color));
+        } else {
+            svg.push_str(&format!("<line x1=\"{lx}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" \
+                stroke=\"{}\" stroke-width=\"2.5\" stroke-dasharray=\"{}\"/>\n", lx + 22.0, sc.color, sc.dash));
+        }
+        svg += &label(lx + 27.0, ly + 4.0, sc.label, TEXT, 9, "start");
+    }
+
+    // Key insight annotation
+    svg += &label(lx, mt + 145.0, "Key: pH 3.0 + 50\u{b0}C", ACCENT, 10, "start");
+    svg += &label(lx, mt + 160.0, "reaches equilibrium in", TEXT, 9, "start");
+    svg += &label(lx, mt + 175.0, "~2 days vs. ~4 months", TEXT, 9, "start");
+    svg += &label(lx, mt + 190.0, "at native conditions.", TEXT, 9, "start");
+    svg += &label(lx, mt + 215.0, "Rate = k\u{2082}\u{b7}[H\u{207a}]\u{b7}[AcOH]\u{b7}[EtOH]", MUTED, 9, "start");
+    svg += &label(lx, mt + 230.0, "First-order in [H\u{207a}]", MUTED, 9, "start");
+    svg += &label(lx, mt + 245.0, "Goldschmidt & Udby 1910", MUTED, 8, "start");
+    svg += &label(lx, mt + 258.0, "Ea = 56 kJ/mol", MUTED, 8, "start");
+
     svg.push_str("</svg>");
     svg
 }

@@ -108,6 +108,8 @@ struct RunConfig {
     wood_surface_area_cm2_per_l: f64,
     #[serde(default)]
     initial_species: Option<InitialSpecies>,
+    #[serde(default)]
+    custom_kla: Option<f64>,
 }
 
 fn default_wood_sa() -> f64 {
@@ -255,10 +257,14 @@ fn compute_kinetics(t_k: f64, cfg: &RunConfig) -> KineticParams {
     // Barrel: kLa ~ 2e-7 /s (very slow permeation through wood).
     // PDMS membrane: kLa ~ 5e-5 /s (engineered high-flux membrane).
     // None: kLa = 0 (sealed container, no O2 ingress).
-    let kla = match cfg.o2_delivery.as_str() {
-        "barrel" => 2.0e-7,
-        "pdms_membrane" => 5.0e-5,
-        _ => 0.0,
+    let kla = if let Some(custom) = cfg.custom_kla {
+        custom
+    } else {
+        match cfg.o2_delivery.as_str() {
+            "barrel" => 2.0e-7,
+            "pdms_membrane" => 5.0e-5,
+            _ => 0.0,
+        }
     };
 
     // O2 saturation in ethanol/water mixture at 1 atm.
