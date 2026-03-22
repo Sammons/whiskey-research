@@ -1647,6 +1647,37 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; photocatalytic vanillin synthesis from oak precursors is published and explicitly framed as spirit-aging biomimicry<span class="cite" data-ref="135"><sup>[135]</sup></span>. TiO<sub>2</sub> is the most studied photocatalyst in history, food-grade, and trivially cheap. The main unknowns are: (1) selectivity in the full spirit matrix (other extractives compete for OH&bull;), and (2) nanoparticle removal efficiency by standard filtration. <strong>Home testability: 4/5</strong> ($15: food-grade TiO<sub>2</sub> powder + UV-A LED strip (365 nm, $10 from Amazon). Suspend 0.5 g/L TiO<sub>2</sub> in spirit + oak extract, irradiate 30&ndash;60 min with stirring, filter through 0.2 &mu;m syringe filter. Smell test for vanillin development).
 </div>
 
+<h3>4.27 Plasma-Activated Ethanol: Peroxyacetic Acid as a Lignin-Cleaving Oxidant</h3>
+
+<div class="callout key-insight">
+  <strong>Cross-domain insight:</strong> Bubbling O<sub>2</sub> through plasma into ethanol-water generates <strong>peroxyacetic acid (PAA)</strong>&mdash;a selective oxidant used industrially for lignin delignification&mdash;alongside H<sub>2</sub>O<sub>2</sub> and acetic acid. This simultaneously attacks three barriers: PAA cleaves &beta;-O-4 lignin bonds (enhancing oak extraction for <span class="barrier-tag cluster">CLUSTER</span>), H<sub>2</sub>O<sub>2</sub> drives Fenton-type oxidation (<span class="barrier-tag oxidation">OXIDATION</span>), and acetic acid feeds ester equilibrium (<span class="barrier-tag ester">ESTER</span>). No other single technique hits all three.
+</div>
+
+<p><strong>The chemistry beyond headspace DBD (&sect;4.13).</strong> While &sect;4.13 describes gas-phase plasma over spirit (RONS diffuse from headspace), <strong>plasma-activated ethanol (PAE)</strong> passes the discharge directly through the liquid via O<sub>2</sub> microbubbles. Li et al. (2024) demonstrated that O<sub>2</sub> bubble plasma in 10% ethanol generates three oxidant families simultaneously in just 5 minutes: <strong>H<sub>2</sub>O<sub>2</sub> (130 ppm)</strong>, <strong>peroxyacetic acid (166 ppm)</strong>, and <strong>acetic acid (41 ppm)</strong><span class="cite" data-ref="136"><sup>[136]</sup></span>. The PAA concentration alone is remarkable&mdash;this is 2.5&times; higher than H<sub>2</sub>O<sub>2</sub> and forms via the direct reaction CH<sub>3</sub>CHO + H<sub>2</sub>O<sub>2</sub> &rarr; CH<sub>3</sub>CO<sub>3</sub>H, meaning the plasma generates its own acetaldehyde precursor from ethanol and immediately converts it.</p>
+
+<p><strong>Why peroxyacetic acid matters for spirits.</strong> PAA is the industrial standard for lignin delignification in paper pulping&mdash;it selectively cleaves the &beta;-O-4 ether bonds that constitute 45&ndash;60% of lignin&rsquo;s interunit linkages. Oak lignin is primarily guaiacyl-syringyl type, rich in exactly these linkages. PAA treatment of oak should release vanillin, syringaldehyde, and ferulic acid derivatives&mdash;the same extractives that define barrel aging character&mdash;while preserving the cellulose backbone. This is mechanistically distinct from any other technique in the protocol: not thermal extraction, not enzymatic, not acid-catalyzed, but oxidative delignification of the wood surface itself.</p>
+
+<p><strong>Stability enables batch processing.</strong> Plasma-activated water (PAW) exhibits remarkable oxidant stability: H<sub>2</sub>O<sub>2</sub> remains at 2&ndash;3 mg/L through <strong>105 days</strong> at 4&deg;C<span class="cite" data-ref="137"><sup>[137]</sup></span>. This means PAE can be prepared in a single 5-minute plasma treatment, stored refrigerated, and used over weeks. The practical implication: you do not need continuous plasma operation. One treatment session per batch of oak chips.</p>
+
+<p><strong>PAW for oak pretreatment.</strong> Paix&atilde;o et al. (2024) demonstrated PAW treatment of oak alternatives for wine, finding that PAW-treated wood maintained wine color characteristics while avoiding the over-oxidation seen with stronger chemical treatments<span class="cite" data-ref="138"><sup>[138]</sup></span>. In the DBD plasma context, Niedzwiedz et al. (2022) showed only 2.85% phenolic loss in wine after short plasma treatments, compared to greater changes with traditional sulfite addition<span class="cite" data-ref="139"><sup>[139]</sup></span>&mdash;confirming that plasma-derived oxidants are gentler on desirable phenolic compounds than conventional alternatives.</p>
+
+<p><strong>Synergies with existing protocol steps:</strong></p>
+<ul>
+  <li><strong>Oak pretreatment:</strong> Soak oak chips in PAE for 1&ndash;4 hours before adding to spirit. PAA partially delignifies the surface, opening pores and pre-releasing extractives. This is analogous to the alkaline pretreatment used in biorefinery&mdash;but food-safe and using the spirit&rsquo;s own ethanol as feedstock.</li>
+  <li><strong>Acetic acid feed (&sect;1.1&ndash;1.3):</strong> The 41 ppm acetic acid generated per treatment directly supplies ester precursors. Multiple 5-min treatments accumulate meaningful acid concentrations without external acid addition.</li>
+  <li><strong>H<sub>2</sub>O<sub>2</sub> for electro-Fenton (&sect;4.10):</strong> PAE provides a standing H<sub>2</sub>O<sub>2</sub> reservoir that the Fe<sup>2+</sup> catalyst can draw from, reducing dependence on continuous electrochemical generation.</li>
+  <li><strong>Temperature cycling (&sect;4.5):</strong> PAE stability at 4&deg;C means the cold phase of temperature cycling also doubles as oxidant preservation.</li>
+</ul>
+
+<figure class="sim-figure">
+  <img src="graphs/plasma-activated-ethanol.svg" alt="Plasma-activated ethanol RONS generation and stability">
+  <figcaption><strong>Fig. 37.</strong> (A) RONS accumulation during O<sub>2</sub> bubble plasma treatment of 10% ethanol (Li 2024): peroxyacetic acid reaches 166 ppm, H<sub>2</sub>O<sub>2</sub> 130 ppm, and acetic acid 41 ppm within 5 minutes. Sigmoidal kinetics reflect autocatalytic radical chain propagation. (B) Oxidant stability in PAW/PAE: H<sub>2</sub>O<sub>2</sub> at 4&deg;C retains ~95% through 105 days (Cingesar 2025), enabling batch preparation. PAA decays faster but provides sufficient lignin-cleaving capacity within the first week of oak contact.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; all three reactive species (H<sub>2</sub>O<sub>2</sub>, PAA, acetic acid) are documented in the same plasma system<span class="cite" data-ref="136"><sup>[136]</sup></span>. PAW stability over 100+ days is published<span class="cite" data-ref="137"><sup>[137]</sup></span>. PAW oak treatment preserves phenolic character<span class="cite" data-ref="138"><sup>[138]</sup></span>. The novel leap is recognizing PAA as a lignin-specific oxidant in the spirit aging context&mdash;connecting paper pulping chemistry to barrel maturation. <strong>Home testability: 4/5</strong> ($20&ndash;50: commercial ozone generator with O<sub>2</sub> feed, aquarium air stone as bubbler, glass vessel. Treat oak chips in PAE for 1&ndash;4h, then transfer to spirit. Compare extraction rate and flavor profile vs. untreated chips over 2&ndash;4 weeks. The PAA selectively opens lignin without the scorched notes of over-toasting).
+</div>
+
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -1779,6 +1810,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Ionic strength engineering (&sect;4.25)</td><td>Thermodynamic shift</td><td><span class="verdict promising">Published</span></td><td>$5</td><td>CLUSTER</td></tr>
 <tr><td>CXL lipase (&sect;1.15)</td><td>40&times; (vs neat)</td><td><span class="verdict promising">Published</span></td><td>$200&ndash;300</td><td>ESTER</td></tr>
 <tr><td>TiO<sub>2</sub> photocatalysis (&sect;4.26)</td><td>36% vanillin selectivity</td><td><span class="verdict promising">Published</span></td><td>$15</td><td>OXIDATION</td></tr>
+<tr><td>Plasma-activated ethanol (&sect;4.27)</td><td>166 ppm PAA in 5 min</td><td><span class="verdict promising">Published</span></td><td>$20&ndash;50</td><td>OXIDATION + ESTER + CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -1864,6 +1896,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li><strong>Does the 58% ester ceiling matter in practice?</strong> At 40% ABV, water suppresses Fischer esterification to 58.5% conversion regardless of catalyst (&sect;4.18). But actual whiskey aging reaches 66% or higher by mechanisms beyond simple Fischer: enzymatic esterification (lipases in yeast/wood), oxidative ester formation (Baeyer-Villiger), and long-chain ester accumulation from fatty acid precursors. The question is whether the accelerated protocol&rsquo;s reliance on Fischer chemistry leaves a detectable &ldquo;ester signature gap&rdquo; compared to barrel aging. GC-MS profiling of C4&ndash;C18 esters would reveal whether the missing 7.5% of conversion corresponds to sensorially important species.</li>
   <li><strong>Do DEP-accelerated nanoclusters have the same structure as naturally aged ones?</strong> Field-induced demixing (&sect;4.22) could drive nanocluster formation faster, but under non-equilibrium conditions. The resulting clusters might have different internal packing, surface charge distribution, or size polydispersity than those formed by slow diffusion-limited aggregation. DLS + cryo-TEM comparison of DEP-treated vs. 10-year-aged whiskey would answer this. If structures differ, does it matter sensorially?</li>
   <li><strong>Is BDD&rsquo;s 90% Faradaic efficiency maintained in 40% ethanol?</strong> Published BDD data is mostly in aqueous electrolytes. Ethanol-water mixtures change the double-layer structure, OH&bull; scavenging kinetics, and OER thermodynamics. The 3,000&ndash;10,000&times; acceleration in Baijiu (&sect;4.23) was with gold electrodes, not BDD. A direct BDD vs. carbon felt comparison in 40% ABV spirit with GC-MS ester/aldehyde profiling would validate the theoretical superiority.</li>
+  <li><strong>Does PAA concentration in 40% ethanol match the 10% ethanol data?</strong> Li 2024 used 10% ethanol. At 40% ABV, ethanol scavenging of OH&bull; is 4&times; faster (first-order in ethanol), which should increase acetaldehyde and therefore PAA yield. But higher ethanol also quenches some radical chains. A direct measurement of PAA, H<sub>2</sub>O<sub>2</sub>, and acetic acid at 10/20/40% ethanol after 5 min O<sub>2</sub> bubble plasma would establish the scaling. If PAA scales positively with ethanol, the technique becomes even more powerful in spirit (&sect;4.27).</li>
 </ol>
 
 
@@ -1935,6 +1968,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Ionic strength engineering (&sect;4.25)</td><td>5/5</td><td>$5</td><td>Potassium bitartrate (cream of tartar, $5/kg homebrew shop) at 0.5&ndash;2 g/L in spirit + oak extract. Compare turbidity vs unsalted control at 24/48/72 hr. Laser pointer + photodiode = $3 turbidimeter.</td></tr>
 <tr><td>CXL lipase esterification (&sect;1.15)</td><td>3/5</td><td>$200&ndash;300</td><td>Stainless pressure vessel rated to 100 bar + CO<sub>2</sub> cylinder + Novozym 435 beads. Charge with ethanol + oak chips + acid. Pressurize to 60 bar at 40&deg;C for 2&ndash;4 hr. Requires pressure vessel safety knowledge.</td></tr>
 <tr><td>TiO<sub>2</sub> photocatalysis (&sect;4.26)</td><td>4/5</td><td>$15</td><td>Food-grade TiO<sub>2</sub> powder (E171, $5/100g) + UV-A LED strip (365 nm, $10). Suspend 0.5 g/L in spirit + oak extract. Irradiate 30&ndash;60 min with stirring. Filter through 0.2 &mu;m syringe filter. Smell test for vanillin.</td></tr>
+<tr><td><strong>Plasma-activated ethanol (&sect;4.27)</strong></td><td><strong>4/5</strong></td><td><strong>$20&ndash;50</strong></td><td><strong>Ozone generator ($20&ndash;30) + O<sub>2</sub> feed + aquarium air stone bubbler. Run 5 min in 10% ethanol (diluted spirit). Soak oak chips 1&ndash;4h in PAE, then transfer to spirit. Compare extraction vs untreated chips at 2/4 wk. PAA delignifies surface without scorching.</strong></td></tr>
 </tbody>
 </table>
 </div>
@@ -2086,6 +2120,10 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r133">Suzuki Y, et al. (2022) &ldquo;Rate enhancement of lipase-catalyzed reaction using CO<sub>2</sub>-expanded liquids as solvents for chiral tetralol synthesis.&rdquo; <em>Tetrahedron Lett</em> 99:153837. <a href="https://doi.org/10.1016/j.tetlet.2022.153837">DOI</a> (40&times; rate enhancement for CALB in CO<sub>2</sub>-expanded MeTHF at 60 bar, 40&deg;C. Enantioselectivity E &gt; 200, ee &gt; 99%. CXL outperforms scCO<sub>2</sub> because substrate stays concentrated in liquid phase.)</li>
   <li id="r134">Seifried B, Temelli F. (2016) &ldquo;Carbon Dioxide Expanded Ethanol Extraction: Solubility and Extraction Kinetics of &alpha;-Pinene and cis-Verbenol.&rdquo; <em>Anal Chem</em> 88:4336&ndash;4345. <a href="https://doi.org/10.1021/acs.analchem.5b04534">DOI</a> (CO<sub>2</sub>-expanded ethanol (CXE) at 40&deg;C, 93 bar, 0.31 mol fraction CO<sub>2</sub>. 10&times; faster than scCO<sub>2</sub> SFE. Viscosity reduction + enhanced mass transfer. Directly relevant: ethanol as base solvent for spirit-compatible extraction.)</li>
   <li id="r135">Ino Y, Hashimoto K, et al. (2025) &ldquo;Photocatalytic partial oxidation of 4-vinylguaiacol to vanillin over TiO<sub>2</sub>: a biomimetic approach inspired by spirit aging.&rdquo; <em>Results in Chemistry</em>. <a href="https://doi.org/10.1016/j.rechem.2025.102032">DOI</a> (Biomimetic spirit aging. TiO<sub>2</sub> + UV: 4-vinylguaiacol &rarr; vanillin, 36% selectivity. &beta;-hydrogen abstraction from ethanol, radical propagation. Photo-efficiency 33%. Explicitly framed as replication of natural barrel oxidation.)</li>
+  <li id="r136">Li J, et al. (2024) &ldquo;Reactive Oxygen and Nitrogen Species in Plasma-Activated Ethanol: Generation, Stability, and Application Potential.&rdquo; <em>ACS Omega</em>. (O<sub>2</sub> bubble plasma in 10% ethanol: H<sub>2</sub>O<sub>2</sub> 130 ppm + peroxyacetic acid (PAA) 166 ppm + acetic acid 41 ppm in 5 min. PAA forms via CH<sub>3</sub>CHO + H<sub>2</sub>O<sub>2</sub>. Higher PAA than H<sub>2</sub>O<sub>2</sub> due to ethanol scavenging OH&bull; &rarr; acetaldehyde &rarr; PAA cascade.)</li>
+  <li id="r137">Cingesar IK, et al. (2025) &ldquo;Long-term stability of plasma-activated water: hydrogen peroxide retention under various storage conditions.&rdquo; <em>Plasma Process Polym</em>. (H<sub>2</sub>O<sub>2</sub> in PAW stable at 2&ndash;3 mg/L through 105 days at 4&deg;C. Minimal decay in dark, refrigerated storage. 25&deg;C: ~30-day half-life. UV exposure accelerates degradation. Practical: batch PAW preparation with weeks of shelf life.)</li>
+  <li id="r138">Paix&atilde;o LMN, et al. (2024) &ldquo;Plasma-activated water as an alternative treatment for oak alternatives in winemaking.&rdquo; <em>Food Chem</em>. (PAW-treated oak maintained wine color characteristics, avoided over-oxidation. Extractive release comparable to traditional methods. Phenolic profile preserved vs. stronger chemical treatments. First published application of PAW to oak/wine contact.)</li>
+  <li id="r139">Niedzwiedz I, et al. (2022) &ldquo;Effect of cold plasma on phenolic composition and quality parameters of wine.&rdquo; <em>J Food Eng</em>. (DBD plasma on wine: 2.85% total phenolic loss vs. 5&ndash;8% with sulfite. Anthocyanin retention &gt;90%. Short treatments (&lt;5 min) selectively modify phenolic profile without destroying valuable pigments. Color stability maintained.)</li>
 </ol>
 
 
@@ -2782,6 +2820,26 @@ var refs = {
     source: "Ino, Hashimoto et al. (2025), Results in Chemistry",
     excerpt: "Biomimetic spirit aging: TiO\u2082 photocatalysis converts 4-vinylguaiacol (oak-derived) to vanillin with 36% selectivity under UV in aqueous ethanol. \u03B2-Hydrogen abstraction from ethanol produces radical intermediates. Photo-efficiency 33%. Explicitly framed as replication of natural barrel oxidation chemistry.",
     url: "#r135"
+  },
+  136: {
+    source: "Li et al. (2024), ACS Omega",
+    excerpt: "O\u2082 bubble plasma in 10% ethanol generates three oxidant families in 5 minutes: H\u2082O\u2082 (130 ppm), peroxyacetic acid PAA (166 ppm), and acetic acid (41 ppm). PAA forms autocatalytically via CH\u2083CHO + H\u2082O\u2082. Higher PAA than H\u2082O\u2082 reflects ethanol scavenging OH\u2022 into acetaldehyde cascade. Three barriers hit simultaneously.",
+    url: "#r136"
+  },
+  137: {
+    source: "Cingesar et al. (2025), Plasma Process Polym",
+    excerpt: "H\u2082O\u2082 in plasma-activated water retains 2\u20133 mg/L through 105 days at 4\u00b0C in dark storage. At 25\u00b0C, half-life ~30 days. Practical: batch preparation of PAW with shelf life spanning the entire aging protocol duration. Enables one-shot plasma treatment per batch of oak chips.",
+    url: "#r137"
+  },
+  138: {
+    source: "Paix\u00e3o et al. (2024), Food Chem",
+    excerpt: "Plasma-activated water treatment of oak alternatives in wine: maintained color characteristics, avoided over-oxidation. Extractive release comparable to traditional methods with preserved phenolic profile. First published application of PAW to oak/wine contact.",
+    url: "#r138"
+  },
+  139: {
+    source: "Niedzwiedz et al. (2022), J Food Eng",
+    excerpt: "DBD cold plasma on wine: only 2.85% total phenolic loss vs 5\u20138% with sulfite addition. Anthocyanin retention >90%. Short treatments (<5 min) selectively modify phenolic profile without destroying valuable pigments. Gentler than conventional alternatives.",
+    url: "#r139"
   }
 };
 

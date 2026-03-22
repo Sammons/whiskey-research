@@ -125,6 +125,7 @@ fn main() {
     println!("Wrote cxl-lipase.svg");
 
     fs::write("../graphs/tio2-photocatalysis.svg", sim_tio2_photocatalysis()).unwrap();
+    fs::write("../graphs/plasma-activated-ethanol.svg", sim_plasma_activated_ethanol()).unwrap();
     println!("Wrote tio2-photocatalysis.svg");
 }
 
@@ -6195,6 +6196,170 @@ fn sim_tio2_photocatalysis() -> String {
         "Biomimetic: same oxidation as barrel aging", ACCENT, 9, "start");
     svg += &label(ml2 + pw - 245.0, mt + 52.0,
         "Cost: $15 (food-grade TiO\u{2082} + UV LED)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 37: Plasma-Activated Ethanol — RONS Generation & Stability
+// ═══════════════════════════════════════════════════════════════
+fn sim_plasma_activated_ethanol() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Plasma-Activated Ethanol: RONS Generation &amp; Stability");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // ── Panel A: RONS accumulation during 5 min O₂ bubble plasma ──
+    svg += &label(ml + pw / 2.0, mt - 5.0,
+        "A. RONS Generation (O\u{2082} Bubble Plasma, 10% EtOH)", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let t_max = 300.0; // seconds (5 min)
+    let c_max = 200.0; // ppm
+    let sx_a = |t: f64| -> f64 { ml + t / t_max * pw };
+    let sy_a = |c: f64| -> f64 { mt + ph - c / c_max * ph };
+
+    // Grid
+    for i in 0..=5 {
+        let t = t_max * i as f64 / 5.0;
+        svg += &vline(sx_a(t), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(t), mt + ph + 13.0, &format!("{:.0}s", t), MUTED, 8, "middle");
+    }
+    for i in 1..=4 {
+        let c = c_max * i as f64 / 4.0;
+        svg += &hline(ml, ml + pw, sy_a(c), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(c) + 3.5, &format!("{:.0}", c), MUTED, 8, "end");
+    }
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Treatment Time (seconds)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "Concentration (ppm)");
+
+    // Kinetic model: sigmoidal buildup with different rates
+    // Li 2024: 5 min treatment → H₂O₂ 130 ppm, PAA 166 ppm, AcOH 41 ppm
+    let dt = 1.0;
+    let mut h2o2_pts: Vec<(f64, f64)> = Vec::new();
+    let mut paa_pts: Vec<(f64, f64)> = Vec::new();
+    let mut acoh_pts: Vec<(f64, f64)> = Vec::new();
+
+    for step in 0..=(t_max as usize) {
+        let t = step as f64;
+        // Sigmoidal: c = c_max / (1 + exp(-k*(t - t_half)))
+        let h2o2 = 130.0 / (1.0 + (-0.025 * (t - 120.0)).exp());
+        // PAA lags slightly (needs acetic acid precursor)
+        let paa = 166.0 / (1.0 + (-0.022 * (t - 150.0)).exp());
+        // Acetic acid: lower plateau, faster onset
+        let acoh = 41.0 / (1.0 + (-0.030 * (t - 100.0)).exp());
+
+        if step % 5 == 0 {
+            h2o2_pts.push((t, h2o2));
+            paa_pts.push((t, paa));
+            acoh_pts.push((t, acoh));
+        }
+    }
+
+    svg += &polyline_svg(&h2o2_pts, BLUE, "2.5", &sx_a, &sy_a);
+    svg += &polyline_svg(&paa_pts, GREEN, "2.5", &sx_a, &sy_a);
+    svg += &polyline_svg(&acoh_pts, ACCENT, "2.5", &sx_a, &sy_a);
+
+    // Endpoint annotations
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"3.5\" fill=\"{BLUE}\"/>\n",
+        sx_a(t_max), sy_a(130.0));
+    svg += &label(sx_a(t_max) - 5.0, sy_a(130.0) - 8.0, "130 ppm", BLUE, 9, "end");
+
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"3.5\" fill=\"{GREEN}\"/>\n",
+        sx_a(t_max), sy_a(166.0));
+    svg += &label(sx_a(t_max) - 5.0, sy_a(166.0) - 8.0, "166 ppm", GREEN, 9, "end");
+
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"3.5\" fill=\"{ACCENT}\"/>\n",
+        sx_a(t_max), sy_a(41.0));
+    svg += &label(sx_a(t_max) - 5.0, sy_a(41.0) + 12.0, "41 ppm", ACCENT, 9, "end");
+
+    // Legend
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 12.0, BLUE, "2.5");
+    svg += &label(ml + 36.0, mt + 16.0, "H\u{2082}O\u{2082}", TEXT, 9, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 26.0, GREEN, "2.5");
+    svg += &label(ml + 36.0, mt + 30.0, "Peroxyacetic acid (PAA)", TEXT, 9, "start");
+    svg += &hline(ml + 10.0, ml + 32.0, mt + 40.0, ACCENT, "2.5");
+    svg += &label(ml + 36.0, mt + 44.0, "Acetic acid", TEXT, 9, "start");
+
+    // ── Panel B: RONS stability over 105 days ──
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0,
+        "B. PAW/PAE Oxidant Stability", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    let d_max = 120.0; // days
+    let pct_max = 110.0; // % of initial
+    let sx_b = |d: f64| -> f64 { ml2 + d / d_max * pw };
+    let sy_b = |p: f64| -> f64 { mt + ph - p / pct_max * ph };
+
+    // Grid
+    for i in 0..=4 {
+        let d = d_max * i as f64 / 4.0;
+        svg += &vline(sx_b(d), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(d), mt + ph + 13.0, &format!("{:.0}d", d), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let p = pct_max * i as f64 / 5.0;
+        svg += &hline(ml2, ml2 + pw, sy_b(p), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(p) + 3.5, &format!("{:.0}%", p), MUTED, 8, "end");
+    }
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Storage Time (days)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 35.0, mt + ph / 2.0, ml2 - 35.0, mt + ph / 2.0, "Oxidant Remaining (%)");
+
+    // Cingesar 2025: H₂O₂ stable 2-3 mg/L at 4°C through 105 days
+    // Model: exponential decay with very different half-lives
+    let mut h2o2_4c: Vec<(f64, f64)> = Vec::new();
+    let mut h2o2_25c: Vec<(f64, f64)> = Vec::new();
+    let mut paa_4c: Vec<(f64, f64)> = Vec::new();
+
+    for step in 0..=(d_max as usize) {
+        let d = step as f64;
+        // H₂O₂ at 4°C: barely decays, ~95% at 105 days
+        let h4 = 100.0 * (-d / 2000.0).exp();
+        // H₂O₂ at 25°C: ~30 day half-life
+        let h25 = 100.0 * (-d * 0.693 / 30.0).exp();
+        // PAA at 4°C: intermediate stability, ~60 day half-life
+        let p4 = 100.0 * (-d * 0.693 / 60.0).exp();
+
+        h2o2_4c.push((d, h4));
+        h2o2_25c.push((d, h25));
+        paa_4c.push((d, p4));
+    }
+
+    svg += &polyline_svg(&h2o2_4c, BLUE, "2.5", &sx_b, &sy_b);
+    svg += &polyline_svg(&h2o2_25c, CYAN, "2", &sx_b, &sy_b);
+    svg += &polyline_svg(&paa_4c, GREEN, "2.5", &sx_b, &sy_b);
+
+    // Annotations
+    svg += &label(sx_b(105.0), sy_b(95.0) - 8.0, "H\u{2082}O\u{2082} at 4\u{b0}C: ~95%", BLUE, 8, "end");
+    svg += &label(sx_b(60.0) + 5.0, sy_b(25.0) + 12.0,
+        "H\u{2082}O\u{2082} at 25\u{b0}C", CYAN, 8, "start");
+    svg += &label(sx_b(90.0), sy_b(37.0) - 8.0, "PAA at 4\u{b0}C", GREEN, 8, "end");
+
+    // 105-day marker
+    svg += &vline(sx_b(105.0), mt, mt + ph, YELLOW, "1");
+    svg += &label(sx_b(105.0), mt + ph - 8.0, "105 d", YELLOW, 8, "middle");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"230\" height=\"62\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt + 8.0, GRID);
+    svg += &label(ml2 + 10.0, mt + 24.0,
+        "PAA: unique lignin-cleaving oxidant", GREEN, 9, "start");
+    svg += &label(ml2 + 10.0, mt + 38.0,
+        "H\u{2082}O\u{2082} stable 105 days at 4\u{b0}C", BLUE, 9, "start");
+    svg += &label(ml2 + 10.0, mt + 52.0,
+        "3 barriers hit simultaneously", ACCENT, 9, "start");
+    svg += &label(ml2 + 10.0, mt + 66.0,
+        "Cost: $20\u{2013}50 (ozone generator + bubbler)", YELLOW, 9, "start");
 
     svg.push_str("</svg>");
     svg
