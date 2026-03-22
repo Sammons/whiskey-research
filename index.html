@@ -1338,7 +1338,29 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
 
 <p>This is a novel combined protocol: use CaCl<sub>2</sub> or potassium acetate in the pot charge to boost ethanol enrichment, with toasted oak chips in a vapor basket above. The result should be a spirit with both enhanced ester content (from salting out) and vapor-extracted wood character (from the basket)&mdash;in a single distillation pass.</p>
 
-<h3>7.9 Glycerol as Liquid-Phase Entrainer</h3>
+<h3>7.9 Citric Acid and Ionic Strength: Reaching Late-Tail Conditions Sooner</h3>
+
+<p>A key concept from extractive distillation: by increasing ionic strength in the pot charge, you increase ethanol&rsquo;s activity coefficient (&gamma;<sub>EtOH</sub>) via the Setschenow effect, making ethanol leave the pot faster. This means you reach <strong>late-tail conditions</strong>&mdash;the low-ethanol, water-dominated regime where high-boiling flavor compounds become steam-distillable&mdash;earlier in the run. You don&rsquo;t lose those compounds; you <em>access them sooner</em>.</p>
+
+<p>The quantitative effect scales with ionic strength. CaCl<sub>2</sub> at 200 g/kg water (I &asymp; 5.4 M) reaches the ~3% ABV pot condition roughly 15&ndash;20% sooner than an unsalted run. NaCl at saturation (I &asymp; 6.1 M) gives a comparable shift. By contrast, citric acid as free acid provides only I &asymp; 0.12 M at 1 M concentration (it&rsquo;s ~85% undissociated at its natural pH of 1.7), so its salting-out effect is negligible.</p>
+
+<p><strong>Where citric acid shines is in pH-mediated chemistry:</strong></p>
+
+<ul>
+  <li><strong>Fischer esterification catalysis:</strong> At pH 2&ndash;3 and pot boiling temperature (78&ndash;100&deg;C), proton-catalyzed condensation of carboxylic acids with ethanol proceeds orders of magnitude faster than at wash pH 4.5. The stripping run becomes a reactor as well as a separator.</li>
+  <li><strong>Lactone cyclization:</strong> Whiskey lactones (cis/trans-&beta;-methyl-&gamma;-octalactone) exist in equilibrium with their open-chain hydroxy acid forms. Low pH shifts this equilibrium toward the closed (volatile) lactone form, enhancing steam-distillation recovery.</li>
+  <li><strong>GRAS status:</strong> Citric acid is affirmed GRAS under 21 CFR 184.1033 with no concentration limit. Routinely used in mashing for pH adjustment. Does not carry over into the distillate (non-volatile).</li>
+</ul>
+
+<div class="callout warning">
+  <strong>Copper still caveat:</strong> Citric acid is a chelating agent (Cu<sup>2+</sup>&ndash;citrate log K up to 5.9). In copper pot stills, it accelerates surface dissolution and sequesters the Cu<sup>2+</sup> ions needed for DMS/thiol removal via CuS precipitation. At &gt;0.5% w/v, you may trade flavor-positive ester formation for increased sulfury character. In stainless steel stills, this concern is minimal. Monitor total copper in distillate if using &gt;5 g/L citric acid in a copper still.
+</div>
+
+<div class="callout key-insight">
+  <strong>Optimal combined approach:</strong> Use CaCl<sub>2</sub> (100&ndash;200 g/kg water) for ionic-strength-driven azeotrope modification, <em>and</em> citric acid (5&ndash;10 g/L) for pH-mediated ester/lactone chemistry. These are orthogonal levers&mdash;the salt shifts the VLE curve while the acid catalyzes in-pot reactions. Together they both accelerate ethanol stripping (reaching tail conditions sooner) and produce more esters during the stripping run. Trisodium citrate (Na<sub>3</sub>C<sub>6</sub>H<sub>5</sub>O<sub>7</sub>, GRAS under 21 CFR 184.1751) can serve both roles simultaneously: 4 ions per formula unit for salting-out, plus citrate provides buffering capacity.
+</div>
+
+<h3>7.10 Glycerol as Liquid-Phase Entrainer</h3>
 
 <p>Adding 1&ndash;2% food-grade glycerol (GRAS, BP 290&deg;C) to the pot modifies activity coefficients of all congeners.<span class="cite" data-ref="26"><sup>[26]</sup></span> Glycerol is a poor solvent for esters, potentially boosting their relative volatility. Glycerol itself does not distill at spirit-run temperatures.</p>
 
@@ -1347,51 +1369,37 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
 </div>
 
 <!-- ============================================================ -->
-<h2 id="s8">8. Putting It Together: A Recommended Protocol</h2>
+<h2 id="s8">8. Putting It Together: A Recommended Double Distillation</h2>
 
-<p>Drawing on both the thermodynamic principles above and practical home distilling constraints, here is an integrated approach:</p>
+<p>This is a standard double distillation&mdash;stripping run, then spirit run&mdash;with the thermodynamic levers from sections 4&ndash;7 applied at each stage. Nothing exotic; just a conventional workflow with better-informed choices at each decision point.</p>
 
-<h3>Phase A: Pre-Distillation Optimization</h3>
+<h3>Stripping Run (Atmospheric, Pot Still)</h3>
+
+<p><strong>Pot charge:</strong> Fermented wash (8&ndash;10% ABV). Add saved tails from the previous spirit run (5&ndash;10% by volume). If experimenting with salt-effect distillation (&sect;7.6), dissolve 100&ndash;200 g CaCl<sub>2</sub> per kg water before loading. Optionally add citric acid (5&ndash;10 g/L) to lower pot pH to ~2.5&ndash;3.0, which catalyzes Fischer esterification at boiling temperature and promotes lactone cyclization (&sect;7.9). Raise wash pH to 5.5&ndash;6.0 with CaCO<sub>3</sub> if you want to suppress fatty acid carryover instead.</p>
+
 <ol>
-  <li><strong>Fermentation:</strong> Use a whiskey yeast strain with high ATF1 expression (e.g., SafSpirit M-1 or Distila-Max MW). Ferment at 20&ndash;22&deg;C for balanced ester synthesis vs. retention.<span class="cite" data-ref="5"><sup>[5]</sup></span></li>
-  <li><strong>pH adjustment:</strong> After fermentation, raise wash pH to 5.5&ndash;6.0 with CaCO<sub>3</sub> to suppress fatty acid volatility while leaving esters unaffected.</li>
-  <li><strong>Tails recycling:</strong> Add saved tails from the previous run to the wash (typically 5&ndash;10% by volume).</li>
-  <li><strong>Recommended &mdash; salt addition:</strong> Dissolve 100&ndash;200 g CaCl<sub>2</sub> or potassium acetate per kg water in the wash to salt out esters and boost ethanol enrichment (&sect;7.6). Start with the low end and compare distillate against an unsalted control run.<span class="cite" data-ref="28"><sup>[28]</sup></span></li>
-</ol>
-
-<h3>Phase B: Stripping Run (Atmospheric)</h3>
-<ol>
-  <li>Distill at atmospheric pressure with minimal reflux (pot still preferred)</li>
-  <li>Take a wide cut: collect from first distillate down to 15&ndash;20% ABV in the distillate</li>
+  <li>Distill at atmospheric pressure, minimal reflux, pot still preferred</li>
+  <li>Discard foreshots (first 50&ndash;100 mL per 20 L wash)</li>
+  <li>Take a wide cut: collect down to 15&ndash;20% ABV in the distillate</li>
   <li>Goal: maximize total congener recovery into low wines, not purity</li>
-  <li>Separate foreshots (first 50&ndash;100 mL per 20L wash) for discard</li>
 </ol>
 
-<h3>Phase C: Spirit Run (Reduced Pressure, with Optional Gin Basket)</h3>
+<p><em>At this stage, the low &gamma; values and high water activity in the dilute wash give maximum steam-distillation carryover of high-boiling congeners. This is where most heavy flavor compounds enter the system.</em></p>
+
+<h3>Spirit Run (Reduced Pressure, with Optional Gin Basket)</h3>
+
+<p><strong>Pot charge:</strong> Low wines from stripping (typically 25&ndash;35% ABV). Optionally load a gin basket with 20&ndash;50 g medium-toast oak chips per liter of charge for vapor-extracted wood character (&sect;7.7).</p>
+
 <ol>
-  <li>Charge the spirit still with low wines (typically 25&ndash;35% ABV)</li>
-  <li><strong>Recommended &mdash; gin basket:</strong> Load a vapor-path basket with 20&ndash;50 g medium-toast oak chips per liter of pot charge for vapor-extracted wood character (&sect;7.7). Synergistic with salt addition: higher-proof vapor from salting out is a better solvent for wood-derived lipophilic compounds (&sect;7.8).<span class="cite" data-ref="32"><sup>[32]</sup></span></li>
-  <li>Pull vacuum to 200&ndash;300 mmHg (achievable with an inexpensive aspirator or HVAC vacuum pump)</li>
-  <li>Pot temperature will reach ~55&ndash;65&deg;C instead of 78&ndash;95&deg;C</li>
-  <li>Apply variable reflux:
-    <ul>
-      <li>High reflux through heads (discard)</li>
-      <li>Low reflux through hearts (collect &mdash; this is your whiskey)</li>
-      <li>Moderate reflux through tails transition (collect separately for recycling)</li>
-    </ul>
-  </li>
-  <li>Make cuts based on sensory evaluation (nosing) supported by distillate ABV monitoring</li>
+  <li>Pull vacuum to 200&ndash;300 mmHg (aspirator or HVAC pump). Pot temperature reaches ~55&ndash;65&deg;C instead of 78&ndash;95&deg;C, protecting esters from thermal degradation</li>
+  <li>Apply variable reflux: high through heads (discard), low through hearts (your whiskey), moderate through tails transition (save for recycling)</li>
+  <li>Make cuts by nosing, supported by distillate ABV monitoring</li>
 </ol>
 
-<h3>Phase D: Post-Distillation</h3>
-<ol>
-  <li>Optionally pass tails through 3A molecular sieves to concentrate, then blend measured amounts into hearts</li>
-  <li>Dilute hearts to barrel-entry proof (typically 62.5% ABV for bourbon, or your preference)</li>
-  <li>Age in charred oak (the whiskey lactone, vanillin, and additional phenolics develop here<span class="cite" data-ref="11"><sup>[11]</sup></span><span class="cite" data-ref="18"><sup>[18]</sup></span>&mdash;not from distillation)</li>
-</ol>
+<p>Dilute hearts to barrel-entry proof (62.5% for bourbon, or your preference) and age in charred oak. The whiskey lactones, vanillin, and phenolics develop during maturation<span class="cite" data-ref="11"><sup>[11]</sup></span><span class="cite" data-ref="18"><sup>[18]</sup></span>&mdash;not from distillation.</p>
 
 <div class="callout key-insight">
-  <strong>Expected directional improvement:</strong> Relative to a standard double-pot-distillation protocol, this integrated approach should meaningfully increase hearts-fraction ester content (via tails recycling + pH adjustment + vacuum spirit run), while reducing fatty acid and fusel oil content (via pH suppression + variable reflux + tighter vacuum cuts). The magnitude depends on your specific wash, equipment, and technique&mdash;quantification requires GC-FID or GC-MS analysis of your fractions. The net result should be a spirit with greater flavor complexity and less harshness.
+  <strong>What this buys you:</strong> Relative to a standard double distillation, these changes increase hearts-fraction ester content (tails recycling + salt-effect enrichment + vacuum spirit run) while reducing fatty acid and fusel oil content (pH suppression + variable reflux + vacuum cuts). The thermodynamics are unambiguous; the magnitude depends on your specific wash, equipment, and technique.
 </div>
 
 <!-- ============================================================ -->
