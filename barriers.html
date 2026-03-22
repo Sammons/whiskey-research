@@ -689,7 +689,7 @@
 
 <figure class="sim-figure">
   <img src="graphs/pdms-o2-flux.svg" alt="PDMS membrane O2 flux vs wall thickness for air, 5% O2, and pure O2">
-  <figcaption><strong>Fig. 5.</strong> PDMS membrane O<sub>2</sub> flux vs. wall thickness (P&nbsp;=&nbsp;600&nbsp;Barrers, 1 L vessel, 100&nbsp;cm&sup2; membrane). Barrel permeation range (3&ndash;8&nbsp;mL/L/day) shown as reference band. A 1&nbsp;mm PDMS tube with air delivers 42&nbsp;mL/L/day&mdash;5&ndash;14&times; faster than a barrel. Dilute O<sub>2</sub>/N<sub>2</sub> mixtures or thicker walls dial this back to barrel-equivalent rates.</figcaption>
+  <figcaption><strong>Fig. 5.</strong> PDMS membrane O<sub>2</sub> flux vs. wall thickness (P&nbsp;=&nbsp;600&nbsp;Barrers, 30&nbsp;cm tube, 3&nbsp;mm I.D., 1&nbsp;L spirit). Barrel rate (~0.1&nbsp;mL/L/day, Singleton 1995) shown as dashed reference line. A 1&nbsp;mm PDMS tube with air delivers 42&nbsp;mL/L/day&mdash;420&times; faster than a barrel; pure O<sub>2</sub> gives 198&nbsp;mL/L/day (off chart). For barrel-equivalent rates, use 5%&nbsp;O<sub>2</sub>/N<sub>2</sub> with 2&ndash;3&nbsp;mm wall thickness.</figcaption>
 </figure>
 
 <p>The wine industry already uses this principle: micro-oxygenation (MOX) delivers 1&ndash;5 mL O<sub>2</sub>/L/month through ceramic or PDMS diffusers to accelerate tannin polymerization and color stabilization<span class="cite" data-ref="30"><sup>[30]</sup></span>. Extending MOX to spirits&mdash;with the lower rates appropriate for the simpler phenolic matrix&mdash;is a straightforward adaptation.</p>
@@ -926,6 +926,55 @@
   <li><strong>What is the role of oxidation in cluster formation?</strong> Wood extractives undergo oxidation during aging (e.g., gallic acid dimerizing to ellagic acid). The cluster-forming species may be oxidation products, not the originally extracted molecules. This couples <span class="barrier-tag oxidation">OXIDATION</span> to <span class="barrier-tag cluster">CLUSTER</span> in a way the integrated protocol must respect.</li>
   <li><strong>Does the ester profile affect cluster stability?</strong> Long-chain ethyl esters (C12&ndash;C18) are amphiphilic and participate in both chill haze formation and possibly Morishima clustering. The esterification step may be prerequisite for optimal cluster formation, imposing a strict order constraint on the protocol.</li>
 </ol>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7: HOME TESTABILITY                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2 id="home">7. Home Testability Guide</h2>
+
+<p>Not all techniques require a research laboratory. The following ranks each approach by what a PhD-level chemist can achieve with a home lab, a pot still, and a ~$500 budget for specialty items.</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Technique</th><th>Home Score</th><th>Est. Cost</th><th>Simplest First Experiment</th></tr>
+</thead>
+<tbody>
+<tr style="background:var(--surface2)"><td colspan="4"><strong>Barrier 1: Ester Equilibrium</strong></td></tr>
+<tr><td>Amberlyst-15 packed column (&sect;1.1)</td><td>4/5</td><td>$40</td><td>Pack chromatography column, recirculate 1L spirit at 50&deg;C for 4h. FDA-cleared.</td></tr>
+<tr><td>Reactive distillation (&sect;1.2)</td><td>4/5</td><td>$0&ndash;50</td><td>Load Amberlyst into reflux column packing section; run a normal spirit distillation.</td></tr>
+<tr><td>Electrochemical Au (&sect;1.4)</td><td>3/5</td><td>$200</td><td>DC supply ($60) + gold wire ($80&ndash;150). Apply 0.8V for 20 min. Gold is E175 food-safe.</td></tr>
+<tr><td>TiO<sub>2</sub> + UVA (&sect;1.5)</td><td>3/5</td><td>$50</td><td>5g TiO<sub>2</sub> anatase (E171) in jar, UVA LED panel, 3&ndash;6h. Filter, taste vs. dark control.</td></tr>
+<tr><td>Cu-clinoptilolite column (&sect;1.7)</td><td>4/5</td><td>$25</td><td>Soak clinoptilolite in CuSO<sub>4</sub>, calcine at 200&deg;C, pack column. Dual-function (B1+B2).</td></tr>
+<tr><td>PEF (&sect;1.3)</td><td>1/5</td><td>$3,000+</td><td>Skip. Requires industrial pulse generator.</td></tr>
+<tr><td>Gamma/EBI (&sect;1.6)</td><td>1/5</td><td>N/A</td><td>Skip&mdash;or send sealed samples to food irradiation service ($100&ndash;300/batch).</td></tr>
+
+<tr style="background:var(--surface2)"><td colspan="4"><strong>Barrier 2: Sulfur Removal</strong></td></tr>
+<tr><td><strong>Cu/AC cartridge (&sect;2.1)</strong></td><td><strong>5/5</strong></td><td><strong>$15</strong></td><td><strong>Cheapest &amp; easiest experiment. Activated carbon + CuSO<sub>4</sub> soak + oven dry. Column pass. Smell test.</strong></td></tr>
+<tr><td>Cu-clinoptilolite (&sect;2.4)</td><td>4/5</td><td>$25</td><td>Same column as 1.7. Simultaneous ester + sulfur treatment.</td></tr>
+<tr><td>HKUST-1 MOF (&sect;2.2)</td><td>2/5</td><td>$200</td><td>Buy from Sigma. Research-only; not food-grade.</td></tr>
+
+<tr style="background:var(--surface2)"><td colspan="4"><strong>Barrier 3: Supramolecular Clustering</strong></td></tr>
+<tr><td><strong>Proof optimization (&sect;3.1)</strong></td><td><strong>5/5</strong></td><td><strong>$0</strong></td><td><strong>Dilute to 37% ABV, rest 4 weeks vs. same-day dilution control. Costs nothing.</strong></td></tr>
+<tr><td><strong>Two-phase aging</strong></td><td><strong>5/5</strong></td><td><strong>$30</strong></td><td><strong>Extract at 65% ABV with oak chips + ultrasonic cleaner ($30) for 2 wk; dilute to 37%, rest 4 wk.</strong></td></tr>
+<tr><td>Seeded clustering (&sect;3.4/3.8)</td><td>4/5</td><td>$20&ndash;100</td><td>Add 2&ndash;4% vol well-aged whiskey to young extracted spirit at 37% ABV. Rest 4 weeks vs. unseeded control.</td></tr>
+<tr><td>Freeze-thaw (&sect;3.3)</td><td>4/5</td><td>$0</td><td>10 freeze-thaw cycles (&ndash;25&deg;C, 24h each) in chest freezer. Modest effect at this temp.</td></tr>
+<tr><td>Flash nanoprecipitation (&sect;3.2)</td><td>3/5</td><td>$30</td><td>Syringe-inject concentrated oak extract into water through plumbing T-fitting under turbulence.</td></tr>
+
+<tr style="background:var(--surface2)"><td colspan="4"><strong>Barrier 4: Oxidation Cascades</strong></td></tr>
+<tr><td><strong>Silicone membrane MOX (&sect;4.1)</strong></td><td><strong>5/5</strong></td><td><strong>$25</strong></td><td><strong>PDMS tubing coil in jar + aquarium pump. Run 2&ndash;4 weeks. Dead simple.</strong></td></tr>
+<tr><td>Electrochemical programming (&sect;4.3)</td><td>3/5</td><td>$200</td><td>Same gold electrode as 1.4. Step voltage: 0.50V &rarr; 0.68V &rarr; 0.80V, 4h each.</td></tr>
+<tr><td>Immobilized laccase (&sect;4.4)</td><td>3/5</td><td>$80</td><td>Buy laccase (Sigma, <em>T. versicolor</em>), add to spirit with oak chips, 24&ndash;48h at RT. Filter.</td></tr>
+<tr><td>Fenton chemistry (&sect;4.2)</td><td>2/5</td><td>$30</td><td>Very thin margin for error. Overshoot &rarr; vinegar. Only for experienced hands.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout key-insight">
+  <strong>Start here:</strong> The five easiest first experiments are Cu/AC cartridge ($15, Barrier 2), PDMS membrane MOX ($25, Barrier 4), two-phase aging ($30, Barrier 3), proof optimization ($0, Barrier 3), and Amberlyst-15 column ($40, Barrier 1). Together they cost under $110 and address all four barriers with off-the-shelf materials.
+</div>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->

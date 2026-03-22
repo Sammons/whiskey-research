@@ -33,6 +33,9 @@ fn main() {
 
     fs::write("../graphs/electrochemical-cascade.svg", sim_electrochemical_cascade()).unwrap();
     println!("Wrote electrochemical-cascade.svg");
+
+    fs::write("../graphs/salt-vle-shift.svg", sim_salt_vle_shift()).unwrap();
+    println!("Wrote salt-vle-shift.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -275,20 +278,21 @@ fn sim_pdms_oxygen_flux() -> String {
 
     let (w, h, m) = (700.0, 400.0, 70.0);
     let (pw, ph) = (w - 2.0*m, h - 2.0*m);
-    let ymax = 0.5;
+    let ymax = 60.0; // mL O₂/L/day — PDMS delivers 10-200× barrel rates
     let sx = |mm: f64| m + ((mm - 0.5) / 2.5) * pw;
     let sy = |f: f64| m + ph - (f / ymax) * ph;
 
     let mut s = svg_header(w, h, "PDMS Membrane O\u{2082} Delivery (30 cm tube, 3 mm I.D., 1 L spirit)");
 
-    // Barrel range band
-    s.push_str(&format!("<rect x=\"{m}\" y=\"{}\" width=\"{pw}\" height=\"{}\" fill=\"{YELLOW}\" opacity=\"0.15\"/>\n",
-        sy(0.10), sy(0.01) - sy(0.10)));
-    s += &label(m+pw-5.0, (sy(0.10)+sy(0.01))/2.0+3.0, "Barrel range: 0.01\u{2013}0.10 mL/L/day", YELLOW, 9, "end");
+    // Barrel O₂ ingress: ~25-45 mL/L/year = 0.07-0.12 mL/L/day (Singleton 1995)
+    let barrel_hi = 0.12;
+    s.push_str(&format!("<line x1=\"{m}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{YELLOW}\" stroke-width=\"1.5\" stroke-dasharray=\"6,4\"/>\n",
+        sy(barrel_hi), m+pw, sy(barrel_hi)));
+    s += &label(m+10.0, sy(barrel_hi)-5.0, "Barrel rate: ~0.1 mL/L/day (25\u{2013}45 mL/L/yr)", YELLOW, 9, "start");
 
-    for f in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5] {
+    for f in [0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0] {
         s += &hline(m, m+pw, sy(f), GRID, "0.5");
-        s += &label(m-5.0, sy(f)+3.0, &format!("{f:.1}"), MUTED, 10, "end");
+        s += &label(m-5.0, sy(f)+3.0, &format!("{:.0}", f), MUTED, 10, "end");
     }
     for mm in [0.5, 1.0, 1.5, 2.0, 2.5, 3.0] {
         s += &vline(sx(mm), m, m+ph, GRID, "0.5");
@@ -305,6 +309,8 @@ fn sim_pdms_oxygen_flux() -> String {
         s.push_str(&format!("<line x1=\"{}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" stroke=\"{color}\" stroke-width=\"2.5\"/>\n", m+10.0, m+30.0));
         s += &label(m+35.0, ly+4.0, lbl, TEXT, 10, "start");
     }
+    // Annotate Pure O₂ off-chart
+    s += &label(sx(1.5), m+15.0, "Pure O\u{2082}: 198 mL/L/day at 1mm (off chart)", RED, 9, "start");
     s += "</svg>";
     s
 }
@@ -479,4 +485,212 @@ fn sim_electrochemical_cascade() -> String {
     }
     svg += "</svg>";
     svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 6: Salt-Modified VLE — Rayleigh Distillation
+// ═══════════════════════════════════════════════════════════════
+fn sim_salt_vle_shift() -> String {
+    // Margules one-parameter model for ethanol(1)-water(2) at 1 atm
+    let a_marg = 1.66_f64;
+
+    // Antoine constants (T in °C, P in mmHg)
+    // Ethanol
+    let (a1, b1, c1) = (8.20417, 1642.89, 230.300);
+    // Water
+    let (a2, b2, c2) = (8.07131, 1730.63, 233.426);
+
+    fn antoine_p(a: f64, b: f64, c: f64, t: f64) -> f64 {
+        10.0_f64.powf(a - b / (c + t))
+    }
+
+    // Setschenow salt enhancement factors for ethanol activity coefficient
+    // log10(gamma_salt / gamma_0) = k_s * c_salt
+    let salt_cases: [(&str, f64, &str); 3] = [
+        ("No salt", 1.0, RED),
+        ("CaCl\u{2082} 200 g/kg", 10.0_f64.powf(0.16 * 1.8), GREEN),       // ~1.83x
+        ("NaCl saturated", 10.0_f64.powf(0.13 * 6.1), BLUE),               // ~6.2x
+    ];
+
+    // Bubble point solver: find T where sum(y_i) = 1 at P_total = 760 mmHg
+    // Returns (T_bp, y1) given x1 and salt enhancement factor
+    let bubble_point = |x1: f64, salt_enh: f64, a_marg: f64| -> (f64, f64) {
+        let x2 = 1.0 - x1;
+        let p_total = 760.0;
+        // Newton-style bisection for bubble-point temperature
+        let mut t_lo = 60.0_f64;
+        let mut t_hi = 105.0_f64;
+        for _ in 0..200 {
+            let t_mid = (t_lo + t_hi) / 2.0;
+            let ln_g1 = a_marg * x2 * x2;
+            let ln_g2 = a_marg * x1 * x1;
+            let gamma1 = ln_g1.exp() * salt_enh;
+            let gamma2 = ln_g2.exp();
+            let p1s = antoine_p(a1, b1, c1, t_mid);
+            let p2s = antoine_p(a2, b2, c2, t_mid);
+            let p_calc = x1 * gamma1 * p1s + x2 * gamma2 * p2s;
+            if p_calc > p_total { t_hi = t_mid; } else { t_lo = t_mid; }
+        }
+        let t = (t_lo + t_hi) / 2.0;
+        let x2f = 1.0 - x1;
+        let gamma1 = (a_marg * x2f * x2f).exp() * salt_enh;
+        let p1s = antoine_p(a1, b1, c1, t);
+        let y1 = x1 * gamma1 * p1s / 760.0;
+        (t, y1.min(1.0))
+    };
+
+    // ABV (vol%) to mole fraction
+    fn abv_to_x(abv: f64) -> f64 {
+        let ve = abv / 100.0;
+        let ne = ve * 0.789 / 46.07;
+        let nw = (1.0 - ve) * 1.0 / 18.015;
+        ne / (ne + nw)
+    }
+
+    // Mole fraction to ABV (vol%)
+    fn x_to_abv(x: f64) -> f64 {
+        // x = n_e / (n_e + n_w). Per unit total moles:
+        // n_e = x, n_w = 1-x
+        // vol_e = x * 46.07 / 0.789, vol_w = (1-x) * 18.015 / 1.0
+        let vol_e = x * 46.07 / 0.789;
+        let vol_w = (1.0 - x) * 18.015 / 1.0;
+        vol_e / (vol_e + vol_w) * 100.0
+    }
+
+    // Rayleigh distillation: dW/W = dx/(y-x)
+    // We integrate numerically: remove small increments of vapor and track pot composition.
+    let init_abv = 10.0;
+    let init_x = abv_to_x(init_abv);
+    let total_charge = 1.0; // normalized moles
+    let tail_abv = 3.0;     // late-tail threshold
+    let max_frac = 0.80;    // distill up to 80% of charge
+
+    println!("\n=== Salt VLE Shift (Rayleigh Distillation) ===");
+    println!("  Initial pot: {:.1}% ABV (x_EtOH = {:.4})", init_abv, init_x);
+    for (lbl, enh, _) in &salt_cases {
+        let (_, y1) = bubble_point(init_x, *enh, a_marg);
+        let y_abv = x_to_abv(y1);
+        println!("  {}: initial vapor y = {:.4} ({:.1}% ABV)", lbl, y1, y_abv);
+    }
+
+    let n_steps = 2000;
+    let d_frac = max_frac / n_steps as f64;
+
+    let mut all_curves: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut crossings: Vec<(f64, f64)> = Vec::new(); // (frac, abv) where curve crosses tail_abv
+
+    for (lbl, enh, _) in &salt_cases {
+        let mut w = total_charge;
+        let mut x = init_x;
+        let mut curve: Vec<(f64, f64)> = Vec::new();
+        let mut crossed = false;
+
+        for i in 0..=n_steps {
+            let frac = i as f64 * d_frac;
+            let abv = x_to_abv(x);
+            curve.push((frac, abv));
+
+            // Check crossing
+            if !crossed && abv <= tail_abv {
+                crossed = true;
+                crossings.push((frac, abv));
+                println!("  {} crosses {:.0}% ABV at {:.1}% distilled", lbl, tail_abv, frac * 100.0);
+            }
+
+            if i < n_steps {
+                let (_, y) = bubble_point(x, *enh, a_marg);
+                // Rayleigh: remove dW moles of vapor with composition y
+                let dw = w * d_frac / (1.0 - d_frac * 0.5); // approximate
+                let new_w = w - dw;
+                let new_x = (w * x - dw * y) / new_w;
+                x = new_x.max(1e-8);
+                w = new_w;
+            }
+        }
+
+        if !crossed {
+            crossings.push((f64::NAN, f64::NAN));
+            println!("  {} does not cross {:.0}% ABV within {:.0}% distilled", lbl, tail_abv, max_frac * 100.0);
+        }
+
+        all_curves.push(curve);
+    }
+
+    // SVG output
+    let (w, h, m) = (700.0, 420.0, 70.0);
+    let (pw, ph) = (w - 2.0 * m, h - 2.0 * m);
+    let x_max = max_frac;
+    let y_min = 0.0_f64;
+    let y_max = 12.0_f64; // ABV range 0-12%
+
+    let sx = |frac: f64| m + (frac / x_max) * pw;
+    let sy = |abv: f64| m + ph - ((abv - y_min) / (y_max - y_min)) * ph;
+
+    let mut s = svg_header(w, h, "Salt-Modified VLE: Pot ABV During Stripping Run (Rayleigh Distillation)");
+
+    // Grid lines — horizontal (ABV)
+    for abv in [0, 2, 4, 6, 8, 10, 12] {
+        s += &hline(m, m + pw, sy(abv as f64), GRID, "0.5");
+        s += &label(m - 5.0, sy(abv as f64) + 3.0, &format!("{abv}%"), MUTED, 10, "end");
+    }
+    // Grid lines — vertical (fraction distilled)
+    for pct in (0..=80).step_by(10) {
+        let frac = pct as f64 / 100.0;
+        s += &vline(sx(frac), m, m + ph, GRID, "0.5");
+        s += &label(sx(frac), m + ph + 15.0, &format!("{pct}%"), MUTED, 10, "middle");
+    }
+
+    // Axes
+    s += &vline(m, m, m + ph, MUTED, "1.5");
+    s += &hline(m, m + pw, m + ph, MUTED, "1.5");
+    s += &label((2.0 * m + pw) / 2.0, m + ph + 35.0, "Fraction of Charge Distilled", MUTED, 11, "middle");
+
+    // Late-tail threshold — dashed horizontal line at 3% ABV
+    s.push_str(&format!(
+        "<line x1=\"{m}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{YELLOW}\" \
+         stroke-width=\"1.5\" stroke-dasharray=\"8,4\"/>\n",
+        sy(tail_abv), m + pw, sy(tail_abv)
+    ));
+    s += &label(m + pw - 3.0, sy(tail_abv) - 6.0, "Late tail threshold (3% ABV)", YELLOW, 9, "end");
+
+    // Plot curves
+    for (i, (_, _, color)) in salt_cases.iter().enumerate() {
+        s += &polyline_svg(&all_curves[i], color, "2.5", &sx, &sy);
+    }
+
+    // Annotate crossings
+    for (i, (lbl, _, color)) in salt_cases.iter().enumerate() {
+        let (cf, ca) = crossings[i];
+        if !cf.is_nan() {
+            s.push_str(&format!(
+                "<circle cx=\"{}\" cy=\"{}\" r=\"4\" fill=\"{color}\"/>\n",
+                sx(cf), sy(ca)
+            ));
+            // Stagger annotation vertically to avoid overlap
+            let y_off = match i { 0 => 18.0, 1 => -10.0, _ => -25.0 };
+            s += &label(
+                sx(cf) + 6.0, sy(ca) + y_off,
+                &format!("{} @ {:.0}%", lbl, cf * 100.0),
+                color, 9, "start"
+            );
+        }
+    }
+
+    // Legend
+    let legend = [
+        (RED, "No salt (baseline)"),
+        (GREEN, "CaCl\u{2082} 200 g/kg (\u{3b3} \u{d7}1.83)"),
+        (BLUE, "NaCl saturated (\u{3b3} \u{d7}6.2)"),
+    ];
+    for (i, (c, l)) in legend.iter().enumerate() {
+        let ly = 55.0 + i as f64 * 18.0;
+        s.push_str(&format!(
+            "<line x1=\"{}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" stroke=\"{c}\" stroke-width=\"2.5\"/>\n",
+            m + 10.0, m + 30.0
+        ));
+        s += &label(m + 35.0, ly + 4.0, l, TEXT, 10, "start");
+    }
+
+    s += "</svg>";
+    s
 }

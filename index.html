@@ -203,6 +203,28 @@
   }
   .toc a:hover { text-decoration: underline; }
 
+  .sim-figure {
+    margin: 1.5rem 0;
+    background: #161b22;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.5rem;
+    overflow-x: auto;
+  }
+  .sim-figure img {
+    width: 100%;
+    max-width: 700px;
+    display: block;
+    margin: 0 auto;
+  }
+  .sim-figure figcaption {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+
   .ref-list {
     font-size: 0.85rem;
     color: var(--text-muted);
@@ -1226,6 +1248,11 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
 </div>
 
 <p>where k<sub>s</sub> is the salt-specific Setschenow constant and c<sub>salt</sub> is salt concentration. The net result: the VLE curve shifts to favor ethanol in the vapor at every liquid composition. With sufficient salt concentration, the azeotrope point moves or disappears entirely.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/salt-vle-shift.svg" alt="Rayleigh distillation: pot ABV vs fraction distilled for no salt, CaCl₂, and NaCl saturated">
+  <figcaption><strong>Fig. A.</strong> Rayleigh distillation of 10% ABV wash: pot composition vs. fraction distilled. CaCl<sub>2</sub> (200 g/kg) reaches the 3% ABV late-tail threshold at 8.6% distilled (43% sooner than unsalted). Saturated NaCl reaches it at 4.3% (72% sooner). Margules one-parameter VLE model with Setschenow activity coefficient correction.</figcaption>
+</figure>
 
 <h4>Salt Effectiveness Ranking (Food-Safe Options)</h4>
 
