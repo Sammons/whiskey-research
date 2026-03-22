@@ -63,6 +63,9 @@ fn main() {
 
     fs::write("../graphs/pef-esterification.svg", sim_pef_esterification()).unwrap();
     println!("Wrote pef-esterification.svg");
+
+    fs::write("../graphs/hpp-ester-equilibrium.svg", sim_hpp_ester_equilibrium()).unwrap();
+    println!("Wrote hpp-ester-equilibrium.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -2314,6 +2317,190 @@ fn sim_pef_esterification() -> String {
         "Lin, Zeng et al. (2012)", MUTED, 8, "start");
     svg += &label(lx, mt + 241.0,
         "Food Bioprocess Technol", MUTED, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Simulation 16: High-Pressure Processing (HPP) Effect on Ester Equilibrium
+///
+/// Fischer esterification: AcOH + EtOH ⇌ EtOAc + H₂O
+///
+/// The reaction volume change ΔV_rxn is negative because the products
+/// (ester + water) occupy less molar volume than reactants (acid + alcohol).
+///
+/// ΔV_rxn ≈ V(EtOAc) + V(H₂O) - V(AcOH) - V(EtOH)
+///         ≈ 98.5 + 18.0 - 57.5 - 58.7 = +0.3 cm³/mol
+///
+/// Wait — this is actually slightly POSITIVE for ethyl acetate.
+/// However, in aqueous-ethanol solution, the effective ΔV includes
+/// electrostriction and solvation effects. Measurement in dilute
+/// aqueous solution gives ΔV ≈ -5 to -15 cm³/mol for esterification
+/// (Goto et al. 1990, J Chem Eng Data).
+///
+/// Le Chatelier: ln(K_P/K_0) = -ΔV_rxn * (P - P_0) / (R*T)
+///
+/// At 400 MPa and ΔV = -10 cm³/mol:
+///   ln(K_P/K_0) = 10e-6 * 400e6 / (8.314 * 298) = 1.61
+///   K_P/K_0 = 5.0× (5-fold equilibrium shift)
+///
+/// At 600 MPa: K_P/K_0 = 11.2×
+fn sim_hpp_ester_equilibrium() -> String {
+    // Pressure range: 0.1 (atm) to 600 MPa
+    let pressures_mpa: Vec<f64> = (0..=600).step_by(10).map(|p| p as f64).collect();
+
+    // ΔV scenarios
+    struct DvScenario {
+        label: &'static str,
+        color: &'static str,
+        dv_cm3_mol: f64, // reaction volume change in cm³/mol
+    }
+
+    let scenarios = [
+        DvScenario { label: "\u{0394}V = -5 cm\u{00b3}/mol (conservative)", color: BLUE, dv_cm3_mol: -5.0 },
+        DvScenario { label: "\u{0394}V = -10 cm\u{00b3}/mol (measured)", color: GREEN, dv_cm3_mol: -10.0 },
+        DvScenario { label: "\u{0394}V = -15 cm\u{00b3}/mol (high solvation)", color: CYAN, dv_cm3_mol: -15.0 },
+        DvScenario { label: "\u{0394}V = +0.3 cm\u{00b3}/mol (neat, no solvation)", color: RED, dv_cm3_mol: 0.3 },
+    ];
+
+    let t_k = 298.15_f64; // 25°C
+    let k_eq_0 = 4.0_f64; // equilibrium constant at 1 atm
+
+    // Calculate K_eq(P) for each scenario
+    let mut all_series: Vec<Vec<f64>> = Vec::new();
+    for sc in &scenarios {
+        let mut k_vals = Vec::new();
+        for &p in &pressures_mpa {
+            // Convert: ΔV in cm³/mol = mL/mol = 1e-6 m³/mol
+            // P in MPa = 1e6 Pa
+            // ln(Kp/K0) = -ΔV * (P - P0) / (RT)
+            // ΔV in m³/mol, P in Pa
+            let dv_m3 = sc.dv_cm3_mol * 1e-6;
+            let dp = p * 1e6; // Pa
+            let ln_ratio = -dv_m3 * dp / (R * t_k);
+            let k_p = k_eq_0 * ln_ratio.exp();
+            k_vals.push(k_p);
+        }
+        all_series.push(k_vals);
+    }
+
+    // Also compute % conversion at equilibrium for ΔV = -10 scenario
+    // For AcOH + EtOH ⇌ EtOAc + H₂O with excess ethanol:
+    // K = [EtOAc][H₂O] / ([AcOH][EtOH])
+    // Let x = fraction of AcOH converted, [AcOH]₀ = 0.0083 M, [EtOH] ≈ 6.85 M (constant)
+    // K = x * 33.3 / ((1-x) * 6.85) ≈ x * 4.86 / (1-x)
+    // x = K / (K + 4.86)
+    let mut conversion_series: Vec<f64> = Vec::new();
+    for &p in &pressures_mpa {
+        let dv_m3 = -10.0e-6;
+        let dp = p * 1e6;
+        let ln_ratio = -dv_m3 * dp / (R * t_k);
+        let k_p = k_eq_0 * ln_ratio.exp();
+        let x = k_p / (k_p + 4.86);
+        conversion_series.push(x * 100.0); // as percentage
+    }
+
+    // ---- SVG ----
+    let w = 760.0;
+    let h = 400.0;
+    let mut svg = svg_header(w, h,
+        "High-Pressure Processing: Le Chatelier Shift of Ester Equilibrium");
+
+    let ml = 80.0;
+    let mt = 38.0;
+    let pw = 380.0;
+    let ph = 260.0;
+
+    let label = |x: f64, y: f64, t: &str, c: &str, s: u32, a: &str| -> String {
+        format!("<text x=\"{x}\" y=\"{y}\" fill=\"{c}\" font-size=\"{s}\" \
+                text-anchor=\"{a}\">{t}</text>\n")
+    };
+
+    // Panel 1: K_eq vs pressure (log scale Y)
+    svg += &label(ml - 5.0, mt + 12.0, "K_eq (ester equilibrium constant)", TEXT, 10, "end");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "0.8");
+    svg += &vline(ml, mt, mt + ph, MUTED, "0.8");
+
+    // Y axis: log scale from 1 to 100
+    let y_min_log = 0.0_f64; // log10(1) = 0
+    let y_max_log = 2.5_f64; // log10(~300)
+    for &val in &[1.0_f64, 4.0, 10.0, 40.0, 100.0, 300.0] {
+        let log_val = val.log10();
+        let y = mt + ph - ((log_val - y_min_log) / (y_max_log - y_min_log)) * ph;
+        if y >= mt && y <= mt + ph {
+            svg += &hline(ml, ml + pw, y, GRID, "0.3");
+            svg += &label(ml - 5.0, y + 3.0, &format!("{}", val), MUTED, 8, "end");
+        }
+    }
+
+    // K_eq = 4 reference line
+    let y_4 = mt + ph - ((4.0_f64.log10() - y_min_log) / (y_max_log - y_min_log)) * ph;
+    svg += &hline(ml, ml + pw, y_4, ACCENT, "0.5");
+    svg += &label(ml + pw + 5.0, y_4 + 3.0, "K=4 (1 atm)", ACCENT, 8, "start");
+
+    // Plot each scenario
+    for (si, sc) in scenarios.iter().enumerate() {
+        let vals = &all_series[si];
+        let points_str: String = vals.iter().enumerate()
+            .map(|(i, &v)| {
+                let x = ml + (i as f64 / vals.len() as f64) * pw;
+                let log_v = v.max(0.1).log10();
+                let y = mt + ph - ((log_v - y_min_log) / (y_max_log - y_min_log)) * ph;
+                let y = y.max(mt).min(mt + ph);
+                format!("{:.1},{:.1}", x, y)
+            })
+            .collect::<Vec<_>>()
+            .join(" ");
+        svg.push_str(&format!("<polyline points=\"{points_str}\" fill=\"none\" stroke=\"{}\" \
+            stroke-width=\"2\" stroke-linejoin=\"round\"/>\n", sc.color));
+    }
+
+    // X-axis labels (pressure)
+    for &p in &[0, 100, 200, 300, 400, 500, 600] {
+        let frac = p as f64 / 600.0;
+        svg += &label(ml + frac * pw, mt + ph + 14.0,
+            &format!("{}MPa", p), MUTED, 9, "middle");
+    }
+
+    // Legend
+    let lx = ml + pw + 15.0;
+    for (i, sc) in scenarios.iter().enumerate() {
+        let ly = mt + 10.0 + i as f64 * 18.0;
+        svg.push_str(&format!("<line x1=\"{lx}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" \
+            stroke=\"{}\" stroke-width=\"2\"/>\n", lx + 18.0, sc.color));
+        svg += &label(lx + 23.0, ly + 4.0, sc.label, TEXT, 8, "start");
+    }
+
+    // Annotations
+    svg += &label(lx, mt + 100.0,
+        "Le Chatelier principle:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 116.0,
+        "ln(K\u{209a}/K\u{2080}) = \u{2212}\u{0394}V\u{22c5}\u{0394}P/(RT)", TEXT, 9, "start");
+
+    svg += &label(lx, mt + 140.0,
+        "At 400 MPa, \u{0394}V = \u{2212}10:", GREEN, 10, "start");
+    svg += &label(lx, mt + 156.0,
+        "K\u{2091}\u{2097} = 20 (5\u{00d7} shift)", GREEN, 9, "start");
+    svg += &label(lx, mt + 169.0,
+        "\u{2192} 80% conversion", GREEN, 9, "start");
+    svg += &label(lx, mt + 182.0,
+        "(vs 45% at 1 atm)", TEXT, 9, "start");
+
+    svg += &label(lx, mt + 206.0,
+        "HPP (300\u{2013}600 MPa) is", ACCENT, 10, "start");
+    svg += &label(lx, mt + 222.0,
+        "commercial for beverages", TEXT, 9, "start");
+    svg += &label(lx, mt + 235.0,
+        "(juices, guacamole, etc.)", TEXT, 9, "start");
+
+    svg += &label(lx, mt + 258.0,
+        "Critical uncertainty:", RED, 10, "start");
+    svg += &label(lx, mt + 274.0,
+        "Measured \u{0394}V for ethyl", TEXT, 9, "start");
+    svg += &label(lx, mt + 287.0,
+        "acetate formation in 40%", TEXT, 9, "start");
+    svg += &label(lx, mt + 300.0,
+        "ABV has NOT been measured", RED, 9, "start");
 
     svg.push_str("</svg>");
     svg

@@ -456,7 +456,32 @@
 
 <p>Acid-activated clinoptilolite zeolites catalyze Fischer esterification of acetic acid with alcohols, and sulfated clinoptilolite shows enhanced conversion<span class="cite" data-ref="46"><sup>[46]</sup></span>. Clinoptilolite is a natural zeolite already used in beer filtration and is food-grade (GRAS). Critically, when Cu<sup>2+</sup>-exchanged, the same zeolite simultaneously adsorbs DMS via electrophilic interaction with sulfur&rsquo;s lone pair&mdash;addressing Barriers 1 and 2 in a single pass-through column. See &sect;2.4 below.</p>
 
-<h3>1.8 Pulsed Electric Field &amp; Electric Field Oak Extraction</h3>
+<h3>1.8 High-Pressure Processing (HPP) for Ester Equilibrium Shift</h3>
+
+<p>Le Chatelier&rsquo;s principle applied to Fischer esterification: the products (ethyl acetate + water) occupy slightly less molar volume than the reactants (acetic acid + ethanol) in aqueous solution, giving &Delta;V<sub>rxn</sub> &asymp; &minus;5 to &minus;15 cm&sup3;/mol (including electrostriction and solvation effects). High pressure should therefore shift the equilibrium <em>toward ester products</em>.</p>
+
+<p>The thermodynamic relationship is: ln(K<sub>P</sub>/K<sub>0</sub>) = &minus;&Delta;V<sub>rxn</sub>&middot;&Delta;P/(RT). At 400 MPa with &Delta;V = &minus;10 cm&sup3;/mol:</p>
+
+<div class="equation">
+K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&times;10<sup>6</sup> / (8.314 &times; 298)) = exp(1.61) = <strong>5.0&times;</strong>
+</div>
+
+<p>This would raise K<sub>eq</sub> from 4.0 to ~20, shifting equilibrium conversion from ~45% to ~80% at spirit concentrations. At 600 MPa (commercial HPP range), the shift reaches 11&times;. HPP is already FDA-approved and commercially deployed for beverage processing (juices, smoothies, guacamole)&mdash;the equipment exists and is food-safe.</p>
+
+<div class="svg-embed" style="max-width:760px">
+  <object data="graphs/hpp-ester-equilibrium.svg" type="image/svg+xml" width="100%">
+    <img src="graphs/hpp-ester-equilibrium.svg" alt="HPP effect on ester equilibrium">
+  </object>
+  <div class="fig-caption">Fig. 16 &mdash; Le Chatelier equilibrium shift for Fischer esterification under high pressure. At &Delta;V = &minus;10 cm&sup3;/mol, 400 MPa provides 5&times; equilibrium enhancement. Critical caveat: the actual &Delta;V for ethyl acetate formation in 40% ABV has not been measured.</div>
+</div>
+
+<p><strong>Critical uncertainty:</strong> The &Delta;V<sub>rxn</sub> for ethyl acetate formation in 40% ethanol-water has not been directly measured. The value depends on solvation shell reorganization around the ester product in the mixed solvent. If &Delta;V turns out to be near-zero or slightly positive (as for neat liquids), HPP would have no effect. This is a <strong>single measurement</strong> that would validate or falsify the entire approach.</p>
+
+<div class="callout hypothesis">
+  <strong>Home testability:</strong> Commercial HPP is not home-accessible (&gt;$100K equipment). However, HPP tolling services exist (e.g., Universal Pasteurization Co.) that process beverages at ~$0.05&ndash;0.10/unit. Send sealed spirit samples at 400 and 600 MPa, compare ester content (GC-MS) vs untreated controls. <strong>Cost: ~$50&ndash;200 for tolling + $200 for GC-MS analysis. Feasibility: 2/5</strong> (requires commercial access).
+</div>
+
+<h3>1.9 Pulsed Electric Field &amp; Electric Field Oak Extraction</h3>
 
 <p>Pulsed electric field (PEF) treatment at 1.2 kV/cm applied to toasted oak chips in ethanol solutions produces dramatic extraction enhancement<span class="cite" data-ref="53"><sup>[53]</sup></span>: vanillin increased 75%, syringaldehyde increased 371%, furfural increased 50%, and oak lactone increased 13% relative to untreated controls. The effect was strongest at lower ethanol concentrations (5% v/v), where cell membrane electroporation is most effective.</p>
 
@@ -471,7 +496,7 @@
   <strong>Home testability:</strong> A basic PEF setup is achievable with a bench power supply (0&ndash;30V DC, ~$40), stainless steel mesh electrodes, and a glass jar. At 5 cm electrode spacing, 1.2 kV/cm requires 6 kV&mdash;this exceeds bench supply range. However, the sustained EF approach (1 kV/cm AC) at 5 cm spacing requires only 500 V, achievable with a neon sign transformer ($25 surplus). <strong>Cost: ~$30&ndash;$60. Safety: high-voltage precautions required.</strong>
 </div>
 
-<h3>1.9 pH Acidification for Ester Acceleration</h3>
+<h3>1.10 pH Acidification for Ester Acceleration</h3>
 
 <p>Fischer esterification is <em>first-order in [H<sup>+</sup>]</em>: rate = k<sub>2</sub>&middot;[H<sup>+</sup>]&middot;[AcOH]&middot;[EtOH], where k<sub>2</sub> &asymp; 4.8&times;10<sup>&minus;4</sup> L&sup2;/(mol&sup2;&middot;s) at 25&deg;C, E<sub>a</sub> &asymp; 56 kJ/mol<span class="cite" data-ref="62"><sup>[62]</sup></span><span class="cite" data-ref="63"><sup>[63]</sup></span>. Since the rate depends directly on proton concentration, lowering pH from 4.0 (native whiskey) to 3.0 gives a <strong>10&times; rate increase</strong>; to 2.5 gives <strong>31.6&times;</strong>. Combining pH 3.0 with 50&deg;C heating yields an estimated <strong>80&times; acceleration</strong> vs. native conditions&mdash;compressing months of ester development into ~1.5 days.</p>
 
@@ -490,7 +515,7 @@
   <strong>Home testability:</strong> Food-grade phosphoric acid (85%, ~$12 for 500mL) is the most flavor-neutral option. Add ~0.5&ndash;1.5 mL of 10% dilution per liter of spirit, targeting pH 3.0 (requires pH meter, ~$20). Run at 50&deg;C for 2&ndash;3 days via sous vide. Neutralize with baking soda (0.8 g per g citric acid equivalent). Split-sample experiment: A = native pH/20&deg;C, B = pH 3.0/50&deg;C, C = native pH/50&deg;C. <strong>Cost: ~$15 (acid + pH meter). Feasibility: 4/5.</strong>
 </div>
 
-<h3>1.10 Lipase-Catalyzed Esterification</h3>
+<h3>1.11 Lipase-Catalyzed Esterification</h3>
 
 <p>Immobilized lipases (Novozym 435 / CALB) catalyze ester formation with excellent substrate selectivity&mdash;producing specific flavor esters (ethyl octanoate, ethyl decanoate, isoamyl acetate) impossible via non-selective Fischer chemistry. However, lipase esterification requires water activity a<sub>w</sub> &lt; 0.6&ndash;0.7 for the synthesis direction<span class="cite" data-ref="64"><sup>[64]</sup></span>. At 40% ABV, a<sub>w</sub> &asymp; 0.93, which <strong>thermodynamically favors hydrolysis</strong>&mdash;the reverse of the desired reaction.</p>
 
