@@ -2602,6 +2602,69 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict promising">Published (physics)</span> &mdash; Soret coefficients for ethanol-water are precisely measured, including the sign-change fixed point (Schraml 2021, Gebhardt &amp; Kohler 2023, validated by ISS microgravity experiments)<span class="cite" data-ref="173"><sup>[173]</sup></span>. Application to barrel aging or accelerated aging has never been proposed. <strong>Home testability: 2/5</strong> (Difficult to directly observe, but indirectly testable: compare accelerated aging in a <em>stirred</em> vessel (destroys Soret gradients) vs <em>unstirred</em> (preserves them) under identical temperature cycling. If Soret gradients contribute, the unstirred sample should develop more complexity. Alternatively, asymmetric heating: heat one side of the vessel with a heating pad, cool the other with an ice pack, for sustained directional gradient.)
 </div>
 
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h3>4.52 Cavitation-Enhanced Maillard Kinetics</h3>
+
+<p>Ultrasonic cavitation is well-established for oak extraction (&sect;3.14), but its effect on <em>Maillard chemistry</em> within the spirit is far more dramatic than simple extraction acceleration. Yu et al. (2018) measured activation energies for the key Maillard intermediate 1-deoxyglucosone (1-DG) under high-intensity ultrasound vs. thermal control and found a <strong>42% reduction in E<sub>a</sub></strong> (60.9 vs. 105.5 kJ/mol)<span class="cite" data-ref="174"><sup>[174]</sup></span>. The localized extreme temperatures (~5000 K) and pressures (~1000 atm) inside collapsing cavitation bubbles catalyze the Amadori rearrangement and dehydration steps that are rate-limiting in conventional Maillard.</p>
+
+<p>The product spectrum reshaping is even more striking. Zhang et al. (2022) used <sup>13</sup>C-labeled glucose to trace Maillard pathways under ultrasound and found a <strong>40-fold increase in 2,3-dimethylpyrazine</strong> (1,194.8 vs. 29.7 &mu;g/L) and 2.9&times; increase in 2-ethyl-5-methylpyrazine<span class="cite" data-ref="175"><sup>[175]</sup></span>. Isotope labeling confirmed that ultrasound specifically promotes <em>aldol-type condensation</em>&mdash;the mechanism for pyrazine side-chain elongation&mdash;because aldol reactions have negative activation volumes (&Delta;V&Dagger; &lt; 0), making them thermodynamically favored under the extreme transient pressures inside cavitation bubbles.</p>
+
+<p>Crucially, ultrasound <em>suppresses</em> sulfur-containing Maillard products (Ong et al. 2015), because acoustic degassing expels H<sub>2</sub>S precursors. In spirit aging, this is advantageous: sulfury off-notes (DMS, dimethyl trisulfide) are defects, while pyrazines (nutty, roasted, cocoa) are quality markers. The ultrasonic Maillard pathway is thus selectively beneficial.</p>
+
+<figure>
+  <img src="graphs/cavitation-maillard.svg" alt="Cavitation-enhanced Maillard: activation energy reduction and product spectrum reshaping">
+  <figcaption><strong>Fig. 64.</strong> Cavitation-enhanced Maillard kinetics. Panel A: Activation energy comparison&mdash;thermal vs. ultrasonic Maillard for three key reaction steps. The 42% E<sub>a</sub> reduction for 1-DG generation means the same rate at ~25&deg;C lower bulk temperature. Panel B: Product enhancement factors (log scale)&mdash;the 40&times; 2,3-dimethylpyrazine boost dwarfs all other enhancements, arising from pressure-favored aldol condensation in cavitation bubbles.</figcaption>
+</figure>
+
+<p><strong>Protocol synergy:</strong> Combining Maillard substrate supplementation (&sect;4.6: xylose 0.3 g/L + glycine 0.08 g/L) with ultrasonic treatment (&sect;3.14) should produce pyrazine-rich, sulfur-depleted Maillard products at rates far exceeding thermal aging. The substrates provide the fuel; cavitation provides a fundamentally different kinetic pathway with 42% lower activation barriers.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (model systems)</span> &mdash; Yu 2018 and Zhang 2022 used glucose-glycine model systems, not real spirits<span class="cite" data-ref="174"><sup>[174]</sup></span><span class="cite" data-ref="175"><sup>[175]</sup></span>. The complex congener matrix of spirit could attenuate or redirect these effects. However, the 42% E<sub>a</sub> reduction is a fundamental kinetic parameter that should transfer. Validation in spirit matrix is the critical missing experiment. <strong>Home testability: 4/5</strong> (Add 0.3 g/L xylose + 0.08 g/L glycine to spirit with oak extract. Split into two jars: one in ultrasonic jewelry cleaner at 40&deg;C for 2h, one in 40&deg;C water bath. Compare aroma after 24h rest. Expect enhanced nutty/roasted notes in sonicated sample.)
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h3>4.53 Asymmetric PEM Electrochemical Acetaldehyde</h3>
+
+<p>Section 1.4 demonstrated electrochemical spirit aging using gold electrodes, achieving 10,000&times; acceleration at 0.8V. The limitation: noble-metal electrodes cost thousands of dollars and provide modest selectivity for acetaldehyde over acetic acid. Huang et al. (2025) solved both problems with an <strong>asymmetric proton-exchange membrane (PEM) electrolyzer</strong> using a CoO/Co<sub>3</sub>O<sub>4</sub> interface anode: <strong>&gt;95% aldehyde selectivity and &gt;90% Faradaic efficiency at 200 mA/cm<sup>2</sup></strong><span class="cite" data-ref="176"><sup>[176]</sup></span>&mdash;industrially relevant current density.</p>
+
+<p>The breakthrough is the asymmetric membrane design. In conventional single-compartment electrolysis (&sect;1.4), the spirit contacts both anode and cathode. Water reduction at the cathode competes with alcohol oxidation at the anode, and intermediate products (acetaldehyde) are overoxidized to acetic acid as they diffuse through the shared electrolyte. The PEM physically separates <strong>pure alcohol anolyte</strong> from <strong>aqueous catholyte</strong>. Protons transfer through the membrane, but acetaldehyde product cannot reach the cathode, eliminating the overoxidation pathway.</p>
+
+<p>The CoO/Co<sub>3</sub>O<sub>4</sub> interface is critical: air-annealed cobalt oxide generates surface Co<sup>4+</sup> sites that promote the selective 2-electron ethanol &rarr; acetaldehyde pathway while suppressing the 4-electron pathway to acetic acid<span class="cite" data-ref="176"><sup>[176]</sup></span>. This is a non-noble-metal catalyst&mdash;cobalt oxide costs orders of magnitude less than platinum or gold. Additional data from Rizo et al. (2022) and You et al. (2023) on potential-dependent selectivity on Pt further confirm that the 0.6&ndash;0.95V window selectively produces acetaldehyde<span class="cite" data-ref="177"><sup>[177]</sup></span>.</p>
+
+<figure>
+  <img src="graphs/pem-electrochemical-acetal.svg" alt="Asymmetric PEM electrolyzer: selectivity vs current density and reactor schematic">
+  <figcaption><strong>Fig. 65.</strong> Asymmetric PEM electrochemical acetaldehyde synthesis. Panel A: Aldehyde selectivity vs. current density for CoO/Co<sub>3</sub>O<sub>4</sub> PEM (green, &gt;95% across full range), Pt polycrystalline (red, drops at high J), and Au from &sect;1.4 (yellow, drops further). The PEM maintains selectivity where conventional electrodes fail. Panel B: Reactor schematic showing the key innovation&mdash;physical membrane separation prevents overoxidation.</figcaption>
+</figure>
+
+<p><strong>Protocol integration:</strong> A PEM cell provides <em>titratable</em> acetaldehyde on demand. The acetaldehyde produced feeds directly into: (1) Maillard reactions (&sect;4.6, &sect;4.52&mdash;especially powerful when combined with ultrasonic cavitation), (2) phenolic bridging (&sect;3.8&mdash;acetaldehyde cross-links tannins into the same polymeric pigments found in aged spirits), and (3) acetal formation (&sect;1.13&mdash;1,1-diethoxyethane, a key aging marker). Cost: Co<sub>3</sub>O<sub>4</sub>-coated electrode ~$10&ndash;20, PEM ~$15, total cell ~$30&ndash;50 vs. $1000+ for Pt/Au.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published</span> &mdash; Huang 2025 demonstrated the full system for a broad scope of alcohols at industrial current densities<span class="cite" data-ref="176"><sup>[176]</sup></span>. Spirit-specific validation is needed (congeners may foul the electrode), but the membrane architecture fundamentally prevents the overoxidation problem that limits &sect;1.4. <strong>Home testability: 2/5</strong> (Requires PEM cell construction. However, a simplified version: graphite electrodes at 0.8V in a divided cell (porous ceramic separator from an aquarium air stone) could demonstrate the selectivity improvement over single-compartment electrolysis.)
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h3>4.54 Plasma-Activated Water as Calibrated Oxidant</h3>
+
+<p>Section 4.27 explored plasma-activated <em>ethanol</em> for RONS generation. A fundamentally different approach: treat <em>water</em> with cold atmospheric plasma to create plasma-activated water (PAW) with calibrated concentrations of H<sub>2</sub>O<sub>2</sub> (0.8&ndash;23 mg/L), NO<sub>3</sub><sup>&minus;</sup> (12.7&ndash;292 mg/L), NO<sub>2</sub><sup>&minus;</sup> (1.3&ndash;17.5 mg/L), and trace OH&bull; and O<sub>3</sub><span class="cite" data-ref="178"><sup>[178]</sup></span>. Then apply the PAW to <em>oak wood</em>, not directly to spirit. This decouples oxidant generation from spirit contact, giving precise dose control.</p>
+
+<p>Paix&atilde;o et al. (2024) demonstrated this directly: oak wood (American, French, Spanish; medium and plus toast) treated with PAW before wine aging produced wines with <strong>physicochemical parameters comparable to traditional barrel aging</strong> while achieving significant microbial reduction<span class="cite" data-ref="179"><sup>[179]</sup></span>. Sensory analysis showed harmonious balance of fruity and spicy notes. A companion study confirmed PAW as an effective barrel sanitation alternative to sulfur, without damaging wood chemistry.</p>
+
+<p>The quantitative calibration is critical. PAW at 23 mg/L H<sub>2</sub>O<sub>2</sub> applied to a 200 L barrel at 10% v/v addition delivers ~460 mg H<sub>2</sub>O<sub>2</sub>&mdash;equivalent to approximately <strong>6&ndash;12 months of natural micro-oxygenation</strong> through oak staves (estimated O<sub>2</sub> ingress ~2&ndash;5 mg/L/year). Nie&#x17c;wied&#x17a; et al. (2022) showed that cold He/N<sub>2</sub> plasma treatment of wine preserved phenolics 3.1% better than potassium metabisulfite, with color stability within consumer perception thresholds (&Delta;E* = 1.12 vs. 3.0 threshold)<span class="cite" data-ref="178"><sup>[178]</sup></span>.</p>
+
+<figure>
+  <img src="graphs/plasma-activated-water.svg" alt="Plasma-activated water RONS concentration ranges and oak pre-treatment protocol">
+  <figcaption><strong>Fig. 66.</strong> Plasma-activated water for spirit maturation. Panel A: RONS concentration ranges achievable in PAW (log scale). The yellow line marks the barrel 1-year micro-oxygenation equivalent&mdash;PAW H<sub>2</sub>O<sub>2</sub> can deliver this in a single dose. Panel B: PAW oak pre-treatment protocol: generate PAW via DBD plasma, soak oak chips 30&ndash;60 min, then add treated chips to spirit.</figcaption>
+</figure>
+
+<p><strong>Key distinction from &sect;4.27:</strong> Plasma-activated ethanol generates RONS <em>in situ</em> within the spirit, risking uncontrolled radical chain reactions. PAW treats the oak intermediary, where RONS pre-oxidize lignin surfaces (breaking &beta;-O-4 bonds, generating free phenolic hydroxyls) before spirit contact. The spirit encounters an oak surface pre-primed for extraction, not an oxidant-laden solution. This mirrors what natural weathering does to staves over years&mdash;compressed into minutes.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (wine)</span> &mdash; Paix&atilde;o 2024 demonstrated PAW-treated oak with wine<span class="cite" data-ref="179"><sup>[179]</sup></span>. Spirit-specific validation is straightforward (spirit is simpler than wine: no tannins, anthocyanins, or malolactic bacteria to complicate). The DBD plasma generator can be constructed from an automotive ignition coil and aluminum foil electrodes for ~$20. <strong>Home testability: 3/5</strong> (Approximate PAW with food-grade H<sub>2</sub>O<sub>2</sub>: soak oak chips in 0.1% H<sub>2</sub>O<sub>2</sub> for 1h, rinse, then add to spirit. Compare vs. untreated chips. Faster color and aroma = PAW-mimetic effect.)
+</div>
+
 
 <!-- ═══════════════════════════════════════════════════════ -->
 
@@ -2761,6 +2824,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Mechanochemical oak (&sect;4.49)</td><td>10&ndash;50&times; phenolic extraction</td><td><span class="verdict promising">Published (components)</span></td><td>$10&ndash;20</td><td>EXTRACTION</td></tr>
 <tr><td>Sono-photo-Fenton (&sect;4.50)</td><td>17.9&times; synergy</td><td><span class="verdict promising">Published (components)</span></td><td>$0 incr.</td><td>OXIDATION</td></tr>
 <tr><td>Soret thermophoresis (&sect;4.51)</td><td>Localized &Delta;[EtOH] &plusmn;3%</td><td><span class="verdict promising">Published</span></td><td>$0 incr.</td><td>CLUSTER / ESTER</td></tr>
+<tr><td>Cavitation-enhanced Maillard (&sect;4.52)</td><td>42% lower E<sub>a</sub>; 40&times; pyrazines</td><td><span class="verdict promising">Published (model)</span></td><td>$0 incr.</td><td>MAILLARD</td></tr>
+<tr><td>Asymmetric PEM electrolysis (&sect;4.53)</td><td>&gt;95% AcH selectivity at 200 mA/cm&sup2;</td><td><span class="verdict promising">Published</span></td><td>$30&ndash;50</td><td>OXIDATION</td></tr>
+<tr><td>PAW oak pre-treatment (&sect;4.54)</td><td>6&ndash;12 mo. equiv. oxidation</td><td><span class="verdict promising">Published (wine)</span></td><td>$20&ndash;30</td><td>OXIDATION / EXTRACTION</td></tr>
 </tbody>
 </table>
 </div>
@@ -2947,6 +3013,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td><strong>Mechanochemical oak (&sect;4.49)</strong></td><td><strong>3/5</strong></td><td><strong>$10&ndash;20</strong></td><td><strong>Coffee grinder ($10) or existing spice grinder. Grind toasted oak chips to finest powder (5 min burst mode). Compare: 1 g ground vs 1 g intact chips in 100 mL spirit. Measure color at 1h, 4h, 24h (phone camera + white background). Ground oak should show 4&ndash;10&times; faster color extraction. For true mechanochemical effect, mortar &amp; pestle 30+ min on small batches. Synergistic with ultrasonic bath (&sect;3.14): grind first, then sonicate in spirit.</strong></td></tr>
 <tr><td><strong>Sono-photo-Fenton triple (&sect;4.50)</strong></td><td><strong>4/5</strong></td><td><strong>$0 incr.</strong></td><td><strong>Zero incremental cost: ultrasonic bath (\u{00a7}3.14) + UV-A LED strip (\u{00a7}4.26) + oak chips, all already in protocol. Run all three simultaneously for 30 min. Compare vs sono-only, UV-only, and combined (no oak) controls. The triple (with oak) should show fastest color development and most vanillin aroma &mdash; oak Fe<sup>2+</sup> enables the hidden Fenton cycle.</strong></td></tr>
 <tr><td><strong>Soret thermophoresis (&sect;4.51)</strong></td><td><strong>4/5</strong></td><td><strong>$0 incr.</strong></td><td><strong>Zero incremental cost if already temperature cycling (&sect;4.5). Fill a narrow vessel (500 mL tall glass jar) with spirit + oak chips. Place one side against warm surface (heating pad ~50&deg;C), opposite against cold surface (ice pack ~5&deg;C) for 4&ndash;8h. The &Delta;T drives ethanol enrichment at warm wall (faster esterification) and depletion at cold wall (cluster nucleation zone). Compare vs isothermal control at same average temperature.</strong></td></tr>
+<tr><td><strong>Cavitation-enhanced Maillard (&sect;4.52)</strong></td><td><strong>4/5</strong></td><td><strong>$0 incr.</strong></td><td><strong>Zero incremental cost: ultrasonic bath (&sect;3.14) + Maillard substrates from &sect;4.6 (0.3 g/L xylose + 0.08 g/L glycine, ~$2 total). Add substrates to spirit with oak extract. Sonicate at 40&deg;C for 2h. Compare aroma vs same substrates in 40&deg;C water bath (no ultrasound). Expect nutty/roasted pyrazine notes in sonicated sample, reduced sulfury off-notes.</strong></td></tr>
+<tr><td>Asymmetric PEM electrolysis (&sect;4.53)</td><td>2/5</td><td>$30&ndash;50</td><td>Requires PEM cell construction: CoO/Co<sub>3</sub>O<sub>4</sub> anode (lab-grade) + Nafion membrane + graphite cathode. Simplified test: graphite electrodes in divided cell (porous ceramic aquarium airstone as separator) at 0.8V. Measure acetaldehyde by Schiff reagent color. Compare vs single-compartment electrolysis (&sect;1.4) for overoxidation (vinegar smell = acetic acid).</td></tr>
+<tr><td><strong>PAW oak pre-treatment (&sect;4.54)</strong></td><td><strong>3/5</strong></td><td><strong>$20&ndash;30</strong></td><td><strong>Approximate PAW: soak oak chips in 0.1% food-grade H<sub>2</sub>O<sub>2</sub> ($3 from pharmacy) for 1h at room temp. Rinse briefly. Add treated chips to 200 mL spirit. Compare color and aroma at 1/3/7 days vs untreated chips. Faster color development = PAW-mimetic pre-oxidation of lignin surface. Full PAW: DBD plasma from automotive ignition coil + Al foil electrodes (~$20 build).</strong></td></tr>
 </tbody>
 </table>
 </div>
@@ -3136,6 +3205,12 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r171">Sukhatskiy Y, Shepida M, Lysak D, et al. (2024) &ldquo;Modified sono-Fenton process for oxidative degradation of chloramphenicol.&rdquo; <em>Environ Sci Pollut Res</em> 31:54559&ndash;54573. <a href="https://doi.org/10.1007/s11356-024-34827-0">DOI</a> (Synergy coefficient of <strong>17.9&times;</strong> for US + heterogeneous Fenton combination. First-order rate constant 1.253&times;10<sup>&minus;3</sup> s<sup>&minus;1</sup>. Super-additive radical generation from combined ultrasonic cavitation + Fenton catalysis. Sodium percarbonate as sustained H<sub>2</sub>O<sub>2</sub> source.)</li>
   <li id="r172">Ninomiya K, Takamatsu H, Onishi A, Takahashi K, Shimizu N. (2013) &ldquo;Sonocatalytic-Fenton reaction for enhanced OH radical generation and its application to lignin degradation.&rdquo; <em>Ultrason Sonochem</em> 20(4):1092&ndash;1097. <a href="https://doi.org/10.1016/j.ultsonch.2013.01.007">DOI</a> (378 &mu;M DHBA (OH&bull; proxy) in 10 min from sonocatalytic-Fenton. Triple synergy: sonolysis + sonocatalysis (TiO<sub>2</sub> as cavitation nuclei, sonoluminescence-activated photocatalysis) + Fenton. Applied to lignin depolymerization &mdash; directly analogous to oak lignin breakdown.)</li>
   <li id="r173">Schraml M, Sommer M, K&ouml;hler W. (2021) &ldquo;Soret coefficient S<sub>T</sub> of ethanol&ndash;water mixtures from DCMIX3.&rdquo; <em>Eur Phys J E</em> 44:128. <a href="https://doi.org/10.1140/epje/s10189-021-00134-6">DOI</a> (ISS microgravity measurement (DCMIX3 campaign) of Soret coefficient in ethanol&ndash;water. S<sub>T</sub> sign change at mass fraction c<sub>f</sub> &asymp; 0.29 (58% ABV). At whiskey concentrations (40&ndash;65% ABV): S<sub>T</sub> &lt; 0, meaning ethanol migrates toward the warm side. Magnitude |S<sub>T</sub>| &asymp; 3.2&times;10<sup>&minus;3</sup> K<sup>&minus;1</sup> at 50% w/w. First convection-free measurement confirming sign inversion.)</li>
+  <li id="r174">Yu H, Seow Y-X, Ong PKC, Zhou W. (2018) &ldquo;Kinetic study of high-intensity ultrasound-assisted Maillard reaction in a model system of d-glucose and glycine.&rdquo; <em>Food Chemistry</em> 269:628&ndash;637. <a href="https://doi.org/10.1016/j.foodchem.2018.07.053">DOI</a> (Activation energy for 1-deoxyglucosone generation: 60.9 kJ/mol (ultrasonic) vs 105.5 kJ/mol (thermal) &mdash; <strong>42% lower E<sub>a</sub></strong>. HIU promotes dicarbonyl intermediates while suppressing glucose isomerization. The E<sub>a</sub> reduction means the same Maillard rate at ~25&deg;C lower bulk temperature.)</li>
+  <li id="r175">Zhang R, Zhang Y, Sun Y, et al. (2022) &ldquo;High-intensity ultrasound promoted the aldol-type condensation as an alternative mean of synthesizing pyrazines in a Maillard reaction model system.&rdquo; <em>Ultrason Sonochem</em> 82:105913. <a href="https://doi.org/10.1016/j.ultsonch.2022.105913">DOI</a> (<sup>13</sup>C-labeled glucose-glycine: <strong>40.2&times;</strong> increase in 2,3-dimethylpyrazine under ultrasound (1,194.8 vs 29.7 &mu;g/L). Isotope labeling confirmed aldol-type condensation mechanism for side-chain elongation. 11 pyrazine types all significantly enhanced. Cavitation transient pressures favor &Delta;V<sup>&Dagger;</sup> &lt; 0 reactions.)</li>
+  <li id="r176">Huang H, Ren Z, Xi S, et al. (2025) &ldquo;Selective and Scalable Aldehyde Production via Partial Oxidation of Alcohols in Acidic Media.&rdquo; <em>J Am Chem Soc</em> 147(47):43755&ndash;43772. <a href="https://doi.org/10.1021/jacs.5c14214">DOI</a> (CoO/Co<sub>3</sub>O<sub>4</sub> interface on asymmetric PEM electrolyzer: <strong>&gt;95% aldehyde selectivity, &gt;90% FE at 200 mA/cm<sup>2</sup></strong>. Physical membrane separation of alcohol anolyte from aqueous catholyte prevents overoxidation. Non-noble-metal catalyst. Broad alcohol scope validated.)</li>
+  <li id="r177">Rizo R, Ferre-Vilaplana A, Herrero E, Feliu JM. (2022) &ldquo;Ethanol Electro-oxidation Reaction Selectivity on Platinum in Aqueous Media.&rdquo; <em>ACS Sustain Chem Eng</em> 11:4960&ndash;4968. <a href="https://doi.org/10.1021/acssuschemeng.2c02663">DOI</a> (Surface-structure-dependent selectivity on Pt: PtOH<sub>ads</sub> at 0.60&ndash;0.95V &rarr; acetaldehyde dominant; &alpha;-PtO<sub>2</sub> at &gt;1.15V &rarr; acetic acid. Establishes the potential window for selective spirit oxidation. DFT barriers: 0.37 eV for acetaldehyde vs 0.19 eV for acetic acid on &alpha;-PtO<sub>2</sub>.)</li>
+  <li id="r178">Cingesar IK, Stulic V, Markic F, et al. (2025) &ldquo;Aging Stability and Radical Activity of Plasma-Activated Water Treated in Liquid- and Gas-Phase Reactors.&rdquo; <em>Molecules</em> 30(23):4585. <a href="https://doi.org/10.3390/molecules30234585">DOI</a> (PAW RONS: H<sub>2</sub>O<sub>2</sub> 2&ndash;3 mg/L, NO<sub>2</sub><sup>&minus;</sup> elevated under N<sub>2</sub>. Shelf life &gt;60 days at 4&deg;C. EPR-confirmed radical activity. Provides calibrated RONS dose for controlled oxidation without direct plasma contact.)</li>
+  <li id="r179">Paix&atilde;o LMN, et al. (2024) &ldquo;Wine quality implications of the treatment of oak wood with plasma activated water (PAW): A preliminary study.&rdquo; <em>LWT</em> 199:116734. <a href="https://doi.org/10.1016/j.lwt.2024.116734">DOI</a> (PAW-treated oak (American, French, Spanish; medium &amp; plus toast): wine physicochemical parameters comparable to traditional barrel aging. Significant microbial reduction. Sensory: harmonious fruity/spicy balance. First direct demonstration of PAW for wood treatment in beverage maturation.)</li>
 </ol>
 
 
@@ -4022,6 +4097,36 @@ var refs = {
     source: "Schraml, Sommer & K\u00f6hler (2021), Eur Phys J E 44:128",
     excerpt: "ISS microgravity measurement (DCMIX3 campaign): Soret coefficient S\u209c sign change at ethanol mass fraction c\u2096 \u2248 0.29 (58% ABV). At whiskey concentrations S\u209c < 0 \u2014 ethanol migrates toward warm side. |S\u209c| \u2248 3.2\u00d710\u207b\u00b3 K\u207b\u00b9 at 50% w/w. First convection-free measurement confirming sign inversion.",
     url: "#r173"
+  },
+  174: {
+    source: "Yu et al. (2018), Food Chemistry 269:628\u2013637",
+    excerpt: "Ea for 1-deoxyglucosone generation: 60.9 kJ/mol (ultrasonic) vs 105.5 kJ/mol (thermal) \u2014 42% lower activation energy. HIU promotes dicarbonyl Maillard intermediates while suppressing glucose isomerization. Same Maillard rate at ~25\u00b0C lower bulk temperature.",
+    url: "#r174"
+  },
+  175: {
+    source: "Zhang et al. (2022), Ultrason Sonochem 82:105913",
+    excerpt: "\u00b9\u00b3C-labeled glucose-glycine: 40.2\u00d7 increase in 2,3-dimethylpyrazine under ultrasound (1,194.8 vs 29.7 \u03bcg/L). Isotope labeling confirmed aldol-type condensation mechanism. Cavitation transient pressures favor \u0394V\u2021 < 0 reactions.",
+    url: "#r175"
+  },
+  176: {
+    source: "Huang et al. (2025), J Am Chem Soc 147(47):43755\u201343772",
+    excerpt: "CoO/Co\u2083O\u2084 on asymmetric PEM electrolyzer: >95% aldehyde selectivity, >90% Faradaic efficiency at 200 mA/cm\u00b2. Physical membrane separation prevents overoxidation. Non-noble-metal catalyst, broad alcohol scope.",
+    url: "#r176"
+  },
+  177: {
+    source: "Rizo et al. (2022), ACS Sustain Chem Eng 11:4960\u20134968",
+    excerpt: "Ethanol electro-oxidation selectivity on Pt: PtOH(ads) at 0.60\u20130.95V \u2192 acetaldehyde dominant. \u03b1-PtO\u2082 at >1.15V \u2192 acetic acid. Surface-structure-dependent selectivity establishes the potential window for controlled spirit oxidation.",
+    url: "#r177"
+  },
+  178: {
+    source: "Cingesar et al. (2025), Molecules 30(23):4585",
+    excerpt: "PAW RONS: H\u2082O\u2082 2\u20133 mg/L, NO\u2082\u207b elevated under N\u2082. Shelf life >60 days at 4\u00b0C. EPR-confirmed radical activity persists. Calibrated RONS delivery for controlled oxidation.",
+    url: "#r178"
+  },
+  179: {
+    source: "Paix\u00e3o et al. (2024), LWT 199:116734",
+    excerpt: "PAW-treated oak (American, French, Spanish): wine physicochemical parameters comparable to traditional barrel aging. Significant microbial reduction. Sensory: harmonious fruity/spicy balance. First PAW-for-beverage-maturation demonstration.",
+    url: "#r179"
   }
 };
 

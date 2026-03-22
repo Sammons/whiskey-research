@@ -151,6 +151,10 @@ fn main() {
     fs::write("../graphs/blue-light-tandem.svg", sim_blue_light_tandem()).unwrap();
     fs::write("../graphs/mechanochem-oak.svg", sim_mechanochem_oak()).unwrap();
     fs::write("../graphs/sono-photo-fenton.svg", sim_sono_photo_fenton()).unwrap();
+    fs::write("../graphs/soret-thermophoresis.svg", sim_soret_thermophoresis()).unwrap();
+    fs::write("../graphs/cavitation-maillard.svg", sim_cavitation_maillard()).unwrap();
+    fs::write("../graphs/pem-electrochemical-acetal.svg", sim_pem_electrochemical_acetal()).unwrap();
+    fs::write("../graphs/plasma-activated-water.svg", sim_plasma_activated_water()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -10943,6 +10947,540 @@ fn sim_sono_photo_fenton() -> String {
     svg += &label(350.0, h - 18.0,
         "$0 incremental cost \u{2014} just run ultrasonic bath + UV LED + oak chips simultaneously",
         GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_soret_thermophoresis() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 63 \u{2014} Soret Effect: Temperature Gradients Drive Concentration Gradients in Spirit");
+
+    // Panel A: S_T vs ethanol mass fraction with sign change
+    let ml1 = 70.0;
+    let mr1 = 340.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 310.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: Soret Coefficient vs Ethanol Concentration", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // X: ethanol mass fraction 0 to 0.7
+    let sx1 = |c: f64| ml1 + c / 0.7 * pw1;
+    for c in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7] {
+        let x = sx1(c);
+        svg += &vline(x, mb1, mb1 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb1 + 14.0, &format!("{:.1}", c), MUTED, 7, "middle");
+    }
+    svg += &label(ml1 + pw1 / 2.0, mb1 + 28.0, "Ethanol mass fraction", MUTED, 8, "middle");
+
+    // Y: S_T from -5 to +8 (×10⁻³ K⁻¹)
+    let mid_y = mt1 + ph1 * 5.0 / 13.0; // zero line
+    let sy1 = |s: f64| mid_y - s / 8.0 * (mid_y - mt1);
+
+    // Zero line
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mid_y, mr1, mid_y, MUTED);
+
+    for v in [-4, -2, 0, 2, 4, 6, 8] {
+        let y = sy1(v as f64);
+        svg += &hline(ml1 - 3.0, ml1, y, MUTED, "0.5");
+        let lbl = if v > 0 { format!("+{}", v) } else { format!("{}", v) };
+        svg += &label(ml1 - 6.0, y + 3.0, &lbl, MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{:.1}\" y=\"{:.1}\" fill=\"{}\" font-size=\"7\" \
+        text-anchor=\"middle\" transform=\"rotate(-90,{:.1},{:.1})\">\
+        S\u{1d1b} (\u{00d7}10\u{207b}\u{00b3} K\u{207b}\u{00b9})</text>\n",
+        ml1 - 32.0, mt1 + ph1 / 2.0, MUTED, ml1 - 32.0, mt1 + ph1 / 2.0);
+
+    // Zone labels
+    svg += &label(ml1 + 5.0, mt1 + 12.0, "S\u{1d1b} &gt; 0: EtOH \u{2192} cold side", BLUE, 7, "start");
+    svg += &label(ml1 + 5.0, mb1 - 5.0, "S\u{1d1b} &lt; 0: EtOH \u{2192} warm side", RED, 7, "start");
+
+    // Zone shading
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.06\"/>\n", ml1, mt1, pw1, mid_y - mt1, BLUE);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.06\"/>\n", ml1, mid_y, pw1, mb1 - mid_y, RED);
+
+    // S_T curve: positive at low c, crosses zero at c_f=0.29, negative above
+    let st_pts: Vec<(f64, f64)> = (0..=70).map(|i| {
+        let c = i as f64 / 100.0;
+        // Model: S_T ≈ 7.0 * (1 - c/0.29)^0.8 * exp(-c/0.15) for c < 0.29
+        // then S_T ≈ -3.0 * (1 - exp(-(c-0.29)/0.15)) for c > 0.29
+        let st = if c < 0.29 {
+            7.0 * (1.0 - (c / 0.29).powf(1.5)) * (-c / 0.4).exp()
+        } else {
+            -3.5 * (1.0 - (-(c - 0.29) / 0.20).exp())
+        };
+        (sx1(c), sy1(st.max(-5.0).min(8.0)))
+    }).collect();
+    svg += &polyline_svg(&st_pts, ACCENT, "2.5", &|x| x, &|y| y);
+
+    // Sign change marker at c_f = 0.29
+    let cf_x = sx1(0.29);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" stroke-dasharray=\"4,3\"/>\n",
+        cf_x, mt1, cf_x, mb1, YELLOW);
+    svg += &label(cf_x + 3.0, mt1 + 30.0, "c\u{2096} = 0.29", YELLOW, 8, "start");
+    svg += &label(cf_x + 3.0, mt1 + 42.0, "(sign change)", YELLOW, 7, "start");
+
+    // Whiskey zone shading (0.34-0.57)
+    let wz_l = sx1(0.34);
+    let wz_r = sx1(0.57);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.10\"/>\n", wz_l, mt1, wz_r - wz_l, ph1, GREEN);
+    svg += &label((wz_l + wz_r) / 2.0, mt1 + 60.0, "Whiskey", GREEN, 8, "middle");
+    svg += &label((wz_l + wz_r) / 2.0, mt1 + 72.0, "(40\u{2013}65% ABV)", GREEN, 7, "middle");
+
+    // Data point: S_T = 3.2×10⁻³ at w=0.5
+    let dp_x = sx1(0.5);
+    let dp_y = sy1(-2.8); // negative at this concentration
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{}\" stroke=\"{}\" stroke-width=\"1.5\"/>\n",
+        dp_x, dp_y, GREEN, TEXT);
+    svg += &label(dp_x + 8.0, dp_y + 3.0, "Schraml 2021", MUTED, 7, "start");
+
+    // Panel B: Barrel cross-section with concentration gradient
+    let ml2 = 380.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 310.0;
+    let _mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: Concentration Gradient in Temperature-Cycled Vessel", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    // Vessel cross-section (circle)
+    let cx = ml2 + pw2 / 2.0;
+    let cy = mt2 + ph2 / 2.0 - 15.0;
+    let r = 100.0;
+
+    // Gradient fill — warm side (right) gets more ethanol
+    svg += &format!("<defs><linearGradient id=\"soret-grad\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\">\
+        <stop offset=\"0%\" stop-color=\"{}\" stop-opacity=\"0.3\"/>\
+        <stop offset=\"50%\" stop-color=\"{}\" stop-opacity=\"0.05\"/>\
+        <stop offset=\"100%\" stop-color=\"{}\" stop-opacity=\"0.3\"/>\
+        </linearGradient></defs>\n", BLUE, BG, RED);
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"{:.1}\" fill=\"url(#soret-grad)\" \
+        stroke=\"{}\" stroke-width=\"2\"/>\n", cx, cy, r, ACCENT);
+
+    // Labels
+    svg += &label(cx - r - 15.0, cy, "Cold", BLUE, 9, "end");
+    svg += &label(cx - r - 15.0, cy + 14.0, "wall", BLUE, 7, "end");
+    svg += &label(cx + r + 15.0, cy, "Warm", RED, 9, "start");
+    svg += &label(cx + r + 15.0, cy + 14.0, "wall", RED, 7, "start");
+
+    // Concentration labels inside
+    svg += &label(cx - 55.0, cy - 5.0, "39% ABV", BLUE, 8, "middle");
+    svg += &label(cx - 55.0, cy + 9.0, "(EtOH depleted)", BLUE, 7, "middle");
+    svg += &label(cx + 55.0, cy - 5.0, "41% ABV", RED, 8, "middle");
+    svg += &label(cx + 55.0, cy + 9.0, "(EtOH enriched)", RED, 7, "middle");
+
+    // Center
+    svg += &label(cx, cy - 5.0, "40% ABV", TEXT, 8, "middle");
+    svg += &label(cx, cy + 9.0, "(bulk)", MUTED, 7, "middle");
+
+    // Arrow showing gradient
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n",
+        cx - 35.0, cy + 35.0, cx + 35.0, cy + 35.0, ACCENT);
+    svg += &label(cx, cy + 48.0, "EtOH migration (\u{0394}T = 10K)", ACCENT, 7, "middle");
+
+    // Implications box
+    let box_y = cy + r + 25.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"62\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml2 + 5.0, box_y, pw2 - 10.0, GRID);
+    svg += &label(ml2 + pw2 / 2.0, box_y + 14.0,
+        "Near warm wall: higher [EtOH] + higher [acid]", RED, 8, "middle");
+    svg += &label(ml2 + pw2 / 2.0, box_y + 28.0,
+        "\u{2192} Faster esterification, lower a\u{1d61}", ACCENT, 8, "middle");
+    svg += &label(ml2 + pw2 / 2.0, box_y + 42.0,
+        "Near cold wall: lower [EtOH] + Ouzo boundary", BLUE, 8, "middle");
+    svg += &label(ml2 + pw2 / 2.0, box_y + 56.0,
+        "\u{2192} Cluster nucleation (\u{00a7}4.28)", CYAN, 8, "middle");
+
+    // Bottom insight
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        h - 50.0, GRID);
+    svg += &label(350.0, h - 32.0,
+        "Temperature cycling (\u{00a7}4.5) does MORE than Arrhenius speedup \u{2014} it creates",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "concentration gradients via Soret effect that drive localized chemistry at vessel walls",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 64: Cavitation-Enhanced Maillard Kinetics
+// Yu 2018: 42% lower Ea for 1-DG. Zhang 2022: 40× 2,3-dimethylpyrazine
+// ═══════════════════════════════════════════════════════════════
+fn sim_cavitation_maillard() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 64 \u{2014} Cavitation-Enhanced Maillard: Ultrasound Lowers Activation Energy and Reshapes Product Spectrum");
+
+    // ── Panel A: Ea comparison bar chart ──
+    let pa_title_y = 57.0;
+    svg += &label(190.0, pa_title_y, "A: Activation Energy Comparison", TEXT, 10, "middle");
+
+    let pl = 70.0; let pr = 310.0; let pt = 70.0; let pb = 260.0;
+    let pw = pr - pl;
+    svg += &format!("<rect x=\"{pl}\" y=\"{pt}\" width=\"{pw}\" height=\"{}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n", pb - pt);
+
+    // Ea data: [label, thermal Ea, ultrasonic Ea]
+    let ea_data: [(&str, f64, f64); 3] = [
+        ("1-DG generation", 105.5, 60.9),
+        ("Glucose depletion", 84.2, 68.0),
+        ("Melanoidin formation", 95.0, 62.0),
+    ];
+    let n = ea_data.len() as f64;
+    let bar_group_w = pw / (n + 1.0);
+    let bar_w = bar_group_w * 0.35;
+    let max_ea = 120.0;
+
+    // Y axis
+    for i in 0..=6 {
+        let val = i as f64 * 20.0;
+        let y = pb - (val / max_ea) * (pb - pt);
+        svg += &format!("<line x1=\"{:.1}\" y1=\"{y:.1}\" x2=\"{pl}\" y2=\"{y:.1}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", pl - 3.0);
+        svg += &label(pl - 5.0, y + 3.0, &format!("{:.0}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{:.1}\" y=\"{:.1}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" transform=\"rotate(-90,{:.1},{:.1})\">\
+        Ea (kJ/mol)</text>\n", pl - 30.0, (pt + pb) / 2.0, pl - 30.0, (pt + pb) / 2.0);
+
+    for (i, (name, ea_th, ea_us)) in ea_data.iter().enumerate() {
+        let cx = pl + (i as f64 + 1.0) * bar_group_w;
+        let h_th = (ea_th / max_ea) * (pb - pt);
+        let h_us = (ea_us / max_ea) * (pb - pt);
+
+        // Thermal bar (red)
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{bar_w:.1}\" height=\"{h_th:.1}\" fill=\"{RED}\" opacity=\"0.7\"/>\n",
+            cx - bar_w - 2.0, pb - h_th);
+        svg += &label(cx - bar_w / 2.0 - 2.0, pb - h_th - 4.0, &format!("{:.0}", ea_th), RED, 7, "middle");
+
+        // Ultrasonic bar (green)
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{bar_w:.1}\" height=\"{h_us:.1}\" fill=\"{GREEN}\" opacity=\"0.7\"/>\n",
+            cx + 2.0, pb - h_us);
+        svg += &label(cx + bar_w / 2.0 + 2.0, pb - h_us - 4.0, &format!("{:.0}", ea_us), GREEN, 7, "middle");
+
+        // % reduction label
+        let pct = (1.0 - ea_us / ea_th) * 100.0;
+        svg += &label(cx, pb - h_us - 16.0, &format!("\u{2212}{:.0}%", pct), ACCENT, 8, "middle");
+
+        svg += &label(cx, pb + 12.0, name, MUTED, 7, "middle");
+    }
+
+    // Legend
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"10\" height=\"10\" fill=\"{RED}\" opacity=\"0.7\"/>\n", pl + 5.0, pt + 5.0);
+    svg += &label(pl + 18.0, pt + 14.0, "Thermal MR", RED, 7, "start");
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"10\" height=\"10\" fill=\"{GREEN}\" opacity=\"0.7\"/>\n", pl + 5.0, pt + 20.0);
+    svg += &label(pl + 18.0, pt + 29.0, "Ultrasonic MR", GREEN, 7, "start");
+
+    // ── Panel B: Pyrazine production bar chart (horizontal) ──
+    svg += &label(525.0, pa_title_y, "B: Maillard Product Enhancement Under Ultrasound", TEXT, 10, "middle");
+
+    let pl2 = 440.0; let pr2 = 670.0; let pt2 = 70.0; let pb2 = 380.0;
+    let pw2 = pr2 - pl2;
+    svg += &format!("<rect x=\"{pl2}\" y=\"{pt2}\" width=\"{pw2}\" height=\"{}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n", pb2 - pt2);
+
+    // Log-scale horizontal bars: product, fold increase
+    let products: [(&str, f64, &str); 6] = [
+        ("2,3-dimethylpyrazine", 40.2, ACCENT),
+        ("2-ethyl-5-methylpyrazine", 2.9, YELLOW),
+        ("Melanoidins", 1.36, PURPLE),
+        ("2-methylpyrazine", 1.36, BLUE),
+        ("Methional", 1.5, CYAN),
+        ("HMF", 1.2, GREEN),
+    ];
+    let n2 = products.len() as f64;
+    let row_h = (pb2 - pt2) / (n2 + 1.0);
+    let max_log = 2.0_f64; // log10(100)
+
+    // X axis (log scale)
+    for &val in &[1.0_f64, 2.0, 5.0, 10.0, 20.0, 50.0] {
+        let log_val = val.log10();
+        let x = pl2 + (log_val / max_log) * pw2;
+        if x <= pr2 {
+            svg += &vline(x, pt2, pb2, GRID, "0.5");
+            svg += &label(x, pb2 + 12.0, &format!("{:.0}\u{00d7}", val), MUTED, 7, "middle");
+        }
+    }
+    svg += &label((pl2 + pr2) / 2.0, pb2 + 24.0, "Fold increase vs thermal", MUTED, 8, "middle");
+
+    for (i, (name, fold, color)) in products.iter().enumerate() {
+        let cy = pt2 + (i as f64 + 1.0) * row_h;
+        let log_fold = fold.log10();
+        let bar_len = (log_fold / max_log) * pw2;
+        let bar_h = row_h * 0.5;
+
+        svg += &format!("<rect x=\"{pl2}\" y=\"{:.1}\" width=\"{bar_len:.1}\" height=\"{bar_h:.1}\" fill=\"{color}\" opacity=\"0.75\" rx=\"2\"/>\n",
+            cy - bar_h / 2.0);
+        svg += &label(pl2 + bar_len + 4.0, cy + 3.0, &format!("{:.1}\u{00d7}", fold), *color, 8, "start");
+        svg += &label(pl2 - 4.0, cy + 3.0, name, MUTED, 7, "end");
+    }
+
+    // Highlight the 40× result
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"none\" stroke=\"{ACCENT}\" stroke-width=\"2\" stroke-dasharray=\"3,2\" rx=\"3\"/>\n",
+        pl2 - 2.0, pt2 + row_h * 0.5, pw2 + 30.0, row_h * 1.2);
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"52\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 70.0);
+    svg += &label(350.0, h - 52.0,
+        "Cavitation doesn\u{2019}t just speed up Maillard \u{2014} it RESHAPES the product spectrum",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 38.0,
+        "42% lower Ea for 1-deoxyglucosone (Yu 2018) + 40\u{00d7} pyrazine boost (Zhang 2022)",
+        GREEN, 8, "middle");
+    svg += &label(350.0, h - 24.0,
+        "Synergy: Maillard substrates (\u{00a7}4.6) + ultrasonic bath (\u{00a7}3.14) = accelerated nutty/roasted notes",
+        BLUE, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 65: Asymmetric PEM Electrochemical Acetaldehyde
+// Huang 2025: >95% selectivity, >90% FE at 200 mA/cm²
+// ═══════════════════════════════════════════════════════════════
+fn sim_pem_electrochemical_acetal() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 65 \u{2014} Asymmetric PEM Electrolyzer: Selective Acetaldehyde from Ethanol at &gt;95% Selectivity");
+
+    // ── Panel A: Selectivity vs current density ──
+    svg += &label(190.0, 57.0, "A: Aldehyde Selectivity vs Current Density", TEXT, 10, "middle");
+
+    let pl = 80.0; let pr = 320.0; let pt = 70.0; let pb = 350.0;
+    let pw = pr - pl; let ph = pb - pt;
+    svg += &format!("<rect x=\"{pl}\" y=\"{pt}\" width=\"{pw}\" height=\"{ph}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // X axis: current density 0-250 mA/cm²
+    let max_j = 250.0;
+    for j in (0..=250).step_by(50) {
+        let x = pl + (j as f64 / max_j) * pw;
+        svg += &format!("<line x1=\"{x:.1}\" y1=\"{pb}\" x2=\"{x:.1}\" y2=\"{:.1}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", pb + 3.0);
+        svg += &label(x, pb + 13.0, &format!("{}", j), MUTED, 7, "middle");
+    }
+    svg += &label((pl + pr) / 2.0, pb + 26.0, "Current density (mA/cm\u{00b2})", MUTED, 8, "middle");
+
+    // Y axis: selectivity 0-100%
+    for s in (0..=100).step_by(20) {
+        let y = pb - (s as f64 / 100.0) * ph;
+        svg += &format!("<line x1=\"{:.1}\" y1=\"{y:.1}\" x2=\"{pl}\" y2=\"{y:.1}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", pl - 3.0);
+        svg += &label(pl - 5.0, y + 3.0, &format!("{}%", s), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{:.1}\" y=\"{:.1}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" transform=\"rotate(-90,{:.1},{:.1})\">\
+        Aldehyde selectivity (%)</text>\n", pl - 35.0, (pt + pb) / 2.0, pl - 35.0, (pt + pb) / 2.0);
+
+    // CoO/Co₃O₄ asymmetric PEM: stays >95% across range
+    let pem_pts: Vec<(f64, f64)> = (0..=50).map(|i| {
+        let j = i as f64 * 5.0;
+        let sel = 97.0 - 1.5 * (j / max_j); // slight decline, stays >95
+        (pl + (j / max_j) * pw, pb - (sel / 100.0) * ph)
+    }).collect();
+    svg += &polyline_svg(&pem_pts, GREEN, "2.5", &|x| x, &|y| y);
+    svg += &label(pr - 60.0, pt + 20.0, "CoO/Co\u{2083}O\u{2084} PEM", GREEN, 8, "end");
+    svg += &label(pr - 60.0, pt + 32.0, "(Huang 2025)", GREEN, 7, "end");
+
+    // Pt conventional: drops at higher J
+    let pt_pts: Vec<(f64, f64)> = (0..=50).map(|i| {
+        let j = i as f64 * 5.0;
+        let sel = 85.0 - 25.0 * (j / max_j).powf(1.5);
+        (pl + (j / max_j) * pw, pb - (sel.max(30.0) / 100.0) * ph)
+    }).collect();
+    svg += &polyline_svg(&pt_pts, RED, "2", &|x| x, &|y| y);
+    svg += &label(pr - 10.0, pb - 90.0, "Pt poly", RED, 7, "end");
+
+    // Au (§1.4): even lower selectivity at high J
+    let au_pts: Vec<(f64, f64)> = (0..=50).map(|i| {
+        let j = i as f64 * 5.0;
+        let sel = 78.0 - 35.0 * (j / max_j).powf(1.3);
+        (pl + (j / max_j) * pw, pb - (sel.max(20.0) / 100.0) * ph)
+    }).collect();
+    svg += &polyline_svg(&au_pts, YELLOW, "2", &|x| x, &|y| y);
+    svg += &label(pr - 10.0, pb - 45.0, "Au (\u{00a7}1.4)", YELLOW, 7, "end");
+
+    // 95% threshold line
+    let y95 = pb - (95.0 / 100.0) * ph;
+    svg += &hline(pl, pr, y95, ACCENT, "1");
+    svg += &label(pl + 5.0, y95 - 4.0, "95% threshold", ACCENT, 7, "start");
+
+    // Shaded zone for spirit-relevant range
+    svg += &format!("<rect x=\"{:.1}\" y=\"{pt}\" width=\"{:.1}\" height=\"{ph}\" fill=\"{GREEN}\" opacity=\"0.06\"/>\n",
+        pl + (10.0 / max_j) * pw, (190.0 / max_j) * pw);
+    svg += &label(pl + (100.0 / max_j) * pw, pb - 10.0, "Spirit-relevant range", GREEN, 7, "middle");
+
+    // ── Panel B: Reactor schematic ──
+    svg += &label(525.0, 57.0, "B: Asymmetric PEM Reactor Design", TEXT, 10, "middle");
+
+    let cx2 = 525.0;
+    // Membrane
+    svg += &vline(cx2, 80.0, 340.0, ACCENT, "3");
+    svg += &label(cx2, 75.0, "PEM", ACCENT, 8, "middle");
+
+    // Anolyte side (left) - alcohol
+    svg += &format!("<rect x=\"400\" y=\"90\" width=\"120\" height=\"240\" fill=\"{GREEN}\" opacity=\"0.08\" rx=\"4\"/>\n");
+    svg += &label(460.0, 110.0, "ANOLYTE", GREEN, 9, "middle");
+    svg += &label(460.0, 126.0, "Pure EtOH", GREEN, 8, "middle");
+    svg += &label(460.0, 145.0, "EtOH \u{2192} CH\u{2083}CHO + 2H\u{207a} + 2e\u{207b}", TEXT, 7, "middle");
+    svg += &label(460.0, 165.0, "CoO/Co\u{2083}O\u{2084} anode", YELLOW, 7, "middle");
+
+    // Catholyte side (right) - water
+    svg += &format!("<rect x=\"530\" y=\"90\" width=\"120\" height=\"240\" fill=\"{BLUE}\" opacity=\"0.08\" rx=\"4\"/>\n");
+    svg += &label(590.0, 110.0, "CATHOLYTE", BLUE, 9, "middle");
+    svg += &label(590.0, 126.0, "Aqueous", BLUE, 8, "middle");
+    svg += &label(590.0, 145.0, "2H\u{207a} + 2e\u{207b} \u{2192} H\u{2082}\u{2191}", TEXT, 7, "middle");
+    svg += &label(590.0, 165.0, "Cathode", MUTED, 7, "middle");
+
+    // Arrows: H+ through membrane
+    svg += &format!("<line x1=\"510\" y1=\"200\" x2=\"540\" y2=\"200\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n");
+    svg += &label(cx2, 195.0, "H\u{207a}", ACCENT, 8, "middle");
+
+    // Key advantage callout
+    svg += &format!("<rect x=\"395\" y=\"270\" width=\"260\" height=\"50\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(cx2, 285.0, "Physical separation prevents overoxidation:", ACCENT, 8, "middle");
+    svg += &label(cx2, 299.0, "No OER competing \u{2192} no acetic acid \u{2192} no off-flavors", GREEN, 7, "middle");
+    svg += &label(cx2, 313.0, "&gt;95% selectivity + &gt;90% FE at 200 mA/cm\u{00b2}", TEXT, 7, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"52\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 70.0);
+    svg += &label(350.0, h - 52.0,
+        "Key advance over \u{00a7}1.4 Au electrolysis: membrane separates alcohol from water",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 38.0,
+        "Titratable acetaldehyde on demand \u{2014} feeds Maillard (\u{00a7}4.6) + phenolic bridging (\u{00a7}3.8)",
+        GREEN, 8, "middle");
+    svg += &label(350.0, h - 24.0,
+        "Non-noble-metal catalyst (Co oxide) reduces cost from $1000s (Pt/Au) to $10s",
+        BLUE, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 66: Plasma-Activated Water (PAW) as Calibrated Oxidant
+// Paixão 2024: PAW-treated oak, comparable quality to traditional aging
+// ═══════════════════════════════════════════════════════════════
+fn sim_plasma_activated_water() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 66 \u{2014} Plasma-Activated Water: Calibrated RONS Delivery for Controlled Spirit Oxidation");
+
+    // ── Panel A: RONS species concentration ranges ──
+    svg += &label(190.0, 57.0, "A: PAW RONS Concentration Ranges", TEXT, 10, "middle");
+
+    let pl = 70.0; let pr = 320.0; let pt = 70.0; let pb = 280.0;
+    let pw = pr - pl; let ph = pb - pt;
+    svg += &format!("<rect x=\"{pl}\" y=\"{pt}\" width=\"{pw}\" height=\"{ph}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // RONS data: [species, min mg/L, max mg/L, color]
+    let rons: [(&str, f64, f64, &str); 5] = [
+        ("H\u{2082}O\u{2082}", 0.8, 23.1, GREEN),
+        ("NO\u{2083}\u{207b}", 12.7, 292.4, BLUE),
+        ("NO\u{2082}\u{207b}", 1.3, 17.5, PURPLE),
+        ("OH\u{2022}", 0.01, 0.5, RED),
+        ("O\u{2083}", 0.05, 2.0, CYAN),
+    ];
+    let n = rons.len() as f64;
+    let row_h = ph / (n + 1.0);
+    let max_log = 3.0_f64; // log10(1000) = 3
+
+    // X axis (log scale)
+    for &val in &[0.01_f64, 0.1, 1.0, 10.0, 100.0] {
+        let log_val = (val.log10() + 2.0) / max_log; // shift so 0.01 maps to 0
+        let x = pl + log_val * pw;
+        if x >= pl && x <= pr {
+            svg += &vline(x, pt, pb, GRID, "0.5");
+            if val >= 1.0 {
+                svg += &label(x, pb + 12.0, &format!("{:.0}", val), MUTED, 7, "middle");
+            } else {
+                svg += &label(x, pb + 12.0, &format!("{}", val), MUTED, 7, "middle");
+            }
+        }
+    }
+    svg += &label((pl + pr) / 2.0, pb + 24.0, "Concentration (mg/L, log scale)", MUTED, 8, "middle");
+
+    for (i, (species, lo, hi, color)) in rons.iter().enumerate() {
+        let cy = pt + (i as f64 + 1.0) * row_h;
+        let x_lo = pl + ((lo.log10() + 2.0) / max_log) * pw;
+        let x_hi = pl + ((hi.log10() + 2.0) / max_log) * pw;
+        let bar_h = row_h * 0.4;
+
+        // Range bar
+        svg += &format!("<rect x=\"{x_lo:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{bar_h:.1}\" fill=\"{color}\" opacity=\"0.6\" rx=\"2\"/>\n",
+            cy - bar_h / 2.0, (x_hi - x_lo).max(2.0));
+        // End caps
+        svg += &format!("<line x1=\"{x_lo:.1}\" y1=\"{:.1}\" x2=\"{x_lo:.1}\" y2=\"{:.1}\" stroke=\"{color}\" stroke-width=\"2\"/>\n",
+            cy - bar_h / 2.0, cy + bar_h / 2.0);
+        svg += &format!("<line x1=\"{x_hi:.1}\" y1=\"{:.1}\" x2=\"{x_hi:.1}\" y2=\"{:.1}\" stroke=\"{color}\" stroke-width=\"2\"/>\n",
+            cy - bar_h / 2.0, cy + bar_h / 2.0);
+
+        svg += &label(pl - 4.0, cy + 3.0, species, *color, 8, "end");
+        svg += &label(x_hi + 4.0, cy + 3.0, &format!("{:.1}\u{2013}{:.1}", lo, *hi), MUTED, 6, "start");
+    }
+
+    // Barrel micro-oxygenation equivalent line
+    let barrel_o2 = 3.5_f64; // mg/L/year equivalent as H₂O₂
+    let x_barrel = pl + ((barrel_o2.log10() + 2.0) / max_log) * pw;
+    svg += &vline(x_barrel, pt, pb, YELLOW, "1.5");
+    svg += &label(x_barrel + 3.0, pt + 15.0, "Barrel 1-yr", YELLOW, 7, "start");
+    svg += &label(x_barrel + 3.0, pt + 27.0, "O\u{2082} equiv.", YELLOW, 7, "start");
+
+    // ── Panel B: PAW application flow diagram ──
+    svg += &label(525.0, 57.0, "B: PAW Oak Pre-Treatment Protocol", TEXT, 10, "middle");
+
+    // Step boxes
+    let steps: [(&str, &str, f64, &str); 4] = [
+        ("DBD Plasma", "Air/H\u{2082}O", 90.0, PURPLE),
+        ("PAW", "H\u{2082}O\u{2082} + RONS", 170.0, BLUE),
+        ("Oak Soak", "30\u{2013}60 min", 250.0, ACCENT),
+        ("Spirit Add", "Calibrated dose", 330.0, GREEN),
+    ];
+
+    for (label_txt, sub_txt, y, color) in &steps {
+        svg += &format!("<rect x=\"430\" y=\"{:.1}\" width=\"190\" height=\"55\" rx=\"6\" fill=\"{color}\" opacity=\"0.12\" stroke=\"{color}\" stroke-width=\"1.5\"/>\n", y);
+        svg += &label(525.0, y + 22.0, label_txt, *color, 10, "middle");
+        svg += &label(525.0, y + 38.0, sub_txt, MUTED, 8, "middle");
+    }
+
+    // Arrows between steps
+    for i in 0..3 {
+        let y_start = steps[i].2 + 55.0;
+        let y_end = steps[i + 1].2;
+        svg += &format!("<line x1=\"525\" y1=\"{y_start:.1}\" x2=\"525\" y2=\"{y_end:.1}\" stroke=\"{MUTED}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n");
+    }
+
+    // Result callout
+    svg += &format!("<rect x=\"395\" y=\"395\" width=\"260\" height=\"32\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(525.0, 410.0, "Paix\u{00e3}o 2024: PAW-treated oak \u{2192} wine quality", GREEN, 8, "middle");
+    svg += &label(525.0, 422.0, "comparable to traditional barrel aging", GREEN, 7, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "PAW delivers 6\u{2013}12 months equivalent oxidation as a single calibrated dose",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "No direct plasma contact with spirit \u{2014} treat the OAK, not the spirit (\u{2260} \u{00a7}4.27)",
+        BLUE, 8, "middle");
 
     svg.push_str("</svg>");
     svg
