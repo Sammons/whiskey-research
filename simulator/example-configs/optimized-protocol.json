@@ -1,0 +1,28 @@
+{
+  "name": "Optimized 90-Day Protocol (kLa=5e-6 + Photo + Enzyme + pH)",
+  "temperature": {
+    "mode": "cycling",
+    "base_c": 35.0,
+    "amplitude_c": 15.0,
+    "period_days": 1.0
+  },
+  "o2_delivery": "custom",
+  "custom_kla": 5e-6,
+  "catalyst": {
+    "amberlyst": true,
+    "cu_ac": true
+  },
+  "initial_abv": 0.40,
+  "duration_days": 90,
+  "wood_surface_area_cm2_per_l": 30.0,
+  "initial_species": {
+    "acetic_acid_mol_l": 0.0083,
+    "dms_mol_l": 0.000015,
+    "monomeric_tannin_mol_l": 0.0005,
+    "vanillin_mol_l": 0.0001
+  },
+  "riboflavin_um": 10.0,
+  "led_power_mw": 50.0,
+  "laccase_u_per_l": 5.0,
+  "initial_ph": 3.8
+}
