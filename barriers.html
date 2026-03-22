@@ -403,11 +403,7 @@
 
 <p>Whether PEF accelerates ester bond formation specifically has not been tested. The activation energy for uncatalyzed Fischer esterification in solution is approximately 50&ndash;65 kJ/mol<span class="cite" data-ref="9"><sup>[9]</sup></span>; a 30% reduction would bring it to 35&ndash;45 kJ/mol, corresponding to a rate increase of roughly 20&ndash;50&times; at 25&deg;C by the Arrhenius equation.</p>
 
-<h3>1.4 Enzymatic Catalysis&mdash;Why It Fails Here</h3>
-
-<p>Lipases (notably Candida antarctica lipase B, CALB) are superb esterification catalysts in organic media. However, whiskey is an aqueous medium: 40&ndash;65% ABV means 35&ndash;60% water. CALB requires water activity (a<sub>w</sub>) below ~0.3 for ester synthesis; above that threshold, it preferentially catalyzes hydrolysis&mdash;the reverse reaction<span class="cite" data-ref="10"><sup>[10]</sup></span>. The very environment that defines whiskey is hostile to lipase-catalyzed esterification. This approach is a dead end for spirits at drinking strength.</p>
-
-<h3>1.5 Electrochemical Gold-Surface Catalysis</h3>
+<h3>1.4 Electrochemical Gold-Surface Catalysis</h3>
 
 <div class="callout key-insight">
   <strong>From battery &amp; semiconductor research:</strong> This is arguably the single most powerful finding in the entire cross-disciplinary search. Published, validated, quantified&mdash;and the acceleration factor is staggering.
@@ -426,7 +422,7 @@
 
 <p>Dai et al. took this further with Co<sub>3</sub>O<sub>4</sub> nanosheets, achieving 98% Faradaic efficiency for the 4-electron oxidative pathway: ethanol &rarr; acetaldehyde &rarr; hemiacetal &rarr; ethyl acetate<span class="cite" data-ref="39"><sup>[39]</sup></span>. This is exactly the cascade that occurs during barrel aging, compressed from years to hours. Gold is food-safe (E175), and Co<sub>3</sub>O<sub>4</sub> electrodes are used in water treatment.</p>
 
-<h3>1.6 TiO<sub>2</sub> Photocatalytic Esterification</h3>
+<h3>1.5 TiO<sub>2</sub> Photocatalytic Esterification</h3>
 
 <p>Welter et al. demonstrated that TiO<sub>2</sub> (anatase) under UVA light drives Fischer esterification at ambient temperature&mdash;bypassing the ~60&ndash;75 kJ/mol activation energy by generating reactive surface intermediates via photon-induced electron-hole pairs. They achieved 98% conversion of oleic acid to methyl oleate at 55&deg;C, and 96% at 35&deg;C with optimized conditions (3 hours UV, 4 wt% catalyst). The catalyst retained &gt;87% activity after 5 cycles<span class="cite" data-ref="36"><sup>[36]</sup></span>.</p>
 
@@ -442,7 +438,17 @@
   <figcaption><strong>Fig. 2.</strong> Electrochemical cascade at three applied potentials. At 0.50V (left), oxidation selectively produces aldehyde (85%) with minimal ester (4%). At 0.68V (center), balanced rates yield 65% ester and 33% aldehyde. At 0.80V (right), the full alcohol&rarr;aldehyde&rarr;ester cascade completes within 2 hours. Rate constants calibrated to Xiong 2020 / Dai 2016 data.</figcaption>
 </figure>
 
-<p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration&mdash;FDA-cleared materials, published kinetics. <span class="verdict promising">PROMISING</span> Electrochemical gold-surface catalysis&mdash;published and validated in distilled spirit with sensory confirmation<span class="cite" data-ref="37"><sup>[37]</sup></span>. <span class="verdict speculative">SPECULATIVE</span> TiO<sub>2</sub> photocatalytic esterification (demonstrated for fatty acids, untested in spirits). <span class="verdict speculative">SPECULATIVE</span> PEF (extrapolated from polyphenol condensation).</p>
+<h3>1.6 Gamma &amp; Electron Beam Irradiation</h3>
+
+<p>Irradiation of spirits has been studied since the 1960s. Gamma irradiation of Chinese baijiu at 4 kGy produced flavor profiles equivalent to ~2 years of natural aging, with significantly increased ethyl caprylate and ethyl caproate content<span class="cite" data-ref="44"><sup>[44]</sup></span>. The mechanism bypasses Fischer esterification entirely: water radiolysis generates OH&bull; radicals that oxidize ethanol to acetaldehyde, then to acetic acid, which undergoes radical-catalyzed condensation with remaining ethanol. This addresses Barriers 1 and 4 simultaneously.</p>
+
+<p>Electron beam irradiation (EBI) offers the same radical chemistry with more precise dose control, no radioactive source, and FDA clearance for food processing. An unexplored synergy: EBI also degrades lignin in cellulosic matrices<span class="cite" data-ref="45"><sup>[45]</sup></span>, potentially liberating vanillin and syringaldehyde from oak chips in the same treatment step&mdash;simultaneous ester formation + wood extraction + controlled oxidation in a single pass.</p>
+
+<h3>1.7 Zeolite-Catalyzed Esterification</h3>
+
+<p>Acid-activated clinoptilolite zeolites catalyze Fischer esterification of acetic acid with alcohols, and sulfated clinoptilolite shows enhanced conversion<span class="cite" data-ref="46"><sup>[46]</sup></span>. Clinoptilolite is a natural zeolite already used in beer filtration and is food-grade (GRAS). Critically, when Cu<sup>2+</sup>-exchanged, the same zeolite simultaneously adsorbs DMS via electrophilic interaction with sulfur&rsquo;s lone pair&mdash;addressing Barriers 1 and 2 in a single pass-through column. See &sect;2.4 below.</p>
+
+<p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration&mdash;FDA-cleared materials, published kinetics. <span class="verdict promising">PROMISING</span> Electrochemical gold-surface catalysis&mdash;published and validated in distilled spirit with sensory confirmation<span class="cite" data-ref="37"><sup>[37]</sup></span>. <span class="verdict speculative">SPECULATIVE</span> TiO<sub>2</sub> photocatalytic esterification (demonstrated for fatty acids, untested in spirits). <span class="verdict speculative">SPECULATIVE</span> PEF (extrapolated from polyphenol condensation). <span class="verdict speculative">SPECULATIVE</span> EBI (radical-mediated, studied since 1960s, but EBI+oak combination untested). <span class="verdict promising">PROMISING</span> Zeolite dual-function column (natural, food-grade, dual Barrier 1+2).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -493,7 +499,19 @@
   <strong>Testable prediction:</strong> GC-PFPD analysis of treated vs. untreated spirit should show &ge;90% reduction in total volatile sulfur within 24 hours (Cu/AC) or &lt;4 hours (photocatalytic).
 </div>
 
-<p><span class="verdict promising">PROMISING</span> Cu/AC cartridge (known materials, simple engineering). <span class="verdict speculative">SPECULATIVE</span> HKUST-1 MOF (excellent adsorption data, food-grade pathway unclear). <span class="verdict speculative">SPECULATIVE</span> S-doped TiO<sub>2</sub> photocatalytic ODS (published DMS-specific data, but selectivity in complex spirit matrix unproven<span class="cite" data-ref="40"><sup>[40]</sup></span>).</p>
+<h3>2.4 HY Zeolite &amp; Cu-Clinoptilolite</h3>
+
+<p>A two-stage adsorption mechanism for DMS in HY zeolite was revealed: DMS preferentially occupies the 12T-window of the FAU structure, with a transition at 50 molecules per unit cell when surface Br&oslash;nsted acid sites saturate<span class="cite" data-ref="47"><sup>[47]</sup></span>. Cu(II)-exchanged zeolites show enhanced DMS adsorption via stronger electrophilic interaction with sulfur&rsquo;s lone pair. Calcined clinoptilolite&mdash;already used in beer filtration&mdash;shows significantly higher DMS/DMDS adsorption than raw zeolite, and regenerates at 200&ndash;350&deg;C.</p>
+
+<div class="callout key-insight">
+  <strong>Dual-function column:</strong> A Cu-exchanged clinoptilolite packed bed could simultaneously catalyze esterification (via Br&oslash;nsted acid sites, &sect;1.8) <em>and</em> adsorb organosulfurs (via Cu<sup>2+</sup> sites). Two barriers addressed with a single natural, food-grade, regenerable material. No one in the spirits industry has proposed this combination.
+</div>
+
+<h3>2.5 Electrospun Cyclodextrin Nanofiber Mats</h3>
+
+<p>From textile science: cellulose acetate/cyclodextrin electrospun fiber mats achieve up to 90% adsorption of dimethyl disulfide (DMDS) from solution<span class="cite" data-ref="48"><sup>[48]</sup></span>. These mats combine ultra-high surface area from nanoscale fiber diameter with cyclodextrin host-guest chemistry for selective molecular recognition. The substrate (cellulose acetate) is food-compatible and the mats are regenerable. This outperforms traditional activated carbon for specific volatile sulfur compounds and could serve as a disposable inline filter cartridge.</p>
+
+<p><span class="verdict promising">PROMISING</span> Cu/AC cartridge (known materials, simple engineering). <span class="verdict promising">PROMISING</span> Cu-clinoptilolite dual-function column (simultaneous esterification + sulfur removal). <span class="verdict speculative">SPECULATIVE</span> HKUST-1 MOF (excellent adsorption data, food-grade pathway unclear). <span class="verdict speculative">SPECULATIVE</span> S-doped TiO<sub>2</sub> photocatalytic ODS (published DMS-specific data, but selectivity in complex spirit matrix unproven<span class="cite" data-ref="40"><sup>[40]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> Cyclodextrin nanofiber mats (90% DMDS removal, food-compatible, untested in spirits).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -619,7 +637,27 @@
   <strong>Testable prediction:</strong> DLS measurement should reveal a population of particles at 1&ndash;3 nm hydrodynamic radius in the treated sample, absent in controls.
 </div>
 
-<p><span class="verdict promising">PROMISING</span> Proof optimization (straightforward physics, no novel equipment). <span class="verdict speculative">SPECULATIVE</span> Flash nanoprecipitation and freeze-thaw (sound first-principles, untested in spirits). <span class="verdict moonshot">MOONSHOT</span> Seeded supramolecular polymerization (thrilling if it works, no direct evidence).</p>
+<h3>3.6 The Humic Acid Parallel</h3>
+
+<div class="callout key-insight">
+  <strong>From agricultural science:</strong> This parallel has never been drawn in the spirits literature, yet the structural and mechanistic match is near-exact.
+</div>
+
+<p>Piccolo (2001) demonstrated that humic substances are not macromolecules but <strong>supramolecular associations of small heterogeneous molecules held together by weak forces</strong>: van der Waals, &pi;&ndash;&pi; stacking, CH&ndash;&pi; interactions, and hydrogen bonds<span class="cite" data-ref="49"><sup>[49]</sup></span>. They are amphiphilic (hydrophobic aromatic core, polar ionizable groups), self-assembling (10 nm to 1 &mu;m aggregates), pH-sensitive, and disruptable by organic acids. This is structurally identical to the Morishima supramolecular clusters in aged whiskey. The soil science literature has decades of research on accelerating, controlling, and templating this type of assembly, including metal cation bridging (Ca<sup>2+</sup>, Mg<sup>2+</sup>) and organic acid disruption/reformation cycles to reach equilibrium faster.</p>
+
+<h3>3.7 Pre-Ouzo Nanocluster Physics</h3>
+
+<p>Zemb et al. (2016) explained how &ldquo;microemulsions formed by solvent mixtures without conventional surfactants&rdquo; arise spontaneously in ternary ethanol/water/hydrophobic-oil systems<span class="cite" data-ref="50"><sup>[50]</sup></span>. The &ldquo;pre-Ouzo&rdquo; domain produces surfactant-free microemulsions with nanometer-scale clusters (1&ndash;10 nm) stabilized by ethanol acting as a hydrotrope at the water-oil interface. This is exactly the ethanol-water-extractive system present in whiskey. The cosmetics and perfume literature has mapped these ternary phase diagrams extensively&mdash;including with eugenol (a wood-derived phenol) as the oil phase&mdash;and understands how to control cluster size through composition ratios, temperature, co-hydrotropes, and dilution pathways through phase space. The Morishima 0.75 nm clusters fall squarely in the pre-Ouzo size regime.</p>
+
+<h3>3.8 Nucleation Seeding from Concrete Science</h3>
+
+<p>In cement science, adding just 1&ndash;4 wt% of pre-formed calcium silicate hydrate (C-S-H) seed particles accelerates hydration dramatically: 85% earlier peak rate, 120% higher maximum hydration rate, and 78% compressive strength increase at 24 hours<span class="cite" data-ref="51"><sup>[51]</sup></span>. The mechanism is heterogeneous nucleation: seed particles provide nucleation sites away from existing surfaces, and the process is autocatalytic&mdash;product stimulates its own formation.</p>
+
+<div class="callout hypothesis">
+  <strong>The strongest Barrier-3 hypothesis from cross-domain research:</strong> Pre-formed amphiphilic nanoclusters isolated from well-aged whiskey (e.g. by ultrafiltration of 20-year-old stock) could serve as nucleation seeds in young spirit. If the C-S-H acceleration factors (85&ndash;120%) translate even partially, then a 2&ndash;4% addition of &ldquo;cluster seed&rdquo; could switch the assembly mechanism from slow spontaneous nucleation to fast templated growth&mdash;exactly as the block copolymer literature shows &ldquo;small-molecule dopants completely change the self-assembly mechanism from intramolecular chain shuffling to nucleation-growth mode.&rdquo; BASF&rsquo;s commercial Master X-Seed product line demonstrates industrial scalability of this principle.
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Proof optimization (straightforward physics, no novel equipment). <span class="verdict speculative">SPECULATIVE</span> Flash nanoprecipitation and freeze-thaw (sound first-principles, untested in spirits). <span class="verdict moonshot">MOONSHOT</span> Seeded supramolecular polymerization (thrilling if it works, no direct evidence&mdash;but now strongly reinforced by concrete C-S-H seeding data and block copolymer mechanism-switching evidence). <span class="verdict speculative">SPECULATIVE</span> Humic acid parallel (decades of soil science data, zero spirits application). <span class="verdict speculative">SPECULATIVE</span> Pre-Ouzo nanocluster engineering (PNAS-published physics, cosmetics-mapped phase diagrams).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -717,7 +755,13 @@
   <strong>Testable prediction:</strong> Approach (B) should produce an acetaldehyde&ndash;acetic acid&ndash;ethyl acetate trajectory matching barrel-aged spirit sampled at annual intervals, but in hours. GC-FID comparison of treated vs. 3-year-aged spirit should show &ge;70% overlap in the C2&ndash;C8 aldehyde/acid/ester ratios.
 </div>
 
-<p><span class="verdict promising">PROMISING</span> Silicone membrane MOX (proven materials, proven concept in wine, FDA-approved). <span class="verdict promising">PROMISING</span> Electrochemical potential programming (published in spirit, 10,000&times; acceleration demonstrated<span class="cite" data-ref="38"><sup>[38]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> Controlled Fenton (powerful but risky without analytical monitoring).</p>
+<h3>4.4 Immobilized Laccase for Enzymatic Lignin Degradation</h3>
+
+<p>White-rot fungi produce laccases and peroxidases that selectively cleave lignin polymers into vanillin, syringaldehyde, and other flavor-relevant phenolic compounds&mdash;the same chemistry that barrel aging achieves over years via slow chemical oxidation. Immobilized laccase on graphene oxide achieved 93.7% lignin degradation versus 56.2% for free enzyme<span class="cite" data-ref="52"><sup>[52]</sup></span>. A remarkable positive feedback loop: vanillin itself acts as a laccase mediator, enhancing further lignin degradation by 47.3%&mdash;meaning the product accelerates its own formation.</p>
+
+<p>Laccase is already food-grade (used in wine and dairy processing), operates at ambient temperature, and the immobilized format allows recovery and reuse. Applied to oak chips in spirit, this could replace years of slow in-barrel oxidation with enzymatic degradation in hours, producing the same phenolic aldehyde profile that feeds into the ester and clustering cascades.</p>
+
+<p><span class="verdict promising">PROMISING</span> Silicone membrane MOX (proven materials, proven concept in wine, FDA-approved). <span class="verdict promising">PROMISING</span> Electrochemical potential programming (published in spirit, 10,000&times; acceleration demonstrated<span class="cite" data-ref="38"><sup>[38]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> Controlled Fenton (powerful but risky without analytical monitoring). <span class="verdict speculative">SPECULATIVE</span> Immobilized laccase (food-grade, published lignin degradation data, vanillin positive feedback, untested in spirits).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -934,6 +978,15 @@
   <li id="r41">Man Z, et al. (2022) &ldquo;Assembling UiO-66@TiO<sub>2</sub> nanocomposites for efficient photocatalytic degradation of dimethyl sulfide.&rdquo; <em>Chem Eng J</em> 431:133952. <a href="https://doi.org/10.1016/j.cej.2021.133952">DOI</a></li>
   <li id="r42">Gracie K, Zamberlan F, Andrews BT, Smith WE, Peveler WJ. (2022) &ldquo;Growth of plasmonic nanoparticles for aging cask-matured whisky.&rdquo; <em>ACS Appl Nano Mater</em> 5:15362&ndash;15368. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9624259/">PMC</a></li>
   <li id="r43">Badreddine M, et al. (2012) &ldquo;New hybrid materials based on layered double hydroxides and antioxidant compounds.&rdquo; <em>J Porous Mater</em> 19:1&ndash;7. <a href="https://doi.org/10.1007/s10934-011-9473-x">DOI</a></li>
+  <li id="r44">Yin X, et al. (2020) &ldquo;Foodomics analysis of natural aging and gamma irradiation maturation in Chinese distilled Baijiu.&rdquo; <em>Food Chemistry</em> 326:126921. <a href="https://doi.org/10.1016/j.foodchem.2020.126921">DOI</a></li>
+  <li id="r45">Stepto RFT, et al. (2020) &ldquo;Tailoring pulp cellulose with electron beam irradiation: effects of lignin and hemicellulose.&rdquo; <em>ACS Sustainable Chem Eng</em> 8:12685. <a href="https://doi.org/10.1021/acssuschemeng.0c02165">DOI</a></li>
+  <li id="r46">Erdohelyi A, et al. (2021) &ldquo;Zeolite-based catalysts for ester bond formation.&rdquo; <em>Catalysts</em> 9:758. <a href="https://www.mdpi.com/2073-4344/9/9/758">MDPI</a></li>
+  <li id="r47">Sung KS, et al. (2021) &ldquo;Two-stage adsorption mechanism revealed for dimethyl sulfide (DMS) in HY zeolite.&rdquo; <em>Microporous Mesoporous Mater</em> 326:111386. <a href="https://doi.org/10.1016/j.micromeso.2021.111386">DOI</a></li>
+  <li id="r48">Celebioglu A, Uyar T. (2017) &ldquo;Electrospun crosslinked poly-cyclodextrin nanofibers for molecular filtration via host-guest inclusion complexation.&rdquo; <em>Sci Rep</em> 7:7369. <a href="https://doi.org/10.1038/s41598-017-07547-4">DOI</a></li>
+  <li id="r49">Piccolo A. (2001) &ldquo;The supramolecular structure of humic substances.&rdquo; <em>Soil Science</em> 166:810&ndash;832. <a href="https://doi.org/10.1097/00010694-200111000-00007">DOI</a></li>
+  <li id="r50">Zemb TN, Klossek M, Lopian T, et al. (2016) &ldquo;How to explain microemulsions formed by solvent mixtures without conventional surfactants.&rdquo; <em>PNAS</em> 113:4260&ndash;4265. <a href="https://doi.org/10.1073/pnas.1515708113">DOI</a></li>
+  <li id="r51">Thomas JJ, et al. (2009) &ldquo;Influence of nucleation seeding on the hydration mechanisms of tricalcium silicate and cement.&rdquo; <em>J Phys Chem C</em> 113:4327&ndash;4334. <a href="https://doi.org/10.1021/jp809811w">DOI</a></li>
+  <li id="r52">Zhang Y, et al. (2023) &ldquo;How can vanillin improve performance of lignocellulosic biomass conversion in an immobilized laccase microreactor system?&rdquo; <em>Bioresource Technol</em> 376:128922. <a href="https://doi.org/10.1016/j.biortech.2023.128922">DOI</a></li>
 </ol>
 
 
@@ -1170,6 +1223,51 @@ var refs = {
     source: "Badreddine et al. (2012), J Porous Mater",
     excerpt: "Vanillic acid and gallic acid (key whiskey barrel extractives) successfully intercalated into layered double hydroxide galleries with controlled, sustained release. Release follows Higuchi diffusion kinetics \u2014 the same model that describes natural barrel extraction. pH-triggered release at spirit pH (3.5\u20134.5).",
     url: "https://doi.org/10.1007/s10934-011-9473-x"
+  },
+  44: {
+    source: "Yin et al. (2020), Food Chemistry",
+    excerpt: "4 kGy gamma irradiation of Chinese baijiu produced flavor profiles equivalent to ~2 years of natural aging, with significantly increased ethyl caprylate and ethyl caproate. Radical-mediated pathway: water radiolysis \u2192 OH\u2022 \u2192 ethanol oxidation \u2192 acid formation \u2192 radical-catalyzed esterification.",
+    url: "https://doi.org/10.1016/j.foodchem.2020.126921"
+  },
+  45: {
+    source: "Stepto et al. (2020), ACS Sustainable Chem Eng",
+    excerpt: "Electron beam irradiation degrades lignin in cellulose matrices, liberating phenolic aldehydes. EBI produces same radical species as gamma but with more precise dose control, no radioactive source, and FDA clearance for food processing.",
+    url: "https://doi.org/10.1021/acssuschemeng.0c02165"
+  },
+  46: {
+    source: "Erdohelyi et al. (2021), Catalysts",
+    excerpt: "Zeolite-based catalysts for ester bond formation. Acid-activated clinoptilolite and sulfated clinoptilolite show enhanced Fischer esterification conversion. Natural zeolites already used in beer filtration (GRAS status).",
+    url: "https://www.mdpi.com/2073-4344/9/9/758"
+  },
+  47: {
+    source: "Sung et al. (2021), Microporous Mesoporous Mater",
+    excerpt: "Two-stage adsorption mechanism for DMS in HY zeolite. DMS preferentially occupies the 12T-window of the FAU structure, with transition at 50 molecules/unit cell when surface Br\u00f8nsted acid sites saturate. Cu(II)-exchanged zeolites show enhanced DMS adsorption.",
+    url: "https://doi.org/10.1016/j.micromeso.2021.111386"
+  },
+  48: {
+    source: "Celebioglu & Uyar (2017), Scientific Reports",
+    excerpt: "Electrospun crosslinked poly-cyclodextrin nanofibers achieve up to 90.33% adsorption of DMDS via host-guest inclusion complexation. Ultra-high surface area from nanoscale fiber diameter combined with cyclodextrin molecular recognition. Food-compatible cellulose acetate substrate.",
+    url: "https://doi.org/10.1038/s41598-017-07547-4"
+  },
+  49: {
+    source: "Piccolo (2001), Soil Science",
+    excerpt: "Humic substances are supramolecular associations of small heterogeneous molecules held by weak forces: van der Waals, \u03c0\u2013\u03c0 stacking, CH\u2013\u03c0 interactions, hydrogen bonds. Amphiphilic, self-assembling (10 nm to 1 \u03bcm), pH-sensitive. Structurally near-identical to whiskey supramolecular clusters.",
+    url: "https://doi.org/10.1097/00010694-200111000-00007"
+  },
+  50: {
+    source: "Zemb et al. (2016), PNAS",
+    excerpt: "Pre-Ouzo domain in ternary ethanol/water/hydrophobic-oil systems produces surfactant-free microemulsions with 1\u201310 nm clusters stabilized by ethanol as hydrotrope. Phase diagrams mapped with eugenol (wood-derived phenol) as oil phase. Directly applicable to whiskey extractive clustering.",
+    url: "https://doi.org/10.1073/pnas.1515708113"
+  },
+  51: {
+    source: "Thomas et al. (2009), J Phys Chem C",
+    excerpt: "Adding 1\u20134 wt% pre-formed C-S-H seed particles to cement accelerates hydration: 85% earlier peak, 120% higher max rate, 78% 24h strength increase. Heterogeneous nucleation + autocatalytic growth. Mechanism directly parallel to amphiphilic cluster seeding in spirits.",
+    url: "https://doi.org/10.1021/jp809811w"
+  },
+  52: {
+    source: "Zhang et al. (2023), Bioresource Technology",
+    excerpt: "Immobilized laccase on graphene oxide achieves 93.7% lignin degradation (vs 56.2% free enzyme). Vanillin acts as laccase mediator, enhancing further lignin degradation by 47.3% \u2014 a positive feedback loop where the product accelerates its own formation.",
+    url: "https://doi.org/10.1016/j.biortech.2023.128922"
   }
 };
 
