@@ -1464,6 +1464,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <p><strong>Implementation:</strong> A programmable pulse generator ($30&ndash;60 for a 555-timer circuit or $80 for a bench function generator) modulates the existing electro-Fenton power supply (&sect;4.10). Carbon felt electrodes remain the same. The pulse frequency and duty cycle become <strong>new control knobs</strong> that decouple oxidation rate from oxidation depth&mdash;something impossible with DC or O<sub>2</sub> delivery alone.</p>
 
+<figure class="sim-figure">
+  <img src="graphs/pulsed-electrolysis.svg" alt="Pulsed electrolysis simulation showing acetaldehyde accumulation and acetic acid selectivity">
+  <figcaption><strong>Fig. 27.</strong> (A) Acetaldehyde accumulation under DC vs. pulsed electrolysis modes. All modes produce the same average oxidant; AcH levels are similar across modes. (B) Acetic acid (over-oxidation product): DC generates 2.2 mM AcOH, while 10% duty at 10 Hz produces only 0.8 mM (2.7&times; less) and 5% duty at 20 Hz only 0.2 mM (10&times; less). Selectivity model: &alpha; = 1 &minus; exp(&minus;k<sub>surface</sub> &middot; t<sub>on</sub>), where shorter ON pulses give AcH less time for surface over-oxidation.</figcaption>
+</figure>
+
 <div class="callout hypothesis">
   <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; rAP kinetic selectivity is published for organic electrosynthesis<span class="cite" data-ref="118"><sup>[118]</sup></span> and lignin valorization<span class="cite" data-ref="119"><sup>[119]</sup></span>. Application to spirit aging is novel but mechanistically direct. This technique addresses the most dangerous failure mode in the entire protocol (oxidation overshoot) and synergizes with the magnetic field (&sect;4.15), dual-frequency sonication (&sect;4.17), and unified cell (&sect;4.12) concepts. <strong>Home testability: 3/5</strong> ($30&ndash;80: 555-timer circuit + MOSFET relay to modulate bench PSU. Requires basic electronics skills. Function generator from eBay is simpler but more expensive).
 </div>

@@ -96,6 +96,9 @@ fn main() {
 
     fs::write("../graphs/zeolite-membrane-ester.svg", sim_zeolite_membrane_ester()).unwrap();
     println!("Wrote zeolite-membrane-ester.svg");
+
+    fs::write("../graphs/pulsed-electrolysis.svg", sim_pulsed_electrolysis()).unwrap();
+    println!("Wrote pulsed-electrolysis.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -4576,6 +4579,230 @@ fn sim_zeolite_membrane_ester() -> String {
         "19.4 M H\u{2082}O caps conversion at 58%", RED, 9, "start");
     svg += &label(ml2 + pw - 215.0, mt + ph - 21.0,
         "Dehydration + membrane \u{2192} 99%+", GREEN, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 27: Pulsed Electrolysis — Kinetic Selectivity
+// Models acetaldehyde accumulation under DC vs pulsed (rAP)
+// DC: continuous OH• → AcH builds up, eventually over-oxidized
+// Pulsed: OH• in short bursts, rest phase allows AcH consumption
+// Key: decouples oxidation RATE from oxidation DEPTH
+// ═══════════════════════════════════════════════════════════════
+fn sim_pulsed_electrolysis() -> String {
+    let w: f64 = 700.0;
+    let h: f64 = 420.0;
+    let ml = 70.0;
+    let mt = 50.0;
+    let pw = 280.0;
+    let ph = 300.0;
+    let gap = 70.0;
+
+    let mut svg = svg_header(w, h,
+        "Sim 27 \u{2014} Pulsed Electrolysis: Kinetic Selectivity via rAP");
+
+    // ── Panel A: Acetaldehyde concentration over 24 hours ──
+    // Model: simple kinetic scheme
+    //   EtOH --k1--> AcH --k2--> AcOH --k3--> EtOAc
+    //   k1 driven by OH• from electrolysis
+    //   k2 = 0.15 * k1 (slower over-oxidation)
+    //   k3 = 0.02 * k1 (very slow Fischer)
+    //
+    // DC: k1 constant
+    // Pulsed 10 Hz, 10% duty: k1 active 10% of time, zero otherwise
+    //   But averaged rate is SAME — the difference is kinetic selectivity
+
+    let t_max_h = 24.0_f64;
+    let dt = 0.001; // 1 ms timestep (resolves 20 Hz pulses)
+    let n = (t_max_h * 3600.0 / dt) as usize;
+    let sample_every = (60.0 / dt) as usize; // sample every minute
+
+    // Rate constants (arbitrary units, relative)
+    let k1_dc = 2.0e-4_f64; // EtOH → AcH rate under continuous DC (mM/s)
+    let k2_ratio = 0.15;     // AcH → AcOH relative to k1
+    let k3_ratio = 0.02;     // AcOH → EtOAc relative to k1
+
+    struct PulseSim {
+        label: &'static str,
+        color: &'static str,
+        duty: f64,      // fraction of time "on" (1.0 = DC)
+        freq_hz: f64,   // irrelevant for kinetics, just labeling
+    }
+
+    let sims = vec![
+        PulseSim { label: "DC continuous", color: RED, duty: 1.0, freq_hz: 0.0 },
+        PulseSim { label: "50% duty, 5 Hz", color: YELLOW, duty: 0.5, freq_hz: 5.0 },
+        PulseSim { label: "10% duty, 10 Hz", color: GREEN, duty: 0.1, freq_hz: 10.0 },
+        PulseSim { label: "5% duty, 20 Hz", color: CYAN, duty: 0.05, freq_hz: 20.0 },
+    ];
+
+    // All produce the SAME total OH• per unit time (k1_dc * duty / duty_dc)
+    // But pulsed has higher instantaneous k1 during ON phase
+    // During OFF phase: AcH is consumed by k3 Fischer without new production
+
+    let mut ach_pts: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut acoh_pts: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut ach_max: Vec<f64> = Vec::new();
+
+    println!("=== Pulsed Electrolysis ===");
+
+    for sim in &sims {
+        let mut ach = 0.0_f64;
+        let mut acoh = 0.0_f64;
+        let mut ester = 0.0_f64;
+
+        let mut a_pts = Vec::new();
+        let mut o_pts = Vec::new();
+        let mut a_max = 0.0_f64;
+
+        // Selectivity model (Nutting 2021):
+        // Over-oxidation requires AcH to remain near electrode long enough
+        // DC: α = 1.0 (continuous, full over-oxidation)
+        // Pulsed: α = 1 - exp(-k_surface * t_on)
+        //   t_on = duty / freq
+        //   k_surface = 50 s⁻¹ (surface over-oxidation rate)
+        let k_surface = 50.0_f64;
+        let alpha = if sim.duty >= 1.0 {
+            1.0
+        } else {
+            let t_on = sim.duty / sim.freq_hz;
+            1.0 - E.powf(-k_surface * t_on)
+        };
+
+        let k2 = k1_dc * k2_ratio;
+        let k3 = k1_dc * k3_ratio;
+
+        // Coarser timestep for speed (selectivity is pre-computed)
+        let dt_c = 1.0;
+        let n_c = (t_max_h * 3600.0 / dt_c) as usize;
+        let sample_c = (120.0 / dt_c) as usize;
+
+        for i in 0..=n_c {
+            if i % sample_c == 0 {
+                let t_h = i as f64 * dt_c / 3600.0;
+                a_pts.push((t_h, ach));
+                o_pts.push((t_h, acoh));
+                a_max = a_max.max(ach);
+            }
+
+            // Same average oxidant production for all modes
+            let r1 = k1_dc; // mM/s
+
+            // Over-oxidation scaled by selectivity factor α
+            let r2_eff = k2 * ach / (ach + 0.3) * alpha;
+
+            // Fischer ester (bulk, always)
+            let r3_val = k3 * acoh / (acoh + 0.5);
+
+            ach = (ach + (r1 - r2_eff) * dt_c).max(0.0);
+            acoh = (acoh + (r2_eff - r3_val) * dt_c).max(0.0);
+            ester = (ester + r3_val * dt_c).max(0.0);
+        }
+
+        println!("  {}: peak [AcH] = {:.2} mM, final [AcOH] = {:.2} mM, [EtOAc] = {:.3} mM",
+            sim.label, a_max, acoh, ester);
+
+        ach_max.push(a_max);
+        ach_pts.push(a_pts);
+        acoh_pts.push(o_pts);
+    }
+
+    // Panel A: [AcH] over time
+    let y_max_a = ach_max.iter().cloned().fold(0.0_f64, f64::max) * 1.15;
+    let sx_a = |x: f64| -> f64 { ml + (x / t_max_h) * pw };
+    let sy_a = |y: f64| -> f64 { mt + ph - (y / y_max_a) * ph };
+
+    svg += &label(ml + pw / 2.0, mt - 8.0, "(A) Acetaldehyde Accumulation", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    for i in 1..=6 {
+        let x = 4.0 * i as f64;
+        svg += &vline(sx_a(x), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(x), mt + ph + 13.0, &format!("{:.0}h", x), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let y = y_max_a * i as f64 / 5.0;
+        svg += &hline(ml, ml + pw, sy_a(y), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(y) + 3.5, &format!("{:.1}", y), MUTED, 8, "end");
+    }
+
+    // Danger threshold (harsh off-flavor)
+    let harsh_threshold = 1.5_f64; // mM
+    if harsh_threshold < y_max_a {
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{RED}\" stroke-width=\"1\" stroke-dasharray=\"6,3\" opacity=\"0.6\"/>\n",
+            ml, sy_a(harsh_threshold), ml + pw, sy_a(harsh_threshold));
+        svg += &label(ml + pw + 2.0, sy_a(harsh_threshold) + 3.0, "harsh", RED, 7, "start");
+    }
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Time (hours)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "[AcH] (mM)");
+
+    for (i, sim) in sims.iter().enumerate() {
+        svg += &polyline_svg(&ach_pts[i], sim.color, if i == 2 { "2.5" } else { "1.8" }, &sx_a, &sy_a);
+    }
+
+    let mut ly = mt + 12.0;
+    for (i, sim) in sims.iter().enumerate() {
+        svg += &hline(ml + 10.0, ml + 32.0, ly, sim.color, "2.5");
+        svg += &label(ml + 36.0, ly + 4.0,
+            &format!("{} (pk {:.1})", sim.label, ach_max[i]), TEXT, 8, "start");
+        ly += 14.0;
+    }
+
+    // Panel B: [AcOH] (useful product) over time
+    let ml2 = ml + pw + gap;
+    let acoh_max_val = acoh_pts.iter().flat_map(|pts| pts.iter().map(|(_, y)| *y))
+        .fold(0.0_f64, f64::max) * 1.15;
+    let y_max_b = acoh_max_val.max(0.1);
+
+    let sx_b = |x: f64| -> f64 { ml2 + (x / t_max_h) * pw };
+    let sy_b = |y: f64| -> f64 { mt + ph - (y / y_max_b) * ph };
+
+    svg += &label(ml2 + pw / 2.0, mt - 8.0, "(B) Acetic Acid (Useful Product)", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    for i in 1..=6 {
+        let x = 4.0 * i as f64;
+        svg += &vline(sx_b(x), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(x), mt + ph + 13.0, &format!("{:.0}h", x), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let y = y_max_b * i as f64 / 5.0;
+        svg += &hline(ml2, ml2 + pw, sy_b(y), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(y) + 3.5, &format!("{:.2}", y), MUTED, 8, "end");
+    }
+
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Time (hours)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 42.0, mt + ph / 2.0, ml2 - 42.0, mt + ph / 2.0, "[AcOH] (mM)");
+
+    for (i, sim) in sims.iter().enumerate() {
+        svg += &polyline_svg(&acoh_pts[i], sim.color, if i == 2 { "2.5" } else { "1.8" }, &sx_b, &sy_b);
+    }
+
+    let mut ly2 = mt + 12.0;
+    for (i, sim) in sims.iter().enumerate() {
+        let final_acoh = acoh_pts[i].last().map(|(_, y)| *y).unwrap_or(0.0);
+        svg += &hline(ml2 + 10.0, ml2 + 32.0, ly2, sim.color, "2.5");
+        svg += &label(ml2 + 36.0, ly2 + 4.0,
+            &format!("{} ({:.2})", sim.label, final_acoh), TEXT, 8, "start");
+        ly2 += 14.0;
+    }
+
+    // Insight box
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"215\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 225.0, mt + ph - 60.0, GRID);
+    svg += &label(ml2 + pw - 220.0, mt + ph - 44.0,
+        "Lower duty \u{2192} less AcH overshoot", GREEN, 9, "start");
+    svg += &label(ml2 + pw - 220.0, mt + ph - 30.0,
+        "Same total oxidant, better selectivity", ACCENT, 9, "start");
+    svg += &label(ml2 + pw - 220.0, mt + ph - 16.0,
+        "Cost: $30\u{2013}80 (555 timer + relay)", YELLOW, 9, "start");
 
     svg.push_str("</svg>");
     svg
