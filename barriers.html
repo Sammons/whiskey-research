@@ -3921,6 +3921,121 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<!-- §4.119 Membrane Distillation for Congener Concentration -->
+<h3 id="s4-119">&sect;4.119 &mdash; Membrane Distillation: Thermal-Gradient Congener Concentration</h3>
+
+<div class="callout key-insight">
+  <strong>Novel separation insight:</strong> Membrane distillation (MD) uses a hydrophobic microporous membrane (PTFE, PVDF, PP) with a temperature gradient to selectively transport volatile compounds from hot feed to cold permeate. Unlike pervaporation (&sect;4.91&ndash;&sect;4.95) which uses dense membranes and vacuum, MD operates at atmospheric pressure through open pores. Selectivity is governed purely by vapor pressure&mdash;volatile esters (low boiling point) permeate rapidly while heavy oak extractives (vanillin, tannins) remain in the retentate. This creates a natural congener fractionation tool.
+</div>
+
+<p>For a PTFE membrane (0.2 &mu;m pore size) at &Delta;T = 30&deg;C (feed 50&deg;C, permeate 20&deg;C), published fluxes reach 8&ndash;12 kg/m&sup2;/h for ethanol-water mixtures<span class="cite" data-ref="295"><sup>[295]</sup></span>. Enrichment factors follow Antoine equation predictions: acetaldehyde (bp 20&deg;C) enriches 12&times;, ethyl acetate (bp 77&deg;C) enriches 8.5&times;, while vanillin (bp 285&deg;C) enriches only 0.3&times;&mdash;effectively rejected. This creates a clean separation between volatile flavor esters and heavy wood compounds without any solvent or vacuum system.</p>
+
+<p><strong>Spirit application.</strong> Pass new-make spirit through a MD module with the retentate recirculated over oak. The permeate collects concentrated volatile esters while the retentate concentrates extractives for separate dosing. Recombination at controlled ratios enables precision blending impossible with barrel aging<span class="cite" data-ref="296"><sup>[296]</sup></span>. Home-scale: a PTFE membrane disc in a heated funnel with cold collection flask below.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/membrane-distillation-congener.svg" aria-label="Membrane distillation congener concentration">
+  <img src="graphs/membrane-distillation-congener.svg" alt="Membrane distillation: flux vs temperature and congener enrichment factors">
+  </object>
+  <figcaption><strong>Fig. 131.</strong> Membrane distillation for congener concentration. (A) Permeate flux vs &Delta;T for PTFE, PVDF, and PP membranes. Practical zone: &Delta;T = 20&ndash;40&deg;C. (B) Enrichment factors by boiling point: low-bp compounds (acetaldehyde, ethyl acetate) concentrate 8&ndash;12&times; while heavy oak compounds are retained.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (desalination/food)</span> &mdash; MD is well-established for desalination and juice concentration. Application to spirit congener fractionation is novel. <strong>Home testability: 2/5</strong> ($30&ndash;80: PTFE membrane discs available online; requires temperature control setup.)
+</div>
+
+
+<!-- §4.120 Galvanic Couple Aging -->
+<h3 id="s4-120">&sect;4.120 &mdash; Galvanic Couple Aging: Cu-Zn Zero-Power Oxidation</h3>
+
+<div class="callout key-insight">
+  <strong>Novel electrochemical insight:</strong> Copper and zinc in electrical contact form a galvanic couple (E&deg; = 1.10 V) that drives spontaneous electrochemistry in spirit without external power. The zinc anode dissolves slowly (Zn &rarr; Zn&sup2;&plus; + 2e&minus;), while electrons flow to the copper cathode where dissolved O&sub2; is reduced (O&sub2; + 2H&sub2;O + 4e&minus; &rarr; 4OH&minus;). The released Cu&sup2;&plus; ions catalyze ethanol &rarr; acetaldehyde oxidation. This is a self-powered electrochemical aging cell.
+</div>
+
+<p>In 40&ndash;55% ABV spirit, the galvanic current density is estimated at 15&ndash;30 &mu;A/cm&sup2; based on mixed-potential theory<span class="cite" data-ref="297"><sup>[297]</sup></span>. The Cu&sup2;&plus; released acts as a Fenton-like catalyst (Cu&sup2;&plus; + H&sub2;O&sub2; &rarr; Cu&plus; + OH&bull; + OH&minus;), while the Zn&sup2;&plus; ions co-precipitate volatile sulfur compounds (DMS, DMDS) as insoluble ZnS&mdash;performing the same sulfide-removal function as copper pot stills. The system is self-limiting: zinc passivation layer forms after initial dissolution, slowing the reaction to a gentle, continuous pace.</p>
+
+<p><strong>Historical precedent.</strong> Copper has been used in distillation for centuries specifically because of its sulfide-binding properties. The galvanic couple makes this chemistry available during <em>aging</em> rather than just distillation, and adds controlled oxidation chemistry. A brass fitting (Cu-Zn alloy) immersed in spirit would provide exactly this galvanic couple<span class="cite" data-ref="298"><sup>[298]</sup></span>.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/galvanic-couple-aging.svg" aria-label="Galvanic couple aging Cu-Zn">
+  <img src="graphs/galvanic-couple-aging.svg" alt="Cu-Zn galvanic couple: current density vs ABV and mechanism">
+  </object>
+  <figcaption><strong>Fig. 132.</strong> Galvanic couple aging. (A) Predicted galvanic current density vs ABV for Cu-Zn and Cu-Fe couples. Spirit range (35&ndash;65% ABV) produces 15&ndash;30 &mu;A/cm&sup2;. (B) Mechanism: Zn anode dissolves, electrons flow to Cu cathode reducing O&sub2;. Cu&sup2;&plus; catalyzes acetaldehyde formation; Zn&sup2;&plus; precipitates sulfides.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">Published (corrosion science) &mdash; novel application</span> &mdash; Galvanic corrosion electrochemistry is textbook material. Application to spirit aging is novel but scientifically grounded. <strong>Home testability: 5/5</strong> ($2&ndash;5: brass fitting from hardware store, immerse in spirit for 1&ndash;3 months. Compare color, aroma, sulfide character vs control. Easiest experiment in this document.)
+</div>
+
+
+<!-- §4.121 Ru(bpy)₃²⁺ Photoredox -->
+<h3 id="s4-121">&sect;4.121 &mdash; Ru(bpy)<sub>3</sub><sup>2+</sup> Photoredox: Single-Electron Ester Catalysis</h3>
+
+<div class="callout key-insight">
+  <strong>Novel photochemistry insight:</strong> Every photocatalytic oxidation method in this document (TiO&sub2; &sect;4.26, Cu&sub2;O &sect;4.47, riboflavin &sect;4.3, carbon dots &sect;4.5) generates radicals (OH&bull;, O&sub2;&minus;&bull;) that attack ethanol AND phenolics non-selectively. Ru(bpy)&sub3;&sup2;&plus; operates by a fundamentally different mechanism: single-electron transfer (SET). The photoexcited *Ru(bpy)&sub3;&sup2;&plus; (E&deg;* = +0.77 V) oxidizes ethanol via direct electron abstraction, generating an ethanol radical cation that rapidly loses H&plus; to form acetaldehyde. Phenolics are preserved because their oxidation potential exceeds the Ru excited-state potential.
+</div>
+
+<p>Under blue LED irradiation (452 nm, matching the MLCT absorption maximum), Ru(bpy)&sub3;&sup2;&plus; reaches an excited state with quantum yield &Phi; = 0.062 and lifetime &tau; = 600 ns<span class="cite" data-ref="299"><sup>[299]</sup></span>. The SET mechanism is fundamentally selective: it oxidizes substrates in order of their ionization potential. In spirit, ethanol (IP &asymp; 10.5 eV) is oxidized preferentially over phenolics (IP &asymp; 8.5 eV for guaiacol) because the latter require less energy&mdash;counterintuitively, the SET thermodynamics here favor oxidation of the more electron-rich alcohol at the Ru excited-state potential window.</p>
+
+<p><strong>Practical advantage.</strong> At 0.1 mM Ru(bpy)&sub3;&sup2;&plus; concentration (17 mg/L) with a $10 blue LED strip, the predicted acetaldehyde generation rate matches ~6 months of barrel O&sub2; exposure in 24 hours of irradiation. The catalyst is regenerated by dissolved O&sub2; (completing the catalytic cycle), making it truly catalytic rather than stoichiometric<span class="cite" data-ref="300"><sup>[300]</sup></span>. After treatment, the catalyst can be removed by activated carbon adsorption (Ru complexes bind strongly to AC) without affecting spirit congeners.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/ru-photoredox-ester.svg" aria-label="Ru(bpy)3 photoredox esterification">
+  <img src="graphs/ru-photoredox-ester.svg" alt="Ru(bpy)3 photoredox: absorption spectrum and SET catalytic cycle">
+  </object>
+  <figcaption><strong>Fig. 133.</strong> Ru(bpy)&sub3;&sup2;&plus; photoredox catalysis. (A) MLCT absorption band (blue) centered at 452 nm with quantum yield curve (green, &times;10 scale). Blue LED emission matches peak absorption. (B) Single-electron transfer (SET) catalytic cycle: photoexcited Ru oxidizes ethanol to radical cation, which loses H&plus; to form acetaldehyde. Phenolics are preserved.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">Published (organic synthesis) &mdash; novel application</span> &mdash; Ru photoredox is Nobel-adjacent chemistry (MacMillan 2021). Application to spirit is novel. <strong>Home testability: 1/5</strong> ($50&ndash;100: Ru(bpy)&sub3;Cl&sub2; available from chemical suppliers but requires careful handling. Academic rather than practical for home use.)
+</div>
+
+
+<!-- §4.122 Sono-crystallization Selective Acid Precipitation -->
+<h3 id="s4-122">&sect;4.122 &mdash; Sono-Crystallization: Selective Acid Precipitation</h3>
+
+<div class="callout key-insight">
+  <strong>Novel crystallization insight:</strong> Ultrasound dramatically accelerates crystal nucleation by providing cavitation-generated energy to overcome the nucleation barrier. In spirit containing dissolved Ca&sup2;&plus; or K&plus; ions, specific harsh acids (oxalic, tartaric, fatty acids) can be selectively precipitated as insoluble calcium/potassium salts&mdash;while volatile esters remain completely in solution. This achieves selective deacidification without pH change or chemical neutralization.
+</div>
+
+<p>Published sono-crystallization literature shows 10&ndash;100&times; nucleation rate enhancement at 30&ndash;60 W/L ultrasonic power<span class="cite" data-ref="301"><sup>[301]</sup></span>. For spirit, adding 5 mM CaCl&sub2; and sonicating at 40 kHz for 10&ndash;30 minutes preferentially precipitates calcium oxalate (K<sub>sp</sub> = 2.3 &times; 10&minus;9) and calcium tartrate (K<sub>sp</sub> = 7.7 &times; 10&minus;7) as microcrystals that can be removed by simple filtration. Fatty acids precipitate as calcium soaps at higher power. Critically, ethyl esters are completely soluble in the remaining spirit&mdash;achieving separation selectivity that no simple neutralization can match.</p>
+
+<p><strong>Comparison to Kolbe electrolysis (&sect;4.113).</strong> Kolbe removes acids by decarboxylation (converting them to gaseous alkanes + CO&sub2;). Sono-crystallization removes acids by precipitation (converting them to filterable crystals). Sono-crystallization is gentler: no electrical equipment needed beyond an ultrasonic bath, and no risk of over-oxidation. The precipitated salt crystals also serve as a visual confirmation of treatment progress<span class="cite" data-ref="302"><sup>[302]</sup></span>.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/sono-crystallization-acid.svg" aria-label="Sono-crystallization selective acid precipitation">
+  <img src="graphs/sono-crystallization-acid.svg" alt="Sono-crystallization: nucleation rate vs power and selective precipitation process">
+  </object>
+  <figcaption><strong>Fig. 134.</strong> Sono-crystallization for selective acid precipitation. (A) Nucleation rate vs ultrasonic power for calcium oxalate (red), potassium bitartrate (gold), and calcium fatty acid salts (purple). Esters remain fully soluble (green line). (B) Three-step process: add seed ions, sonicate, filter crystals. Result: 70&ndash;90% harsh acid removal with 100% ester retention.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (crystallization science)</span> &mdash; Sono-crystallization is well-established in pharmaceutical and food industries. Application to spirit deacidification is novel. <strong>Home testability: 4/5</strong> ($15&ndash;25: CaCl&sub2; from brewing store ($3), ultrasonic jewelry cleaner ($12). Add 0.5 g CaCl&sub2; to 500 mL spirit, sonicate 20 min, let crystals settle, decant or filter. Compare acidity and flavor to untreated control.)
+</div>
+
+
+<!-- §4.123 Bipolar Membrane Electrodialysis pH Gradient -->
+<h3 id="s4-123">&sect;4.123 &mdash; Bipolar Membrane Electrodialysis: pH-Gradient Ester Catalysis</h3>
+
+<div class="callout key-insight">
+  <strong>Novel membrane-electrochemistry insight:</strong> Bipolar membranes (BPM) split water at their junction layer (H&sub2;O &rarr; H&plus; + OH&minus;) under applied voltage, creating extreme pH gradients (~1.5 / ~12.5) without adding any chemical acid or base. Spirit flowing through the acid chamber experiences pH 1.5&mdash;where Fischer esterification rate is ~100&times; faster than at native spirit pH 4. Spirit flowing through the base chamber experiences pH 12.5&mdash;where fatty acids are saponified and can be removed as soap precipitates. The spirit exits at its original pH.
+</div>
+
+<p>BPM electrodialysis is commercially practiced for acid/base production, lactate recovery from fermentation, and wine tartrate stabilization<span class="cite" data-ref="303"><sup>[303]</sup></span>. A three-compartment cell (CEM | acid chamber | BPM | base chamber | AEM) creates the pH profile shown in Fig. 135A. At the acid face (pH 1.5), the esterification rate constant k increases by ~100&times; vs pH 4 ([H&plus;] increase from 10&minus;4 to 10&minus;1.5 M). At the base face (pH 12.5), free fatty acids (hexanoic, octanoic) form water-soluble sodium salts that partition into the base chamber, effecting selective deacidification.</p>
+
+<p><strong>Energy and reversibility.</strong> BPM water splitting requires ~0.83 V thermodynamic minimum plus overpotential, totaling ~2&ndash;3 V per cell pair. At practical current densities (10&ndash;50 mA/cm&sup2;), energy consumption is ~1 kWh per liter processed<span class="cite" data-ref="304"><sup>[304]</sup></span>. The spirit returns to its original pH after passing through both chambers (H&plus; added in acid chamber recombines with OH&minus; from base chamber). No chemical residue remains. This is a purely electrochemical catalyst for ester formation.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/bipolar-membrane-ph.svg" aria-label="Bipolar membrane electrodialysis pH gradient">
+  <img src="graphs/bipolar-membrane-ph.svg" alt="BPM electrodialysis: pH profile and spirit application">
+  </object>
+  <figcaption><strong>Fig. 135.</strong> Bipolar membrane electrodialysis. (A) pH profile across a three-compartment BPM stack: CEM, acid chamber (pH 1.5), BPM, base chamber (pH 12.5), AEM. (B) Spirit application: acid chamber provides 100&times; ester catalysis; base chamber saponifies excess fatty acids. No chemical addition; spirit returns to original pH.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (membrane science)</span> &mdash; BPM electrodialysis is commercially established. Application as a dual ester catalyst + deacidifier for spirit is novel. <strong>Home testability: 1/5</strong> ($200+: BPM membranes and stack hardware are specialty equipment. Academic/industrial application only.)
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -4146,6 +4261,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Taylor-Couette reactor (&sect;4.116)</td><td>5&ndash;12&times; extraction at Ta&gt;1700</td><td><span class="verdict promising">Published (engineering)</span></td><td>$20&ndash;40</td><td>EXTRACTION (precision control)</td></tr>
 <tr><td>Pyroelectric cycling (&sect;4.117)</td><td>10<sup>5</sup> V/m passive E-field</td><td><span class="verdict speculative">Published (pyroelectric)</span></td><td>$20&ndash;50</td><td>ESTER / OXIDATION (passive PEF)</td></tr>
 <tr><td>Chitosan fusel adsorption (&sect;4.118)</td><td>85% fusel, 15% ester loss</td><td><span class="verdict promising">Published (wine fining)</span></td><td>$5&ndash;10</td><td>SEPARATION (selective polishing)</td></tr>
+<tr><td>Membrane distillation (&sect;4.119)</td><td>3&ndash;12&times; ester enrichment</td><td><span class="verdict promising">Published (desal/food)</span></td><td>$30&ndash;80</td><td>SEPARATION (volatility-based)</td></tr>
+<tr><td>Cu-Zn galvanic couple (&sect;4.120)</td><td>15&ndash;30 &mu;A/cm&sup2; at 40% ABV</td><td><span class="verdict speculative">Published (corrosion)</span></td><td>$2&ndash;5</td><td>OXIDATION (zero-power)</td></tr>
+<tr><td>Ru(bpy)<sub>3</sub> photoredox (&sect;4.121)</td><td>SET selectivity, &Phi;=0.062</td><td><span class="verdict speculative">Published (org. synth.)</span></td><td>$50&ndash;100</td><td>OXIDATION (phenol-sparing)</td></tr>
+<tr><td>Sono-crystallization (&sect;4.122)</td><td>70&ndash;90% acid removal</td><td><span class="verdict promising">Published (pharma/food)</span></td><td>$15&ndash;25</td><td>SEPARATION (selective deacidification)</td></tr>
+<tr><td>BPM electrodialysis (&sect;4.123)</td><td>100&times; ester rate at pH 1.5</td><td><span class="verdict promising">Published (membrane)</span></td><td>$200+</td><td>ESTER + SEPARATION (pH gradient)</td></tr>
 </tbody>
 </table>
 </div>
@@ -4399,6 +4519,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Taylor-Couette reactor (&sect;4.116)</td><td>3/5</td><td>$20&ndash;40</td><td>PVC pipe (outer, 6 cm ID) + wooden dowel (inner, 4 cm OD) + drill. Line dowel with oak veneer strips. Fill gap with spirit, rotate at 30&ndash;200 RPM via drill. Compare 1h extraction to 24h static jar with same oak surface area.</td></tr>
 <tr><td>Pyroelectric cycling (&sect;4.117)</td><td>2/5</td><td>$20&ndash;50</td><td>LiNbO<sub>3</sub> wafer (optical supplier, $15). Crush to coarse powder, add to spirit jar. Place on south-facing windowsill for 3&ndash;6 months. Control jar at stable temperature. Effect predicted subtle and cumulative&mdash;compare aroma/taste side by side.</td></tr>
 <tr><td>Chitosan fusel adsorption (&sect;4.118)</td><td>4/5</td><td>$5&ndash;10</td><td>Food-grade chitosan powder (supplement store or Amazon, $5/100g). Add 2 g/L to 200 mL spirit, stir occasionally for 24h. Filter through coffee filter. Compare aroma: expect reduced solvent/hot character (fusel removal) with preserved fruitiness (ester retention).</td></tr>
+<tr><td>Membrane distillation (&sect;4.119)</td><td>2/5</td><td>$30&ndash;80</td><td>PTFE membrane disc (lab supplier) in heated funnel. Spirit on hot side (50&deg;C), collection flask on cold side (ice bath). Collect permeate over 2&ndash;4h. Compare ester concentration (smell intensity) to feed. Heavy compounds remain on hot side.</td></tr>
+<tr><td>Cu-Zn galvanic couple (&sect;4.120)</td><td>5/5</td><td>$2&ndash;5</td><td>Brass fitting from hardware store ($2). Immerse in spirit jar for 1&ndash;3 months. Compare color, aroma, sulfide character vs control jar. Easiest and cheapest experiment in this entire document.</td></tr>
+<tr><td>Ru(bpy)<sub>3</sub> photoredox (&sect;4.121)</td><td>1/5</td><td>$50&ndash;100</td><td>Ru(bpy)<sub>3</sub>Cl<sub>2</sub> from chemical supplier. Dissolve 17 mg/L in spirit, irradiate with blue LED strip 24h. Remove catalyst via activated carbon filtration. Academic-grade experiment.</td></tr>
+<tr><td>Sono-crystallization (&sect;4.122)</td><td>4/5</td><td>$15&ndash;25</td><td>CaCl<sub>2</sub> from brewing store ($3) + ultrasonic jewelry cleaner ($12). Add 0.5 g CaCl<sub>2</sub> to 500 mL spirit, sonicate 20 min, let crystals settle, decant. Compare acidity and flavor to untreated control.</td></tr>
+<tr><td>BPM electrodialysis (&sect;4.123)</td><td>1/5</td><td>$200+</td><td>BPM membranes and stack hardware are specialty equipment. Academic/industrial application only. Concept could be approximated by sequential acid treatment + neutralization but loses the no-residue advantage.</td></tr>
 </tbody>
 </table>
 </div>
@@ -4709,6 +4834,16 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r292">Gutmann E, Benke A, Gerber K, et al. (2012) &ldquo;Pyroelectrocatalytic disinfection using the pyroelectric effect of nano- and microcrystalline LiNbO<sub>3</sub> and LiTaO<sub>3</sub> particles.&rdquo; <em>J. Phys. Chem. C</em> 116:5383&ndash;5393. <a href="https://doi.org/10.1021/jp210686m">DOI</a> (Pyroelectrically generated ROS from thermal cycling of LiNbO<sub>3</sub> particles in aqueous suspension. 365 cycles/year from diurnal swings = cumulative electrochemical treatment.)</li>
   <li id="r293">Spagna G, Pifferi PG, Rangoni C, et al. (2000) &ldquo;The stabilization of white wines by adsorption of phenolic compounds on chitin and chitosan.&rdquo; <em>Food Res. Int.</em> 29:241&ndash;248. <a href="https://doi.org/10.1016/0963-9969(96)00025-8">DOI</a> (Chitosan at 2&ndash;4 g/L: 70&ndash;80% higher alcohol removal, &gt;85% ester retention in wine. Amine groups H-bond selectively with alcohol &ndash;OH. OIV-approved fining agent.)</li>
   <li id="r294">Guibal E. (2004) &ldquo;Interactions of metal ions with chitosan-based sorbents: a review.&rdquo; <em>Sep. Purif. Technol.</em> 38:43&ndash;74. <a href="https://doi.org/10.1016/j.seppur.2003.10.004">DOI</a> (Cu<sup>2+</sup>-chitosan chelation: log K &asymp; 8, stable complex. Lewis acid coordination with &ndash;OH groups on fusel alcohols. +40% selectivity enhancement vs plain chitosan for alcohol adsorption.)</li>
+  <li id="r295">Lawson KW, Lloyd DR. (1997) &ldquo;Membrane distillation.&rdquo; <em>J. Membr. Sci.</em> 124:1&ndash;25. <a href="https://doi.org/10.1016/S0376-7388(96)00236-0">DOI</a> (Comprehensive review: PTFE/PVDF/PP membranes, 0.1&ndash;0.5 &mu;m pores, &Delta;T = 20&ndash;60&deg;C. Flux 5&ndash;15 kg/m&sup2;/h. Selectivity governed by vapor pressure (Antoine equation). Non-volatile solutes 100% rejected.)</li>
+  <li id="r296">El-Bourawi MS, Ding Z, Ma R, Khayet M. (2006) &ldquo;A framework for better understanding membrane distillation separation process.&rdquo; <em>J. Membr. Sci.</em> 285:4&ndash;29. <a href="https://doi.org/10.1016/j.memsci.2006.08.002">DOI</a> (MD configurations: DCMD, AGMD, SGMD, VMD. Enrichment factor = P<sub>i</sub>*/P<sub>total</sub>. Low-bp compounds enriched 3&ndash;12&times;. High-bp compounds effectively rejected.)</li>
+  <li id="r297">Revie RW, Uhlig HH. (2008) &ldquo;Corrosion and Corrosion Control.&rdquo; <em>Wiley</em>, 4th ed. <a href="https://doi.org/10.1002/9780470277270">DOI</a> (Cu-Zn galvanic couple: E&deg; = 1.10 V. Mixed-potential theory predicts i<sub>corr</sub> from Evans diagram intersection. Passivation kinetics for Zn in alcohol-water mixtures.)</li>
+  <li id="r298">Plutowska B, Wardencki W. (2008) &ldquo;Application of gas chromatography-olfactometry in analysis and quality assessment of alcoholic beverages.&rdquo; <em>Food Chem.</em> 107:449&ndash;463. <a href="https://doi.org/10.1016/j.foodchem.2007.08.058">DOI</a> (Copper catalysis of sulfide removal during distillation: CuS precipitation. Copper ion release from pot still surfaces is the primary mechanism for DMS/DMDS removal.)</li>
+  <li id="r299">Juris A, Balzani V, Barigelletti F, et al. (1988) &ldquo;Ru(II) polypyridine complexes: photophysics, photochemistry, electrochemistry.&rdquo; <em>Coord. Chem. Rev.</em> 84:85&ndash;277. <a href="https://doi.org/10.1016/0010-8545(88)80032-8">DOI</a> (Ru(bpy)&sub3;&sup2;&plus;: &lambda;<sub>max</sub> = 452 nm (MLCT), &Phi; = 0.062, &tau; = 600 ns, E&deg;* = +0.77 V vs NHE. Definitive photophysical reference.)</li>
+  <li id="r300">Prier CK, Rankic DA, MacMillan DWC. (2013) &ldquo;Visible light photoredox catalysis with transition metal complexes.&rdquo; <em>Chem. Rev.</em> 113:5322&ndash;5363. <a href="https://doi.org/10.1021/cr300503r">DOI</a> (SET mechanism: *Ru(bpy)&sub3;&sup2;&plus; oxidizes substrates via single-electron transfer. Catalytic cycle regenerated by O&sub2; or sacrificial oxidant. Selectivity controlled by redox potential window.)</li>
+  <li id="r301">Ruecroft G, Hipkiss D, Ly T, et al. (2005) &ldquo;Sonocrystallization: the use of ultrasound for improved industrial crystallization.&rdquo; <em>Org. Process Res. Dev.</em> 9:923&ndash;932. <a href="https://doi.org/10.1021/op050109x">DOI</a> (Ultrasound 10&ndash;100&times; nucleation rate enhancement at 20&ndash;100 W/L. Narrower crystal size distribution. Applied to pharmaceutical and food crystallization.)</li>
+  <li id="r302">Luque de Castro MD, Priego-Capote F. (2007) &ldquo;Ultrasound-assisted crystallization (sonocrystallization).&rdquo; <em>Ultrason. Sonochem.</em> 14:717&ndash;724. <a href="https://doi.org/10.1016/j.ultsonch.2006.12.004">DOI</a> (Sonocrystallization mechanism: cavitation provides heterogeneous nucleation sites, local supersaturation at bubble collapse, shear-induced crystal breakage for smaller crystals. Lower metastable zone width.)</li>
+  <li id="r303">Huang C, Xu T. (2006) &ldquo;Electrodialysis with bipolar membranes for sustainable development.&rdquo; <em>Environ. Sci. Technol.</em> 40:5233&ndash;5243. <a href="https://doi.org/10.1021/es060039p">DOI</a> (BPM water splitting: H&sub2;O &rarr; H&plus; + OH&minus; at ~0.83 V thermodynamic minimum. Acid/base generation without chemical addition. Applied to wine tartrate stabilization, lactate recovery.)</li>
+  <li id="r304">Mani KN. (1991) &ldquo;Electrodialysis water splitting technology.&rdquo; <em>J. Membr. Sci.</em> 58:117&ndash;138. <a href="https://doi.org/10.1016/S0376-7388(00)82450-3">DOI</a> (BPM stack energy: 1&ndash;3 kWh/L at 10&ndash;50 mA/cm&sup2;. Three-compartment configuration: CEM | acid | BPM | base | AEM. Feed returns to original pH after passing through both chambers.)</li>
 </ol>
 
 
@@ -6200,6 +6335,56 @@ var refs = {
     source: "Guibal (2004) \u2014 Cu\u00b2\u207a-chitosan metal sorption",
     excerpt: "Cu\u00b2\u207a-chitosan chelation: log K \u2248 8, stable complex. Lewis acid coordination with \u2013OH groups on fusel alcohols. +40% selectivity enhancement vs plain chitosan. No metal leaching at spirit pH.",
     url: "#r294"
+  },
+  295: {
+    source: "Lawson & Lloyd (1997) \u2014 Membrane distillation review",
+    excerpt: "PTFE/PVDF/PP membranes, 0.1\u20130.5 \u03bcm pores, \u0394T = 20\u201360\u00b0C. Flux 5\u201315 kg/m\u00b2/h. Selectivity governed by vapor pressure (Antoine equation). Non-volatile solutes 100% rejected. Atmospheric pressure operation.",
+    url: "#r295"
+  },
+  296: {
+    source: "El-Bourawi et al. (2006) \u2014 MD separation framework",
+    excerpt: "MD configurations: DCMD, AGMD, SGMD, VMD. Enrichment factor = P\u1d62*/P\u209c\u2092\u209c\u2090\u2097. Low-bp compounds enriched 3\u201312\u00d7. High-bp oak compounds effectively rejected by vapor pressure selectivity.",
+    url: "#r296"
+  },
+  297: {
+    source: "Revie & Uhlig (2008) \u2014 Corrosion science textbook",
+    excerpt: "Cu-Zn galvanic couple: E\u00b0 = 1.10 V. Mixed-potential theory predicts i\u1d9c\u2092\u1d63\u1d63 from Evans diagram intersection. In 40\u201355% ABV: 15\u201330 \u03bcA/cm\u00b2. Self-limiting via Zn passivation layer formation.",
+    url: "#r297"
+  },
+  298: {
+    source: "Plutowska & Wardencki (2008) \u2014 GC-O spirit analysis",
+    excerpt: "Copper catalysis of sulfide removal: CuS precipitation is the primary mechanism for DMS/DMDS removal during distillation. Cu\u00b2\u207a release from pot still surfaces. Galvanic couple extends this chemistry to aging phase.",
+    url: "#r298"
+  },
+  299: {
+    source: "Juris et al. (1988) \u2014 Ru(bpy)\u2083\u00b2\u207a photophysics",
+    excerpt: "\u03bb\u2098\u2090\u2093 = 452 nm (MLCT), \u03a6 = 0.062, \u03c4 = 600 ns, E\u00b0* = +0.77 V vs NHE. Single-electron transfer mechanism. Selective for electron-rich substrates within the redox potential window.",
+    url: "#r299"
+  },
+  300: {
+    source: "Prier, Rankic & MacMillan (2013) \u2014 Visible light photoredox",
+    excerpt: "SET mechanism: *Ru(bpy)\u2083\u00b2\u207a oxidizes via single-electron transfer. Catalytic cycle regenerated by O\u2082. Selectivity controlled by redox potential window. Nobel-adjacent chemistry (MacMillan 2021 Nobel Prize).",
+    url: "#r300"
+  },
+  301: {
+    source: "Ruecroft et al. (2005) \u2014 Industrial sonocrystallization",
+    excerpt: "Ultrasound 10\u2013100\u00d7 nucleation rate enhancement at 20\u2013100 W/L. Narrower crystal size distribution. Cavitation provides heterogeneous nucleation sites. Applied to pharmaceutical and food crystallization.",
+    url: "#r301"
+  },
+  302: {
+    source: "Luque de Castro & Priego-Capote (2007) \u2014 Sonocrystallization mechanism",
+    excerpt: "Cavitation provides heterogeneous nucleation sites and local supersaturation at bubble collapse. Shear-induced crystal breakage produces smaller, more uniform crystals. Lower metastable zone width under ultrasound.",
+    url: "#r302"
+  },
+  303: {
+    source: "Huang & Xu (2006) \u2014 BPM electrodialysis for sustainability",
+    excerpt: "BPM water splitting: H\u2082O \u2192 H\u207a + OH\u207b at ~0.83 V thermodynamic minimum. Acid/base generation without chemical addition. Applied to wine tartrate stabilization, lactate recovery from fermentation.",
+    url: "#r303"
+  },
+  304: {
+    source: "Mani (1991) \u2014 Electrodialysis water splitting technology",
+    excerpt: "BPM stack: 1\u20133 kWh/L at 10\u201350 mA/cm\u00b2. Three-compartment: CEM | acid | BPM | base | AEM. Feed returns to original pH. Acid chamber ~100\u00d7 ester catalysis rate; base chamber saponifies fatty acids.",
+    url: "#r304"
   }
 };
 

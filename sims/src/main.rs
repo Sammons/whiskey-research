@@ -219,6 +219,11 @@ fn main() {
     fs::write("../graphs/taylor-couette-reactor.svg", sim_taylor_couette_reactor()).unwrap();
     fs::write("../graphs/pyroelectric-cycling.svg", sim_pyroelectric_cycling()).unwrap();
     fs::write("../graphs/chitosan-fusel-adsorption.svg", sim_chitosan_fusel_adsorption()).unwrap();
+    fs::write("../graphs/membrane-distillation-congener.svg", sim_membrane_distillation_congener()).unwrap();
+    fs::write("../graphs/galvanic-couple-aging.svg", sim_galvanic_couple_aging()).unwrap();
+    fs::write("../graphs/ru-photoredox-ester.svg", sim_ru_photoredox_ester()).unwrap();
+    fs::write("../graphs/sono-crystallization-acid.svg", sim_sono_crystallization_acid()).unwrap();
+    fs::write("../graphs/bipolar-membrane-ph.svg", sim_bipolar_membrane_ph()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -19280,6 +19285,592 @@ fn sim_chitosan_fusel_adsorption() -> String {
         ACCENT, 8, "middle");
     svg += &label(350.0, h - 18.0,
         "GRAS biopolymer, $5/kg, Cu\u{00b2}\u{207a}-chelated form adds +40% selectivity vs plain chitosan",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 131: Membrane Distillation for Congener Concentration
+// ═══════════════════════════════════════════════════════════════
+fn sim_membrane_distillation_congener() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 131 \u{2014} Membrane Distillation: Thermal-Gradient Congener Concentration");
+
+    // Panel A: Permeate flux vs temperature difference
+    let ax = 70.0; let ay = 65.0; let aw = 260.0; let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Permeate Flux vs \u{0394}T (Feed\u{2013}Permeate)", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    svg += &label(200.0, 393.0, "\u{0394}T (\u{00b0}C)", MUTED, 8, "middle");
+    svg += &label(55.0, 220.0, "Flux (kg/m\u{00b2}/h)", MUTED, 7, "middle");
+
+    for i in 0..=5 {
+        let y = ay + ah - (i as f64 / 5.0) * ah;
+        let val = i * 4;
+        svg += &hline(ax, ax + aw, y, GRID, "0.3");
+        svg += &label(ax - 5.0, y + 3.0, &format!("{val}"), MUTED, 7, "end");
+    }
+    for i in 0..=6 {
+        let x = ax + (i as f64 / 6.0) * aw;
+        let val = i * 10;
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", ay + ah, ay + ah + 4.0);
+        svg += &label(x, ay + ah + 13.0, &format!("{val}"), MUTED, 7, "middle");
+    }
+
+    let sx_a = |v: f64| -> f64 { ax + (v / 60.0) * aw };
+    let sy_a = |v: f64| -> f64 { ay + ah - (v / 20.0) * ah };
+
+    // PTFE membrane: flux ~ 0.005 * dT^1.5 (Antoine-driven)
+    let mut ptfe_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=60 {
+        let dt = i as f64;
+        let flux = 0.008 * dt.powf(1.4);
+        ptfe_pts.push((dt, flux.min(20.0)));
+    }
+    svg += &polyline_svg(&ptfe_pts, GREEN, "2.5", &sx_a, &sy_a);
+
+    // PVDF membrane: slightly lower
+    let mut pvdf_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=60 {
+        let dt = i as f64;
+        let flux = 0.006 * dt.powf(1.4);
+        pvdf_pts.push((dt, flux.min(20.0)));
+    }
+    svg += &polyline_svg(&pvdf_pts, BLUE, "2.5", &sx_a, &sy_a);
+
+    // PP membrane: lowest
+    let mut pp_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=60 {
+        let dt = i as f64;
+        let flux = 0.004 * dt.powf(1.4);
+        pp_pts.push((dt, flux.min(20.0)));
+    }
+    svg += &polyline_svg(&pp_pts, YELLOW, "2", &sx_a, &sy_a);
+
+    // Practical dT zone
+    svg += &format!("<rect x=\"{}\" y=\"{ay}\" width=\"{}\" height=\"{ah}\" fill=\"{ACCENT}\" opacity=\"0.06\"/>\n",
+        sx_a(20.0), sx_a(40.0) - sx_a(20.0));
+    svg += &label(sx_a(30.0), ay + 15.0, "Practical zone", ACCENT, 7, "middle");
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"130\" height=\"58\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n", ax + 10.0, ay + 10.0);
+    svg += &hline(ax + 15.0, ax + 35.0, ay + 28.0, GREEN, "2.5");
+    svg += &label(ax + 40.0, ay + 31.0, "PTFE (0.2 \u{03bc}m)", GREEN, 7, "start");
+    svg += &hline(ax + 15.0, ax + 35.0, ay + 43.0, BLUE, "2.5");
+    svg += &label(ax + 40.0, ay + 46.0, "PVDF (0.2 \u{03bc}m)", BLUE, 7, "start");
+    svg += &hline(ax + 15.0, ax + 35.0, ay + 58.0, YELLOW, "2");
+    svg += &label(ax + 40.0, ay + 61.0, "PP (0.1 \u{03bc}m)", YELLOW, 7, "start");
+
+    // Panel B: Selectivity by boiling point
+    let bx = 390.0; let by = 65.0; let bw = 270.0; let bh = 310.0;
+    svg += &label(525.0, 57.0, "B: Congener Selectivity by Volatility", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Bar chart of enrichment factors
+    let compounds = [
+        ("Ethyl acetate", 77.0, 8.5, GREEN),
+        ("Acetaldehyde", 20.0, 12.0, BLUE),
+        ("Ethyl hexanoate", 167.0, 3.2, ACCENT),
+        ("Isoamyl alcohol", 131.0, 4.5, YELLOW),
+        ("Vanillin", 285.0, 0.3, RED),
+        ("Ellagitannin", 500.0, 0.05, PURPLE),
+    ];
+
+    svg += &label(bx + 135.0, by + 25.0, "Enrichment factor in permeate", TEXT, 8, "middle");
+    svg += &hline(bx + 10.0, bx + bw - 10.0, by + 32.0, MUTED, "0.5");
+
+    for (i, (name, bp, ef, color)) in compounds.iter().enumerate() {
+        let y_pos = by + 50.0 + i as f64 * 42.0;
+        let bar_w = (*ef / 12.0) * 150.0;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{:.1}\" height=\"14\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n",
+            bx + 100.0, y_pos, bar_w);
+        svg += &label(bx + 95.0, y_pos + 11.0, name, *color, 7, "end");
+        svg += &label(bx + 105.0 + bar_w, y_pos + 11.0,
+            &format!("{:.1}\u{00d7} (bp {:.0}\u{00b0}C)", ef, bp), *color, 7, "start");
+    }
+
+    // Key insight box
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"240\" height=\"50\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 15.0, by + ah - 65.0);
+    svg += &label(bx + 135.0, by + ah - 48.0, "Key: Low bp = high enrichment", TEXT, 8, "middle");
+    svg += &label(bx + 135.0, by + ah - 33.0, "Heavy compounds (tannins) retained", GREEN, 7, "middle");
+    svg += &label(bx + 135.0, by + ah - 20.0, "Volatile esters selectively concentrated", ACCENT, 7, "middle");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Membrane distillation: thermal gradient drives volatile congeners through hydrophobic pores",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Enrichment 3\u{2013}12\u{00d7} for esters/aldehydes while retaining heavy oak compounds in retentate",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 132: Galvanic Couple Aging (Cu-Zn Bimetallic)
+// ═══════════════════════════════════════════════════════════════
+fn sim_galvanic_couple_aging() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 132 \u{2014} Galvanic Couple Aging: Cu-Zn Zero-Power Oxidation");
+
+    // Panel A: Corrosion current vs ABV
+    let ax = 70.0; let ay = 65.0; let aw = 260.0; let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Galvanic Current Density vs ABV", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    svg += &label(200.0, 393.0, "Ethanol concentration (% ABV)", MUTED, 8, "middle");
+    svg += &label(55.0, 220.0, "i\u{1d9c}\u{2092}\u{1d63}\u{1d63} (\u{03bc}A/cm\u{00b2})", MUTED, 7, "middle");
+
+    for i in 0..=5 {
+        let y = ay + ah - (i as f64 / 5.0) * ah;
+        let val = i * 20;
+        svg += &hline(ax, ax + aw, y, GRID, "0.3");
+        svg += &label(ax - 5.0, y + 3.0, &format!("{val}"), MUTED, 7, "end");
+    }
+    for i in 0..=5 {
+        let x = ax + (i as f64 / 5.0) * aw;
+        let val = i * 20;
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", ay + ah, ay + ah + 4.0);
+        svg += &label(x, ay + ah + 13.0, &format!("{val}"), MUTED, 7, "middle");
+    }
+
+    let sx_a = |v: f64| -> f64 { ax + (v / 100.0) * aw };
+    let sy_a = |v: f64| -> f64 { ay + ah - (v / 100.0) * ah };
+
+    // Cu-Zn galvanic current: peaks around 10-20% ABV, decreases at higher ABV
+    // due to reduced O2 solubility and increased ethanol resistance
+    let mut cuzn_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=100 {
+        let abv = i as f64;
+        // Conductivity peaks at low ABV, O2 solubility drops, but ethanol inhibits passivation
+        let cond_factor = 1.0 - 0.8 * (abv / 100.0).powi(2);
+        let o2_factor = 1.0 - 0.6 * (abv / 100.0);
+        let current = 75.0 * cond_factor * o2_factor * (1.0 - E.powf(-abv / 5.0));
+        cuzn_pts.push((abv, current.max(0.0)));
+    }
+    svg += &polyline_svg(&cuzn_pts, ACCENT, "2.5", &sx_a, &sy_a);
+
+    // Cu-Fe couple: lower potential but higher in acidic spirit
+    let mut cufe_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=100 {
+        let abv = i as f64;
+        let cond_factor = 1.0 - 0.8 * (abv / 100.0).powi(2);
+        let o2_factor = 1.0 - 0.6 * (abv / 100.0);
+        let current = 55.0 * cond_factor * o2_factor * (1.0 - E.powf(-abv / 5.0));
+        cufe_pts.push((abv, current.max(0.0)));
+    }
+    svg += &polyline_svg(&cufe_pts, RED, "2", &sx_a, &sy_a);
+
+    // Spirit ABV zone
+    svg += &format!("<rect x=\"{}\" y=\"{ay}\" width=\"{}\" height=\"{ah}\" fill=\"{GREEN}\" opacity=\"0.06\"/>\n",
+        sx_a(35.0), sx_a(65.0) - sx_a(35.0));
+    svg += &label(sx_a(50.0), ay + 15.0, "Spirit range", GREEN, 7, "middle");
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"130\" height=\"38\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n", ax + aw - 140.0, ay + ah - 50.0);
+    svg += &hline(ax + aw - 135.0, ax + aw - 115.0, ay + ah - 37.0, ACCENT, "2.5");
+    svg += &label(ax + aw - 110.0, ay + ah - 34.0, "Cu-Zn (E=1.10 V)", ACCENT, 7, "start");
+    svg += &hline(ax + aw - 135.0, ax + aw - 115.0, ay + ah - 22.0, RED, "2");
+    svg += &label(ax + aw - 110.0, ay + ah - 19.0, "Cu-Fe (E=0.78 V)", RED, 7, "start");
+
+    // Panel B: Mechanism
+    let bx = 390.0; let by = 65.0; let bw = 270.0; let bh = 310.0;
+    svg += &label(525.0, 57.0, "B: Galvanic Aging Mechanism", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Anode (Zn)
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"100\" height=\"60\" rx=\"4\" fill=\"{BLUE}\" opacity=\"0.12\" stroke=\"{BLUE}\" stroke-width=\"1.5\"/>\n", bx + 20.0, by + 20.0);
+    svg += &label(bx + 70.0, by + 42.0, "Zn anode", BLUE, 8, "middle");
+    svg += &label(bx + 70.0, by + 58.0, "Zn \u{2192} Zn\u{00b2}\u{207a} + 2e\u{207b}", BLUE, 7, "middle");
+    svg += &label(bx + 70.0, by + 72.0, "(dissolves slowly)", MUTED, 7, "middle");
+
+    // Cathode (Cu)
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"100\" height=\"60\" rx=\"4\" fill=\"{ACCENT}\" opacity=\"0.12\" stroke=\"{ACCENT}\" stroke-width=\"1.5\"/>\n", bx + 150.0, by + 20.0);
+    svg += &label(bx + 200.0, by + 42.0, "Cu cathode", ACCENT, 8, "middle");
+    svg += &label(bx + 200.0, by + 58.0, "O\u{2082} + 2H\u{2082}O + 4e\u{207b}", ACCENT, 7, "middle");
+    svg += &label(bx + 200.0, by + 72.0, "\u{2192} 4OH\u{207b}", ACCENT, 7, "middle");
+
+    // Arrow between
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n",
+        bx + 122.0, by + 50.0, bx + 148.0, by + 50.0);
+    svg += &label(bx + 135.0, by + 44.0, "e\u{207b}", GREEN, 8, "middle");
+
+    // Products
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"80\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 100.0);
+    svg += &label(bx + 135.0, by + 118.0, "Spirit-Relevant Products", TEXT, 8, "middle");
+    svg += &hline(bx + 30.0, bx + 240.0, by + 125.0, MUTED, "0.5");
+    svg += &label(bx + 35.0, by + 142.0, "Cu\u{00b2}\u{207a}: catalyzes ethanol \u{2192} acetaldehyde", ACCENT, 7, "start");
+    svg += &label(bx + 35.0, by + 158.0, "OH\u{207b}: drives ester equilibrium forward", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 174.0, "Zn\u{00b2}\u{207a}: co-precipitates sulfides (fining)", BLUE, 7, "start");
+
+    // Advantages
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"100\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 195.0);
+    svg += &label(bx + 135.0, by + 213.0, "Advantages", TEXT, 8, "middle");
+    svg += &hline(bx + 30.0, bx + 240.0, by + 220.0, MUTED, "0.5");
+    svg += &label(bx + 35.0, by + 237.0, "\u{2022} Zero electricity (self-powered)", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 253.0, "\u{2022} Self-limiting (passivation layer)", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 269.0, "\u{2022} Cu: traditional in pot stills", ACCENT, 7, "start");
+    svg += &label(bx + 35.0, by + 285.0, "\u{2022} Zn: GRAS nutrient ($2/kg)", BLUE, 7, "start");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Cu-Zn galvanic couple: 1.10 V drives O\u{2082} reduction + Cu\u{00b2}\u{207a} release with zero external power",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Cu catalyzes acetaldehyde formation; Zn co-precipitates sulfides; self-limiting via passivation",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 133: Ru(bpy)₃²⁺ Photoredox Esterification
+// ═══════════════════════════════════════════════════════════════
+fn sim_ru_photoredox_ester() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 133 \u{2014} Ru(bpy)\u{2083}\u{00b2}\u{207a} Photoredox: Single-Electron Ester Catalysis");
+
+    // Panel A: Quantum yield vs wavelength
+    let ax = 70.0; let ay = 65.0; let aw = 260.0; let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Absorption + Quantum Yield", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    svg += &label(200.0, 393.0, "Wavelength (nm)", MUTED, 8, "middle");
+    svg += &label(55.0, 220.0, "Absorbance / QY", MUTED, 7, "middle");
+
+    for i in 0..=5 {
+        let y = ay + ah - (i as f64 / 5.0) * ah;
+        svg += &hline(ax, ax + aw, y, GRID, "0.3");
+        svg += &label(ax - 5.0, y + 3.0, &format!("{:.1}", i as f64 * 0.2), MUTED, 7, "end");
+    }
+    for i in 0..=5 {
+        let x = ax + (i as f64 / 5.0) * aw;
+        let wl = 350 + i * 50;
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", ay + ah, ay + ah + 4.0);
+        svg += &label(x, ay + ah + 13.0, &format!("{wl}"), MUTED, 7, "middle");
+    }
+
+    let sx_a = |v: f64| -> f64 { ax + ((v - 350.0) / 250.0) * aw };
+    let sy_a = |v: f64| -> f64 { ay + ah - (v / 1.0) * ah };
+
+    // MLCT absorption band: peak at 452 nm, width ~50 nm
+    let mut abs_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=250 {
+        let wl = 350.0 + i as f64;
+        let abs = 0.85 * E.powf(-0.5 * ((wl - 452.0) / 30.0).powi(2))
+                + 0.15 * E.powf(-0.5 * ((wl - 380.0) / 20.0).powi(2));
+        abs_pts.push((wl, abs));
+    }
+    svg += &polyline_svg(&abs_pts, BLUE, "2.5", &sx_a, &sy_a);
+
+    // Quantum yield: roughly constant at 0.062 across MLCT band
+    let mut qy_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=250 {
+        let wl = 350.0 + i as f64;
+        let qy = if wl > 400.0 && wl < 520.0 {
+            0.062 * (1.0 - E.powf(-0.05 * (wl - 400.0))) * (1.0 - E.powf(-0.05 * (520.0 - wl)))
+        } else {
+            0.0
+        };
+        qy_pts.push((wl, qy * 10.0)); // scale up for visibility
+    }
+    svg += &polyline_svg(&qy_pts, GREEN, "2", &sx_a, &sy_a);
+
+    // Blue LED emission band
+    svg += &format!("<rect x=\"{}\" y=\"{ay}\" width=\"{}\" height=\"{ah}\" fill=\"{BLUE}\" opacity=\"0.06\"/>\n",
+        sx_a(440.0), sx_a(470.0) - sx_a(440.0));
+    svg += &label(sx_a(455.0), ay + ah - 15.0, "Blue LED", BLUE, 7, "middle");
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"135\" height=\"38\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n", ax + aw - 145.0, ay + 10.0);
+    svg += &hline(ax + aw - 140.0, ax + aw - 120.0, ay + 25.0, BLUE, "2.5");
+    svg += &label(ax + aw - 115.0, ay + 28.0, "MLCT absorption", BLUE, 7, "start");
+    svg += &hline(ax + aw - 140.0, ax + aw - 120.0, ay + 40.0, GREEN, "2");
+    svg += &label(ax + aw - 115.0, ay + 43.0, "Quantum yield (\u{00d7}10)", GREEN, 7, "start");
+
+    // Panel B: Mechanism
+    let bx = 390.0; let by = 65.0; let bw = 270.0; let bh = 310.0;
+    svg += &label(525.0, 57.0, "B: SET Catalytic Cycle", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Catalytic cycle boxes
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"110\" height=\"35\" rx=\"4\" fill=\"{BLUE}\" opacity=\"0.12\" stroke=\"{BLUE}\" stroke-width=\"1.5\"/>\n", bx + 80.0, by + 15.0);
+    svg += &label(bx + 135.0, by + 30.0, "Ru(bpy)\u{2083}\u{00b2}\u{207a}", BLUE, 8, "middle");
+    svg += &label(bx + 135.0, by + 43.0, "Ground state", BLUE, 7, "middle");
+
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{BLUE}\" stroke-width=\"1.5\"/>\n",
+        bx + 135.0, by + 52.0, bx + 135.0, by + 68.0);
+    svg += &label(bx + 195.0, by + 63.0, "h\u{03bd} (452 nm)", BLUE, 7, "start");
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"110\" height=\"35\" rx=\"4\" fill=\"{GREEN}\" opacity=\"0.12\" stroke=\"{GREEN}\" stroke-width=\"1.5\"/>\n", bx + 80.0, by + 70.0);
+    svg += &label(bx + 135.0, by + 85.0, "*Ru(bpy)\u{2083}\u{00b2}\u{207a}", GREEN, 8, "middle");
+    svg += &label(bx + 135.0, by + 98.0, "E\u{00b0}* = +0.77 V", GREEN, 7, "middle");
+
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"1.5\"/>\n",
+        bx + 135.0, by + 107.0, bx + 135.0, by + 123.0);
+    svg += &label(bx + 195.0, by + 118.0, "SET to EtOH", ACCENT, 7, "start");
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"110\" height=\"35\" rx=\"4\" fill=\"{ACCENT}\" opacity=\"0.12\" stroke=\"{ACCENT}\" stroke-width=\"1.5\"/>\n", bx + 80.0, by + 125.0);
+    svg += &label(bx + 135.0, by + 140.0, "EtOH\u{00b7}\u{207a} radical", ACCENT, 8, "middle");
+    svg += &label(bx + 135.0, by + 153.0, "cation", ACCENT, 7, "middle");
+
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{ACCENT}\" stroke-width=\"1.5\"/>\n",
+        bx + 135.0, by + 162.0, bx + 135.0, by + 178.0);
+    svg += &label(bx + 195.0, by + 173.0, "\u{2013}H\u{207a}", RED, 7, "start");
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"110\" height=\"30\" rx=\"4\" fill=\"{YELLOW}\" opacity=\"0.12\" stroke=\"{YELLOW}\" stroke-width=\"1.5\"/>\n", bx + 80.0, by + 180.0);
+    svg += &label(bx + 135.0, by + 198.0, "CH\u{2083}CHO", YELLOW, 8, "middle");
+
+    // Key advantage box
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"85\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 225.0);
+    svg += &label(bx + 135.0, by + 243.0, "vs Radical Oxidation Methods", TEXT, 8, "middle");
+    svg += &hline(bx + 30.0, bx + 240.0, by + 250.0, MUTED, "0.5");
+    svg += &label(bx + 35.0, by + 267.0, "OH\u{2022}: non-selective, attacks everything", RED, 7, "start");
+    svg += &label(bx + 35.0, by + 283.0, "SET: selective for electron-rich substrates", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 299.0, "Phenolics preserved (too high E\u{00b0})", GREEN, 7, "start");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Ru(bpy)\u{2083}\u{00b2}\u{207a}: visible-light SET oxidation of ethanol with phenolic preservation",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Blue LED (452 nm) + 0.1 mM catalyst = selective acetaldehyde generation, QY = 0.062",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 134: Sono-crystallization for Selective Acid Precipitation
+// ═══════════════════════════════════════════════════════════════
+fn sim_sono_crystallization_acid() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 134 \u{2014} Sono-Crystallization: Selective Acid Precipitation");
+
+    // Panel A: Crystal nucleation rate vs ultrasonic power
+    let ax = 70.0; let ay = 65.0; let aw = 260.0; let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Nucleation Rate vs Ultrasonic Power", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    svg += &label(200.0, 393.0, "Ultrasonic power (W/L)", MUTED, 8, "middle");
+    svg += &label(55.0, 220.0, "Nucleation rate (a.u.)", MUTED, 7, "middle");
+
+    for i in 0..=5 {
+        let y = ay + ah - (i as f64 / 5.0) * ah;
+        let val = i * 20;
+        svg += &hline(ax, ax + aw, y, GRID, "0.3");
+        svg += &label(ax - 5.0, y + 3.0, &format!("{val}"), MUTED, 7, "end");
+    }
+    for i in 0..=5 {
+        let x = ax + (i as f64 / 5.0) * aw;
+        let val = i * 20;
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", ay + ah, ay + ah + 4.0);
+        svg += &label(x, ay + ah + 13.0, &format!("{val}"), MUTED, 7, "middle");
+    }
+
+    let sx_a = |v: f64| -> f64 { ax + (v / 100.0) * aw };
+    let sy_a = |v: f64| -> f64 { ay + ah - (v / 100.0) * ah };
+
+    // Calcium oxalate: crystallizes easily under sono
+    let mut caox_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=100 {
+        let p = i as f64;
+        let rate = 90.0 * (1.0 - E.powf(-0.05 * p));
+        caox_pts.push((p, rate));
+    }
+    svg += &polyline_svg(&caox_pts, RED, "2.5", &sx_a, &sy_a);
+
+    // Potassium bitartrate: moderate
+    let mut kht_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=100 {
+        let p = i as f64;
+        let rate = 70.0 * (1.0 - E.powf(-0.03 * p));
+        kht_pts.push((p, rate));
+    }
+    svg += &polyline_svg(&kht_pts, ACCENT, "2.5", &sx_a, &sy_a);
+
+    // Fatty acid calcium salts: requires higher power
+    let mut faca_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=100 {
+        let p = i as f64;
+        let rate = 50.0 * (1.0 - E.powf(-0.02 * p));
+        faca_pts.push((p, rate));
+    }
+    svg += &polyline_svg(&faca_pts, PURPLE, "2", &sx_a, &sy_a);
+
+    // Esters: NOT precipitated (remain in solution)
+    svg += &hline(ax, ax + aw, sy_a(3.0), GREEN, "1");
+    svg += &label(ax + aw + 3.0, sy_a(3.0) + 3.0, "Esters (soluble)", GREEN, 6, "start");
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"155\" height=\"60\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n", ax + 10.0, ay + 10.0);
+    svg += &hline(ax + 15.0, ax + 35.0, ay + 28.0, RED, "2.5");
+    svg += &label(ax + 40.0, ay + 31.0, "Ca-oxalate (harsh)", RED, 7, "start");
+    svg += &hline(ax + 15.0, ax + 35.0, ay + 43.0, ACCENT, "2.5");
+    svg += &label(ax + 40.0, ay + 46.0, "K-bitartrate (sour)", ACCENT, 7, "start");
+    svg += &hline(ax + 15.0, ax + 35.0, ay + 58.0, PURPLE, "2");
+    svg += &label(ax + 40.0, ay + 61.0, "Ca-fatty acid (waxy)", PURPLE, 7, "start");
+
+    // Panel B: Process concept
+    let bx = 390.0; let by = 65.0; let bw = 270.0; let bh = 310.0;
+    svg += &label(525.0, 57.0, "B: Sono-Crystallization Process", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Step 1: Add CaCl2
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"45\" rx=\"4\" fill=\"{BLUE}\" opacity=\"0.10\" stroke=\"{BLUE}\" stroke-width=\"1\"/>\n", bx + 20.0, by + 15.0);
+    svg += &label(bx + 135.0, by + 32.0, "1. Add Ca\u{00b2}\u{207a} or K\u{207a} seed ions", BLUE, 8, "middle");
+    svg += &label(bx + 135.0, by + 48.0, "CaCl\u{2082} (5 mM) or KCl (10 mM)", BLUE, 7, "middle");
+
+    // Step 2: Sonicate
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"45\" rx=\"4\" fill=\"{GREEN}\" opacity=\"0.10\" stroke=\"{GREEN}\" stroke-width=\"1\"/>\n", bx + 20.0, by + 70.0);
+    svg += &label(bx + 135.0, by + 87.0, "2. Ultrasonic treatment (20\u{2013}40 kHz)", GREEN, 8, "middle");
+    svg += &label(bx + 135.0, by + 103.0, "30\u{2013}60 W/L for 10\u{2013}30 min", GREEN, 7, "middle");
+
+    // Step 3: Filter
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"45\" rx=\"4\" fill=\"{ACCENT}\" opacity=\"0.10\" stroke=\"{ACCENT}\" stroke-width=\"1\"/>\n", bx + 20.0, by + 125.0);
+    svg += &label(bx + 135.0, by + 142.0, "3. Filter crystals (0.45 \u{03bc}m)", ACCENT, 8, "middle");
+    svg += &label(bx + 135.0, by + 158.0, "Remove precipitated acid salts", ACCENT, 7, "middle");
+
+    // Result box
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"55\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 185.0);
+    svg += &label(bx + 135.0, by + 203.0, "Result: Selective Deacidification", TEXT, 8, "middle");
+    svg += &hline(bx + 30.0, bx + 240.0, by + 210.0, MUTED, "0.5");
+    svg += &label(bx + 35.0, by + 227.0, "Oxalic/tartaric acids: 70\u{2013}90% removed", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 243.0, "Esters: 100% retained (soluble)", GREEN, 7, "start");
+
+    // vs alternatives
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"55\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 255.0);
+    svg += &label(bx + 135.0, by + 273.0, "vs Alternatives", TEXT, 8, "middle");
+    svg += &label(bx + 35.0, by + 290.0, "NaOH neutralization: changes pH, off-flavors", RED, 7, "start");
+    svg += &label(bx + 35.0, by + 306.0, "Sono-cryst: no pH change, no reagent residue", GREEN, 7, "start");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Sono-crystallization: ultrasound drives selective precipitation of harsh acid salts",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "70\u{2013}90% oxalic/tartaric removal while retaining 100% of volatile esters in solution",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 135: Bipolar Membrane Electrodialysis pH Gradient
+// ═══════════════════════════════════════════════════════════════
+fn sim_bipolar_membrane_ph() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 135 \u{2014} Bipolar Membrane Electrodialysis: pH-Gradient Ester Catalysis");
+
+    // Panel A: pH profile across membrane stack
+    let ax = 70.0; let ay = 65.0; let aw = 260.0; let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: pH Profile Across BPM Stack", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    svg += &label(200.0, 393.0, "Position across membrane stack", MUTED, 8, "middle");
+    svg += &label(55.0, 220.0, "pH", MUTED, 7, "middle");
+
+    for i in 0..=7 {
+        let y = ay + ah - (i as f64 / 7.0) * ah;
+        let val = i * 2;
+        svg += &hline(ax, ax + aw, y, GRID, "0.3");
+        svg += &label(ax - 5.0, y + 3.0, &format!("{val}"), MUTED, 7, "end");
+    }
+
+    let sx_a = |v: f64| -> f64 { ax + (v / 100.0) * aw };
+    let sy_a = |v: f64| -> f64 { ay + ah - (v / 14.0) * ah };
+
+    // pH profile: sharp transitions at membrane positions
+    let mut ph_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=100 {
+        let x = i as f64;
+        let ph = if x < 15.0 { 4.0 } // feed
+        else if x < 25.0 { 4.0 - 2.5 * ((x - 15.0) / 10.0) } // CEM transition
+        else if x < 40.0 { 1.5 } // acid chamber
+        else if x < 50.0 { 1.5 + 11.0 * ((x - 40.0) / 10.0) } // BPM transition
+        else if x < 65.0 { 12.5 } // base chamber
+        else if x < 75.0 { 12.5 - 8.5 * ((x - 65.0) / 10.0) } // AEM transition
+        else { 4.0 }; // product
+        ph_pts.push((x, ph));
+    }
+    svg += &polyline_svg(&ph_pts, ACCENT, "2.5", &sx_a, &sy_a);
+
+    // Zone labels
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{}\" fill=\"{RED}\" opacity=\"0.06\"/>\n",
+        sx_a(25.0), ay, sx_a(40.0) - sx_a(25.0), ah);
+    svg += &label(sx_a(32.5), ay + 15.0, "Acid", RED, 7, "middle");
+    svg += &label(sx_a(32.5), ay + 27.0, "pH 1.5", RED, 7, "middle");
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{}\" fill=\"{BLUE}\" opacity=\"0.06\"/>\n",
+        sx_a(50.0), ay, sx_a(65.0) - sx_a(50.0), ah);
+    svg += &label(sx_a(57.5), ay + 15.0, "Base", BLUE, 7, "middle");
+    svg += &label(sx_a(57.5), ay + 27.0, "pH 12.5", BLUE, 7, "middle");
+
+    // Membrane positions
+    svg += &vline(sx_a(20.0), ay, ay + ah, YELLOW, "1.5");
+    svg += &label(sx_a(20.0), ay + ah + 13.0, "CEM", YELLOW, 7, "middle");
+
+    svg += &vline(sx_a(45.0), ay, ay + ah, GREEN, "1.5");
+    svg += &label(sx_a(45.0), ay + ah + 13.0, "BPM", GREEN, 7, "middle");
+
+    svg += &vline(sx_a(70.0), ay, ay + ah, YELLOW, "1.5");
+    svg += &label(sx_a(70.0), ay + ah + 13.0, "AEM", YELLOW, 7, "middle");
+
+    // Panel B: Application to spirit
+    let bx = 390.0; let by = 65.0; let bw = 270.0; let bh = 310.0;
+    svg += &label(525.0, 57.0, "B: Spirit Application", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Process steps
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"50\" rx=\"4\" fill=\"{RED}\" opacity=\"0.10\" stroke=\"{RED}\" stroke-width=\"1\"/>\n", bx + 20.0, by + 15.0);
+    svg += &label(bx + 135.0, by + 32.0, "Acid Chamber (pH 1.5)", RED, 8, "middle");
+    svg += &label(bx + 135.0, by + 47.0, "Acid-catalyzed esterification", RED, 7, "middle");
+    svg += &label(bx + 135.0, by + 59.0, "k\u{1d62} \u{2248} 100\u{00d7} vs bulk spirit pH 4", ACCENT, 7, "middle");
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"50\" rx=\"4\" fill=\"{BLUE}\" opacity=\"0.10\" stroke=\"{BLUE}\" stroke-width=\"1\"/>\n", bx + 20.0, by + 80.0);
+    svg += &label(bx + 135.0, by + 97.0, "Base Chamber (pH 12.5)", BLUE, 8, "middle");
+    svg += &label(bx + 135.0, by + 112.0, "Saponifies excess fatty acids", BLUE, 7, "middle");
+    svg += &label(bx + 135.0, by + 124.0, "Soap precipitates, removed by filter", BLUE, 7, "middle");
+
+    // Key advantages
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"130\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 145.0);
+    svg += &label(bx + 135.0, by + 163.0, "Key Advantages", TEXT, 8, "middle");
+    svg += &hline(bx + 30.0, bx + 240.0, by + 170.0, MUTED, "0.5");
+
+    svg += &label(bx + 35.0, by + 187.0, "\u{2022} No chemical acid/base added", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 203.0, "\u{2022} H\u{207a}/OH\u{207b} from water splitting at BPM", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 219.0, "\u{2022} Spirit returns to original pH", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 235.0, "\u{2022} Continuous flow operation", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 251.0, "\u{2022} Energy: ~1 kWh/L processed", ACCENT, 7, "start");
+    svg += &label(bx + 35.0, by + 267.0, "\u{2022} Dual function: ester + deacidify", BLUE, 7, "start");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "BPM electrodialysis: creates pH 1.5 / pH 12.5 zones from water splitting, no chemical addition",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Acid chamber: 100\u{00d7} ester catalysis; base chamber: fatty acid saponification + removal",
         GREEN, 8, "middle");
 
     svg.push_str("</svg>");

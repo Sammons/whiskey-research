@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 131 — Membrane Distillation: Thermal-Gradient Congener Concentration</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Permeate Flux vs ΔT (Feed–Permeate)</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="200" y="393" fill="#8b949e" font-size="8" text-anchor="middle">ΔT (°C)</text>
+<text x="55" y="220" fill="#8b949e" font-size="7" text-anchor="middle">Flux (kg/m²/h)</text>
+<line x1="70" y1="375" x2="330" y2="375" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<line x1="70" y1="313" x2="330" y2="313" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">4</text>
+<line x1="70" y1="251" x2="330" y2="251" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">8</text>
+<line x1="70" y1="189" x2="330" y2="189" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="192" fill="#8b949e" font-size="7" text-anchor="end">12</text>
+<line x1="70" y1="127" x2="330" y2="127" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">16</text>
+<line x1="70" y1="65" x2="330" y2="65" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">20</text>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="388" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="113.33333333333333" y1="375" x2="113.33333333333333" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="113.33333333333333" y="388" fill="#8b949e" font-size="7" text-anchor="middle">10</text>
+<line x1="156.66666666666666" y1="375" x2="156.66666666666666" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="156.66666666666666" y="388" fill="#8b949e" font-size="7" text-anchor="middle">20</text>
+<line x1="200" y1="375" x2="200" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="200" y="388" fill="#8b949e" font-size="7" text-anchor="middle">30</text>
+<line x1="243.33333333333331" y1="375" x2="243.33333333333331" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="243.33333333333331" y="388" fill="#8b949e" font-size="7" text-anchor="middle">40</text>
+<line x1="286.6666666666667" y1="375" x2="286.6666666666667" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="286.6666666666667" y="388" fill="#8b949e" font-size="7" text-anchor="middle">50</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="388" fill="#8b949e" font-size="7" text-anchor="middle">60</text>
+<polyline points="70.0,375.0 74.3,374.9 78.7,374.7 83.0,374.4 87.3,374.1 91.7,373.8 96.0,373.5 100.3,373.1 104.7,372.7 109.0,372.3 113.3,371.9 117.7,371.4 122.0,371.0 126.3,370.5 130.7,370.0 135.0,369.5 139.3,369.0 143.7,368.5 148.0,367.9 152.3,367.3 156.7,366.8 161.0,366.2 165.3,365.6 169.7,365.0 174.0,364.4 178.3,363.8 182.7,363.1 187.0,362.5 191.3,361.8 195.7,361.2 200.0,360.5 204.3,359.8 208.7,359.1 213.0,358.4 217.3,357.7 221.7,357.0 226.0,356.3 230.3,355.6 234.7,354.8 239.0,354.1 243.3,353.3 247.7,352.5 252.0,351.8 256.3,351.0 260.7,350.2 265.0,349.4 269.3,348.6 273.7,347.8 278.0,347.0 282.3,346.2 286.7,345.4 291.0,344.5 295.3,343.7 299.7,342.8 304.0,342.0 308.3,341.1 312.7,340.3 317.0,339.4 321.3,338.5 325.7,337.6 330.0,336.7" fill="none" stroke="#3fb950" stroke-width="2.5"/>
+<polyline points="70.0,375.0 74.3,374.9 78.7,374.8 83.0,374.6 87.3,374.4 91.7,374.1 96.0,373.9 100.3,373.6 104.7,373.3 109.0,373.0 113.3,372.7 117.7,372.3 122.0,372.0 126.3,371.6 130.7,371.3 135.0,370.9 139.3,370.5 143.7,370.1 148.0,369.7 152.3,369.3 156.7,368.8 161.0,368.4 165.3,368.0 169.7,367.5 174.0,367.0 178.3,366.6 182.7,366.1 187.0,365.6 191.3,365.1 195.7,364.6 200.0,364.1 204.3,363.6 208.7,363.1 213.0,362.6 217.3,362.0 221.7,361.5 226.0,361.0 230.3,360.4 234.7,359.9 239.0,359.3 243.3,358.7 247.7,358.2 252.0,357.6 256.3,357.0 260.7,356.4 265.0,355.8 269.3,355.2 273.7,354.6 278.0,354.0 282.3,353.4 286.7,352.8 291.0,352.1 295.3,351.5 299.7,350.9 304.0,350.2 308.3,349.6 312.7,348.9 317.0,348.3 321.3,347.6 325.7,347.0 330.0,346.3" fill="none" stroke="#58a6ff" stroke-width="2.5"/>
+<polyline points="70.0,375.0 74.3,374.9 78.7,374.8 83.0,374.7 87.3,374.6 91.7,374.4 96.0,374.2 100.3,374.1 104.7,373.9 109.0,373.7 113.3,373.4 117.7,373.2 122.0,373.0 126.3,372.8 130.7,372.5 135.0,372.3 139.3,372.0 143.7,371.7 148.0,371.5 152.3,371.2 156.7,370.9 161.0,370.6 165.3,370.3 169.7,370.0 174.0,369.7 178.3,369.4 182.7,369.1 187.0,368.7 191.3,368.4 195.7,368.1 200.0,367.7 204.3,367.4 208.7,367.1 213.0,366.7 217.3,366.4 221.7,366.0 226.0,365.6 230.3,365.3 234.7,364.9 239.0,364.5 243.3,364.2 247.7,363.8 252.0,363.4 256.3,363.0 260.7,362.6 265.0,362.2 269.3,361.8 273.7,361.4 278.0,361.0 282.3,360.6 286.7,360.2 291.0,359.8 295.3,359.3 299.7,358.9 304.0,358.5 308.3,358.1 312.7,357.6 317.0,357.2 321.3,356.8 325.7,356.3 330.0,355.9" fill="none" stroke="#d29922" stroke-width="2"/>
+<rect x="156.66666666666666" y="65" width="86.66666666666666" height="310" fill="#e8a665" opacity="0.06"/>
+<text x="200" y="80" fill="#e8a665" font-size="7" text-anchor="middle">Practical zone</text>
+<rect x="80" y="75" width="130" height="58" rx="3" fill="#30363d" opacity="0.8"/>
+<line x1="85" y1="93" x2="105" y2="93" stroke="#3fb950" stroke-width="2.5"/>
+<text x="110" y="96" fill="#3fb950" font-size="7" text-anchor="start">PTFE (0.2 μm)</text>
+<line x1="85" y1="108" x2="105" y2="108" stroke="#58a6ff" stroke-width="2.5"/>
+<text x="110" y="111" fill="#58a6ff" font-size="7" text-anchor="start">PVDF (0.2 μm)</text>
+<line x1="85" y1="123" x2="105" y2="123" stroke="#d29922" stroke-width="2"/>
+<text x="110" y="126" fill="#d29922" font-size="7" text-anchor="start">PP (0.1 μm)</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Congener Selectivity by Volatility</text>
+<rect x="390" y="65" width="270" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="525" y="90" fill="#e6edf3" font-size="8" text-anchor="middle">Enrichment factor in permeate</text>
+<line x1="400" y1="97" x2="650" y2="97" stroke="#8b949e" stroke-width="0.5"/>
+<rect x="490" y="115" width="106.2" height="14" fill="#3fb950" opacity="0.7" rx="2"/>
+<text x="485" y="126" fill="#3fb950" font-size="7" text-anchor="end">Ethyl acetate</text>
+<text x="601.25" y="126" fill="#3fb950" font-size="7" text-anchor="start">8.5× (bp 77°C)</text>
+<rect x="490" y="157" width="150.0" height="14" fill="#58a6ff" opacity="0.7" rx="2"/>
+<text x="485" y="168" fill="#58a6ff" font-size="7" text-anchor="end">Acetaldehyde</text>
+<text x="645" y="168" fill="#58a6ff" font-size="7" text-anchor="start">12.0× (bp 20°C)</text>
+<rect x="490" y="199" width="40.0" height="14" fill="#e8a665" opacity="0.7" rx="2"/>
+<text x="485" y="210" fill="#e8a665" font-size="7" text-anchor="end">Ethyl hexanoate</text>
+<text x="535" y="210" fill="#e8a665" font-size="7" text-anchor="start">3.2× (bp 167°C)</text>
+<rect x="490" y="241" width="56.2" height="14" fill="#d29922" opacity="0.7" rx="2"/>
+<text x="485" y="252" fill="#d29922" font-size="7" text-anchor="end">Isoamyl alcohol</text>
+<text x="551.25" y="252" fill="#d29922" font-size="7" text-anchor="start">4.5× (bp 131°C)</text>
+<rect x="490" y="283" width="3.7" height="14" fill="#f85149" opacity="0.7" rx="2"/>
+<text x="485" y="294" fill="#f85149" font-size="7" text-anchor="end">Vanillin</text>
+<text x="498.75" y="294" fill="#f85149" font-size="7" text-anchor="start">0.3× (bp 285°C)</text>
+<rect x="490" y="325" width="0.6" height="14" fill="#bc8cff" opacity="0.7" rx="2"/>
+<text x="485" y="336" fill="#bc8cff" font-size="7" text-anchor="end">Ellagitannin</text>
+<text x="495.625" y="336" fill="#bc8cff" font-size="7" text-anchor="start">0.1× (bp 500°C)</text>
+<rect x="405" y="310" width="240" height="50" rx="4" fill="#30363d" opacity="0.5"/>
+<text x="525" y="327" fill="#e6edf3" font-size="8" text-anchor="middle">Key: Low bp = high enrichment</text>
+<text x="525" y="342" fill="#3fb950" font-size="7" text-anchor="middle">Heavy compounds (tannins) retained</text>
+<text x="525" y="355" fill="#e8a665" font-size="7" text-anchor="middle">Volatile esters selectively concentrated</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/><text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Membrane distillation: thermal gradient drives volatile congeners through hydrophobic pores</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Enrichment 3–12× for esters/aldehydes while retaining heavy oak compounds in retentate</text>
+</svg>

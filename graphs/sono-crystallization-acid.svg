@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 134 — Sono-Crystallization: Selective Acid Precipitation</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Nucleation Rate vs Ultrasonic Power</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="200" y="393" fill="#8b949e" font-size="8" text-anchor="middle">Ultrasonic power (W/L)</text>
+<text x="55" y="220" fill="#8b949e" font-size="7" text-anchor="middle">Nucleation rate (a.u.)</text>
+<line x1="70" y1="375" x2="330" y2="375" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<line x1="70" y1="313" x2="330" y2="313" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">20</text>
+<line x1="70" y1="251" x2="330" y2="251" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">40</text>
+<line x1="70" y1="189" x2="330" y2="189" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="192" fill="#8b949e" font-size="7" text-anchor="end">60</text>
+<line x1="70" y1="127" x2="330" y2="127" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">80</text>
+<line x1="70" y1="65" x2="330" y2="65" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">100</text>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="388" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="122" y1="375" x2="122" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="122" y="388" fill="#8b949e" font-size="7" text-anchor="middle">20</text>
+<line x1="174" y1="375" x2="174" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="174" y="388" fill="#8b949e" font-size="7" text-anchor="middle">40</text>
+<line x1="226" y1="375" x2="226" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="226" y="388" fill="#8b949e" font-size="7" text-anchor="middle">60</text>
+<line x1="278" y1="375" x2="278" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="278" y="388" fill="#8b949e" font-size="7" text-anchor="middle">80</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="388" fill="#8b949e" font-size="7" text-anchor="middle">100</text>
+<polyline points="70.0,375.0 72.6,361.4 75.2,348.4 77.8,336.1 80.4,324.4 83.0,313.3 85.6,302.7 88.2,292.6 90.8,283.0 93.4,273.9 96.0,265.2 98.6,257.0 101.2,249.1 103.8,241.7 106.4,234.5 109.0,227.8 111.6,221.4 114.2,215.2 116.8,209.4 119.4,203.9 122.0,198.6 124.6,193.6 127.2,188.9 129.8,184.3 132.4,180.0 135.0,175.9 137.6,172.0 140.2,168.3 142.8,164.8 145.4,161.4 148.0,158.3 150.6,155.2 153.2,152.3 155.8,149.6 158.4,147.0 161.0,144.5 163.6,142.1 166.2,139.9 168.8,137.7 171.4,135.7 174.0,133.8 176.6,131.9 179.2,130.2 181.8,128.5 184.4,126.9 187.0,125.4 189.6,124.0 192.2,122.6 194.8,121.3 197.4,120.1 200.0,118.9 202.6,117.8 205.2,116.7 207.8,115.7 210.4,114.8 213.0,113.8 215.6,113.0 218.2,112.1 220.8,111.4 223.4,110.6 226.0,109.9 228.6,109.2 231.2,108.6 233.8,108.0 236.4,107.4 239.0,106.8 241.6,106.3 244.2,105.8 246.8,105.3 249.4,104.9 252.0,104.4 254.6,104.0 257.2,103.6 259.8,103.3 262.4,102.9 265.0,102.6 267.6,102.2 270.2,101.9 272.8,101.6 275.4,101.4 278.0,101.1 280.6,100.9 283.2,100.6 285.8,100.4 288.4,100.2 291.0,100.0 293.6,99.8 296.2,99.6 298.8,99.4 301.4,99.3 304.0,99.1 306.6,98.9 309.2,98.8 311.8,98.7 314.4,98.5 317.0,98.4 319.6,98.3 322.2,98.2 324.8,98.1 327.4,98.0 330.0,97.9" fill="none" stroke="#f85149" stroke-width="2.5"/>
+<polyline points="70.0,375.0 72.6,368.6 75.2,362.4 77.8,356.3 80.4,350.5 83.0,344.8 85.6,339.3 88.2,333.9 90.8,328.7 93.4,323.7 96.0,318.8 98.6,314.0 101.2,309.4 103.8,304.9 106.4,300.6 109.0,296.4 111.6,292.3 114.2,288.3 116.8,284.5 119.4,280.7 122.0,277.1 124.6,273.6 127.2,270.2 129.8,266.8 132.4,263.6 135.0,260.5 137.6,257.5 140.2,254.5 142.8,251.7 145.4,248.9 148.0,246.2 150.6,243.6 153.2,241.1 155.8,238.6 158.4,236.2 161.0,233.9 163.6,231.7 166.2,229.5 168.8,227.4 171.4,225.3 174.0,223.4 176.6,221.4 179.2,219.6 181.8,217.7 184.4,216.0 187.0,214.3 189.6,212.6 192.2,211.0 194.8,209.4 197.4,207.9 200.0,206.4 202.6,205.0 205.2,203.6 207.8,202.3 210.4,200.9 213.0,199.7 215.6,198.4 218.2,197.2 220.8,196.1 223.4,195.0 226.0,193.9 228.6,192.8 231.2,191.8 233.8,190.8 236.4,189.8 239.0,188.9 241.6,188.0 244.2,187.1 246.8,186.2 249.4,185.4 252.0,184.6 254.6,183.8 257.2,183.0 259.8,182.3 262.4,181.6 265.0,180.9 267.6,180.2 270.2,179.5 272.8,178.9 275.4,178.3 278.0,177.7 280.6,177.1 283.2,176.5 285.8,176.0 288.4,175.5 291.0,174.9 293.6,174.4 296.2,174.0 298.8,173.5 301.4,173.0 304.0,172.6 306.6,172.2 309.2,171.7 311.8,171.3 314.4,170.9 317.0,170.6 319.6,170.2 322.2,169.8 324.8,169.5 327.4,169.1 330.0,168.8" fill="none" stroke="#e8a665" stroke-width="2.5"/>
+<polyline points="70.0,375.0 72.6,371.9 75.2,368.9 77.8,366.0 80.4,363.1 83.0,360.2 85.6,357.5 88.2,354.8 90.8,352.1 93.4,349.5 96.0,346.9 98.6,344.4 101.2,341.9 103.8,339.5 106.4,337.1 109.0,334.8 111.6,332.6 114.2,330.3 116.8,328.1 119.4,326.0 122.0,323.9 124.6,321.8 127.2,319.8 129.8,317.8 132.4,315.9 135.0,314.0 137.6,312.2 140.2,310.3 142.8,308.5 145.4,306.8 148.0,305.1 150.6,303.4 153.2,301.7 155.8,300.1 158.4,298.5 161.0,297.0 163.6,295.4 166.2,294.0 168.8,292.5 171.4,291.1 174.0,289.6 176.6,288.3 179.2,286.9 181.8,285.6 184.4,284.3 187.0,283.0 189.6,281.8 192.2,280.5 194.8,279.3 197.4,278.2 200.0,277.0 202.6,275.9 205.2,274.8 207.8,273.7 210.4,272.6 213.0,271.6 215.6,270.6 218.2,269.6 220.8,268.6 223.4,267.6 226.0,266.7 228.6,265.8 231.2,264.9 233.8,264.0 236.4,263.1 239.0,262.2 241.6,261.4 244.2,260.6 246.8,259.8 249.4,259.0 252.0,258.2 254.6,257.5 257.2,256.7 259.8,256.0 262.4,255.3 265.0,254.6 267.6,253.9 270.2,253.2 272.8,252.6 275.4,251.9 278.0,251.3 280.6,250.7 283.2,250.1 285.8,249.5 288.4,248.9 291.0,248.3 293.6,247.8 296.2,247.2 298.8,246.7 301.4,246.1 304.0,245.6 306.6,245.1 309.2,244.6 311.8,244.1 314.4,243.7 317.0,243.2 319.6,242.7 322.2,242.3 324.8,241.8 327.4,241.4 330.0,241.0" fill="none" stroke="#bc8cff" stroke-width="2"/>
+<line x1="70" y1="365.7" x2="330" y2="365.7" stroke="#3fb950" stroke-width="1"/>
+<text x="333" y="368.7" fill="#3fb950" font-size="6" text-anchor="start">Esters (soluble)</text>
+<rect x="80" y="75" width="155" height="60" rx="3" fill="#30363d" opacity="0.8"/>
+<line x1="85" y1="93" x2="105" y2="93" stroke="#f85149" stroke-width="2.5"/>
+<text x="110" y="96" fill="#f85149" font-size="7" text-anchor="start">Ca-oxalate (harsh)</text>
+<line x1="85" y1="108" x2="105" y2="108" stroke="#e8a665" stroke-width="2.5"/>
+<text x="110" y="111" fill="#e8a665" font-size="7" text-anchor="start">K-bitartrate (sour)</text>
+<line x1="85" y1="123" x2="105" y2="123" stroke="#bc8cff" stroke-width="2"/>
+<text x="110" y="126" fill="#bc8cff" font-size="7" text-anchor="start">Ca-fatty acid (waxy)</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Sono-Crystallization Process</text>
+<rect x="390" y="65" width="270" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<rect x="410" y="80" width="230" height="45" rx="4" fill="#58a6ff" opacity="0.10" stroke="#58a6ff" stroke-width="1"/>
+<text x="525" y="97" fill="#58a6ff" font-size="8" text-anchor="middle">1. Add Ca²⁺ or K⁺ seed ions</text>
+<text x="525" y="113" fill="#58a6ff" font-size="7" text-anchor="middle">CaCl₂ (5 mM) or KCl (10 mM)</text>
+<rect x="410" y="135" width="230" height="45" rx="4" fill="#3fb950" opacity="0.10" stroke="#3fb950" stroke-width="1"/>
+<text x="525" y="152" fill="#3fb950" font-size="8" text-anchor="middle">2. Ultrasonic treatment (20–40 kHz)</text>
+<text x="525" y="168" fill="#3fb950" font-size="7" text-anchor="middle">30–60 W/L for 10–30 min</text>
+<rect x="410" y="190" width="230" height="45" rx="4" fill="#e8a665" opacity="0.10" stroke="#e8a665" stroke-width="1"/>
+<text x="525" y="207" fill="#e8a665" font-size="8" text-anchor="middle">3. Filter crystals (0.45 μm)</text>
+<text x="525" y="223" fill="#e8a665" font-size="7" text-anchor="middle">Remove precipitated acid salts</text>
+<rect x="410" y="250" width="230" height="55" rx="4" fill="#30363d" opacity="0.5"/>
+<text x="525" y="268" fill="#e6edf3" font-size="8" text-anchor="middle">Result: Selective Deacidification</text>
+<line x1="420" y1="275" x2="630" y2="275" stroke="#8b949e" stroke-width="0.5"/>
+<text x="425" y="292" fill="#3fb950" font-size="7" text-anchor="start">Oxalic/tartaric acids: 70–90% removed</text>
+<text x="425" y="308" fill="#3fb950" font-size="7" text-anchor="start">Esters: 100% retained (soluble)</text>
+<rect x="410" y="320" width="230" height="55" rx="4" fill="#30363d" opacity="0.5"/>
+<text x="525" y="338" fill="#e6edf3" font-size="8" text-anchor="middle">vs Alternatives</text>
+<text x="425" y="355" fill="#f85149" font-size="7" text-anchor="start">NaOH neutralization: changes pH, off-flavors</text>
+<text x="425" y="371" fill="#3fb950" font-size="7" text-anchor="start">Sono-cryst: no pH change, no reagent residue</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/><text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Sono-crystallization: ultrasound drives selective precipitation of harsh acid salts</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">70–90% oxalic/tartaric removal while retaining 100% of volatile esters in solution</text>
+</svg>
