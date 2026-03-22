@@ -1340,13 +1340,13 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   </tr>
   <tr>
     <td><strong>1&ndash;3</strong></td>
-    <td>Oak extraction: charred American oak staves with ultrasonic pulsing (3&times;30 min at 40 kHz, 24h rest; &sect;3.14). PDMS membrane O<sub>2</sub> at <strong>tuned kLa &asymp; 1&times;10<sup>&minus;6</sup></strong>. <strong>Add riboflavin (8 mg/L) + blue LED</strong> (&sect;4.8) during this phase for &sup1;O&sub2;-mediated phenol polymerization. Temperature cycle: 50&deg;C/4h &rarr; 4&deg;C/20h.</td>
+    <td>Oak extraction via <strong>sono-electro-Fenton</strong>: charred American oak staves + oak biochar cathode (&sect;4.11) in ultrasonic bath (40 kHz, 40 W/L, 3&times;30 min pulsed with 24h rest; &sect;3.14). Electro-Fenton cell at 10 mA drives controlled oxidation; sonication triples H<sub>2</sub>O<sub>2</sub> yield (&sect;3.14). PDMS membrane O<sub>2</sub> at <strong>kLa &asymp; 5&times;10<sup>&minus;6</sup></strong> (&sect;4.7). <strong>Riboflavin (8 mg/L) + blue LED</strong> (&sect;4.8) for &sup1;O<sub>2</sub> phenol polymerization. Temperature cycle: 50&deg;C/4h &rarr; 4&deg;C/20h.</td>
     <td>65% ABV</td>
     <td>Phenolic extraction + <span class="barrier-tag oxidation">OXIDATION</span> + selective &sup1;O&sub2; phenol polymerization</td>
   </tr>
   <tr>
     <td><strong>3&ndash;4</strong></td>
-    <td>Remove wood and turn off LED (riboflavin largely bleached by now). Optional: add laccase (&sect;4.4) for additional quinone formation, 24&ndash;48h at 35&deg;C, then heat-kill at 70&deg;C/15 min. Then recirculate through Amberlyst-15 catalyst bed at 50&deg;C with molecular sieve 3A water trap.</td>
+    <td>Remove wood, turn off LED and ultrasound. Optional: add laccase (&sect;4.4) for quinone formation, 24&ndash;48h at 35&deg;C, heat-kill at 70&deg;C/15 min. Then recirculate through <strong>Amberlyst-15 + molecular sieve 3A</strong> (&sect;1.12) packed-bed loop at 50&deg;C. Sieve removes water, driving conversion past K<sub>eq</sub> limit to &gt;95%.</td>
     <td>65% ABV</td>
     <td><span class="barrier-tag ester">ESTER</span> equilibrium acceleration (must precede dilution)</td>
   </tr>
@@ -1372,6 +1372,11 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 </div>
 
 <p>Total elapsed time: <strong>8 weeks</strong>. Conventional equivalent: <strong>5&ndash;10 years</strong> in barrel.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/integrated-protocol.svg" alt="8-week integrated protocol: predicted composition timeline for all key species">
+  <figcaption><strong>Fig. 21.</strong> Integrated 8-week protocol simulation tracking 6 key species (each normalized to its peak value). DMS is eliminated in Week 0 (Cu/AC). Vanillin and polymeric tannin rise during sono-electro-Fenton extraction (Weeks 1&ndash;3), then vanillin drops as laccase oxidizes it to quinones. Ethyl acetate surges during the Amberlyst + molecular sieve phase (Weeks 3&ndash;4), reaching the 50&ndash;200 mg/L target range. The Week 4&ndash;5 dilution step (65% &rarr; 37% ABV) triggers cluster nucleation. Phase-shaded backgrounds show the protocol sequence.</figcaption>
+</figure>
 
 <h3>5.2 Validation Framework</h3>
 

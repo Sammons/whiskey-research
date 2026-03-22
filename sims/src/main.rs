@@ -78,6 +78,9 @@ fn main() {
 
     fs::write("../graphs/sono-electro-fenton.svg", sim_sono_electro_fenton()).unwrap();
     println!("Wrote sono-electro-fenton.svg");
+
+    fs::write("../graphs/integrated-protocol.svg", sim_integrated_protocol()).unwrap();
+    println!("Wrote integrated-protocol.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -3254,6 +3257,275 @@ fn sim_sono_electro_fenton() -> String {
 
     svg += &label(lx, mt + 340.0, "Gonzalez-Garcia 2007:", CYAN, 9, "start");
     svg += &label(lx, mt + 355.0, "US + EF = 3\u{00d7} silent EF", TEXT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_integrated_protocol() -> String {
+    // Full 8-week integrated protocol simulation
+    // Tracks 6 species through all protocol phases
+    let w = 800.0_f64;
+    let h = 650.0;
+    let mut svg = svg_header(w, h,
+        "8-Week Integrated Protocol: Predicted Composition Timeline");
+
+    let total_days = 56.0_f64; // 8 weeks
+    let dt = 300.0_f64; // 5-minute timestep
+    let n_steps = (total_days * 86400.0 / dt) as usize;
+    let sample_every = n_steps / 500;
+
+    // Species (all in mg/L for plotting):
+    // 1. DMS (dimethyl sulfide) — start high, remove in week 0
+    // 2. Vanillin — extracted from oak weeks 1-3
+    // 3. Acetaldehyde — from Fenton oxidation
+    // 4. Ethyl acetate — from esterification weeks 3-4+
+    // 5. Polymeric tannin — from condensation
+    // 6. Acetic acid — from oxidation cascade
+
+    let mut dms: f64 = 0.15; // mg/L (typical new make)
+    let mut vanillin: f64 = 0.5; // mg/L (trace from distillation)
+    let mut ach: f64 = 2.0; // mg/L (trace from fermentation)
+    let mut etac: f64 = 20.0; // mg/L (from fermentation)
+    let mut poly_tannin: f64 = 0.0; // mg/L
+    let mut acetic: f64 = 50.0; // mg/L (from fermentation)
+
+    let mut data: Vec<Vec<(f64, f64)>> = vec![Vec::new(); 6];
+
+    // Phase boundaries (in days)
+    let phase_boundaries = [0.0_f64, 1.0, 21.0, 28.0, 35.0, 49.0, 56.0];
+    // 0: Week 0 (day 0-1) — Cu/AC sulfur removal
+    // 1: Weeks 1-3 (day 1-21) — Oak extraction + sono-EF + riboflavin
+    // 2: Weeks 3-4 (day 21-28) — Laccase + Amberlyst + mol sieve
+    // 3: Weeks 4-5 (day 28-35) — Dilution + cluster nucleation
+    // 4: Weeks 5-7 (day 35-49) — Freeze-thaw cycling
+    // 5: Weeks 7-8 (day 49-56) — Rest + final oxidation
+
+    for step in 0..n_steps {
+        let t_s = step as f64 * dt;
+        let t_d = t_s / 86400.0;
+
+        // Determine current phase
+        let phase = if t_d < 1.0 { 0 }
+            else if t_d < 21.0 { 1 }
+            else if t_d < 28.0 { 2 }
+            else if t_d < 35.0 { 3 }
+            else if t_d < 49.0 { 4 }
+            else { 5 };
+
+        match phase {
+            0 => {
+                // Cu/AC cartridge: DMS adsorption (exponential decay)
+                dms *= (1.0 - 5e-4 * dt / 86400.0 * 86400.0).max(0.0);
+                // ~95% removal in first day
+                let k_dms = 3.0 / 86400.0; // rate constant for ~95% removal in 1 day
+                dms *= (-k_dms * dt).exp();
+            }
+            1 => {
+                // Sono-electro-Fenton phase: oak extraction + oxidation
+                // Temperature cycling: average ~35C equivalent
+                let van_eq = 8.0_f64; // mg/L equilibrium vanillin from oak
+                let k_extract = 0.15 / 86400.0; // sono-enhanced extraction rate
+                vanillin += k_extract * (van_eq - vanillin) * dt;
+
+                // Fenton oxidation: controlled AcH production
+                // Electro-Fenton at 10 mA + sonication boost
+                let ach_rate = 0.8 / 86400.0; // mg/L/s (controlled by current)
+                ach += ach_rate * dt;
+                // AcH also converts to acetic acid slowly
+                let ach_to_acetic = 0.05 / 86400.0 * ach;
+                ach -= ach_to_acetic * dt;
+                acetic += ach_to_acetic * dt;
+
+                // Tannin polymerization (AcH-mediated + riboflavin 1O2)
+                // Rate proportional to AcH * vanillin
+                let poly_rate = 2e-5 / 86400.0 * ach * vanillin.max(0.1);
+                poly_tannin += poly_rate * dt;
+
+                // Some esterification happening naturally
+                let ester_rate = 0.02 / 86400.0 * acetic;
+                etac += ester_rate * dt;
+                acetic -= ester_rate * dt * 0.5;
+            }
+            2 => {
+                // Laccase (first 2 days) then Amberlyst + mol sieve
+                let in_laccase = t_d < 23.0;
+                if in_laccase {
+                    // Laccase: phenol polymerization burst
+                    let poly_rate = 0.5 / 86400.0;
+                    poly_tannin += poly_rate * dt;
+                    // Vanillin consumed by laccase oxidation
+                    vanillin *= (1.0 - 0.02 / 86400.0 * dt).max(0.0);
+                }
+
+                // Amberlyst + molecular sieve: aggressive esterification
+                // Rate: ~10x natural + Le Chatelier from water removal
+                let ester_rate = 2.0 / 86400.0 * acetic.max(0.1);
+                etac += ester_rate * dt;
+                acetic -= ester_rate * dt * 0.3;
+                // AcH -> acetal formation (slow)
+                ach *= (1.0 - 0.01 / 86400.0 * dt).max(0.0);
+            }
+            3 => {
+                // Dilution: 65% -> 37% ABV
+                // Clustering nucleation — tannin self-assembly
+                // Species concentrations decrease by dilution factor (~0.57)
+                if (t_d - 28.0).abs() < dt / 86400.0 {
+                    // One-time dilution event
+                    let dilution = 0.57;
+                    vanillin *= dilution;
+                    ach *= dilution;
+                    etac *= dilution;
+                    acetic *= dilution;
+                    poly_tannin *= dilution;
+                    dms *= dilution;
+                }
+                // Slow reactions at 37% ABV
+                let poly_rate = 0.05 / 86400.0;
+                poly_tannin += poly_rate * dt;
+            }
+            4 => {
+                // Freeze-thaw cycling: -15C/25C
+                // Temperature cycling enhances tannin-tannin interactions
+                let cycle_period = 86400.0; // 1 day per cycle
+                let phase_in_cycle = (t_s % cycle_period) / cycle_period;
+                let is_cold = phase_in_cycle < 0.5;
+
+                if is_cold {
+                    // Cold phase: cryoconcentration of nonpolar species
+                    // Tannin condensation enhanced by concentration
+                    poly_tannin += 0.08 / 86400.0 * dt;
+                } else {
+                    // Warm phase: molecular rearrangement
+                    poly_tannin += 0.03 / 86400.0 * dt;
+                }
+                // Slow ester equilibration continues
+                let ester_rate = 0.01 / 86400.0 * acetic.max(0.1);
+                etac += ester_rate * dt;
+            }
+            _ => {
+                // Week 7-8: rest + final oxidation
+                // PDMS membrane O2: slow controlled oxidation
+                let ach_rate = 0.1 / 86400.0;
+                ach += ach_rate * dt;
+                // Final equilibration
+                let ester_rate = 0.005 / 86400.0 * acetic.max(0.1);
+                etac += ester_rate * dt;
+                poly_tannin += 0.02 / 86400.0 * dt;
+            }
+        }
+
+        if step % sample_every == 0 {
+            let t_wk = t_d / 7.0;
+            data[0].push((t_wk, dms));
+            data[1].push((t_wk, vanillin));
+            data[2].push((t_wk, ach));
+            data[3].push((t_wk, etac));
+            data[4].push((t_wk, poly_tannin));
+            data[5].push((t_wk, acetic));
+        }
+    }
+
+    // Print final values
+    let finals = [dms, vanillin, ach, etac, poly_tannin, acetic];
+    let names = ["DMS", "Vanillin", "AcH", "EtOAc", "Poly-tannin", "Acetic acid"];
+    for (name, val) in names.iter().zip(finals.iter()) {
+        eprintln!("  {}: {:.2} mg/L", name, val);
+    }
+
+    let mt = 55.0;
+    let pw = 520.0;
+    let ph = 420.0;
+    let pl = 75.0;
+    let lx = 615.0;
+
+    // Normalize all species to 0-100% of their individual max for multi-axis plot
+    let labels = ["DMS", "Vanillin", "Acetaldehyde", "Ethyl acetate", "Poly. tannin", "Acetic acid"];
+    let colors_arr = [RED, GREEN, YELLOW, ACCENT, PURPLE, CYAN];
+
+    let maxes: Vec<f64> = data.iter().map(|d|
+        d.iter().map(|p| p.1).fold(0.01_f64, |a, b| a.max(b))
+    ).collect();
+
+    // Y axis: normalized 0-100%
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"9\" text-anchor=\"end\">Relative (%)</text>",
+        pl - 5.0, mt - 5.0, TEXT);
+
+    for pct in [0, 25, 50, 75, 100] {
+        let frac = pct as f64 / 100.0;
+        let y = mt + ph * (1.0 - frac);
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-width=\"0.3\"/>",
+            pl, y, pl + pw, y, GRID);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"8\" text-anchor=\"end\">{}%</text>",
+            pl - 4.0, y + 3.0, MUTED, pct);
+    }
+
+    // X axis: weeks
+    for wk in 0..=8 {
+        let x = pl + pw * (wk as f64 / 8.0);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"9\" text-anchor=\"middle\">W{}</text>",
+            x, mt + ph + 15.0, MUTED, wk);
+    }
+
+    // Phase shading
+    let phase_names = ["Cu/AC", "Sono-EF + Oak", "Laccase+Ester", "Dilute", "Freeze-Thaw", "Rest"];
+    let phase_weeks: [(f64, f64); 6] = [
+        (0.0, 1.0/7.0), (1.0/7.0, 3.0), (3.0, 4.0), (4.0, 5.0), (5.0, 7.0), (7.0, 8.0)
+    ];
+    for (i, &(w1, w2)) in phase_weeks.iter().enumerate() {
+        let x1 = pl + pw * (w1 / 8.0);
+        let x2 = pl + pw * (w2 / 8.0);
+        let opacity = if i % 2 == 0 { "0.04" } else { "0.08" };
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{}\" fill=\"{}\" opacity=\"{}\"/>",
+            x1, mt, x2 - x1, ph, TEXT, opacity);
+        let mid_x = (x1 + x2) / 2.0;
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"7\" text-anchor=\"middle\" opacity=\"0.6\">{}</text>",
+            mid_x, mt + ph + 28.0, MUTED, phase_names[i]);
+    }
+
+    // Plot normalized curves
+    for (i, pts) in data.iter().enumerate() {
+        let path: String = pts.iter().enumerate().map(|(j, &(wk, v))| {
+            let x = pl + pw * (wk / 8.0);
+            let norm_v = v / maxes[i];
+            let y = mt + ph * (1.0 - norm_v);
+            if j == 0 { format!("M{:.1},{:.1}", x, y) }
+            else { format!("L{:.1},{:.1}", x, y) }
+        }).collect();
+        let sw = if i == 3 { "2.0" } else { "1.3" }; // Highlight ethyl acetate
+        svg += &format!("<path d=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"{}\"/>",
+            path, colors_arr[i], sw);
+    }
+
+    // Legend with final values
+    svg += &label(lx, mt + 5.0, "Species Tracking", ACCENT, 11, "start");
+    svg += &label(lx, mt + 22.0, "(normalized to peak)", MUTED, 8, "start");
+
+    for (i, lbl) in labels.iter().enumerate() {
+        let y = mt + 45.0 + i as f64 * 36.0;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"14\" height=\"3\" fill=\"{}\"/>",
+            lx, y - 2.0, colors_arr[i]);
+        svg += &label(lx + 18.0, y, lbl, colors_arr[i], 9, "start");
+        svg += &label(lx + 18.0, y + 13.0,
+            &format!("Peak: {:.1} mg/L", maxes[i]),
+            MUTED, 7, "start");
+        svg += &label(lx + 18.0, y + 24.0,
+            &format!("Final: {:.1} mg/L", finals[i]),
+            MUTED, 7, "start");
+    }
+
+    // Target comparison
+    svg += &label(lx, mt + 275.0, "8-yr barrel targets:", ACCENT, 9, "start");
+    svg += &label(lx, mt + 290.0, "DMS: \u{2264}0.01 mg/L", TEXT, 8, "start");
+    svg += &label(lx, mt + 303.0, "Vanillin: 2\u{2013}8 mg/L", TEXT, 8, "start");
+    svg += &label(lx, mt + 316.0, "AcH: 10\u{2013}30 mg/L", TEXT, 8, "start");
+    svg += &label(lx, mt + 329.0, "EtOAc: 50\u{2013}200 mg/L", TEXT, 8, "start");
+    svg += &label(lx, mt + 342.0, "Tannin: present", TEXT, 8, "start");
+    svg += &label(lx, mt + 355.0, "AcOH: 50\u{2013}300 mg/L", TEXT, 8, "start");
+
+    svg += &label(lx, mt + 380.0, "Protocol time:", GREEN, 10, "start");
+    svg += &label(lx, mt + 395.0, "8 weeks", GREEN, 10, "start");
+    svg += &label(lx, mt + 412.0, "Equiv: 5\u{2013}10 years", MUTED, 9, "start");
 
     svg.push_str("</svg>");
     svg
