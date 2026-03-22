@@ -166,6 +166,8 @@ fn main() {
     fs::write("../graphs/sono-enzymatic-ester.svg", sim_sono_enzymatic_ester()).unwrap();
     fs::write("../graphs/visible-light-maillard.svg", sim_visible_light_maillard()).unwrap();
     fs::write("../graphs/ultrasonic-extraction-kinetics.svg", sim_ultrasonic_extraction_kinetics()).unwrap();
+    fs::write("../graphs/des-lignin-prefrag.svg", sim_des_lignin_prefrag()).unwrap();
+    fs::write("../graphs/precision-oak-targeting.svg", sim_precision_oak_targeting()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -12978,6 +12980,265 @@ fn sim_ultrasonic_extraction_kinetics() -> String {
     svg += &label(350.0, h - 20.0,
         "Above 67 W/L \u{2192} phenolic degradation. Circulation is more impactful than increasing US power.",
         GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ───── Sim 78: DES Lignin Pre-Fragmentation ─────
+fn sim_des_lignin_prefrag() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 78 \u{2014} DES Lignin Pre-Fragmentation: \u{03b2}-O-4 Cleavage Creates Extractable Monomers");
+
+    // Panel A: Temperature vs regenerated/fragmented lignin fractions
+    svg += &label(195.0, 57.0, "A: Lignin Fractionation vs Temperature (Wang 2020)", TEXT, 10, "middle");
+
+    let (ax, ay, aw_a, ah_a) = (80.0, 70.0, 230.0, 280.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_a}\" height=\"{ah_a}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // X-axis: temperature 60-160°C
+    let temps = [80.0_f64, 100.0, 120.0, 140.0];
+    for &t in &temps {
+        let x = ax + (t - 60.0) / 100.0 * aw_a;
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ay + ah_a, ay + ah_a + 4.0);
+        svg += &label(x, ay + ah_a + 14.0, &format!("{}\u{00b0}C", t as i32), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw_a / 2.0, ay + ah_a + 28.0, "DES treatment temperature", MUTED, 8, "middle");
+
+    // Y-axis: % 0-100
+    for i in 0..=5 {
+        let pct = i as f64 * 20.0;
+        let y = ay + ah_a - pct / 100.0 * ah_a;
+        svg += &format!("<line x1=\"{}\" y1=\"{y}\" x2=\"{ax}\" y2=\"{y}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0);
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}%", pct as i32), MUTED, 7, "end");
+    }
+    svg += &label(ax - 35.0, ay + ah_a / 2.0, "Lignin fraction (%)", MUTED, 7, "middle");
+
+    // Data: regenerated lignin (RL) and fragmented lignin (FL)
+    let rl = [(80.0_f64, 86.0), (100.0, 83.0), (120.0, 73.0), (140.0, 71.0)];
+    let fl = [(80.0_f64, 10.0), (100.0, 16.0), (120.0, 23.0), (140.0, 20.0)];
+
+    // Smooth curves
+    let rl_pts: Vec<(f64, f64)> = rl.iter().map(|&(t, pct)| {
+        (ax + (t - 60.0) / 100.0 * aw_a, ay + ah_a - pct / 100.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&rl_pts, RED, "2.5", &|x| x, &|y| y);
+
+    let fl_pts: Vec<(f64, f64)> = fl.iter().map(|&(t, pct)| {
+        (ax + (t - 60.0) / 100.0 * aw_a, ay + ah_a - pct / 100.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&fl_pts, GREEN, "2.5", &|x| x, &|y| y);
+
+    // Data points
+    for &(t, pct) in &rl {
+        let x = ax + (t - 60.0) / 100.0 * aw_a;
+        let y = ay + ah_a - pct / 100.0 * ah_a;
+        svg += &format!("<circle cx=\"{x}\" cy=\"{y}\" r=\"4\" fill=\"{RED}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n");
+    }
+    for &(t, pct) in &fl {
+        let x = ax + (t - 60.0) / 100.0 * aw_a;
+        let y = ay + ah_a - pct / 100.0 * ah_a;
+        svg += &format!("<circle cx=\"{x}\" cy=\"{y}\" r=\"4\" fill=\"{GREEN}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n");
+    }
+
+    // Labels
+    svg += &label(ax + 160.0, ay + ah_a - 75.0 / 100.0 * ah_a + 3.0, "Regenerated (intact)", RED, 7, "start");
+    svg += &label(ax + 10.0, ay + ah_a - 20.0 / 100.0 * ah_a - 8.0, "Fragmented (monomers)", GREEN, 7, "start");
+
+    // Optimal zone annotation
+    let opt_x = ax + (120.0 - 60.0) / 100.0 * aw_a;
+    svg += &format!("<rect x=\"{}\" y=\"{ay}\" width=\"{}\" height=\"{ah_a}\" fill=\"{ACCENT}\" opacity=\"0.08\"/>\n",
+        ax + (100.0 - 60.0) / 100.0 * aw_a, (140.0 - 100.0) / 100.0 * aw_a);
+    svg += &label(opt_x, ay + 15.0, "Optimal", ACCENT, 7, "middle");
+    svg += &label(opt_x, ay + 27.0, "(16\u{2013}23%", ACCENT, 6, "middle");
+    svg += &label(opt_x, ay + 37.0, "fragmented)", ACCENT, 6, "middle");
+
+    // DES info
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"130\" height=\"30\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        ax + 5.0, ay + ah_a - 55.0);
+    svg += &label(ax + 70.0, ay + ah_a - 42.0, "ChCl:lactic acid (1:2)", ACCENT, 7, "middle");
+    svg += &label(ax + 70.0, ay + ah_a - 30.0, "1 hour treatment", MUTED, 6, "middle");
+
+    // Panel B: Two-step process schematic
+    svg += &label(525.0, 57.0, "B: Two-Step DES Pre-Fragmentation Protocol", TEXT, 10, "middle");
+
+    // Step 1 box
+    svg += &format!("<rect x=\"395\" y=\"75\" width=\"130\" height=\"80\" rx=\"5\" fill=\"{RED}\" opacity=\"0.12\" stroke=\"{RED}\" stroke-width=\"1\"/>\n");
+    svg += &label(460.0, 92.0, "Step 1: Fragment", RED, 9, "middle");
+    svg += &label(460.0, 108.0, "ChCl/lactic acid DES", TEXT, 7, "middle");
+    svg += &label(460.0, 122.0, "100\u{2013}120\u{00b0}C, 1h", TEXT, 7, "middle");
+    svg += &label(460.0, 138.0, "\u{03b2}-O-4 cleavage", ACCENT, 7, "middle");
+
+    // Arrow
+    svg += &format!("<line x1=\"525\" y1=\"115\" x2=\"545\" y2=\"115\" stroke=\"{ACCENT}\" stroke-width=\"2\" marker-end=\"url(#arr)\"/>\n");
+
+    // Step 2 box
+    svg += &format!("<rect x=\"555\" y=\"75\" width=\"130\" height=\"80\" rx=\"5\" fill=\"{GREEN}\" opacity=\"0.12\" stroke=\"{GREEN}\" stroke-width=\"1\"/>\n");
+    svg += &label(620.0, 92.0, "Step 2: Extract", GREEN, 9, "middle");
+    svg += &label(620.0, 108.0, "UAE (\u{00a7}4.65) or fresh DES", TEXT, 7, "middle");
+    svg += &label(620.0, 122.0, "40\u{00b0}C, 1h + US", TEXT, 7, "middle");
+    svg += &label(620.0, 138.0, "5\u{00d7} with circulation", CYAN, 7, "middle");
+
+    // Products box below
+    svg += &format!("<rect x=\"395\" y=\"170\" width=\"290\" height=\"70\" rx=\"5\" fill=\"{GRID}\" opacity=\"0.7\"/>\n");
+    svg += &label(540.0, 188.0, "Products from pre-fragmented oak:", MUTED, 8, "middle");
+    svg += &label(540.0, 205.0, "Vanillin + Syringaldehyde + Ellagic acid", ACCENT, 8, "middle");
+    svg += &label(540.0, 222.0, "(smaller fragments = faster extraction, richer aroma)", GREEN, 7, "middle");
+
+    // Moccia 2022 sequential protocol
+    svg += &label(525.0, 260.0, "C: Sequential DES Protocol (Moccia 2022)", TEXT, 10, "middle");
+
+    // Two-column comparison
+    svg += &format!("<rect x=\"395\" y=\"275\" width=\"135\" height=\"85\" rx=\"4\" fill=\"{ACCENT}\" opacity=\"0.10\"/>\n");
+    svg += &label(462.5, 292.0, "DES #1", ACCENT, 9, "middle");
+    svg += &label(462.5, 306.0, "ChCl/tartaric acid", TEXT, 7, "middle");
+    svg += &label(462.5, 320.0, "\u{2192} Ellagic acid", ACCENT, 7, "middle");
+    svg += &label(462.5, 334.0, "(selective)", MUTED, 6, "middle");
+    svg += &label(462.5, 348.0, "50\u{00b0}C, 90 min", MUTED, 6, "middle");
+
+    svg += &format!("<rect x=\"545\" y=\"275\" width=\"135\" height=\"85\" rx=\"4\" fill=\"{GREEN}\" opacity=\"0.10\"/>\n");
+    svg += &label(612.5, 292.0, "DES #2", GREEN, 9, "middle");
+    svg += &label(612.5, 306.0, "ChCl/lactic acid", TEXT, 7, "middle");
+    svg += &label(612.5, 320.0, "\u{2192} Lignin fraction", GREEN, 7, "middle");
+    svg += &label(612.5, 334.0, "(vanillin, syringal.)", MUTED, 6, "middle");
+    svg += &label(612.5, 348.0, "Residual wood", MUTED, 6, "middle");
+
+    // Arrow
+    svg += &format!("<line x1=\"530\" y1=\"317\" x2=\"545\" y2=\"317\" stroke=\"{TEXT}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n");
+
+    // Bottom callout
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"48\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        h - 58.0);
+    svg += &label(350.0, h - 42.0,
+        "DES pre-treatment fragments lignin via \u{03b2}-O-4 cleavage before extraction",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 28.0,
+        "23% fragmented at 120\u{00b0}C \u{2192} smaller phenolic monomers \u{2192} faster extraction by any method",
+        GREEN, 8, "middle");
+    svg += &label(350.0, h - 14.0,
+        "Sequential DES (Moccia 2022) separates ellagitannins from lignin aromatics \u{2014} precision phenolic profile control",
+        CYAN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ───── Sim 79: Precision Oak Flavor Targeting ─────
+fn sim_precision_oak_targeting() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 79 \u{2014} Precision Oak Flavor Targeting: Species + Extraction Method Selection");
+
+    // Panel A: Oak compound ranges by species (bar chart)
+    svg += &label(195.0, 57.0, "A: Oak Compound Ranges by Species (\u{03bc}g/g, Tarko 2023)", TEXT, 10, "middle");
+
+    let (ax, ay, aw_a, ah_a) = (80.0, 70.0, 240.0, 175.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_a}\" height=\"{ah_a}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Compounds: vanillin, syringaldehyde, cis-oak lactone
+    // Species: Q. alba, Q. robur, Q. petraea
+    let compounds = [
+        ("Vanillin", [(6.8_f64, 309.8), (9.3, 94.8), (2.0, 45.7)]),
+        ("Syringaldehyde", [(0.0, 50.0), (14.0, 218.0), (2.7, 514.7)]),
+        ("cis-Lactone", [(22.0, 37.4), (0.0, 5.0), (6.1, 56.0)]),
+    ];
+    let species_colors = [ACCENT, BLUE, GREEN];
+    let species_names = ["Q. alba", "Q. robur", "Q. petraea"];
+
+    let max_val = 515.0_f64;
+    let compound_w = aw_a / 3.0;
+    let bar_w = compound_w / 4.0;
+
+    for (ci, (name, ranges)) in compounds.iter().enumerate() {
+        let base_x = ax + ci as f64 * compound_w;
+        svg += &label(base_x + compound_w / 2.0, ay + ah_a + 14.0, name, MUTED, 7, "middle");
+
+        for (si, &(lo, hi)) in ranges.iter().enumerate() {
+            let x = base_x + 5.0 + si as f64 * (bar_w + 2.0);
+            let y_hi = ay + ah_a - hi / max_val * (ah_a - 15.0);
+            let y_lo = ay + ah_a - lo / max_val * (ah_a - 15.0);
+            let bar_h = y_lo - y_hi;
+            if bar_h > 1.0 {
+                svg += &format!("<rect x=\"{x}\" y=\"{y_hi}\" width=\"{bar_w}\" height=\"{bar_h}\" fill=\"{}\" opacity=\"0.6\" rx=\"1\"/>\n",
+                    species_colors[si]);
+            }
+        }
+    }
+
+    // Y-axis
+    for i in 0..=5 {
+        let val = i as f64 * 100.0;
+        let y = ay + ah_a - val / max_val * (ah_a - 15.0);
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}", val as i32), MUTED, 6, "end");
+    }
+
+    // Species legend
+    for (i, (name, color)) in species_names.iter().zip(species_colors.iter()).enumerate() {
+        let lx = ax + 5.0 + i as f64 * 80.0;
+        svg += &format!("<rect x=\"{lx}\" y=\"{}\" width=\"10\" height=\"8\" fill=\"{color}\" opacity=\"0.7\" rx=\"1\"/>\n",
+            ay + 5.0);
+        svg += &label(lx + 13.0, ay + 12.0, name, color, 6, "start");
+    }
+
+    // Panel B: Extraction method selectivity
+    svg += &label(525.0, 57.0, "B: Extraction Method Selectivity", TEXT, 10, "middle");
+
+    let (bx, by) = (395.0, 70.0);
+
+    let methods = [
+        ("NADES (Xu 2024)", "Vanillin", "18.5 mg/g", ACCENT),
+        ("DES ChCl/tartaric", "Ellagitannins", "selective", GREEN),
+        ("DES ChCl/lactic", "Lignin aromatics", "vanillin+syringal", BLUE),
+        ("scCO\u{2082} (Nardella)", "Lactones", "8\u{00b1}3 \u{03bc}g/g", PURPLE),
+        ("UAE (\u{00a7}4.65)", "Total phenolics", "116.5% more", CYAN),
+    ];
+
+    for (i, (method, target, value, color)) in methods.iter().enumerate() {
+        let y = by + i as f64 * 36.0;
+        svg += &format!("<rect x=\"{bx}\" y=\"{y}\" width=\"280\" height=\"30\" rx=\"3\" fill=\"{color}\" opacity=\"0.10\"/>\n");
+        svg += &label(bx + 8.0, y + 13.0, method, color, 7, "start");
+        svg += &label(bx + 150.0, y + 13.0, &format!("\u{2192} {}", target), TEXT, 7, "start");
+        svg += &label(bx + 150.0, y + 25.0, value, MUTED, 6, "start");
+    }
+
+    // Panel C: Sensory threshold targeting
+    svg += &label(525.0, 260.0, "C: Sensory Thresholds for Precision Dosing", TEXT, 10, "middle");
+
+    let (cx, cy) = (395.0, 278.0);
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"280\" height=\"100\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.7\"/>\n");
+
+    let thresholds = [
+        ("Vanillin", "1 mg/L", "vanilla, sweet"),
+        ("Eugenol", "6 \u{03bc}g/L", "clove, spice"),
+        ("cis-Oak lactone", "20\u{2013}46 \u{03bc}g/L", "woody, coconut"),
+        ("Furfural", "14 mg/L", "caramel, bread"),
+    ];
+
+    for (i, (compound, threshold, descriptor)) in thresholds.iter().enumerate() {
+        let y = cy + 8.0 + i as f64 * 22.0;
+        svg += &label(cx + 8.0, y + 14.0, compound, TEXT, 7, "start");
+        svg += &label(cx + 100.0, y + 14.0, threshold, ACCENT, 7, "start");
+        svg += &label(cx + 175.0, y + 14.0, descriptor, MUTED, 7, "start");
+    }
+
+    // Panel D: workflow
+    svg += &label(525.0, 400.0, "D: Precision Aging Workflow", TEXT, 10, "middle");
+
+    let steps = [
+        ("1. Target profile", "Choose flavor descriptors", ACCENT),
+        ("2. Select oak", "Species + toast from Tarko 2023 data", BLUE),
+        ("3. Match method", "NADES/DES/scCO\u{2082}/UAE per target", GREEN),
+        ("4. Dose to threshold", "Calculate \u{03bc}g/g \u{00d7} oak load = mg/L", CYAN),
+    ];
+
+    for (i, (step, detail, color)) in steps.iter().enumerate() {
+        let y = 415.0 + i as f64 * 16.0;
+        svg += &label(400.0, y, step, color, 7, "start");
+        svg += &label(540.0, y, detail, MUTED, 6, "start");
+    }
 
     svg.push_str("</svg>");
     svg
