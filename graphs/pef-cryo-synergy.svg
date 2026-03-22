@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 84 — PEF × Cryo-Concentration Synergy: Electroporated Oak at High ABV</text>
+<text x="195" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Cryo-Concentrated Spirit Properties</text>
+<rect x="70" y="65" width="260" height="175" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="70" y1="240" x2="70" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="252" fill="#8b949e" font-size="7" text-anchor="middle">-50°</text>
+<line x1="122" y1="240" x2="122" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="122" y="252" fill="#8b949e" font-size="7" text-anchor="middle">-40°</text>
+<line x1="174" y1="240" x2="174" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="174" y="252" fill="#8b949e" font-size="7" text-anchor="middle">-30°</text>
+<line x1="226" y1="240" x2="226" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="226" y="252" fill="#8b949e" font-size="7" text-anchor="middle">-20°</text>
+<line x1="278" y1="240" x2="278" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="278" y="252" fill="#8b949e" font-size="7" text-anchor="middle">-10°</text>
+<line x1="330" y1="240" x2="330" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="252" fill="#8b949e" font-size="7" text-anchor="middle">0°</text>
+<text x="200" y="264" fill="#8b949e" font-size="8" text-anchor="middle">Temperature (°C)</text>
+<text x="65" y="243" fill="#58a6ff" font-size="6" text-anchor="end">30%</text>
+<text x="65" y="208" fill="#58a6ff" font-size="6" text-anchor="end">40%</text>
+<text x="65" y="173" fill="#58a6ff" font-size="6" text-anchor="end">50%</text>
+<text x="65" y="138" fill="#58a6ff" font-size="6" text-anchor="end">60%</text>
+<text x="65" y="103" fill="#58a6ff" font-size="6" text-anchor="end">70%</text>
+<text x="65" y="68" fill="#58a6ff" font-size="6" text-anchor="end">80%</text>
+<polyline points="70.0,87.8 72.6,88.6 75.3,89.5 77.9,90.4 80.5,91.3 83.1,92.2 85.8,93.1 88.4,93.9 91.0,94.8 93.6,95.7 96.3,96.6 98.9,97.5 101.5,98.4 104.1,99.2 106.8,100.1 109.4,101.0 112.0,101.9 114.6,102.8 117.3,103.7 119.9,104.5 122.5,105.4 125.2,106.3 127.8,107.2 130.4,108.1 133.0,109.0 135.7,109.8 138.3,110.7 140.9,111.6 143.5,112.5 146.2,113.4 148.8,114.3 151.4,115.1 154.0,116.0 156.7,116.9 159.3,117.8 161.9,118.7 164.5,119.6 167.2,120.5 169.8,121.3 172.4,122.2 175.1,123.1 177.7,124.0 180.3,124.9 182.9,125.8 185.6,126.6 188.2,127.5 190.8,128.4 193.4,129.3 196.1,130.2 198.7,131.1 201.3,131.9 203.9,132.8 206.6,133.7 209.2,134.6 211.8,136.8 214.4,138.7 217.1,140.6 219.7,142.6 222.3,144.5 224.9,146.5 227.6,148.4 230.2,150.4 232.8,152.3 235.5,154.2 238.1,156.2 240.7,158.1 243.3,160.1 246.0,162.0 248.6,164.0 251.2,165.9 253.8,167.9 256.5,169.8 259.1,171.8 261.7,173.7 264.3,175.6 267.0,177.6 269.6,179.5 272.2,181.5 274.8,183.4 277.5,185.4 280.1,187.3 282.7,189.3 285.4,191.2 288.0,193.1 290.6,195.1 293.2,197.0 295.9,199.0 298.5,200.9 301.1,202.9 303.7,204.8 306.4,205.0 309.0,205.0 311.6,205.0 314.2,205.0 316.9,205.0 319.5,205.0 322.1,205.0 324.7,205.0 327.4,205.0 330.0,205.0" fill="none" stroke="#58a6ff" stroke-width="2.5"/>
+<circle cx="304" cy="205" r="4" fill="#e8a665" stroke="#e6edf3" stroke-width="1"/>
+<text x="309" y="200" fill="#e8a665" font-size="6" text-anchor="start">40% (ambient)</text>
+<circle cx="200" cy="128" r="4" fill="#e8a665" stroke="#e6edf3" stroke-width="1"/>
+<text x="205" y="123" fill="#e8a665" font-size="6" text-anchor="start">62% (-25°C)</text>
+<circle cx="122" cy="93" r="4" fill="#e8a665" stroke="#e6edf3" stroke-width="1"/>
+<text x="127" y="88" fill="#e8a665" font-size="6" text-anchor="start">72% (-40°C)</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: PEF Enhancement × ABV Interaction</text>
+<rect x="400" y="70" width="265" height="175" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="400" y1="245" x2="400" y2="248" stroke="#8b949e" stroke-width="0.5"/>
+<text x="400" y="257" fill="#8b949e" font-size="7" text-anchor="middle">30%</text>
+<line x1="453" y1="245" x2="453" y2="248" stroke="#8b949e" stroke-width="0.5"/>
+<text x="453" y="257" fill="#8b949e" font-size="7" text-anchor="middle">40%</text>
+<line x1="506" y1="245" x2="506" y2="248" stroke="#8b949e" stroke-width="0.5"/>
+<text x="506" y="257" fill="#8b949e" font-size="7" text-anchor="middle">50%</text>
+<line x1="559" y1="245" x2="559" y2="248" stroke="#8b949e" stroke-width="0.5"/>
+<text x="559" y="257" fill="#8b949e" font-size="7" text-anchor="middle">60%</text>
+<line x1="612" y1="245" x2="612" y2="248" stroke="#8b949e" stroke-width="0.5"/>
+<text x="612" y="257" fill="#8b949e" font-size="7" text-anchor="middle">70%</text>
+<line x1="665" y1="245" x2="665" y2="248" stroke="#8b949e" stroke-width="0.5"/>
+<text x="665" y="257" fill="#8b949e" font-size="7" text-anchor="middle">80%</text>
+<text x="532.5" y="269" fill="#8b949e" font-size="8" text-anchor="middle">ABV (%)</text>
+<text x="396" y="248" fill="#8b949e" font-size="6" text-anchor="end">0×</text>
+<text x="396" y="213" fill="#8b949e" font-size="6" text-anchor="end">2×</text>
+<text x="396" y="178" fill="#8b949e" font-size="6" text-anchor="end">4×</text>
+<text x="396" y="143" fill="#8b949e" font-size="6" text-anchor="end">6×</text>
+<text x="396" y="108" fill="#8b949e" font-size="6" text-anchor="end">8×</text>
+<text x="396" y="73" fill="#8b949e" font-size="6" text-anchor="end">10×</text>
+<polyline points="400.0,218.8 402.7,217.6 405.4,216.5 408.0,215.3 410.7,214.2 413.4,213.0 416.1,211.9 418.7,210.7 421.4,209.6 424.1,208.4 426.8,207.3 429.4,206.1 432.1,205.0 434.8,203.8 437.5,202.7 440.2,201.5 442.8,200.4 445.5,199.2 448.2,198.1 450.9,196.9 453.5,195.8 456.2,194.6 458.9,193.5 461.6,192.3 464.2,191.2 466.9,190.0 469.6,188.9 472.3,187.7 474.9,186.6 477.6,185.4 480.3,184.3 483.0,183.1 485.7,182.0 488.3,180.8 491.0,179.7 493.7,178.5 496.4,177.4 499.0,176.2 501.7,175.1 504.4,173.9 507.1,172.8 509.7,171.6 512.4,170.5 515.1,169.3 517.8,168.2 520.5,167.0 523.1,165.9 525.8,164.7 528.5,163.6 531.2,162.4 533.8,161.3 536.5,160.2 539.2,159.0 541.9,157.9 544.5,156.7 547.2,155.6 549.9,154.4 552.6,153.3 555.3,152.1 557.9,151.0 560.6,149.8 563.3,148.7 566.0,147.5 568.6,146.4 571.3,145.2 574.0,144.1 576.7,142.9 579.3,141.8 582.0,140.6 584.7,139.5 587.4,138.3 590.1,137.2 592.7,136.0 595.4,134.9 598.1,133.7 600.8,132.6 603.4,131.4 606.1,130.3 608.8,129.1 611.5,128.0 614.1,126.8 616.8,125.7 619.5,124.5 622.2,123.4 624.8,122.2 627.5,121.1 630.2,119.9 632.9,118.8 635.6,117.6 638.2,116.5 640.9,115.3 643.6,114.2 646.3,113.0 648.9,111.9 651.6,110.7 654.3,109.6 657.0,108.4 659.6,107.3 662.3,106.1 665.0,105.0" fill="none" stroke="#e8a665" stroke-width="2.5"/>
+<text x="559" y="90" fill="#e8a665" font-size="7" text-anchor="start">PEF + oak chips</text>
+<polyline points="400.0,227.5 402.7,227.1 405.4,226.8 408.0,226.4 410.7,226.1 413.4,225.7 416.1,225.4 418.7,225.0 421.4,224.7 424.1,224.3 426.8,224.0 429.4,223.6 432.1,223.3 434.8,222.9 437.5,222.6 440.2,222.2 442.8,221.8 445.5,221.5 448.2,221.1 450.9,220.8 453.5,220.4 456.2,220.1 458.9,219.7 461.6,219.4 464.2,219.0 466.9,218.7 469.6,218.3 472.3,218.0 474.9,217.6 477.6,217.2 480.3,216.9 483.0,216.5 485.7,216.2 488.3,215.8 491.0,215.5 493.7,215.1 496.4,214.8 499.0,214.4 501.7,214.1 504.4,213.7 507.1,213.4 509.7,213.0 512.4,212.7 515.1,212.3 517.8,211.9 520.5,211.6 523.1,211.2 525.8,210.9 528.5,210.5 531.2,210.2 533.8,209.8 536.5,209.5 539.2,209.1 541.9,208.8 544.5,208.4 547.2,208.1 549.9,207.7 552.6,207.3 555.3,207.0 557.9,206.6 560.6,206.3 563.3,205.9 566.0,205.6 568.6,205.2 571.3,204.9 574.0,204.5 576.7,204.2 579.3,203.8 582.0,203.5 584.7,203.1 587.4,202.8 590.1,202.4 592.7,202.0 595.4,201.7 598.1,201.3 600.8,201.0 603.4,200.6 606.1,200.3 608.8,199.9 611.5,199.6 614.1,199.2 616.8,198.9 619.5,198.5 622.2,198.2 624.8,197.8 627.5,197.4 630.2,197.1 632.9,196.7 635.6,196.4 638.2,196.0 640.9,195.7 643.6,195.3 646.3,195.0 648.9,194.6 651.6,194.3 654.3,193.9 657.0,193.6 659.6,193.2 662.3,192.9 665.0,192.5" fill="none" stroke="#8b949e" stroke-width="1.5"/>
+<text x="559" y="175" fill="#8b949e" font-size="7" text-anchor="start">Solvent only</text>
+<circle cx="453" cy="218.05" r="5" fill="#3fb950" stroke="#e6edf3" stroke-width="1.5"/>
+<text x="461" y="218.05" fill="#3fb950" font-size="6" text-anchor="start">Zhang 2013: +54%</text>
+<rect x="559" y="70" width="106" height="175" fill="#3fb950" opacity="0.06"/>
+<text x="625.25" y="235" fill="#3fb950" font-size="6" text-anchor="middle">Cryo zone</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Cryo-concentrate to 65–72% ABV, then PEF with oak chips:</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">higher solvent power + electroporation = predicted 5–8× tannin extraction</text>
+</svg>

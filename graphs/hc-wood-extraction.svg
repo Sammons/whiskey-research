@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 82 — Hydrodynamic Cavitation Direct Wood Extraction: 300 mg/g Tannin</text>
+<text x="195" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Tannin Yield vs Treatment Time (HC, 3.5 bar)</text>
+<rect x="70" y="65" width="260" height="175" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="70" y1="240" x2="70" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="252" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="113.33333333333333" y1="240" x2="113.33333333333333" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="113.33333333333333" y="252" fill="#8b949e" font-size="7" text-anchor="middle">20</text>
+<line x1="156.66666666666666" y1="240" x2="156.66666666666666" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="156.66666666666666" y="252" fill="#8b949e" font-size="7" text-anchor="middle">40</text>
+<line x1="200" y1="240" x2="200" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="200" y="252" fill="#8b949e" font-size="7" text-anchor="middle">60</text>
+<line x1="243.33333333333331" y1="240" x2="243.33333333333331" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="243.33333333333331" y="252" fill="#8b949e" font-size="7" text-anchor="middle">80</text>
+<line x1="286.6666666666667" y1="240" x2="286.6666666666667" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="286.6666666666667" y="252" fill="#8b949e" font-size="7" text-anchor="middle">100</text>
+<line x1="330" y1="240" x2="330" y2="243" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="252" fill="#8b949e" font-size="7" text-anchor="middle">120</text>
+<text x="200" y="264" fill="#8b949e" font-size="8" text-anchor="middle">Treatment time (min)</text>
+<text x="65" y="243" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<text x="65" y="218" fill="#8b949e" font-size="7" text-anchor="end">50</text>
+<line x1="70" y1="215" x2="330" y2="215" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="193" fill="#8b949e" font-size="7" text-anchor="end">100</text>
+<line x1="70" y1="190" x2="330" y2="190" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="168" fill="#8b949e" font-size="7" text-anchor="end">150</text>
+<line x1="70" y1="165" x2="330" y2="165" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="143" fill="#8b949e" font-size="7" text-anchor="end">200</text>
+<line x1="70" y1="140" x2="330" y2="140" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="118" fill="#8b949e" font-size="7" text-anchor="end">250</text>
+<line x1="70" y1="115" x2="330" y2="115" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="93" fill="#8b949e" font-size="7" text-anchor="end">300</text>
+<line x1="70" y1="90" x2="330" y2="90" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">350</text>
+<line x1="70" y1="65" x2="330" y2="65" stroke="#30363d" stroke-width="0.3"/>
+<polyline points="70.0,240.0 72.6,232.9 75.3,226.1 77.9,219.7 80.5,213.6 83.1,207.7 85.8,202.1 88.4,196.8 91.0,191.8 93.6,187.0 96.3,182.4 98.9,178.0 101.5,173.8 104.1,169.9 106.8,166.1 109.4,162.5 112.0,159.1 114.6,155.8 117.3,152.7 119.9,149.7 122.5,146.9 125.2,144.2 127.8,141.6 130.4,139.2 133.0,136.9 135.7,134.6 138.3,132.5 140.9,130.5 143.5,128.6 146.2,126.8 148.8,125.0 151.4,123.4 154.0,121.8 156.7,120.3 159.3,118.9 161.9,117.5 164.5,116.2 167.2,114.9 169.8,113.8 172.4,112.6 175.1,111.6 177.7,110.5 180.3,109.6 182.9,108.6 185.6,107.8 188.2,106.9 190.8,106.1 193.4,105.4 196.1,104.6 198.7,103.9 201.3,103.3 203.9,102.7 206.6,102.1 209.2,101.5 211.8,100.9 214.4,100.4 217.1,99.9 219.7,99.5 222.3,99.0 224.9,98.6 227.6,98.2 230.2,97.8 232.8,97.4 235.5,97.1 238.1,96.7 240.7,96.4 243.3,96.1 246.0,95.8 248.6,95.5 251.2,95.3 253.8,95.0 256.5,94.8 259.1,94.6 261.7,94.4 264.3,94.1 267.0,94.0 269.6,93.8 272.2,93.6 274.8,93.4 277.5,93.3 280.1,93.1 282.7,93.0 285.4,92.8 288.0,92.7 290.6,92.6 293.2,92.4 295.9,92.3 298.5,92.2 301.1,92.1 303.7,92.0 306.4,91.9 309.0,91.8 311.6,91.7 314.2,91.7 316.9,91.6 319.5,91.5 322.1,91.4 324.7,91.4 327.4,91.3 330.0,91.2" fill="none" stroke="#e8a665" stroke-width="2.5"/>
+<text x="226" y="80" fill="#e8a665" font-size="7" text-anchor="start">HC venturi (water, RT)</text>
+<polyline points="70.0,240.0 72.6,237.0 75.3,234.1 77.9,231.3 80.5,228.6 83.1,225.9 85.8,223.4 88.4,220.9 91.0,218.5 93.6,216.1 96.3,213.9 98.9,211.7 101.5,209.5 104.1,207.4 106.8,205.4 109.4,203.5 112.0,201.6 114.6,199.7 117.3,198.0 119.9,196.2 122.5,194.5 125.2,192.9 127.8,191.3 130.4,189.8 133.0,188.3 135.7,186.9 138.3,185.5 140.9,184.1 143.5,182.8 146.2,181.5 148.8,180.3 151.4,179.1 154.0,177.9 156.7,176.8 159.3,175.7 161.9,174.6 164.5,173.6 167.2,172.6 169.8,171.6 172.4,170.7 175.1,169.8 177.7,168.9 180.3,168.0 182.9,167.2 185.6,166.4 188.2,165.6 190.8,164.8 193.4,164.1 196.1,163.4 198.7,162.7 201.3,162.0 203.9,161.3 206.6,160.7 209.2,160.1 211.8,159.5 214.4,158.9 217.1,158.3 219.7,157.8 222.3,157.2 224.9,156.7 227.6,156.2 230.2,155.7 232.8,155.3 235.5,154.8 238.1,154.4 240.7,153.9 243.3,153.5 246.0,153.1 248.6,152.7 251.2,152.4 253.8,152.0 256.5,151.6 259.1,151.3 261.7,150.9 264.3,150.6 267.0,150.3 269.6,150.0 272.2,149.7 274.8,149.4 277.5,149.1 280.1,148.9 282.7,148.6 285.4,148.3 288.0,148.1 290.6,147.8 293.2,147.6 295.9,147.4 298.5,147.2 301.1,146.9 303.7,146.7 306.4,146.5 309.0,146.3 311.6,146.2 314.2,146.0 316.9,145.8 319.5,145.6 322.1,145.5 324.7,145.3 327.4,145.1 330.0,145.0" fill="none" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="226" y="138.5" fill="#58a6ff" font-size="7" text-anchor="start">Ultrasonic 40 kHz</text>
+<polyline points="70.0,240.0 72.6,239.5 75.3,239.0 77.9,238.6 80.5,238.1 83.1,237.6 85.8,237.2 88.4,236.7 91.0,236.3 93.6,235.9 96.3,235.4 98.9,235.0 101.5,234.6 104.1,234.2 106.8,233.8 109.4,233.4 112.0,232.9 114.6,232.6 117.3,232.2 119.9,231.8 122.5,231.4 125.2,231.0 127.8,230.6 130.4,230.3 133.0,229.9 135.7,229.5 138.3,229.2 140.9,228.8 143.5,228.5 146.2,228.1 148.8,227.8 151.4,227.5 154.0,227.1 156.7,226.8 159.3,226.5 161.9,226.2 164.5,225.9 167.2,225.5 169.8,225.2 172.4,224.9 175.1,224.6 177.7,224.3 180.3,224.0 182.9,223.8 185.6,223.5 188.2,223.2 190.8,222.9 193.4,222.6 196.1,222.4 198.7,222.1 201.3,221.8 203.9,221.6 206.6,221.3 209.2,221.0 211.8,220.8 214.4,220.5 217.1,220.3 219.7,220.0 222.3,219.8 224.9,219.6 227.6,219.3 230.2,219.1 232.8,218.9 235.5,218.6 238.1,218.4 240.7,218.2 243.3,218.0 246.0,217.8 248.6,217.5 251.2,217.3 253.8,217.1 256.5,216.9 259.1,216.7 261.7,216.5 264.3,216.3 267.0,216.1 269.6,215.9 272.2,215.7 274.8,215.5 277.5,215.4 280.1,215.2 282.7,215.0 285.4,214.8 288.0,214.6 290.6,214.5 293.2,214.3 295.9,214.1 298.5,213.9 301.1,213.8 303.7,213.6 306.4,213.4 309.0,213.3 311.6,213.1 314.2,213.0 316.9,212.8 319.5,212.6 322.1,212.5 324.7,212.3 327.4,212.2 330.0,212.0" fill="none" stroke="#8b949e" stroke-width="1.5"/>
+<text x="226" y="191" fill="#8b949e" font-size="7" text-anchor="start">Maceration (RT)</text>
+<circle cx="330" cy="90" r="5" fill="#3fb950" stroke="#e6edf3" stroke-width="1.5"/>
+<text x="300" y="82" fill="#3fb950" font-size="8" text-anchor="end">300 mg/g</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Energy Efficiency Comparison</text>
+<rect x="405" y="80" width="5" height="24" rx="2" fill="#3fb950" opacity="0.5"/>
+<text x="405" y="78" fill="#e6edf3" font-size="7" text-anchor="start">HC (venturi, 3.5 bar)</text>
+<text x="415" y="96" fill="#3fb950" font-size="7" text-anchor="start">1× (baseline)</text>
+<rect x="405" y="120" width="40" height="24" rx="2" fill="#58a6ff" opacity="0.5"/>
+<text x="405" y="118" fill="#e6edf3" font-size="7" text-anchor="start">Ultrasonic bath (40 kHz)</text>
+<text x="450" y="136" fill="#58a6ff" font-size="7" text-anchor="start">8× more energy</text>
+<rect x="405" y="160" width="125" height="24" rx="2" fill="#bc8cff" opacity="0.5"/>
+<text x="405" y="158" fill="#e6edf3" font-size="7" text-anchor="start">Ultrasonic probe (20 kHz)</text>
+<text x="535" y="176" fill="#bc8cff" font-size="7" text-anchor="start">25× more energy</text>
+<rect x="405" y="200" width="220" height="24" rx="2" fill="#f85149" opacity="0.5"/>
+<text x="405" y="198" fill="#e6edf3" font-size="7" text-anchor="start">Thermal maceration (80°C)</text>
+<text x="630" y="216" fill="#f85149" font-size="7" text-anchor="start">44× more energy</text>
+<rect x="395" y="240" width="275" height="50" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="532.5" y="257" fill="#e6edf3" font-size="7" text-anchor="middle">Oak-specific: chestnut data (Meneguzzo 2023)</text>
+<text x="532.5" y="271" fill="#8b949e" font-size="7" text-anchor="middle">Both oak and chestnut are rich in hydrolyzable</text>
+<text x="532.5" y="283" fill="#8b949e" font-size="7" text-anchor="middle">tannins (castalagin, vescalagin, ellagic acid)</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">HC extracts 300 mg tannin/g wood using ONLY water at room temperature.</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">No organic solvents. 6–44× more energy-efficient than ultrasonic methods.</text>
+</svg>

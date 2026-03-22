@@ -168,6 +168,12 @@ fn main() {
     fs::write("../graphs/ultrasonic-extraction-kinetics.svg", sim_ultrasonic_extraction_kinetics()).unwrap();
     fs::write("../graphs/des-lignin-prefrag.svg", sim_des_lignin_prefrag()).unwrap();
     fs::write("../graphs/precision-oak-targeting.svg", sim_precision_oak_targeting()).unwrap();
+    fs::write("../graphs/plasma-nebulized-ester.svg", sim_plasma_nebulized_ester()).unwrap();
+    fs::write("../graphs/colloidal-gelation-pathways.svg", sim_colloidal_gelation_pathways()).unwrap();
+    fs::write("../graphs/hc-wood-extraction.svg", sim_hc_wood_extraction()).unwrap();
+    fs::write("../graphs/corona-acetaldehyde.svg", sim_corona_acetaldehyde()).unwrap();
+    fs::write("../graphs/pef-cryo-synergy.svg", sim_pef_cryo_synergy()).unwrap();
+    fs::write("../graphs/microfluidic-scco2-oak.svg", sim_microfluidic_scco2_oak()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -13240,6 +13246,470 @@ fn sim_precision_oak_targeting() -> String {
         svg += &label(540.0, y, detail, MUTED, 6, "start");
     }
 
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 80: Plasma-Nebulized Microdroplet Esterification
+// ═══════════════════════════════════════════════════════════════
+fn sim_plasma_nebulized_ester() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 80 \u{2014} Plasma-Nebulized Microdroplet Esterification: Bridging the Ethanol Gap");
+    svg += &label(195.0, 57.0, "A: Activation Energy vs Droplet Diameter", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 260.0, 175.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let log_labels: [(f64, &str); 4] = [(1.0, "1"), (10.0, "10"), (100.0, "100"), (1000.0, "1k")];
+    for &(val, lbl) in &log_labels {
+        let x = ax + (val.log10() / 3.0) * aw;
+        svg += &vline(x, ay + ah, ay + ah + 4.0, MUTED, "0.5");
+        svg += &label(x, ay + ah + 14.0, lbl, MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 26.0, "Droplet diameter (\u{03bc}m)", MUTED, 8, "middle");
+    for i in 0..=4 {
+        let val = 30.0 + i as f64 * 10.0;
+        let y = ay + ah - (val - 30.0) / 40.0 * ah;
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}", val as i32), MUTED, 7, "end");
+        svg += &hline(ax, ax + aw, y, GRID, "0.5");
+    }
+    svg += &hline(ax, ax + aw, ay + ah - (60.0 - 30.0) / 40.0 * ah, RED, "1.5");
+    svg += &label(ax + aw - 5.0, ay + ah - (60.0 - 30.0) / 40.0 * ah - 5.0, "Bulk ethanol E\u{2090} = 60", RED, 7, "end");
+    svg += &hline(ax, ax + aw, ay + ah - (52.0 - 30.0) / 40.0 * ah, GREEN, "1");
+    svg += &label(ax + 5.0, ay + ah - (52.0 - 30.0) / 40.0 * ah - 5.0, "Methanol E\u{2090} \u{2248} 52 (plasma works)", GREEN, 6, "start");
+    let pts_ea: Vec<(f64, f64)> = (0..100).map(|i| {
+        let d = 10.0_f64.powf(i as f64 / 99.0 * 3.0);
+        let ea = 60.0 - 8.8 * (10.0 / d).sqrt().min(1.0);
+        let x = ax + (d.log10() / 3.0) * aw;
+        let y = ay + ah - (ea - 30.0) / 40.0 * ah;
+        (x, y)
+    }).collect();
+    svg += &polyline_svg(&pts_ea, ACCENT, "2.5", &|x| x, &|y| y);
+    let threshold_y = ay + ah - (54.0 - 30.0) / 40.0 * ah;
+    svg += &format!("<line x1=\"{ax}\" y1=\"{threshold_y}\" x2=\"{}\" y2=\"{threshold_y}\" stroke=\"{YELLOW}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n", ax + aw);
+    svg += &label(ax + aw - 5.0, threshold_y + 12.0, "Ester detection threshold", YELLOW, 6, "end");
+    svg += &label(525.0, 57.0, "B: Predicted Ester Yield by Method", TEXT, 10, "middle");
+    let bx = 395.0;
+    let methods_b = [
+        ("Bulk plasma (Ar, ethanol)", 0.0, RED, "Warne 2024: not detected"),
+        ("Bulk plasma (Ar, methanol)", 7.5, GREEN, "7.5\u{00d7} enhancement"),
+        ("Nebulized only (10 \u{03bc}m)", 2.1, BLUE, "Interfacial E\u{2090} reduction"),
+        ("Plasma + nebulized (10 \u{03bc}m)", 12.0, ACCENT, "Synergistic: radical + interface"),
+        ("Plasma + nebulized (1 \u{03bc}m)", 35.0, YELLOW, "Maximum predicted"),
+    ];
+    let max_yield = 40.0_f64;
+    for (i, (name, yield_val, color, note)) in methods_b.iter().enumerate() {
+        let y = 75.0 + i as f64 * 34.0;
+        let bar_w = yield_val / max_yield * 250.0;
+        if *yield_val > 0.0 {
+            svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{bar_w}\" height=\"20\" rx=\"2\" fill=\"{color}\" opacity=\"0.6\"/>\n",
+                bx + 10.0, y);
+        }
+        svg += &label(bx + 10.0 + bar_w.max(2.0) + 5.0, y + 14.0,
+            &format!("{:.1}\u{00d7}", yield_val), color, 8, "start");
+        svg += &label(bx + 10.0, y - 2.0, name, TEXT, 7, "start");
+        svg += &label(bx + 10.0, y + 28.0, note, MUTED, 6, "start");
+    }
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0, "Warne 2024: plasma esterification FAILS in ethanol. Hao 2022: microdroplet interfaces", ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0, "lower E\u{2090} by 8.8 kJ/mol. Combining both could bridge the ethanol gap.", GREEN, 8, "middle");
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 81: Colloidal Gelation Pathways
+// ═══════════════════════════════════════════════════════════════
+fn sim_colloidal_gelation_pathways() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 81 \u{2014} Colloidal Gelation Pathways: Aging as Controlled Phase Separation");
+    svg += &label(195.0, 57.0, "A: Gel Formation Pathways (Tsurusawa 2020)", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 70.0, 255.0, 160.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &label(ax + aw / 2.0, ay + ah + 24.0, "Extractive volume fraction (\u{03c6})", MUTED, 8, "middle");
+    for i in 0..=4 {
+        let x = ax + i as f64 * aw / 4.0;
+        svg += &vline(x, ay + ah, ay + ah + 3.0, MUTED, "0.5");
+        svg += &label(x, ay + ah + 12.0, &format!("{:.2}", i as f64 * 0.05), MUTED, 6, "middle");
+    }
+    let pts_binodal: Vec<(f64, f64)> = (0..50).map(|i| {
+        let phi = 0.02 + i as f64 * 0.004;
+        let u = 3.0 / (phi + 0.02).sqrt();
+        let x = ax + (phi / 0.20) * aw;
+        let y = ay + ah - (u / 15.0) * ah;
+        (x, y)
+    }).collect();
+    svg += &polyline_svg(&pts_binodal, MUTED, "1.5", &|x| x, &|y| y);
+    svg += &label(ax + aw * 0.15, ay + 15.0, "Binodal", MUTED, 6, "start");
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{RED}\" stroke-width=\"2\" marker-end=\"url(#arr)\"/>\n",
+        ax + aw * 0.1, ay + ah * 0.8, ax + aw * 0.35, ay + ah * 0.25);
+    svg += &label(ax + aw * 0.08, ay + ah * 0.55, "Path 1: Fast", RED, 7, "start");
+    svg += &label(ax + aw * 0.08, ay + ah * 0.65, "(stressed gel)", RED, 6, "start");
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"2\" marker-end=\"url(#arr)\"/>\n",
+        ax + aw * 0.1, ay + ah * 0.8, ax + aw * 0.60, ay + ah * 0.4);
+    svg += &label(ax + aw * 0.50, ay + ah * 0.55, "Path 2: Slow", GREEN, 7, "start");
+    svg += &label(ax + aw * 0.50, ay + ah * 0.65, "(stress-free)", GREEN, 6, "start");
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"8\" fill=\"{RED}\" opacity=\"0.3\"/>\n", ax + aw * 0.35, ay + ah * 0.25);
+    svg += &label(ax + aw * 0.35, ay + ah * 0.15, "Harsh", RED, 7, "middle");
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"8\" fill=\"{GREEN}\" opacity=\"0.3\"/>\n", ax + aw * 0.60, ay + ah * 0.4);
+    svg += &label(ax + aw * 0.60, ay + ah * 0.30, "Smooth", GREEN, 7, "middle");
+    svg += &label(525.0, 57.0, "B: Cluster Size Evolution by Aging Method", TEXT, 10, "middle");
+    let (bx, by, bw_b, bh) = (400.0, 70.0, 265.0, 160.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw_b}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let time_labels = [(0.0, "1h"), (1.0, "10h"), (2.0, "100h"), (3.0, "1kh"), (4.0, "10kh")];
+    for &(lv, lbl) in &time_labels {
+        let x = bx + (lv / 4.0) * bw_b;
+        svg += &vline(x, by + bh, by + bh + 3.0, MUTED, "0.5");
+        svg += &label(x, by + bh + 12.0, lbl, MUTED, 6, "middle");
+    }
+    svg += &label(bx + bw_b / 2.0, by + bh + 24.0, "Treatment time", MUTED, 8, "middle");
+    for i in 0..=4 {
+        let val = i as f64 * 25.0;
+        let y = by + bh - (val / 100.0) * bh;
+        svg += &label(bx - 4.0, y + 3.0, &format!("{}", val as i32), MUTED, 6, "end");
+    }
+    let pts_barrel: Vec<(f64, f64)> = (0..80).map(|i| {
+        let t = i as f64 / 79.0 * 4.0;
+        let r = 0.75 * (1.0 - (-0.5_f64 * t).exp()) + 0.3;
+        (bx + (t / 4.0) * bw_b, by + bh - (r / 100.0) * bh)
+    }).collect();
+    svg += &polyline_svg(&pts_barrel, GREEN, "2", &|x| x, &|y| y);
+    svg += &label(bx + bw_b * 0.55, by + bh - 5.0, "Barrel: ~1 nm (smooth)", GREEN, 7, "start");
+    let pts_rapid: Vec<(f64, f64)> = (0..80).map(|i| {
+        let t = i as f64 / 79.0 * 4.0;
+        let r = 80.0 * (1.0 - (-2.0_f64 * t).exp()) + 5.0;
+        (bx + (t / 4.0) * bw_b, by + bh - (r / 100.0) * bh)
+    }).collect();
+    svg += &polyline_svg(&pts_rapid, RED, "2", &|x| x, &|y| y);
+    svg += &label(bx + bw_b * 0.5, by + 20.0, "Rapid: 80+ nm (harsh)", RED, 7, "start");
+    let pts_ctrl: Vec<(f64, f64)> = (0..80).map(|i| {
+        let t = i as f64 / 79.0 * 4.0;
+        let r = 5.0 * (1.0 - (-1.0_f64 * t).exp()) + 0.5;
+        (bx + (t / 4.0) * bw_b, by + bh - (r / 100.0) * bh)
+    }).collect();
+    svg += &polyline_svg(&pts_ctrl, ACCENT, "2", &|x| x, &|y| y);
+    svg += &label(bx + bw_b * 0.55, by + bh - 18.0, "Controlled: ~5 nm", ACCENT, 7, "start");
+    svg += &format!("<rect x=\"70\" y=\"255\" width=\"270\" height=\"55\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(205.0, 270.0, "Wang et al. (2022): Baijiu Microstructure", TEXT, 8, "middle");
+    svg += &label(205.0, 284.0, "Small cluster (~1 nm) \u{2192} flavor, mellowness", GREEN, 7, "middle");
+    svg += &label(205.0, 298.0, "Large cluster (~100 nm) \u{2192} irritation, harshness", RED, 7, "middle");
+    svg += &format!("<rect x=\"395\" y=\"255\" width=\"275\" height=\"55\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(532.5, 270.0, "Guo et al. (2021): Ethanol-Driven Coacervation", TEXT, 8, "middle");
+    svg += &label(532.5, 284.0, "High conc + cold EtOH \u{2192} network morphology", BLUE, 7, "middle");
+    svg += &label(532.5, 298.0, "Low conc + warm EtOH \u{2192} nanosphere assembly", ACCENT, 7, "middle");
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0, "Barrel aging follows Path 2 (stress-free gelation \u{2192} small clusters \u{2192} smooth)", GREEN, 8, "middle");
+    svg += &label(350.0, 462.0, "Aggressive acceleration risks Path 1 (stressed gel \u{2192} large clusters \u{2192} harsh)", RED, 8, "middle");
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 82: HC Wood Extraction
+// ═══════════════════════════════════════════════════════════════
+fn sim_hc_wood_extraction() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 82 \u{2014} Hydrodynamic Cavitation Direct Wood Extraction: 300 mg/g Tannin");
+    svg += &label(195.0, 57.0, "A: Tannin Yield vs Treatment Time (HC, 3.5 bar)", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 260.0, 175.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    for i in 0..=6 {
+        let val = i as f64 * 20.0;
+        let x = ax + (val / 120.0) * aw;
+        svg += &vline(x, ay + ah, ay + ah + 3.0, MUTED, "0.5");
+        svg += &label(x, ay + ah + 12.0, &format!("{}", val as i32), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 24.0, "Treatment time (min)", MUTED, 8, "middle");
+    for i in 0..=7 {
+        let val = i as f64 * 50.0;
+        let y = ay + ah - (val / 350.0) * ah;
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}", val as i32), MUTED, 7, "end");
+        if i > 0 { svg += &hline(ax, ax + aw, y, GRID, "0.3"); }
+    }
+    let pts_hc: Vec<(f64, f64)> = (0..100).map(|i| {
+        let t = i as f64 / 99.0 * 120.0;
+        let yield_val = 300.0 * (1.0 - (-0.04_f64 * t).exp());
+        (ax + (t / 120.0) * aw, ay + ah - (yield_val / 350.0) * ah)
+    }).collect();
+    svg += &polyline_svg(&pts_hc, ACCENT, "2.5", &|x| x, &|y| y);
+    svg += &label(ax + aw * 0.6, ay + 15.0, "HC venturi (water, RT)", ACCENT, 7, "start");
+    let pts_us: Vec<(f64, f64)> = (0..100).map(|i| {
+        let t = i as f64 / 99.0 * 120.0;
+        let yield_val = 200.0 * (1.0 - (-0.025_f64 * t).exp());
+        (ax + (t / 120.0) * aw, ay + ah - (yield_val / 350.0) * ah)
+    }).collect();
+    svg += &polyline_svg(&pts_us, BLUE, "1.5", &|x| x, &|y| y);
+    svg += &label(ax + aw * 0.6, ay + ah * 0.42, "Ultrasonic 40 kHz", BLUE, 7, "start");
+    let pts_mac: Vec<(f64, f64)> = (0..100).map(|i| {
+        let t = i as f64 / 99.0 * 120.0;
+        let yield_val = 80.0 * (1.0 - (-0.01_f64 * t).exp());
+        (ax + (t / 120.0) * aw, ay + ah - (yield_val / 350.0) * ah)
+    }).collect();
+    svg += &polyline_svg(&pts_mac, MUTED, "1.5", &|x| x, &|y| y);
+    svg += &label(ax + aw * 0.6, ay + ah * 0.72, "Maceration (RT)", MUTED, 7, "start");
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"5\" fill=\"{GREEN}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+        ax + aw, ay + ah - (300.0 / 350.0) * ah);
+    svg += &label(ax + aw - 30.0, ay + ah - (300.0 / 350.0) * ah - 8.0, "300 mg/g", GREEN, 8, "end");
+    svg += &label(525.0, 57.0, "B: Energy Efficiency Comparison", TEXT, 10, "middle");
+    let bx = 395.0;
+    let comparisons = [
+        ("HC (venturi, 3.5 bar)", 1.0, GREEN, "1\u{00d7} (baseline)"),
+        ("Ultrasonic bath (40 kHz)", 8.0, BLUE, "8\u{00d7} more energy"),
+        ("Ultrasonic probe (20 kHz)", 25.0, PURPLE, "25\u{00d7} more energy"),
+        ("Thermal maceration (80\u{00b0}C)", 44.0, RED, "44\u{00d7} more energy"),
+    ];
+    for (i, (name, factor, color, note)) in comparisons.iter().enumerate() {
+        let y = 80.0 + i as f64 * 40.0;
+        let bar_w = factor / 50.0 * 250.0;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{bar_w}\" height=\"24\" rx=\"2\" fill=\"{color}\" opacity=\"0.5\"/>\n",
+            bx + 10.0, y);
+        svg += &label(bx + 10.0, y - 2.0, name, TEXT, 7, "start");
+        svg += &label(bx + 10.0 + bar_w + 5.0, y + 16.0, note, color, 7, "start");
+    }
+    svg += &format!("<rect x=\"395\" y=\"240\" width=\"275\" height=\"50\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(532.5, 257.0, "Oak-specific: chestnut data (Meneguzzo 2023)", TEXT, 7, "middle");
+    svg += &label(532.5, 271.0, "Both oak and chestnut are rich in hydrolyzable", MUTED, 7, "middle");
+    svg += &label(532.5, 283.0, "tannins (castalagin, vescalagin, ellagic acid)", MUTED, 7, "middle");
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0, "HC extracts 300 mg tannin/g wood using ONLY water at room temperature.", ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0, "No organic solvents. 6\u{2013}44\u{00d7} more energy-efficient than ultrasonic methods.", GREEN, 8, "middle");
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 83: Precision Acetaldehyde via Corona Discharge
+// ═══════════════════════════════════════════════════════════════
+fn sim_corona_acetaldehyde() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 83 \u{2014} Precision Acetaldehyde Dosing via Corona Discharge");
+    svg += &label(195.0, 57.0, "A: Corona Discharge Products (Kozlov 2013)", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 260.0, 175.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    for i in 0..=4 {
+        let val = i as f64 * 0.5;
+        let x = ax + (val / 2.0) * aw;
+        svg += &vline(x, ay + ah, ay + ah + 3.0, MUTED, "0.5");
+        svg += &label(x, ay + ah + 12.0, &format!("{:.1}", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 24.0, "Energy input (kWh/g)", MUTED, 8, "middle");
+    for i in 0..=4 {
+        let val = i as f64 * 25.0;
+        let y = ay + ah - (val / 100.0) * ah;
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}%", val as i32), MUTED, 7, "end");
+    }
+    let pts_aa: Vec<(f64, f64)> = (0..100).map(|i| {
+        let e = i as f64 / 99.0 * 2.0;
+        let c = 85.0 * e * (-1.2_f64 * e).exp();
+        (ax + (e / 2.0) * aw, ay + ah - (c / 100.0) * ah)
+    }).collect();
+    svg += &polyline_svg(&pts_aa, ACCENT, "2.5", &|x| x, &|y| y);
+    svg += &label(ax + aw * 0.25, ay + 15.0, "Acetaldehyde", ACCENT, 8, "start");
+    let pts_ac: Vec<(f64, f64)> = (0..100).map(|i| {
+        let e = i as f64 / 99.0 * 2.0;
+        let c = 60.0 * (1.0 - (-0.8_f64 * e).exp()) * (1.0 - (-1.5_f64 * e).exp());
+        (ax + (e / 2.0) * aw, ay + ah - (c / 100.0) * ah)
+    }).collect();
+    svg += &polyline_svg(&pts_ac, GREEN, "2", &|x| x, &|y| y);
+    svg += &label(ax + aw * 0.6, ay + ah * 0.35, "Acetic acid", GREEN, 7, "start");
+    let pts_co2: Vec<(f64, f64)> = (0..100).map(|i| {
+        let e = i as f64 / 99.0 * 2.0;
+        let c = 40.0 * (1.0 - (-0.3_f64 * e).exp()).powi(2);
+        (ax + (e / 2.0) * aw, ay + ah - (c / 100.0) * ah)
+    }).collect();
+    svg += &polyline_svg(&pts_co2, MUTED, "1.5", &|x| x, &|y| y);
+    svg += &label(ax + aw * 0.7, ay + ah * 0.6, "CO\u{2082}", MUTED, 7, "start");
+    svg += &format!("<rect x=\"{}\" y=\"{ay}\" width=\"{}\" height=\"{ah}\" fill=\"{YELLOW}\" opacity=\"0.08\"/>\n",
+        ax + (0.2 / 2.0) * aw, (0.6 / 2.0) * aw);
+    svg += &label(ax + (0.5 / 2.0) * aw, ay + ah - 5.0, "Optimal window", YELLOW, 7, "middle");
+    svg += &label(525.0, 57.0, "B: Acetaldehyde Targets in Aged Spirit", TEXT, 10, "middle");
+    let bx2 = 395.0;
+    let ranges = [
+        ("New-make whiskey", 5.0, 25.0, MUTED),
+        ("2-year bourbon", 15.0, 50.0, BLUE),
+        ("5-year scotch", 30.0, 80.0, ACCENT),
+        ("12-year scotch", 10.0, 40.0, GREEN),
+        ("Over-oxidized", 100.0, 300.0, RED),
+    ];
+    let max_aa = 320.0_f64;
+    for (i, (name, lo, hi, color)) in ranges.iter().enumerate() {
+        let y = 80.0 + i as f64 * 30.0;
+        let x1 = bx2 + 10.0 + (lo / max_aa) * 250.0;
+        let x2 = bx2 + 10.0 + (hi / max_aa) * 250.0;
+        svg += &format!("<rect x=\"{x1}\" y=\"{}\" width=\"{}\" height=\"18\" rx=\"2\" fill=\"{color}\" opacity=\"0.5\"/>\n",
+            y, x2 - x1);
+        svg += &label(bx2 + 10.0, y - 2.0, name, TEXT, 7, "start");
+        svg += &label((x1 + x2) / 2.0, y + 13.0, &format!("{}\u{2013}{} mg/L", *lo as i32, *hi as i32), color, 6, "middle");
+    }
+    svg += &format!("<rect x=\"395\" y=\"260\" width=\"275\" height=\"50\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(532.5, 277.0, "Dosing: 2 OH\u{2022} per CH\u{2083}CHO molecule", TEXT, 8, "middle");
+    svg += &label(532.5, 293.0, "At 0.33 kWh/g: 30 mg/L needs ~0.01 kWh/L spirit", ACCENT, 7, "middle");
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0, "Corona discharge: EtOH \u{2192} CH\u{2083}CHO (primary) \u{2192} CH\u{2083}COOH \u{2192} CO\u{2082}", ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0, "Stop early = precision acetaldehyde dosing for tannin bridging.", GREEN, 8, "middle");
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 84: PEF x Cryo-Concentration Synergy
+// ═══════════════════════════════════════════════════════════════
+fn sim_pef_cryo_synergy() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 84 \u{2014} PEF \u{00d7} Cryo-Concentration Synergy: Electroporated Oak at High ABV");
+    svg += &label(195.0, 57.0, "A: Cryo-Concentrated Spirit Properties", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 260.0, 175.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    for i in 0..=5 {
+        let val = -50.0 + i as f64 * 10.0;
+        let x = ax + ((val + 50.0) / 50.0) * aw;
+        svg += &vline(x, ay + ah, ay + ah + 3.0, MUTED, "0.5");
+        svg += &label(x, ay + ah + 12.0, &format!("{}\u{00b0}", val as i32), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 24.0, "Temperature (\u{00b0}C)", MUTED, 8, "middle");
+    for i in 0..=5 {
+        let val = 30.0 + i as f64 * 10.0;
+        let y = ay + ah - ((val - 30.0) / 50.0) * ah;
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}%", val as i32), BLUE, 6, "end");
+    }
+    let pts_abv: Vec<(f64, f64)> = (0..100).map(|i| {
+        let t = -50.0 + i as f64 / 99.0 * 50.0;
+        let abv = if t > -5.0 { 40.0 }
+            else if t > -23.0 { 40.0 + (t + 5.0).abs() * 1.1 }
+            else { 60.0 + (t + 23.0).abs() * 0.5 };
+        let abv = abv.min(78.0);
+        (ax + ((t + 50.0) / 50.0) * aw, ay + ah - ((abv - 30.0) / 50.0) * ah)
+    }).collect();
+    svg += &polyline_svg(&pts_abv, BLUE, "2.5", &|x| x, &|y| y);
+    let key_pts = [(-5.0, 40.0, "40% (ambient)"), (-25.0, 62.0, "62% (-25\u{00b0}C)"), (-40.0, 72.0, "72% (-40\u{00b0}C)")];
+    for &(t, abv, lbl) in &key_pts {
+        let x = ax + ((t + 50.0) / 50.0) * aw;
+        let y = ay + ah - ((abv - 30.0) / 50.0) * ah;
+        svg += &format!("<circle cx=\"{x}\" cy=\"{y}\" r=\"4\" fill=\"{ACCENT}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n");
+        svg += &label(x + 5.0, y - 5.0, lbl, ACCENT, 6, "start");
+    }
+    svg += &label(525.0, 57.0, "B: PEF Enhancement \u{00d7} ABV Interaction", TEXT, 10, "middle");
+    let (bx, by, bw_b, bh) = (400.0, 70.0, 265.0, 175.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw_b}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    for i in 0..=5 {
+        let val = 30.0 + i as f64 * 10.0;
+        let x = bx + ((val - 30.0) / 50.0) * bw_b;
+        svg += &vline(x, by + bh, by + bh + 3.0, MUTED, "0.5");
+        svg += &label(x, by + bh + 12.0, &format!("{}%", val as i32), MUTED, 7, "middle");
+    }
+    svg += &label(bx + bw_b / 2.0, by + bh + 24.0, "ABV (%)", MUTED, 8, "middle");
+    for i in 0..=5 {
+        let val = i as f64 * 2.0;
+        let y = by + bh - (val / 10.0) * bh;
+        svg += &label(bx - 4.0, y + 3.0, &format!("{}\u{00d7}", val as i32), MUTED, 6, "end");
+    }
+    let pts_pef: Vec<(f64, f64)> = (0..100).map(|i| {
+        let abv = 30.0 + i as f64 / 99.0 * 50.0;
+        let enh = 1.5 + (abv - 30.0) / 50.0 * 6.5;
+        (bx + ((abv - 30.0) / 50.0) * bw_b, by + bh - (enh / 10.0) * bh)
+    }).collect();
+    svg += &polyline_svg(&pts_pef, ACCENT, "2.5", &|x| x, &|y| y);
+    svg += &label(bx + bw_b * 0.6, by + 20.0, "PEF + oak chips", ACCENT, 7, "start");
+    let pts_solv: Vec<(f64, f64)> = (0..100).map(|i| {
+        let abv = 30.0 + i as f64 / 99.0 * 50.0;
+        let enh = 1.0 + (abv - 30.0) / 50.0 * 2.0;
+        (bx + ((abv - 30.0) / 50.0) * bw_b, by + bh - (enh / 10.0) * bh)
+    }).collect();
+    svg += &polyline_svg(&pts_solv, MUTED, "1.5", &|x| x, &|y| y);
+    svg += &label(bx + bw_b * 0.6, by + bh * 0.6, "Solvent only", MUTED, 7, "start");
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"5\" fill=\"{GREEN}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+        bx + (10.0 / 50.0) * bw_b, by + bh - (1.54 / 10.0) * bh);
+    svg += &label(bx + (10.0 / 50.0) * bw_b + 8.0, by + bh - (1.54 / 10.0) * bh,
+        "Zhang 2013: +54%", GREEN, 6, "start");
+    svg += &format!("<rect x=\"{}\" y=\"{by}\" width=\"{}\" height=\"{bh}\" fill=\"{GREEN}\" opacity=\"0.06\"/>\n",
+        bx + (30.0 / 50.0) * bw_b, (20.0 / 50.0) * bw_b);
+    svg += &label(bx + bw_b * 0.85, by + bh - 10.0, "Cryo zone", GREEN, 6, "middle");
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0, "Cryo-concentrate to 65\u{2013}72% ABV, then PEF with oak chips:", ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0, "higher solvent power + electroporation = predicted 5\u{2013}8\u{00d7} tannin extraction", GREEN, 8, "middle");
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 85: Microfluidic scCO2 Oak Extraction
+// ═══════════════════════════════════════════════════════════════
+fn sim_microfluidic_scco2_oak() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 85 \u{2014} Microfluidic scCO\u{2082} Oak Extraction: Millisecond Equilibrium");
+    svg += &label(195.0, 57.0, "A: Time to Extraction Equilibrium", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 260.0, 175.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let methods_a = [
+        ("Barrel (diffusion)", 3.15e8, MUTED, "10 years"),
+        ("Maceration + heat", 2.59e6, RED, "30 days"),
+        ("Ultrasonic (40 kHz)", 3600.0, BLUE, "1 hour"),
+        ("Batch scCO\u{2082}", 300.0, PURPLE, "5 min"),
+        ("HC venturi", 60.0, GREEN, "1 min"),
+        ("Microfluidic scCO\u{2082}", 0.001, ACCENT, "1 ms"),
+    ];
+    let max_log = 9.0_f64;
+    let bar_h = (ah - 20.0) / methods_a.len() as f64;
+    for (i, (name, time_s, color, time_label)) in methods_a.iter().enumerate() {
+        let y = ay + 10.0 + i as f64 * bar_h;
+        let log_t = (*time_s as f64).log10().max(-3.0);
+        let bar_w_val = ((log_t + 3.0) / (max_log + 3.0)) * aw;
+        svg += &format!("<rect x=\"{ax}\" y=\"{y}\" width=\"{bar_w_val}\" height=\"{}\" rx=\"2\" fill=\"{color}\" opacity=\"0.5\"/>\n",
+            bar_h - 4.0);
+        svg += &label(ax + bar_w_val + 5.0, y + bar_h / 2.0, time_label, color, 7, "start");
+        svg += &label(ax - 5.0, y + bar_h / 2.0, name, TEXT, 6, "end");
+    }
+    svg += &label(525.0, 57.0, "B: scCO\u{2082} Selectivity (Assmann 2013)", TEXT, 10, "middle");
+    let (bx, by, bw_b, bh) = (400.0, 70.0, 265.0, 175.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw_b}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    for i in 0..=4 {
+        let val = 80.0 + i as f64 * 10.0;
+        let x = bx + ((val - 80.0) / 40.0) * bw_b;
+        svg += &vline(x, by + bh, by + bh + 3.0, MUTED, "0.5");
+        svg += &label(x, by + bh + 12.0, &format!("{}", val as i32), MUTED, 7, "middle");
+    }
+    svg += &label(bx + bw_b / 2.0, by + bh + 24.0, "Pressure (bar)", MUTED, 8, "middle");
+    for i in 0..=4 {
+        let val = i as f64 * 0.25;
+        let y = by + bh - val * bh;
+        svg += &label(bx - 4.0, y + 3.0, &format!("{:.2}", val), MUTED, 6, "end");
+    }
+    let pts_mdha: Vec<(f64, f64)> = (0..100).map(|i| {
+        let p = 80.0 + i as f64 / 99.0 * 40.0;
+        let k = 0.85 - 0.002 * (p - 80.0);
+        (bx + ((p - 80.0) / 40.0) * bw_b, by + bh - k * bh)
+    }).collect();
+    svg += &polyline_svg(&pts_mdha, GREEN, "2", &|x| x, &|y| y);
+    svg += &label(bx + bw_b * 0.6, by + 20.0, "MDHA (non-polar)", GREEN, 7, "start");
+    let pts_mv: Vec<(f64, f64)> = (0..100).map(|i| {
+        let p = 80.0 + i as f64 / 99.0 * 40.0;
+        let k = 0.3 + 0.15 * ((p - 95.0) / 20.0).tanh();
+        (bx + ((p - 80.0) / 40.0) * bw_b, by + bh - k * bh)
+    }).collect();
+    svg += &polyline_svg(&pts_mv, BLUE, "2", &|x| x, &|y| y);
+    svg += &label(bx + bw_b * 0.6, by + bh * 0.55, "Methyl vanillate", BLUE, 7, "start");
+    let pts_van: Vec<(f64, f64)> = (0..100).map(|i| {
+        let p = 80.0 + i as f64 / 99.0 * 40.0;
+        let k = 0.05 + 0.03 * ((p - 90.0) / 15.0).tanh();
+        (bx + ((p - 80.0) / 40.0) * bw_b, by + bh - k * bh)
+    }).collect();
+    svg += &polyline_svg(&pts_van, ACCENT, "2", &|x| x, &|y| y);
+    svg += &label(bx + bw_b * 0.6, by + bh * 0.82, "Vanillin (polar)", ACCENT, 7, "start");
+    let cp_x = bx + ((87.0 - 80.0) / 40.0) * bw_b;
+    svg += &vline(cp_x, by, by + bh, YELLOW, "1");
+    svg += &label(cp_x + 3.0, by + 15.0, "CO\u{2082} Pc", YELLOW, 6, "start");
+    svg += &format!("<rect x=\"70\" y=\"310\" width=\"270\" height=\"55\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(205.0, 325.0, "Two-stage microfluidic extraction:", TEXT, 8, "middle");
+    svg += &label(205.0, 340.0, "1. scCO\u{2082} channel: lactones, MDHA (ms)", GREEN, 7, "middle");
+    svg += &label(205.0, 355.0, "2. EtOH/H\u{2082}O channel: vanillin, tannins (s)", ACCENT, 7, "middle");
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0, "Assmann 2013: extraction equilibrium in MILLISECONDS in microchannels.", ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0, "Bottleneck shifts from kinetics to selectivity. Tune pressure for targets.", GREEN, 8, "middle");
     svg.push_str("</svg>");
     svg
 }

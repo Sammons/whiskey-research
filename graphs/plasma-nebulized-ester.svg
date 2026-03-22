@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 80 — Plasma-Nebulized Microdroplet Esterification: Bridging the Ethanol Gap</text>
+<text x="195" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Activation Energy vs Droplet Diameter</text>
+<rect x="70" y="65" width="260" height="175" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="70" y1="240" x2="70" y2="244" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="254" fill="#8b949e" font-size="7" text-anchor="middle">1</text>
+<line x1="156.66666666666666" y1="240" x2="156.66666666666666" y2="244" stroke="#8b949e" stroke-width="0.5"/>
+<text x="156.66666666666666" y="254" fill="#8b949e" font-size="7" text-anchor="middle">10</text>
+<line x1="243.33333333333331" y1="240" x2="243.33333333333331" y2="244" stroke="#8b949e" stroke-width="0.5"/>
+<text x="243.33333333333331" y="254" fill="#8b949e" font-size="7" text-anchor="middle">100</text>
+<line x1="330" y1="240" x2="330" y2="244" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="254" fill="#8b949e" font-size="7" text-anchor="middle">1k</text>
+<text x="200" y="266" fill="#8b949e" font-size="8" text-anchor="middle">Droplet diameter (μm)</text>
+<text x="65" y="243" fill="#8b949e" font-size="7" text-anchor="end">30</text>
+<line x1="70" y1="240" x2="330" y2="240" stroke="#30363d" stroke-width="0.5"/>
+<text x="65" y="199.25" fill="#8b949e" font-size="7" text-anchor="end">40</text>
+<line x1="70" y1="196.25" x2="330" y2="196.25" stroke="#30363d" stroke-width="0.5"/>
+<text x="65" y="155.5" fill="#8b949e" font-size="7" text-anchor="end">50</text>
+<line x1="70" y1="152.5" x2="330" y2="152.5" stroke="#30363d" stroke-width="0.5"/>
+<text x="65" y="111.75" fill="#8b949e" font-size="7" text-anchor="end">60</text>
+<line x1="70" y1="108.75" x2="330" y2="108.75" stroke="#30363d" stroke-width="0.5"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">70</text>
+<line x1="70" y1="65" x2="330" y2="65" stroke="#30363d" stroke-width="0.5"/>
+<line x1="70" y1="108.75" x2="330" y2="108.75" stroke="#f85149" stroke-width="1.5"/>
+<text x="325" y="103.75" fill="#f85149" font-size="7" text-anchor="end">Bulk ethanol Eₐ = 60</text>
+<line x1="70" y1="143.75" x2="330" y2="143.75" stroke="#3fb950" stroke-width="1"/>
+<text x="75" y="138.75" fill="#3fb950" font-size="6" text-anchor="start">Methanol Eₐ ≈ 52 (plasma works)</text>
+<polyline points="70.0,147.2 72.6,147.2 75.3,147.2 77.9,147.2 80.5,147.2 83.1,147.2 85.8,147.2 88.4,147.2 91.0,147.2 93.6,147.2 96.3,147.2 98.9,147.2 101.5,147.2 104.1,147.2 106.8,147.2 109.4,147.2 112.0,147.2 114.6,147.2 117.3,147.2 119.9,147.2 122.5,147.2 125.2,147.2 127.8,147.2 130.4,147.2 133.0,147.2 135.7,147.2 138.3,147.2 140.9,147.2 143.5,147.2 146.2,147.2 148.8,147.2 151.4,147.2 154.0,147.2 156.7,147.2 159.3,145.9 161.9,144.7 164.5,143.4 167.2,142.2 169.8,141.1 172.4,140.0 175.1,138.9 177.7,137.9 180.3,136.9 182.9,135.9 185.6,135.0 188.2,134.1 190.8,133.2 193.4,132.4 196.1,131.6 198.7,130.8 201.3,130.0 203.9,129.3 206.6,128.6 209.2,127.9 211.8,127.3 214.4,126.6 217.1,126.0 219.7,125.4 222.3,124.8 224.9,124.3 227.6,123.8 230.2,123.2 232.8,122.7 235.5,122.3 238.1,121.8 240.7,121.4 243.3,120.9 246.0,120.5 248.6,120.1 251.2,119.7 253.8,119.3 256.5,119.0 259.1,118.6 261.7,118.3 264.3,118.0 267.0,117.6 269.6,117.3 272.2,117.0 274.8,116.8 277.5,116.5 280.1,116.2 282.7,116.0 285.4,115.7 288.0,115.5 290.6,115.2 293.2,115.0 295.9,114.8 298.5,114.6 301.1,114.4 303.7,114.2 306.4,114.0 309.0,113.8 311.6,113.7 314.2,113.5 316.9,113.3 319.5,113.2 322.1,113.0 324.7,112.9 327.4,112.7 330.0,112.6" fill="none" stroke="#e8a665" stroke-width="2.5"/>
+<line x1="70" y1="135" x2="330" y2="135" stroke="#d29922" stroke-width="1" stroke-dasharray="4,3"/>
+<text x="325" y="147" fill="#d29922" font-size="6" text-anchor="end">Ester detection threshold</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Predicted Ester Yield by Method</text>
+<text x="412" y="89" fill="#f85149" font-size="8" text-anchor="start">0.0×</text>
+<text x="405" y="73" fill="#e6edf3" font-size="7" text-anchor="start">Bulk plasma (Ar, ethanol)</text>
+<text x="405" y="103" fill="#8b949e" font-size="6" text-anchor="start">Warne 2024: not detected</text>
+<rect x="405" y="109" width="46.875" height="20" rx="2" fill="#3fb950" opacity="0.6"/>
+<text x="456.875" y="123" fill="#3fb950" font-size="8" text-anchor="start">7.5×</text>
+<text x="405" y="107" fill="#e6edf3" font-size="7" text-anchor="start">Bulk plasma (Ar, methanol)</text>
+<text x="405" y="137" fill="#8b949e" font-size="6" text-anchor="start">7.5× enhancement</text>
+<rect x="405" y="143" width="13.125000000000002" height="20" rx="2" fill="#58a6ff" opacity="0.6"/>
+<text x="423.125" y="157" fill="#58a6ff" font-size="8" text-anchor="start">2.1×</text>
+<text x="405" y="141" fill="#e6edf3" font-size="7" text-anchor="start">Nebulized only (10 μm)</text>
+<text x="405" y="171" fill="#8b949e" font-size="6" text-anchor="start">Interfacial Eₐ reduction</text>
+<rect x="405" y="177" width="75" height="20" rx="2" fill="#e8a665" opacity="0.6"/>
+<text x="485" y="191" fill="#e8a665" font-size="8" text-anchor="start">12.0×</text>
+<text x="405" y="175" fill="#e6edf3" font-size="7" text-anchor="start">Plasma + nebulized (10 μm)</text>
+<text x="405" y="205" fill="#8b949e" font-size="6" text-anchor="start">Synergistic: radical + interface</text>
+<rect x="405" y="211" width="218.75" height="20" rx="2" fill="#d29922" opacity="0.6"/>
+<text x="628.75" y="225" fill="#d29922" font-size="8" text-anchor="start">35.0×</text>
+<text x="405" y="209" fill="#e6edf3" font-size="7" text-anchor="start">Plasma + nebulized (1 μm)</text>
+<text x="405" y="239" fill="#8b949e" font-size="6" text-anchor="start">Maximum predicted</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Warne 2024: plasma esterification FAILS in ethanol. Hao 2022: microdroplet interfaces</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">lower Eₐ by 8.8 kJ/mol. Combining both could bridge the ethanol gap.</text>
+</svg>

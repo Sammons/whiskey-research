@@ -2938,6 +2938,121 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<h3 id="s4-68">&sect;4.68 &mdash; Plasma-Nebulized Microdroplet Esterification: Bridging the Ethanol Gap</h3>
+
+<p>Warne et al. (2024)<span class="cite" data-ref="159"><sup>[159]</sup></span> demonstrated 7.5&times; ester enhancement via cold plasma in methanol&mdash;but <strong>zero detectable esterification in ethanol</strong>. This is the single biggest barrier to plasma-based spirit aging. Separately, Hao et al. (2022)<span class="cite" data-ref="211"><sup>[211]</sup></span> showed that microdroplet air&ndash;liquid interfaces generate electric fields of ~10 MV/cm that lower activation energies by 2.1 kcal/mol (8.8 kJ/mol). Mehndiratta et al. (2025)<span class="cite" data-ref="210"><sup>[210]</sup></span> achieved <strong>near-quantitative esterification</strong> of C8&ndash;C9 acids in dry alcohol microdroplets without any catalyst.</p>
+
+<p><strong>The cross-domain bridge:</strong> If we <em>nebulize</em> ethanol into 1&ndash;10 &mu;m microdroplets and simultaneously expose them to cold plasma, two barriers fall at once. The interfacial electric field reduces E<sub>a</sub> from ~60 to ~51 kJ/mol (below methanol&rsquo;s ~52 kJ/mol where plasma esterification succeeds), while plasma-generated OH&bull; radicals provide the proton source needed for Fischer esterification. The combined effect should bridge the gap between &ldquo;works in methanol&rdquo; and &ldquo;fails in ethanol.&rdquo;</p>
+
+<figure>
+  <object data="graphs/plasma-nebulized-ester.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/plasma-nebulized-ester.svg" alt="Plasma-nebulized microdroplet esterification bridging the ethanol gap">
+  </object>
+  <figcaption><strong>Fig. 80.</strong> Plasma-nebulized microdroplet esterification. (A) Activation energy vs droplet diameter: interfacial effects (Hao 2022) lower E<sub>a</sub> for smaller droplets, crossing below the ester detection threshold at ~10 &mu;m. (B) Predicted ester yield by method: bulk plasma fails in ethanol, but combined nebulization + plasma is predicted to achieve 12&ndash;35&times; enhancement depending on droplet size.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">Novel synthesis</span> &mdash; Warne 2024<span class="cite" data-ref="159"><sup>[159]</sup></span> (plasma fails in ethanol), Hao 2022<span class="cite" data-ref="211"><sup>[211]</sup></span> (microdroplet E<sub>a</sub> reduction), Mehndiratta 2025<span class="cite" data-ref="210"><sup>[210]</sup></span> (catalyst-free ester at interface). No one has combined plasma + nebulization for ethanol esterification. Water suppression (Mehndiratta 2025: ester undetectable above 20% H<sub>2</sub>O) remains a critical obstacle&mdash;cryo-concentration (&sect;1.16) to 65%+ ABV before nebulization is essential. <strong>Home testability: 2/5</strong> (Ultrasonic mesh nebulizer $25 + 12V power supply. Nebulize cryo-concentrated spirit into closed jar. No plasma source at home, but the nebulization-only experiment tests the interfacial ester hypothesis alone.)
+</div>
+
+
+<h3 id="s4-69">&sect;4.69 &mdash; Colloidal Gelation Pathways: Aging as Controlled Phase Separation</h3>
+
+<p>Spirit maturation is, at the mesoscale, a <em>colloidal phase separation</em> process. Wood extractives (tannins, phenolics, melanoidins) dissolved in ethanol-water form amphiphilic aggregates that slowly build into network structures. Tsurusawa et al. (2020)<span class="cite" data-ref="212"><sup>[212]</sup></span> discovered that colloidal gelation follows two fundamentally different pathways:</p>
+
+<ul>
+  <li><strong>Path 1 (stressed gel):</strong> Percolation <em>before</em> dynamical arrest &rarr; network under mechanical stress &rarr; coarsens into large aggregates. In spirits: large clusters (~100 nm, Wang 2022<span class="cite" data-ref="214"><sup>[214]</sup></span>) &rarr; alcoholic irritation, harshness.</li>
+  <li><strong>Path 2 (stress-free gel):</strong> Dynamical arrest <em>before</em> percolation &rarr; stress-free network of small arrested particles that eventually percolate gently. In spirits: small clusters (~1 nm, Wang 2022) &rarr; flavor, mellowness, body.</li>
+</ul>
+
+<p>Guo et al. (2021)<span class="cite" data-ref="213"><sup>[213]</sup></span> showed that ethanol drives coacervation in colloidal solutions, with the pathway controlled by concentration and temperature: high concentration + cold ethanol produces <em>network morphologies</em> (path 2), while low concentration + warm ethanol produces <em>nanosphere assemblies</em> (path 1 precursor). This maps directly onto barrel aging (slow, cold &rarr; path 2) vs. aggressive ultrasonic treatment (fast, warm &rarr; path 1).</p>
+
+<figure>
+  <object data="graphs/colloidal-gelation-pathways.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/colloidal-gelation-pathways.svg" alt="Colloidal gelation pathways in spirit aging">
+  </object>
+  <figcaption><strong>Fig. 81.</strong> Spirit aging as colloidal gelation. (A) Phase diagram: two pathways to gel formation (Tsurusawa 2020). Fast quench &rarr; stressed gel (harsh), slow approach &rarr; stress-free gel (smooth). (B) Cluster size evolution: barrel aging stabilizes at ~1 nm (smooth), rapid treatment overshoots to 80+ nm (harsh). Controlled acceleration targets ~5 nm.</figcaption>
+</figure>
+
+<p><strong>Practical implication for accelerated aging:</strong> Any acceleration technique must avoid Path 1. This means: (i) maintain extractive concentrations below the spinodal (don&rsquo;t oversaturate), (ii) cool slowly (don&rsquo;t quench), (iii) use seeding (&sect;3.2) to nucleate small clusters that grow by monomer addition rather than aggregation. Techniques like freeze-thaw cycling (&sect;3.3, &sect;1.16) naturally promote Path 2 because the slow freeze concentrates extractives gradually while cold temperature favors dynamical arrest before percolation.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">Novel framework</span> &mdash; Tsurusawa 2020<span class="cite" data-ref="212"><sup>[212]</sup></span> (gelation pathways), Wang 2022<span class="cite" data-ref="214"><sup>[214]</sup></span> (cluster size &harr; quality), Guo 2021<span class="cite" data-ref="213"><sup>[213]</sup></span> (ethanol-driven coacervation). This reframes spirit aging as a colloidal physics problem with two distinct pathway endpoints. No spirit-specific gelation study exists. <strong>Home testability: 3/5</strong> (Prepare spirit + oak extract at different concentrations. Cool one sample slowly (freezer), quench another rapidly (dry ice). After 48h, compare turbidity by laser pointer scattering and taste for smoothness vs harshness.)
+</div>
+
+
+<h3 id="s4-70">&sect;4.70 &mdash; Hydrodynamic Cavitation Wood Extraction: 300 mg/g Direct Tannin Yield</h3>
+
+<p>Section &sect;4.31 established HC as a 6&ndash;44&times; more energy-efficient alternative to ultrasonic cavitation for spirit treatment. Meneguzzo et al. (2023)<span class="cite" data-ref="215"><sup>[215]</sup></span> took this further: they achieved <strong>~300 mg tannin per gram of chestnut wood</strong> using HC alone&mdash;water only, room temperature, no organic solvents, no chemical pretreatment. Only mild grinding of the raw wood was needed. The extract showed high DPPH antioxidant activity, confirming the tannins retained their native structure.</p>
+
+<p><strong>The whiskey implication:</strong> Both chestnut and oak are rich in hydrolyzable tannins (castalagin, vescalagin, ellagic acid). Albanese et al. (2017)<span class="cite" data-ref="216"><sup>[216]</sup></span> demonstrated pilot-scale HC brewing at 230 L with 30% improved extraction efficiency and 12% energy reduction. Translating the 300 mg/g yield to oak: even at half that efficiency (150 mg/g), a 5 g/L oak chip loading processed through a venturi loop for 60 min would deliver ~750 mg/L tannins&mdash;well above the 200&ndash;400 mg/L typical of barrel-aged whiskey.</p>
+
+<figure>
+  <object data="graphs/hc-wood-extraction.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/hc-wood-extraction.svg" alt="HC wood extraction yield and energy comparison">
+  </object>
+  <figcaption><strong>Fig. 82.</strong> Hydrodynamic cavitation direct wood extraction. (A) Modeled tannin yield vs treatment time for HC (gold), ultrasonic (blue), and simple maceration (gray). HC reaches 300 mg/g endpoint (Meneguzzo 2023 data point in green). (B) Energy efficiency: HC at 3.5 bar requires 6&ndash;44&times; less energy than alternatives.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (chestnut)</span> &mdash; Meneguzzo 2023<span class="cite" data-ref="215"><sup>[215]</sup></span> (300 mg/g tannin, water-only), Albanese 2017<span class="cite" data-ref="216"><sup>[216]</sup></span> (230 L pilot-scale HC). Not directly tested on oak. Direct oak HC extraction is an obvious next experiment. <strong>Home testability: 5/5</strong> (Same HC setup as &sect;4.31: aquarium pump + brass venturi + oak chips in water. Run 60 min, measure color (phone camera OD) and taste tannin intensity vs maceration-only control. Cost: $0 incremental if pump already acquired.)
+</div>
+
+
+<h3 id="s4-71">&sect;4.71 &mdash; Precision Acetaldehyde Dosing via Corona Discharge</h3>
+
+<p>Acetaldehyde is the central intermediate in spirit maturation: it drives tannin polymerization (acetaldehyde-mediated ethyl bridges between flavanols), color stabilization (pyranoanthocyanin formation), and the aldehyde &rarr; acid &rarr; ester cascade. But controlling its concentration is critical&mdash;too little means no aging, too much means harshness and off-flavors. Kozlov et al. (2013)<span class="cite" data-ref="217"><sup>[217]</sup></span> showed that corona discharge on ethanol vapor produces <strong>acetaldehyde as the primary product</strong>, requiring exactly 2 OH&bull; radicals per molecule. The selectivity window is precise: at low energy input (0.2&ndash;0.8 kWh/g), acetaldehyde dominates; continued treatment drives further oxidation to acetic acid and eventually CO<sub>2</sub>.</p>
+
+<p><strong>The precision dosing concept:</strong> Rather than relying on slow, uncontrolled natural oxidation to produce acetaldehyde over years, use brief corona discharge treatment to generate a <em>precisely controlled</em> acetaldehyde dose. Target 30&ndash;50 mg/L (5-year scotch equivalent) requires only ~0.01 kWh/L of spirit at the optimal energy input of 0.33 kWh/g. The generated acetaldehyde then drives the acetaldehyde-mediated tannin bridging already described in &sect;4.12, compressing months of oxidative chemistry into hours.</p>
+
+<figure>
+  <object data="graphs/corona-acetaldehyde.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/corona-acetaldehyde.svg" alt="Corona discharge product distribution and acetaldehyde targets">
+  </object>
+  <figcaption><strong>Fig. 83.</strong> Precision acetaldehyde dosing. (A) Corona discharge product selectivity vs energy input (Kozlov 2013): acetaldehyde peaks at 0.3&ndash;0.6 kWh/g, then declines as acetic acid and CO<sub>2</sub> take over. (B) Target acetaldehyde ranges for different spirit ages. The yellow window in (A) maps to the 5-year scotch target in (B).</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">Novel application</span> &mdash; Kozlov 2013<span class="cite" data-ref="217"><sup>[217]</sup></span> (corona discharge ethanol oxidation products). The concept of using corona discharge as a precision acetaldehyde dosing tool for spirit aging is novel. Headspace corona (treating vapor above liquid) may be more practical than direct liquid treatment. <strong>Home testability: 2/5</strong> (Negative corona discharge can be generated with a sharp needle at ~5&ndash;10 kV from a neon sign transformer. Position needle above spirit surface in sealed container. Extremely dangerous: high voltage + flammable ethanol vapor. NOT recommended without professional safety equipment.)
+</div>
+
+
+<h3 id="s4-72">&sect;4.72 &mdash; PEF &times; Cryo-Concentration Synergy</h3>
+
+<p>&sect;4.33 established PEF as the most validated spirit-specific acceleration technology (+54% tannins, +47% vanillin at 1 kV/cm<span class="cite" data-ref="145"><sup>[145]</sup></span>). &sect;1.16 established cryo-concentration as a free ester amplifier (freeze to &minus;40&deg;C raises unfrozen fraction to ~72% ABV). But no one has combined them. The synergy is compelling: at 72% ABV, the spirit is a dramatically better solvent for oak phenolics (solubility of vanillin in ethanol is ~20&times; higher than in water), while PEF electroporation of wood cells opens new diffusion channels into the spirit. Higher solute concentration means more reactants per volume for esterification. And the guaiacol partitioning data (Karlsson 2017, &sect;3.18) shows that above 59% ABV, aroma compounds are driven into the bulk&mdash;exactly where they need to be during the extraction/esterification phase.</p>
+
+<figure>
+  <object data="graphs/pef-cryo-synergy.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/pef-cryo-synergy.svg" alt="PEF x cryo-concentration synergy">
+  </object>
+  <figcaption><strong>Fig. 84.</strong> PEF &times; cryo-concentration synergy. (A) Cryo-concentrated spirit ABV vs temperature: &minus;25&deg;C yields 62%, &minus;40&deg;C yields 72%. (B) Predicted PEF extraction enhancement at different ABV levels: Zhang 2013 data point (+54% at 40% ABV) anchors the low end; higher ABV increases both solvent power and electroporation effectiveness.</figcaption>
+</figure>
+
+<p><strong>Protocol:</strong> (1) Freeze 40% ABV spirit with oak chips to &minus;30&deg;C in chest freezer (2&ndash;4h). (2) Decant unfrozen fraction (~65% ABV) into glass jar with SS mesh electrodes. (3) Apply PEF (1 kV/cm, 50 Hz) for 30&ndash;60 min using neon sign transformer. (4) Recombine with thawed ice fraction. The freezing step simultaneously cryo-concentrates (ester-favorable), disrupts wood cell walls via ice crystal expansion (extraction-favorable), and shifts the solvent toward higher ethanol (phenolic solubility-favorable). Then PEF electroporation provides the final extraction boost.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">Novel combination</span> &mdash; Zhang 2013<span class="cite" data-ref="145"><sup>[145]</sup></span> (PEF on brandy), freeze-concentration data from &sect;1.16. No published study combines PEF with cryo-concentrated spirit. The predicted 5&ndash;8&times; extraction enhancement at 65% ABV is extrapolated from the +54% result at 40% ABV. <strong>Home testability: 4/5</strong> (Chest freezer + neon sign transformer + SS mesh. Total cost ~$30&ndash;60 for transformer. Freeze step is free. High voltage safety required.)
+</div>
+
+
+<h3 id="s4-73">&sect;4.73 &mdash; Microfluidic scCO<sub>2</sub> Oak Extraction: Millisecond Equilibrium</h3>
+
+<p>Assmann et al. (2013)<span class="cite" data-ref="218"><sup>[218]</sup></span> demonstrated that supercritical CO<sub>2</sub> extraction of lignin-derived compounds reaches <strong>equilibrium within milliseconds</strong> in microfluidic channels. Five monomeric oak-relevant products were studied: vanillin (V), methyl vanillate (MV), 5-carbomethoxy-vanillin (5CV), methyl 5-carbomethoxy-vanillate (M-5CV), and methyl dehydroabietate (MDHA). The key finding: less polar compounds (MDHA) achieved near-complete extraction, while vanillin&mdash;the most desired compound&mdash;showed marginal extraction due to its higher polarity. Selectivity peaked near the CO<sub>2</sub> critical point (73.8 bar, 31.1&deg;C).</p>
+
+<p><strong>Two-stage microfluidic extraction:</strong> The polarity-dependent selectivity of scCO<sub>2</sub> suggests a rational two-stage design: (1) scCO<sub>2</sub> microchannel for rapid extraction of lactones, MDHA, and less polar wood volatiles (milliseconds); (2) ethanol-water microchannel for vanillin, tannins, and polar phenolics (seconds). Each stage operates at its optimal conditions. The combined output covers the full flavor spectrum of barrel aging, compressed from years to minutes.</p>
+
+<figure>
+  <object data="graphs/microfluidic-scco2-oak.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/microfluidic-scco2-oak.svg" alt="Microfluidic scCO2 extraction time and selectivity">
+  </object>
+  <figcaption><strong>Fig. 85.</strong> Microfluidic scCO<sub>2</sub> oak extraction. (A) Time to extraction equilibrium across methods (log scale): microfluidic scCO<sub>2</sub> achieves millisecond equilibrium vs 10 years for barrel diffusion. (B) scCO<sub>2</sub> distribution ratios (K<sub>D</sub>) vs pressure for three compound classes (Assmann 2013): non-polar MDHA extracts readily, vanillin requires an alternative solvent stage.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (microfluidics)</span> &mdash; Assmann 2013<span class="cite" data-ref="218"><sup>[218]</sup></span> (millisecond equilibrium in microchannels). The two-stage design is novel for spirit aging. Oak-specific data is limited (vanillin only); broader oak compound selectivities need measurement. <strong>Home testability: 1/5</strong> (scCO<sub>2</sub> microfluidics requires specialized high-pressure equipment not available at home. Conceptually important for understanding the <em>floor</em> of possible extraction timescales.)
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -3112,6 +3227,12 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Ultrasonic extraction kinetics (&sect;4.65)</td><td>+18&ndash;24&deg;C equiv., 116.5% phenolics</td><td><span class="verdict promising">Published (wine spirit)</span></td><td>$5 (pump)</td><td>EXTRACTION (optimized)</td></tr>
 <tr><td>DES lignin pre-fragmentation (&sect;4.66)</td><td>23% fragmented at 120&deg;C</td><td><span class="verdict promising">Published (wood chemistry)</span></td><td>$8&ndash;15</td><td>EXTRACTION (pre-treat)</td></tr>
 <tr><td>Precision oak targeting (&sect;4.67)</td><td>18.5 mg/g vanillin (NADES)</td><td><span class="verdict promising">Published (extraction + oak data)</span></td><td>$5&ndash;15</td><td>EXTRACTION (precision)</td></tr>
+<tr><td>Plasma-nebulized microdroplet ester (&sect;4.68)</td><td>12&ndash;35&times; (predicted)</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$25&ndash;50</td><td>ESTER (ethanol gap bridge)</td></tr>
+<tr><td>Colloidal gelation pathways (&sect;4.69)</td><td>Path 2 = smooth</td><td><span class="verdict speculative">Novel framework</span></td><td>$0</td><td>CLUSTER (pathway control)</td></tr>
+<tr><td>HC wood extraction (&sect;4.70)</td><td>300 mg/g tannin (chestnut)</td><td><span class="verdict promising">Published</span></td><td>$15&ndash;30</td><td>EXTRACTION (direct)</td></tr>
+<tr><td>Corona acetaldehyde dosing (&sect;4.71)</td><td>30 mg/L at 0.01 kWh/L</td><td><span class="verdict speculative">Novel application</span></td><td>$30&ndash;60</td><td>OXIDATION (precision)</td></tr>
+<tr><td>PEF &times; cryo synergy (&sect;4.72)</td><td>5&ndash;8&times; extraction (predicted)</td><td><span class="verdict speculative">Novel combination</span></td><td>$30&ndash;60</td><td>EXTRACT + ESTER</td></tr>
+<tr><td>Microfluidic scCO<sub>2</sub> oak (&sect;4.73)</td><td>ms equilibrium</td><td><span class="verdict promising">Published (microfluidics)</span></td><td>$5K+ (lab)</td><td>EXTRACTION (ms-scale)</td></tr>
 </tbody>
 </table>
 </div>
@@ -3314,6 +3435,12 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td><strong>Ultrasonic extraction optimized (&sect;4.65)</strong></td><td><strong>5/5</strong></td><td><strong>$5 (pump)</strong></td><td><strong>Ultrasonic jewelry cleaner from &sect;3.14 + small aquarium pump ($5) for circulation. Add 5 g/L mixed toasted + untoasted oak chips to 200 mL spirit. Sonicate at ~40 W/L with continuous circulation, 60 min with 5 min breaks. This quantified protocol provides +18&ndash;24&deg;C equivalent extraction boost + 5&times; synergy from circulation. Compare vs static sonication and vs 60-day room-temp control.</strong></td></tr>
 <tr><td><strong>DES lignin pre-fragmentation (&sect;4.66)</strong></td><td><strong>3/5</strong></td><td><strong>$8&ndash;15</strong></td><td><strong>Mix choline chloride ($5, supplement shop) + lactic acid ($3, brewery supplier) at 1:2 mass ratio. Heat mixture with oak chips to 100&deg;C in sealed jar (water bath) for 1h. Rinse chips, then proceed with standard maceration or UAE (&sect;4.65). Compare extraction rate and color vs untreated chips. Expect faster darkening and stronger vanilla aroma from pre-fragmented chips.</strong></td></tr>
 <tr><td><strong>Precision oak targeting (&sect;4.67)</strong></td><td><strong>4/5</strong></td><td><strong>$5&ndash;15</strong></td><td><strong>Buy 3 oak chip varieties: American white oak, French oak, Hungarian oak ($5&ndash;10 each, homebrew shop). Prepare three 200 mL spirit samples with one species each. Macerate 7 days. Blind smell-test to identify distinctive characters (American = vanilla/coconut, French = spice/tannin, Hungarian = vanilla/cedar). For advanced: prepare NADES extract from American oak (vanillin-rich) and ethanol extract from French oak (tannin-rich), blend in ratios to engineer target profile.</strong></td></tr>
+<tr><td>Plasma-nebulized ester (&sect;4.68)</td><td>2/5</td><td>$25&ndash;50</td><td>Ultrasonic mesh nebulizer ($25). Cryo-concentrate spirit to 65%+ ABV, nebulize into closed glass jar, recollect condensate. Compare ester aroma vs un-nebulized control. Tests interfacial ester hypothesis without plasma. Plasma component requires HV equipment.</td></tr>
+<tr><td>Colloidal gelation control (&sect;4.69)</td><td>3/5</td><td>$0</td><td>Prepare spirit + oak extract at identical concentration. Cool sample A slowly (freezer, 4h). Quench sample B rapidly (dry ice bath, 5 min). Hold both at &minus;20&deg;C for 24h, then thaw. Compare turbidity (laser pointer through sample) and taste for smoothness vs harshness. Slow cool should produce smoother result (stress-free pathway).</td></tr>
+<tr><td><strong>HC wood extraction (&sect;4.70)</strong></td><td><strong>5/5</strong></td><td><strong>$0 incr.</strong></td><td><strong>Same HC setup as &sect;4.31 (aquarium pump + brass venturi). Add 5 g/L oak chips to water. Pump through venturi 60 min. Compare tannin extraction (color intensity, taste) vs identical maceration-only control. HC should extract dramatically more tannin. Dissolved extract can then be added to spirit at desired concentration.</strong></td></tr>
+<tr><td>Corona acetaldehyde (&sect;4.71)</td><td>2/5</td><td>$30&ndash;60</td><td>Extremely hazardous: HV + ethanol vapor = fire/shock risk. NOT recommended without professional safety equipment. Neon sign transformer + sharp needle above spirit surface in sealed vessel. Test with Schiff reagent for acetaldehyde.</td></tr>
+<tr><td><strong>PEF &times; cryo synergy (&sect;4.72)</strong></td><td><strong>4/5</strong></td><td><strong>$30&ndash;60</strong></td><td><strong>Chest freezer + neon sign transformer + SS mesh electrodes. Freeze 40% ABV spirit + oak chips to &minus;30&deg;C. Decant unfrozen fraction. Apply 1 kV/cm, 50 Hz for 30&ndash;60 min. Recombine with thawed ice. Compare vs PEF-only and freeze-only controls. Expect synergistic extraction exceeding either alone. HV safety precautions required.</strong></td></tr>
+<tr><td>Microfluidic scCO<sub>2</sub> (&sect;4.73)</td><td>1/5</td><td>$5K+</td><td>Requires specialized high-pressure microfluidic equipment. Not home-accessible. Conceptually important for understanding the theoretical floor of extraction timescales. Lab collaboration only.</td></tr>
 </tbody>
 </table>
 </div>
@@ -3539,6 +3666,15 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r207">Tarko T, Duda-Chodak A, Sroka P, et al. (2023) &ldquo;The impact of compounds extracted from wood on the quality of alcoholic beverages.&rdquo; <em>Molecules</em> 28(2):620. <a href="https://doi.org/10.3390/molecules28020620">DOI</a> (Oak compound ranges: vanillin 6.8&ndash;309.8 &mu;g/g (Q. alba), syringaldehyde 2.7&ndash;514.7 &mu;g/g (Q. petraea), cis-lactone 22.0&ndash;37.4 &mu;g/g (Q. alba). Sensory thresholds: vanillin 1 mg/L, eugenol 6 &mu;g/L, cis-lactone 20&ndash;46 &mu;g/L. American oak = 20&times; more lactone than European.)</li>
   <li id="r208">Xu L, Liaqat F, Khazi MI, et al. (2024) &ldquo;Natural deep eutectic solvents-based green extraction of vanillin: optimization, purification, and bioactivity assessment.&rdquo; <em>Front Nutr</em> 10:1279552. <a href="https://doi.org/10.3389/fnut.2023.1279552">DOI</a> (Best NADES: ChCl:1,4-butanediol:lactic acid. Optimized: <strong>18.5 mg/g vanillin</strong> (64.6&deg;C, 32.3 min). Significantly exceeds ethanol extraction. 43% efficiency retained after 3 reuse cycles.)</li>
   <li id="r209">Nardella F, Ferrini P, Schutyser W. (2023) &ldquo;Native lignin extraction from soft- and hardwood by green and benign sub/supercritical fluid extraction methodologies.&rdquo; <em>RSC Adv</em> 13(32):21945&ndash;21953. <a href="https://doi.org/10.1039/D3RA03693H">DOI</a> (scCO<sub>2</sub> at 60&deg;C, 350 bar: vanillin 8&plusmn;3 &mu;g/g, syringaldehyde 7&plusmn;2 &mu;g/g from oak. 13 lignin monomers + 6 dimers identified. No thermal degradation. Oak selectivity significantly higher than softwood.)</li>
+  <li id="r210">Mehndiratta L, Wang J, Slade JH, Grassian VH. (2025) &ldquo;Ester Formation in Alcohol Microdroplet Sprays: Enhanced Reactivity of C8 to C16 Carboxylic Acids with C1 to C3 Alcohols and the Effect of Water.&rdquo; <em>J Phys Chem A</em> 129(47):10807&ndash;10818. <a href="https://doi.org/10.1021/acs.jpca.5c04566">DOI</a> (Near-quantitative ester formation for C8, C9 acids in dry alcohol microdroplets. Zero ester in bulk solution. Critical: water &gt;1.5% suppresses esterification. O-PTIR spectroscopy at 1745 cm<sup>&minus;1</sup> confirms ester C=O stretch.)</li>
+  <li id="r211">Hao H, Leven I, Head-Gordon T. (2022) &ldquo;Can electric fields drive chemistry for an aqueous microdroplet?&rdquo; <em>Nat Commun</em> 13:280. <a href="https://doi.org/10.1038/s41467-021-27941-x">DOI</a> (Microdroplet surface electric fields ~10 MV/cm. Activation energy reduction 2.1 kcal/mol (8.8 kJ/mol). 40&ndash;80 &Aring; droplet radii studied. Partial solvation at interface responsible for &gt;10<sup>4</sup>-fold acceleration.)</li>
+  <li id="r212">Tsurusawa H, Russo J, Leocmach M, Tanaka H. (2020) &ldquo;A unique route of colloidal phase separation yields stress-free gels.&rdquo; <em>Sci Adv</em> 6(43):eabb8107. <a href="https://doi.org/10.1126/sciadv.abb8107">DOI</a> (Two gelation pathways: percolation before dynamical arrest = stressed gel (coarsens, harsh); percolation after arrest = stress-free gel (stable, smooth). Directly applicable to understanding mouthfeel development in spirit aging.)</li>
+  <li id="r213">Guo Y, et al. (2021) &ldquo;Ethanol-induced coacervation in aqueous gelatin solution.&rdquo; <em>J Colloid Interface Sci</em> 582:1007&ndash;1017. <a href="https://doi.org/10.1016/j.jcis.2020.08.075">DOI</a> (Ethanol drives phase separation/coacervation. High-concentration + cold EtOH = network morphology. Low-concentration + warm EtOH = nanosphere assembly. Demonstrates ethanol as a controller of colloidal structure.)</li>
+  <li id="r214">Wang Z, et al. (2022) &ldquo;Whether the Research on Ethanol-Water Microstructure in Traditional Baijiu Should Be Strengthened?&rdquo; <em>Molecules</em> 27:PMC9736648. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9736648/">PMC</a> (DLS/SAXS: small cluster component (~1 nm) = key to flavor; large cluster component (~100 nm) = alcoholic irritation. Cluster size correlates with perceived quality, not maturation time alone.)</li>
+  <li id="r215">Meneguzzo F, Albanese L, Faraloni C, et al. (2023) &ldquo;Pilot Scale Tannin Extraction from Chestnut Wood Waste Using Hydrodynamic Cavitation.&rdquo; In <em>Towards a Smart, Resilient and Sustainable Industry</em>, Springer. <a href="https://doi.org/10.1007/978-3-031-38274-1_36">DOI</a> (~300 mg tannin/g chestnut wood. Water only, room temperature, no chemical pretreatment. High DPPH antioxidant activity in extract. HC provides mechanical energy substitute for chemical extractants.)</li>
+  <li id="r216">Albanese L, Ciriminna R, Meneguzzo F, Pagliaro M. (2017) &ldquo;Beer-brewing powered by controlled hydrodynamic cavitation: Theory and real-scale experiments.&rdquo; <em>J Cleaner Prod</em> 142:1457&ndash;1470. <a href="https://doi.org/10.1016/j.jclepro.2016.11.162">DOI</a> (230 L pilot-scale HC brewing. 30% improved starch extraction. 12% energy reduction. Saccharification temp reduced 35&deg;C. Demonstrates HC scalability for beverage processing.)</li>
+  <li id="r217">Kozlov KV, et al. (2013) &ldquo;Oxidation of Ethanol Vapors in Negative Atmospheric Corona Discharge.&rdquo; <em>Ind Eng Chem Res</em>. <a href="https://doi.org/10.1021/ie400476p">DOI</a> (Primary product: acetaldehyde (2 OH&bull; per molecule). Secondary: acetic acid, CO<sub>2</sub>. Lowest energy cost: 0.33 kWh/g. Acetaldehyde concentration stable across power levels. Enables precision acetaldehyde dosing for spirit aging.)</li>
+  <li id="r218">Assmann N, et al. (2013) &ldquo;Supercritical extraction of lignin oxidation products in a microfluidic device.&rdquo; <em>Chem Eng Sci</em> 99:177&ndash;183. <a href="https://doi.org/10.1016/j.ces.2013.05.032">DOI</a> (Continuous microfluidic scCO<sub>2</sub> extraction. Equilibrium reached in milliseconds. Vanillin extraction marginal (high polarity); MDHA near-complete. Selectivity peaks near CO<sub>2</sub> critical point. Pressure 81&ndash;121 bar, temp 39.8&ndash;59.3&deg;C.)</li>
 </ol>
 
 
@@ -4605,6 +4741,51 @@ var refs = {
     source: "Nardella et al. (2023), RSC Adv 13(32):21945",
     excerpt: "scCO\u2082 at 60\u00b0C, 350 bar: vanillin 8\u00b13 \u00b5g/g, syringaldehyde 7\u00b12 from oak. 13 lignin monomers + 6 dimers. No thermal degradation.",
     url: "#r209"
+  },
+  210: {
+    source: "Mehndiratta et al. (2025), J Phys Chem A 129(47):10807",
+    excerpt: "Near-quantitative ester formation for C8/C9 acids in dry alcohol microdroplets. Zero ester in bulk solution. Water >1.5% suppresses esterification. Catalyst-free, no heating.",
+    url: "#r210"
+  },
+  211: {
+    source: "Hao et al. (2022), Nat Commun 13:280",
+    excerpt: "Microdroplet surface electric fields ~10 MV/cm. Activation energy reduction 2.1 kcal/mol (8.8 kJ/mol). Partial solvation at gas\u2013liquid interface drives >10\u2074-fold rate acceleration.",
+    url: "#r211"
+  },
+  212: {
+    source: "Tsurusawa et al. (2020), Sci Adv 6(43):eabb8107",
+    excerpt: "Two colloidal gelation pathways: percolation before arrest = stressed gel (coarsens), percolation after arrest = stress-free gel (stable). Pathway determines network topology and mechanical properties.",
+    url: "#r212"
+  },
+  213: {
+    source: "Guo et al. (2021), J Colloid Interface Sci 582:1007",
+    excerpt: "Ethanol drives coacervation in colloidal solutions. High conc + cold EtOH = network morphology. Low conc + warm EtOH = nanosphere assembly. Ethanol controls colloidal structure pathway.",
+    url: "#r213"
+  },
+  214: {
+    source: "Wang et al. (2022), Molecules PMC9736648",
+    excerpt: "DLS/SAXS of baijiu: small cluster (~1 nm) = flavor, mellowness. Large cluster (~100 nm) = alcoholic irritation, harshness. Quality correlates with cluster size, not age alone.",
+    url: "#r214"
+  },
+  215: {
+    source: "Meneguzzo et al. (2023), Springer (ISIEA 2023)",
+    excerpt: "HC pilot-scale tannin extraction from chestnut wood: ~300 mg/g yield. Water only, room temperature, no chemical pretreatment. High DPPH antioxidant activity retained in extract.",
+    url: "#r215"
+  },
+  216: {
+    source: "Albanese et al. (2017), J Cleaner Prod 142:1457",
+    excerpt: "230 L pilot-scale HC beer brewing. 30% improved extraction, 12% energy reduction. Saccharification temp reduced 35\u00b0C. Demonstrates HC scalability for beverage processing.",
+    url: "#r216"
+  },
+  217: {
+    source: "Kozlov et al. (2013), Ind Eng Chem Res",
+    excerpt: "Corona discharge on ethanol: primary product = acetaldehyde (2 OH\u2022 per molecule). Energy cost 0.33 kWh/g. Further oxidation \u2192 acetic acid \u2192 CO\u2082. Enables precision acetaldehyde dosing.",
+    url: "#r217"
+  },
+  218: {
+    source: "Assmann et al. (2013), Chem Eng Sci 99:177",
+    excerpt: "Microfluidic scCO\u2082 extraction: equilibrium in milliseconds. Vanillin extraction marginal (polar); MDHA near-complete (non-polar). Selectivity peaks near CO\u2082 critical point. Pressure 81\u2013121 bar.",
+    url: "#r218"
   }
 };
 
