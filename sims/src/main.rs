@@ -149,6 +149,7 @@ fn main() {
     fs::write("../graphs/sono-micelle-lipase.svg", sim_sono_micelle_lipase()).unwrap();
     fs::write("../graphs/cu2o-photodehydrogenation.svg", sim_cu2o_photodehydrogenation()).unwrap();
     fs::write("../graphs/blue-light-tandem.svg", sim_blue_light_tandem()).unwrap();
+    fs::write("../graphs/mechanochem-oak.svg", sim_mechanochem_oak()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -10588,6 +10589,192 @@ fn sim_blue_light_tandem() -> String {
         ACCENT, 8, "middle");
     svg += &label(350.0, h - 18.0,
         "Same $5 LED strip (\u{00a7}4.8) + $10 Cu\u{2082}O powder = two aging pathways from one light source",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_mechanochem_oak() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 61 \u{2014} Mechanochemical Oak: Ball Milling Cleaves \u{03b2}-O-4 Bonds");
+
+    // Panel A: MWL yield vs milling time
+    let ml1 = 70.0;
+    let mr1 = 330.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 310.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: Milled Wood Lignin Yield vs Time", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // X: milling time 0-8 h
+    let sx1 = |t: f64| ml1 + t / 8.0 * pw1;
+    for t in [0, 1, 2, 3, 4, 5, 6, 7, 8] {
+        let x = sx1(t as f64);
+        svg += &vline(x, mb1, mb1 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb1 + 14.0, &format!("{}h", t), MUTED, 7, "middle");
+    }
+    svg += &label(ml1 + pw1 / 2.0, mb1 + 28.0, "Ball milling time", MUTED, 8, "middle");
+
+    // Y: MWL yield 0-60%
+    let sy1 = |y: f64| mb1 - y / 60.0 * ph1;
+    for v in [0, 10, 20, 30, 40, 50, 60] {
+        let y = sy1(v as f64);
+        svg += &hline(ml1 - 3.0, ml1, y, MUTED, "0.5");
+        svg += &label(ml1 - 6.0, y + 3.0, &format!("{}%", v), MUTED, 7, "end");
+        if v > 0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml1, y, mr1, y, GRID);
+        }
+    }
+    svg += &format!("<text x=\"{:.1}\" y=\"{:.1}\" fill=\"{}\" font-size=\"8\" \
+        text-anchor=\"middle\" transform=\"rotate(-90,{:.1},{:.1})\">\
+        MWL yield (%)</text>\n",
+        ml1 - 32.0, mt1 + ph1 / 2.0, MUTED, ml1 - 32.0, mt1 + ph1 / 2.0);
+
+    // Bamboo data (Qu 2021) - 3h: 39.2%, 7h: 53.9%
+    let bamboo: [(f64, f64); 3] = [(0.0, 0.0), (3.0, 39.2), (7.0, 53.9)];
+    let bamboo_px: Vec<(f64, f64)> = bamboo.iter().map(|(t, y)| (sx1(*t), sy1(*y))).collect();
+    svg += &polyline_svg(&bamboo_px, GREEN, "2.5", &|x| x, &|y| y);
+    for (t, y) in &bamboo {
+        if *t > 0.0 {
+            svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{}\" stroke=\"{}\" stroke-width=\"1.5\"/>\n",
+                sx1(*t), sy1(*y), GREEN, TEXT);
+        }
+    }
+    svg += &label(sx1(7.0) + 5.0, sy1(53.9) + 3.0, "Bamboo", GREEN, 8, "start");
+
+    // Poplar data - 3h: 15.5%, 7h: 35.6%
+    let poplar: [(f64, f64); 3] = [(0.0, 0.0), (3.0, 15.5), (7.0, 35.6)];
+    let poplar_px: Vec<(f64, f64)> = poplar.iter().map(|(t, y)| (sx1(*t), sy1(*y))).collect();
+    svg += &polyline_svg(&poplar_px, ACCENT, "2.5", &|x| x, &|y| y);
+    for (t, y) in &poplar {
+        if *t > 0.0 {
+            svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{}\" stroke=\"{}\" stroke-width=\"1.5\"/>\n",
+                sx1(*t), sy1(*y), ACCENT, TEXT);
+        }
+    }
+    svg += &label(sx1(7.0) + 5.0, sy1(35.6) + 3.0, "Poplar (hardwood)", ACCENT, 8, "start");
+
+    // Larch data - 3h: 23.4%, 7h: 25.8%
+    let larch: [(f64, f64); 3] = [(0.0, 0.0), (3.0, 23.4), (7.0, 25.8)];
+    let larch_px: Vec<(f64, f64)> = larch.iter().map(|(t, y)| (sx1(*t), sy1(*y))).collect();
+    svg += &polyline_svg(&larch_px, BLUE, "2", &|x| x, &|y| y);
+    for (t, y) in &larch {
+        if *t > 0.0 {
+            svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{}\" stroke=\"{}\" stroke-width=\"1.5\"/>\n",
+                sx1(*t), sy1(*y), BLUE, TEXT);
+        }
+    }
+    svg += &label(sx1(7.0) + 5.0, sy1(25.8) + 3.0, "Larch (softwood)", BLUE, 8, "start");
+
+    // Oak prediction zone (between poplar and bamboo — oak is hardwood)
+    let oak_lo: Vec<(f64, f64)> = [(0.0, 0.0), (3.0, 18.0), (7.0, 38.0)].iter()
+        .map(|(t, y)| (sx1(*t), sy1(*y))).collect();
+    let oak_hi: Vec<(f64, f64)> = [(7.0, 50.0), (3.0, 35.0), (0.0, 0.0)].iter()
+        .map(|(t, y)| (sx1(*t), sy1(*y))).collect();
+    let mut oak_poly = oak_lo.clone();
+    oak_poly.extend(oak_hi.iter());
+    let pts_str: String = oak_poly.iter()
+        .map(|(x, y)| format!("{:.1},{:.1}", x, y))
+        .collect::<Vec<_>>().join(" ");
+    svg += &format!("<polygon points=\"{}\" fill=\"{}\" opacity=\"0.12\"/>\n", pts_str, YELLOW);
+    svg += &label(sx1(5.0), sy1(36.0), "Oak", YELLOW, 9, "middle");
+    svg += &label(sx1(5.0), sy1(32.0), "(predicted)", YELLOW, 7, "middle");
+
+    // Data source
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"100\" height=\"15\" rx=\"2\" fill=\"{}\" opacity=\"0.7\"/>\n",
+        ml1 + 5.0, mt1 + 5.0, GRID);
+    svg += &label(ml1 + 10.0, mt1 + 15.0, "Data: Qu et al. 2021", MUTED, 7, "start");
+
+    // Panel B: Predicted extraction comparison
+    let ml2 = 380.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 310.0;
+    let mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: Phenolic Extraction from Oak Chips", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    // Grouped bars: 3 compounds x 3 treatments
+    let compounds: [(&str, [f64; 3]); 4] = [
+        ("Vanillin", [1.0, 4.5, 12.0]),        // unmilled, 3h, 7h (relative)
+        ("Syringaldehyde", [1.0, 3.8, 9.5]),
+        ("\u{03b2}-O-4 cleavage", [0.0, 45.0, 70.0]), // % of bonds cleaved
+        ("Free phenol-OH", [1.0, 3.2, 8.0]),
+    ];
+
+    let group_h = 55.0;
+    let group_gap = 15.0;
+    let total = compounds.len() as f64 * (group_h + group_gap) - group_gap;
+    let groups_top = mt2 + (ph2 - total) / 2.0;
+    let bar_x2 = ml2 + 90.0;
+    let bar_max = pw2 - 100.0;
+    let sub_h = 14.0;
+
+    let treat_colors = [MUTED, YELLOW, GREEN];
+    let treat_names = ["Unmilled", "3h milled", "7h milled"];
+
+    // Legend
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"115\" height=\"50\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt2 + 5.0, GRID);
+    for (i, (c, name)) in treat_colors.iter().zip(treat_names.iter()).enumerate() {
+        let ly = mt2 + 16.0 + i as f64 * 14.0;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"12\" height=\"8\" fill=\"{}\" opacity=\"0.7\"/>\n",
+            ml2 + 10.0, ly - 5.0, c);
+        svg += &label(ml2 + 26.0, ly + 1.0, name, TEXT, 7, "start");
+    }
+
+    for (g, (name, vals)) in compounds.iter().enumerate() {
+        let gy = groups_top + g as f64 * (group_h + group_gap);
+        svg += &label(bar_x2 - 5.0, gy + 20.0, name, TEXT, 8, "end");
+
+        let max_v = vals.iter().cloned().fold(0.0_f64, f64::max);
+        for (b, val) in vals.iter().enumerate() {
+            let by = gy + b as f64 * (sub_h + 2.0);
+            let bw = if max_v > 0.0 { val / max_v * bar_max } else { 0.0 };
+            if bw > 0.5 {
+                svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+                    rx=\"2\" fill=\"{}\" opacity=\"0.65\"/>\n",
+                    bar_x2, by, bw, sub_h, treat_colors[b]);
+                let annot = if g == 2 {
+                    format!("{}%", *val as i32)
+                } else {
+                    format!("{:.1}\u{00d7}", val)
+                };
+                svg += &label(bar_x2 + bw + 4.0, by + sub_h / 2.0 + 3.0,
+                    &annot, treat_colors[b], 7, "start");
+            } else if g != 2 {
+                svg += &label(bar_x2 + 4.0, by + sub_h / 2.0 + 3.0,
+                    "1.0\u{00d7}", MUTED, 7, "start");
+            } else {
+                svg += &label(bar_x2 + 4.0, by + sub_h / 2.0 + 3.0,
+                    "0%", MUTED, 7, "start");
+            }
+        }
+    }
+
+    // Bottom insight
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        h - 50.0, GRID);
+    svg += &label(350.0, h - 32.0,
+        "Ball milling mechanically cleaves \u{03b2}-O-4 ether bonds that take YEARS to hydrolyze in barrel",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Pre-milled oak + spirit = rapid phenolic extraction without toasting or charring",
         GREEN, 8, "middle");
 
     svg.push_str("</svg>");
