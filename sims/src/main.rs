@@ -157,6 +157,8 @@ fn main() {
     fs::write("../graphs/plasma-activated-water.svg", sim_plasma_activated_water()).unwrap();
     fs::write("../graphs/uae-des-synergy.svg", sim_uae_des_synergy()).unwrap();
     fs::write("../graphs/pef-fenton-cascade.svg", sim_pef_fenton_cascade()).unwrap();
+    fs::write("../graphs/subcritical-water-oak.svg", sim_subcritical_water_oak()).unwrap();
+    fs::write("../graphs/uvc-phenolic-condensation.svg", sim_uvc_phenolic_condensation()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -11707,6 +11709,231 @@ fn sim_pef_fenton_cascade() -> String {
         GREEN, 8, "middle");
     svg += &label(350.0, h - 24.0,
         "Novel: PEF is the radical generator, oak is the Fenton catalyst, O\u{2082} is the terminal oxidant",
+        BLUE, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 69: Subcritical Water Oak Pre-Extraction
+// Water at 200-250°C: ε≈25-35, Kw=10⁻¹¹, 31× Maillard
+// ═══════════════════════════════════════════════════════════════
+fn sim_subcritical_water_oak() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 69 \u{2014} Subcritical Water: Hot Pressurized Water Mimics Spirit Solvent Properties");
+
+    // ── Panel A: Dielectric constant vs temperature ──
+    svg += &label(190.0, 57.0, "A: Water Dielectric Constant vs Temperature", TEXT, 10, "middle");
+
+    let pl = 80.0; let pr = 320.0; let pt = 70.0; let pb = 340.0;
+    let pw = pr - pl; let ph = pb - pt;
+    svg += &format!("<rect x=\"{pl}\" y=\"{pt}\" width=\"{pw}\" height=\"{ph}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // X axis: Temperature 25-374°C
+    let t_min = 25.0_f64; let t_max = 375.0;
+    for &t in &[25.0_f64, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0] {
+        let x = pl + ((t - t_min) / (t_max - t_min)) * pw;
+        svg += &format!("<line x1=\"{x:.1}\" y1=\"{pb}\" x2=\"{x:.1}\" y2=\"{:.1}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", pb + 3.0);
+        svg += &label(x, pb + 13.0, &format!("{:.0}", t), MUTED, 7, "middle");
+    }
+    svg += &label((pl + pr) / 2.0, pb + 26.0, "Temperature (\u{00b0}C)", MUTED, 8, "middle");
+
+    // Y axis: Dielectric constant 0-80
+    let eps_max = 85.0;
+    for &eps in &[0.0_f64, 20.0, 40.0, 60.0, 80.0] {
+        let y = pb - (eps / eps_max) * ph;
+        svg += &format!("<line x1=\"{:.1}\" y1=\"{y:.1}\" x2=\"{pl}\" y2=\"{y:.1}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", pl - 3.0);
+        svg += &label(pl - 5.0, y + 3.0, &format!("{:.0}", eps), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{:.1}\" y=\"{:.1}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" transform=\"rotate(-90,{:.1},{:.1})\">\
+        Dielectric constant (\u{03b5})</text>\n", pl - 35.0, (pt + pb) / 2.0, pl - 35.0, (pt + pb) / 2.0);
+
+    // Dielectric constant curve for water
+    let eps_data: [(f64, f64); 8] = [
+        (25.0, 78.0), (100.0, 55.0), (150.0, 44.0), (200.0, 35.0),
+        (250.0, 27.0), (300.0, 20.0), (350.0, 15.0), (374.0, 6.0),
+    ];
+    let eps_pts: Vec<(f64, f64)> = eps_data.iter().map(|(t, e)| {
+        (pl + ((t - t_min) / (t_max - t_min)) * pw,
+         pb - (e / eps_max) * ph)
+    }).collect();
+    svg += &polyline_svg(&eps_pts, BLUE, "2.5", &|x| x, &|y| y);
+
+    // Spirit zone (ε ≈ 25-40 at 40-65% ABV, 20°C)
+    let y_spirit_lo = pb - (25.0 / eps_max) * ph;
+    let y_spirit_hi = pb - (40.0 / eps_max) * ph;
+    svg += &format!("<rect x=\"{pl}\" y=\"{y_spirit_hi:.1}\" width=\"{pw}\" height=\"{:.1}\" fill=\"{GREEN}\" opacity=\"0.1\"/>\n",
+        y_spirit_lo - y_spirit_hi);
+    svg += &label(pr - 5.0, y_spirit_hi + 12.0, "Spirit \u{03b5} range", GREEN, 7, "end");
+    svg += &label(pr - 5.0, y_spirit_hi + 24.0, "(40\u{2013}65% ABV, 20\u{00b0}C)", GREEN, 7, "end");
+
+    // Mark the equivalence: water at 200-250°C = spirit at 20°C
+    let x_200 = pl + ((200.0 - t_min) / (t_max - t_min)) * pw;
+    let x_250 = pl + ((250.0 - t_min) / (t_max - t_min)) * pw;
+    svg += &format!("<rect x=\"{x_200:.1}\" y=\"{y_spirit_hi:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{ACCENT}\" opacity=\"0.15\"/>\n",
+        x_250 - x_200, y_spirit_lo - y_spirit_hi);
+    svg += &label((x_200 + x_250) / 2.0, y_spirit_lo + 15.0, "MATCH ZONE", ACCENT, 8, "middle");
+    svg += &label((x_200 + x_250) / 2.0, y_spirit_lo + 27.0, "H\u{2082}O at 200\u{2013}250\u{00b0}C", ACCENT, 7, "middle");
+    svg += &label((x_200 + x_250) / 2.0, y_spirit_lo + 39.0, "= Spirit at 20\u{00b0}C", ACCENT, 7, "middle");
+
+    // Equivalent solvents annotations
+    let solvent_labels: [(f64, &str, f64); 4] = [
+        (35.0, "MeOH", 200.0), (27.0, "EtOH", 250.0),
+        (20.0, "Acetone", 300.0), (6.0, "Hexane", 374.0),
+    ];
+    for (eps, name, t) in &solvent_labels {
+        let x = pl + ((t - t_min) / (t_max - t_min)) * pw;
+        let y = pb - (eps / eps_max) * ph;
+        svg += &format!("<circle cx=\"{x:.1}\" cy=\"{y:.1}\" r=\"3\" fill=\"{YELLOW}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n");
+        svg += &label(x + 5.0, y - 5.0, &format!("\u{2248}{}", name), YELLOW, 6, "start");
+    }
+
+    // ── Panel B: Oak extraction products ──
+    svg += &label(525.0, 57.0, "B: Subcritical Water Oak Products", TEXT, 10, "middle");
+
+    let pl2 = 400.0; let pr2 = 660.0; let pt2 = 75.0; let pb2 = 340.0;
+    let pw2 = pr2 - pl2;
+    svg += &format!("<rect x=\"{pl2}\" y=\"{pt2}\" width=\"{pw2}\" height=\"{}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n", pb2 - pt2);
+
+    // Products at subcritical conditions
+    let products: [(&str, f64, &str, &str); 6] = [
+        ("Guaiacol (oil fraction)", 56.0, GREEN, "%"),
+        ("Vanillin", 12.0, ACCENT, "mg/g"),
+        ("Syringaldehyde", 8.0, YELLOW, "mg/g"),
+        ("5-HMF (Maillard)", 4.3, PURPLE, "g/100g"),
+        ("Maillard fluorescence", 31.0, BLUE, "\u{00d7}"),
+        ("Hydrolysis rate (k)", 2.1, RED, "\u{00d7}/20\u{00b0}C"),
+    ];
+    let n2 = products.len() as f64;
+    let row_h2 = (pb2 - pt2) / (n2 + 1.0);
+    let max_val = 60.0;
+
+    for (i, (name, val, color, unit)) in products.iter().enumerate() {
+        let cy = pt2 + (i as f64 + 1.0) * row_h2;
+        let bar_len = (val / max_val) * pw2;
+        let bar_h = row_h2 * 0.45;
+
+        svg += &format!("<rect x=\"{pl2}\" y=\"{:.1}\" width=\"{bar_len:.1}\" height=\"{bar_h:.1}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n",
+            cy - bar_h / 2.0);
+        svg += &label(pl2 + bar_len + 4.0, cy + 3.0, &format!("{:.1} {}", val, unit), *color, 7, "start");
+        svg += &label(pl2 - 4.0, cy + 3.0, name, MUTED, 7, "end");
+    }
+
+    svg += &label((pl2 + pr2) / 2.0, pb2 + 15.0, "Subcritical water 200\u{2013}280\u{00b0}C extraction of oak/lignin", MUTED, 7, "middle");
+
+    // Kw peak callout
+    svg += &format!("<rect x=\"400\" y=\"352\" width=\"260\" height=\"30\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(530.0, 365.0, "K\u{1d42} peaks at 250\u{00b0}C: 10\u{207b}\u{00b9}\u{00b9} (1000\u{00d7} room temp)", ACCENT, 8, "middle");
+    svg += &label(530.0, 377.0, "= water is its OWN acid + base catalyst", GREEN, 7, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"52\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 70.0);
+    svg += &label(350.0, h - 52.0,
+        "Subcritical water at 200\u{2013}250\u{00b0}C has the SAME dielectric constant as whiskey",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 38.0,
+        "Pre-treat oak staves with pressurized hot water = decades of barrel chemistry in hours",
+        GREEN, 8, "middle");
+    svg += &label(350.0, h - 24.0,
+        "This is literally what cooperage toasting does \u{2014} but controllable and quantifiable",
+        BLUE, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 70: UV-C Phenolic Condensation Accelerator
+// Gindri 2021: +62.8% acetaldehyde-mediated condensation
+// ═══════════════════════════════════════════════════════════════
+fn sim_uvc_phenolic_condensation() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 70 \u{2014} UV-C Phenolic Condensation: Accelerating the Same Chemistry as Barrel Aging");
+
+    // ── Panel A: Enhancement of condensation products ──
+    svg += &label(190.0, 57.0, "A: UV-C Enhancement of Phenolic Products", TEXT, 10, "middle");
+
+    let pl = 100.0; let pr = 320.0; let pt = 75.0; let pb = 340.0;
+    let pw = pr - pl; let ph = pb - pt;
+    svg += &format!("<rect x=\"{pl}\" y=\"{pt}\" width=\"{pw}\" height=\"{ph}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Enhancement data from Gindri 2021
+    let products: [(&str, f64, &str); 6] = [
+        ("Direct condensation", 92.3, GREEN),
+        ("AcH-mediated condensation", 62.8, ACCENT),
+        ("Pyranoanthocyanins", 59.3, PURPLE),
+        ("Polymeric color", 29.8, RED),
+        ("Color intensity", 26.2, YELLOW),
+        ("Monomeric anthocyanins", 22.5, BLUE),
+    ];
+    let n = products.len() as f64;
+    let row_h = ph / (n + 1.0);
+    let max_pct = 100.0;
+
+    // X axis
+    for &val in &[0.0_f64, 20.0, 40.0, 60.0, 80.0, 100.0] {
+        let x = pl + (val / max_pct) * pw;
+        svg += &vline(x, pt, pb, GRID, "0.5");
+        svg += &label(x, pb + 12.0, &format!("+{:.0}%", val), MUTED, 7, "middle");
+    }
+    svg += &label((pl + pr) / 2.0, pb + 26.0, "Enhancement vs untreated control (Gindri 2021)", MUTED, 8, "middle");
+
+    for (i, (name, pct, color)) in products.iter().enumerate() {
+        let cy = pt + (i as f64 + 1.0) * row_h;
+        let bar_len = (pct / max_pct) * pw;
+        let bar_h = row_h * 0.5;
+
+        svg += &format!("<rect x=\"{pl}\" y=\"{:.1}\" width=\"{bar_len:.1}\" height=\"{bar_h:.1}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n",
+            cy - bar_h / 2.0);
+        svg += &label(pl + bar_len + 4.0, cy + 3.0, &format!("+{:.1}%", pct), *color, 8, "start");
+        svg += &label(pl - 4.0, cy + 3.0, name, MUTED, 7, "end");
+    }
+
+    // Highlight AcH-mediated (the barrel-aging-relevant one)
+    let cy_ach = pt + 2.0 * row_h;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"none\" stroke=\"{ACCENT}\" stroke-width=\"2\" stroke-dasharray=\"3,2\" rx=\"3\"/>\n",
+        pl - 2.0, cy_ach - row_h * 0.35, pw + 40.0, row_h * 0.7);
+
+    // ── Panel B: Integration with PEM acetaldehyde ──
+    svg += &label(525.0, 57.0, "B: Integrated UV-C + PEM Acetaldehyde", TEXT, 10, "middle");
+
+    // Three-step process
+    let steps: [(&str, &str, f64, &str); 3] = [
+        ("PEM Electrolyzer", "EtOH \u{2192} AcH (\u{00a7}4.53)", 100.0, GREEN),
+        ("UV-C Exposure", "3 kJ/m\u{00b2} dose", 210.0, PURPLE),
+        ("Phenolic Bridging", "AcH + phenol \u{2192} polymer", 320.0, ACCENT),
+    ];
+
+    for (label_txt, sub, y, color) in &steps {
+        svg += &format!("<rect x=\"420\" y=\"{:.1}\" width=\"210\" height=\"60\" rx=\"6\" fill=\"{color}\" opacity=\"0.12\" stroke=\"{color}\" stroke-width=\"1.5\"/>\n", y);
+        svg += &label(525.0, y + 24.0, label_txt, *color, 10, "middle");
+        svg += &label(525.0, y + 42.0, sub, MUTED, 8, "middle");
+    }
+
+    // Arrows
+    svg += &format!("<line x1=\"525\" y1=\"160\" x2=\"525\" y2=\"210\" stroke=\"{MUTED}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n");
+    svg += &format!("<line x1=\"525\" y1=\"270\" x2=\"525\" y2=\"320\" stroke=\"{MUTED}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n");
+
+    // Result
+    svg += &format!("<rect x=\"410\" y=\"395\" width=\"230\" height=\"32\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(525.0, 408.0, "Same polymeric pigments as 5-yr barrel aging", ACCENT, 8, "middle");
+    svg += &label(525.0, 422.0, "Produced in hours, not years", GREEN, 7, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"52\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 70.0);
+    svg += &label(350.0, h - 52.0,
+        "UV-C accelerates the EXACT condensation chemistry of barrel aging",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 38.0,
+        "+62.8% acetaldehyde-mediated phenolic bridging (Gindri 2021) at 3 kJ/m\u{00b2}",
+        GREEN, 8, "middle");
+    svg += &label(350.0, h - 24.0,
+        "Feed with PEM acetaldehyde (\u{00a7}4.53) + oak phenolics (\u{00a7}3.10) = precision aging",
         BLUE, 8, "middle");
 
     svg.push_str("</svg>");

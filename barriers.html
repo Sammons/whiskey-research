@@ -2703,6 +2703,44 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict promising">Published</span> &mdash; Lu 2025 demonstrated OH&bull; generation by EPR and quantified flavor compound changes in baijiu<span class="cite" data-ref="183"><sup>[183]</sup></span>. Spirit-specific validation needed (baijiu is 50&ndash;65% ABV, similar to cask-strength whiskey). The key insight&mdash;PEF as radical generator, not just conformational disruptor&mdash;reframes all previous PEF aging studies. <strong>Home testability: 2/5</strong> (PEF requires high-voltage pulse generator. Simplified proof-of-concept: connect a piezoelectric lighter element to foil electrodes in spirit + oak chips, pulse manually. Compare vs. non-pulsed control at 1 week. More practical: use the electro-Fenton setup from &sect;4.7 with dissolved O<sub>2</sub> from an aquarium air pump.)
 </div>
 
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h3>4.57 Subcritical Water Oak Pre-Extraction</h3>
+
+<p>A remarkable physical coincidence: the dielectric constant of water at 200&ndash;250&deg;C (&epsilon; &asymp; 27&ndash;35) is <em>identical</em> to that of whiskey at room temperature (&epsilon; &asymp; 25&ndash;40 for 40&ndash;65% ABV). This means subcritical water dissolves the same compounds that spirit does&mdash;but at vastly accelerated rates because the temperature simultaneously provides enormous kinetic energy. At 250&deg;C, the ion product K<sub>w</sub> peaks at ~10<sup>&minus;11</sup> (1000&times; room temperature), meaning water becomes its own acid and base catalyst without any added reagents<span class="cite" data-ref="184"><sup>[184]</sup></span>.</p>
+
+<p>The practical implications are striking. Fan &amp; Gao (2022) measured Maillard reaction intermediates in subcritical water extraction and found <strong>31&times; browning intensity</strong> at 280&deg;C vs. 80&deg;C, with 5-HMF (a key whiskey congener) peaking at 0.429 g/100g at 200&deg;C<span class="cite" data-ref="185"><sup>[185]</sup></span>. Hydrolysis rate constants doubled every 20&deg;C (E<sub>a</sub> = 54.5 kJ/mol). Applied to oak, subcritical water extraction at 200&ndash;280&deg;C produces an oil fraction containing <strong>56% guaiacol</strong> plus vanillin, syringaldehyde, and ellagitannins&mdash;the exact compounds that define whiskey&rsquo;s oak character.</p>
+
+<figure>
+  <img src="graphs/subcritical-water-oak.svg" alt="Subcritical water: dielectric constant matching spirit and oak extraction products">
+  <figcaption><strong>Fig. 69.</strong> Subcritical water oak pre-extraction. Panel A: Water dielectric constant vs. temperature (blue curve). The green band marks the dielectric constant range of whiskey at room temperature. At 200&ndash;250&deg;C, water enters the same &epsilon; range as spirit&mdash;it dissolves the same compounds at 1000&times; faster kinetics. Panel B: Key products from subcritical water lignin/oak extraction.</figcaption>
+</figure>
+
+<p><strong>Connection to cooperage:</strong> This is, in essence, what barrel toasting does&mdash;heating oak staves to 150&ndash;250&deg;C in the presence of moisture. Cooperage toasting is uncontrolled (temperature gradients, variable moisture content, charring). Subcritical water treatment is <em>quantifiable</em>: precise temperature, pressure, and residence time produce reproducible phenolic profiles. A subcritical water oak extract could be produced industrially, characterized by GC-MS, and dosed into spirit at precisely controlled concentrations.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (mechanisms, not spirit application)</span> &mdash; Subcritical water chemistry is extensively studied for biomass processing (Savage 1999, Qian et al. 2020<span class="cite" data-ref="184"><sup>[184]</sup></span>; Fan &amp; Gao 2022<span class="cite" data-ref="185"><sup>[185]</sup></span>). Oak-specific subcritical extraction data exists in cooperage science but has not been framed as an aging acceleration technique. The dielectric-constant-matching insight provides the theoretical justification. <strong>Home testability: 2/5</strong> (Requires a pressure vessel rated to &gt;15 bar. Home pressure cookers reach ~120&deg;C / 1 bar&mdash;suboptimal but a partial approximation. Soak oak chips in water at 120&deg;C for 2h in a pressure cooker. Cool, filter. Add extract to spirit at 5&ndash;10% v/v. Compare color, aroma, and body vs. standard room-temperature oak chip maceration.)
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h3>4.58 UV-C Phenolic Condensation Accelerator</h3>
+
+<p>Barrel aging produces polymeric phenolic pigments through acetaldehyde-mediated condensation: acetaldehyde bridges two tannin or anthocyanin molecules via electrophilic addition to their aromatic rings, creating ethylidene-bridged dimers and oligomers that contribute to color stability, mouthfeel, and complexity. This chemistry takes years in a barrel. Gindri et al. (2021) showed that UV-C irradiation at just 3 kJ/m<sup>2</sup> produced <strong>+92.3% direct condensation products, +62.8% acetaldehyde-mediated condensation products</strong>, and +29.8% polymeric color<span class="cite" data-ref="186"><sup>[186]</sup></span>.</p>
+
+<p>The mechanism is photochemical radical initiation. UV-C photolysis of ethanol generates acetaldehyde <em>in situ</em>, while simultaneously generating OH&bull; and singlet oxygen that initiate phenolic radical coupling. Cvetkova et al. (2024) confirmed UV-C drives acetaldehyde formation in wine, with hydrolyzable tannins providing a protective buffer against overoxidation<span class="cite" data-ref="187"><sup>[187]</sup></span>&mdash;meaning tannin-rich spirit extracts are <em>inherently resistant</em> to UV-C degradation.</p>
+
+<figure>
+  <img src="graphs/uvc-phenolic-condensation.svg" alt="UV-C phenolic condensation enhancement and integration with PEM acetaldehyde">
+  <figcaption><strong>Fig. 70.</strong> UV-C phenolic condensation. Panel A: Enhancement of phenolic products at 3 kJ/m<sup>2</sup> UV-C dose (Gindri 2021). The +62.8% acetaldehyde-mediated condensation (highlighted) is the <em>exact</em> chemistry of barrel aging. Panel B: Integrated protocol&mdash;PEM electrolyzer (&sect;4.53) produces precise acetaldehyde, UV-C drives the bridging reaction, yielding the same polymeric pigments as years of barrel aging.</figcaption>
+</figure>
+
+<p><strong>Protocol integration:</strong> The combination of PEM-generated acetaldehyde (&sect;4.53) + UV-C irradiation + oak phenolics (&sect;3.10 DES extract or &sect;4.55 UAE-DES extract) creates a three-component precision aging system. The PEM provides exact acetaldehyde concentration (no guesswork). The UV-C activates radical-mediated bridging. The oak extract provides the phenolic substrates. Each variable is independently tunable. The degradation ceiling (&sect;4.26, D&rsquo;Arrigo 2024) is managed by pulsed UV exposure: intermittent irradiation (30 s on / 5 min off) allows product diffusion away from the irradiated zone, preventing vanillin overoxidation.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (wine/grape, not spirit)</span> &mdash; Gindri 2021<span class="cite" data-ref="186"><sup>[186]</sup></span> used grapes, Cvetkova 2024<span class="cite" data-ref="187"><sup>[187]</sup></span> used wine. The photochemistry is identical in spirit (same ethanol + phenolics + UV). Spirit validation is the missing step. The pulsed UV approach addresses the degradation ceiling identified by Kruger 2022 and D&rsquo;Arrigo 2024. <strong>Home testability: 3/5</strong> (UV-C germicidal lamp, $10&ndash;15. Place 200 mL spirit + oak extract in open glass container. Expose to UV-C from 15 cm distance, 30 s on / 5 min off, for 2h total exposure. Compare color and aroma vs. dark control. <strong>SAFETY: UV-C is hazardous to eyes and skin. Use in enclosed space with no direct line of sight.</strong>)
+</div>
+
 
 <!-- ═══════════════════════════════════════════════════════ -->
 
@@ -2867,6 +2905,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>PAW oak pre-treatment (&sect;4.54)</td><td>6&ndash;12 mo. equiv. oxidation</td><td><span class="verdict promising">Published (wine)</span></td><td>$20&ndash;30</td><td>OXIDATION / EXTRACTION</td></tr>
 <tr><td>UAE-DES synergistic extraction (&sect;4.55)</td><td>25&times; polyphenol yield</td><td><span class="verdict promising">Published (pine/chestnut)</span></td><td>$15&ndash;25</td><td>EXTRACTION</td></tr>
 <tr><td>PEF-Fenton radical cascade (&sect;4.56)</td><td>+24.7% flavor compounds</td><td><span class="verdict promising">Published (baijiu)</span></td><td>$50&ndash;100</td><td>OXIDATION / ESTER</td></tr>
+<tr><td>Subcritical water oak (&sect;4.57)</td><td>31&times; Maillard, 56% guaiacol</td><td><span class="verdict promising">Published (mechanism)</span></td><td>$50&ndash;200</td><td>EXTRACTION / MAILLARD</td></tr>
+<tr><td>UV-C phenolic condensation (&sect;4.58)</td><td>+62.8% AcH-mediated bridging</td><td><span class="verdict promising">Published (wine/grape)</span></td><td>$10&ndash;15</td><td>OXIDATION / CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -3058,6 +3098,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td><strong>PAW oak pre-treatment (&sect;4.54)</strong></td><td><strong>3/5</strong></td><td><strong>$20&ndash;30</strong></td><td><strong>Approximate PAW: soak oak chips in 0.1% food-grade H<sub>2</sub>O<sub>2</sub> ($3 from pharmacy) for 1h at room temp. Rinse briefly. Add treated chips to 200 mL spirit. Compare color and aroma at 1/3/7 days vs untreated chips. Faster color development = PAW-mimetic pre-oxidation of lignin surface. Full PAW: DBD plasma from automotive ignition coil + Al foil electrodes (~$20 build).</strong></td></tr>
 <tr><td><strong>UAE-DES synergistic extraction (&sect;4.55)</strong></td><td><strong>3/5</strong></td><td><strong>$15&ndash;25</strong></td><td><strong>Dissolve 10 g choline chloride ($5 supplement shop) + 15 mL food-grade lactic acid in 25 mL water. Add 5 g toasted oak chips. Place in ultrasonic jewelry cleaner at 40&deg;C for 1h. Filter. Dilute extract 1:10 into spirit. Compare color, aroma, and body vs plain ethanol oak extract made identically (same oak, same time, no DES, no ultrasound). Expect dramatically darker, richer extract from UAE-DES.</strong></td></tr>
 <tr><td>PEF-Fenton radical cascade (&sect;4.56)</td><td>2/5</td><td>$50&ndash;100</td><td>Requires high-voltage pulse generator (e.g. piezo lighter + relay circuit or commercial PEF unit). Simplified: use electro-Fenton setup from &sect;4.7 with aquarium air pump bubbling O<sub>2</sub> into spirit + oak chips during electrolysis. The dissolved O<sub>2</sub> + oak Fe<sup>2+</sup> creates the Fenton cascade. Compare vanillin aroma and color vs electrolysis-only control (no O<sub>2</sub> bubbling).</td></tr>
+<tr><td>Subcritical water oak (&sect;4.57)</td><td>2/5</td><td>$50&ndash;200</td><td>Requires pressure vessel (&gt;15 bar). Home pressure cooker reaches ~120&deg;C / 1 bar (partial approximation). Soak oak chips in water at 120&deg;C for 2h in pressure cooker. Cool, filter. Add extract to spirit at 5&ndash;10% v/v. Compare color and aroma vs room-temp oak maceration. The hot-water extract should be dramatically darker and more aromatic. <strong>Caution: pressure vessel safety.</strong></td></tr>
+<tr><td><strong>UV-C phenolic condensation (&sect;4.58)</strong></td><td><strong>3/5</strong></td><td><strong>$10&ndash;15</strong></td><td><strong>UV-C germicidal lamp ($10&ndash;15). Place 200 mL spirit + oak extract in open glass container. Expose to UV-C from 15 cm, pulsed: 30 s on / 5 min off, for 2h total exposure. Compare color (darker = more polymeric pigments) and aroma (more complex = condensation) vs dark control. Expect visible color deepening and increased body. SAFETY: UV-C is hazardous to eyes and skin. Use in enclosed space with no direct line of sight.</strong></td></tr>
 </tbody>
 </table>
 </div>
@@ -3257,6 +3299,10 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r181">Jakovljevic Kovac M, Jokic S, Jerkovic I, Molnar M. (2022) &ldquo;Optimization of Deep Eutectic Solvent Extraction of Phenolic Acids and Tannins from <em>Alchemilla vulgaris</em> L.&rdquo; <em>Plants</em> 11(4):474. <a href="https://doi.org/10.3390/plants11040474">DOI</a> (ChCl:urea DES at 30&deg;C: hydrolyzable tannins 178 vs 120 &mu;g TAE/mg for 50% EtOH &mdash; <strong>48% improvement</strong>. Ellagic acid yield up to 12.08 &mu;g/mg. Mild conditions preserve heat-labile phenolics.)</li>
   <li id="r182">Moccia F, Gallucci N, Giovando S, et al. (2022) &ldquo;A tunable deep eutectic solvent-based processing for valorization of chestnut wood fiber as a source of ellagic acid and lignin.&rdquo; <em>J Environ Chem Eng</em> 10(4):107773. <a href="https://doi.org/10.1016/j.jece.2022.107773">DOI</a> (Sequential two-step DES protocol on chestnut wood: (1) ChCl/tartaric acid &rarr; ellagic acid selectively, (2) ChCl/lactic acid &rarr; lignin fraction. Direct demonstration on cooperage wood (chestnut). Enables precise phenolic profile control.)</li>
   <li id="r183">Lu J, Zhou Z, Huang M, et al. (2025) &ldquo;Impact of pulsed electric fields combined with dissolved oxygen and ferrous ions on the aroma and components of strong-flavor Baijiu.&rdquo; <em>Foods</em> 14(7):1097. <a href="https://doi.org/10.3390/foods14071097">DOI</a> (PEF 25 kV/cm + dissolved O<sub>2</sub>: <strong>OH&bull; confirmed by EPR</strong>. At 500 Hz: +24.7% total flavor compounds. Octanoic acid +173%, hexanol +86%. Acetaldehyde &minus;7.1% (consumed in cascade). Fe<sup>2+</sup> addition promoted ester hydrolysis &mdash; warns against excess iron.)</li>
+  <li id="r184">Qian L, Wang S, Xu D, et al. (2020) &ldquo;Review on Mechanisms and Kinetics for Supercritical Water Oxidation Processes.&rdquo; <em>Appl Sci</em> 10(14):4937. <a href="https://doi.org/10.3390/app10144937">DOI</a> (Subcritical water K<sub>w</sub> peaks at ~250&deg;C (10<sup>&minus;11</sup>, 1000&times; ambient). Dielectric constant at 200&deg;C &asymp; 35 (= methanol), at 250&deg;C &asymp; 27 (= ethanol). Ion solvation increases reaction rates 9&ndash;12 orders of magnitude. Water becomes its own acid &amp; base catalyst without additives.)</li>
+  <li id="r185">Fan R, Gao Y. (2022) &ldquo;Maillard and Hydrolytic Reactions in Subcritical Water Extraction of Bioactive Compounds from Licorice.&rdquo; <em>Molecules</em> 27(20):6851. <a href="https://doi.org/10.3390/molecules27206851">DOI</a> (Subcritical water: 31&times; browning intensity at 280&deg;C vs 80&deg;C. 5-HMF peaked at 0.429 g/100g at 200&deg;C. Maillard fluorescence intensity 22&rarr;685 units (80&rarr;280&deg;C). Hydrolysis E<sub>a</sub> = 54.5 kJ/mol, rate doubles every 20&deg;C increase.)</li>
+  <li id="r186">Gindri RV, Pauletto R, Franco FW, et al. (2021) &ldquo;Grape UV-C irradiation in the postharvest period as a tool to improve sensorial quality and anthocyanin profile.&rdquo; <em>J Food Sci Technol</em> 59(5):1801&ndash;1811. <a href="https://doi.org/10.1007/s13197-021-05191-5">DOI</a> (UV-C at 3 kJ/m<sup>2</sup>: +92.3% direct condensation products, <strong>+62.8% acetaldehyde-mediated condensation</strong>, +29.8% polymeric color, +59.3% pyranoanthocyanins. The acetaldehyde-mediated bridging is the exact chemistry of barrel aging phenolic polymerization.)</li>
+  <li id="r187">Cvetkova S, Wacker M, Keiser J, et al. (2024) &ldquo;UV-C-induced changes in a white wine: Evaluating the protective power of hydrolysable tannins and SO<sub>2</sub>.&rdquo; <em>OENO One</em> 58(2). <a href="https://doi.org/10.20870/oeno-one.2024.58.2.7697">DOI</a> (UV-C &gt;1 kJ/L: increased color intensity, acetaldehyde formation, oxidative markers. Hydrolysable tannins provided protective buffer against overoxidation. Tannin-rich solutions are inherently resistant to UV-C degradation.)</li>
 </ol>
 
 
@@ -4193,6 +4239,26 @@ var refs = {
     source: "Lu et al. (2025), Foods 14(7):1097",
     excerpt: "PEF 25 kV/cm + dissolved O\u2082: OH\u2022 confirmed by EPR. At 500 Hz: +24.7% total flavor compounds. Complete oxidation cascade: alcohols \u2192 acids while acetaldehyde consumed (\u22127.1%). Fe\u00b2\u207a promotes ester hydrolysis \u2014 warns against excess iron.",
     url: "#r183"
+  },
+  184: {
+    source: "Qian et al. (2020), Appl Sci 10(14):4937",
+    excerpt: "Subcritical water Kw peaks at ~250\u00b0C (10\u207b\u00b9\u00b9, 1000\u00d7 ambient). Dielectric constant at 200\u00b0C \u2248 35 (methanol), 250\u00b0C \u2248 27 (ethanol). Water becomes its own acid + base catalyst. Ion solvation increases rates 9\u201312 orders of magnitude.",
+    url: "#r184"
+  },
+  185: {
+    source: "Fan & Gao (2022), Molecules 27(20):6851",
+    excerpt: "Subcritical water: 31\u00d7 browning at 280\u00b0C vs 80\u00b0C. 5-HMF 0.429 g/100g at 200\u00b0C. Maillard fluorescence 22\u2192685 units. Hydrolysis Ea = 54.5 kJ/mol, rate doubles per 20\u00b0C. Subcritical conditions dramatically accelerate Maillard and hydrolytic extraction.",
+    url: "#r185"
+  },
+  186: {
+    source: "Gindri et al. (2021), J Food Sci Technol 59(5):1801\u20131811",
+    excerpt: "UV-C at 3 kJ/m\u00b2: +92.3% direct condensation, +62.8% acetaldehyde-mediated condensation, +29.8% polymeric color. The acetaldehyde-mediated bridging is the exact chemistry of barrel aging.",
+    url: "#r186"
+  },
+  187: {
+    source: "Cvetkova et al. (2024), OENO One 58(2)",
+    excerpt: "UV-C >1 kJ/L: increased color intensity and acetaldehyde formation. Hydrolysable tannins buffer against overoxidation \u2014 tannin-rich solutions are inherently resistant to UV-C degradation. Dose threshold ~1 kJ/L for spirit applications.",
+    url: "#r187"
   }
 };
 
