@@ -57,6 +57,9 @@ fn main() {
 
     fs::write("../graphs/riboflavin-singlet-o2.svg", sim_riboflavin_singlet_o2()).unwrap();
     println!("Wrote riboflavin-singlet-o2.svg");
+
+    fs::write("../graphs/carbon-dot-photocatalysis.svg", sim_carbon_dot_photocatalysis()).unwrap();
+    println!("Wrote carbon-dot-photocatalysis.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -1797,6 +1800,332 @@ fn sim_riboflavin_singlet_o2() -> String {
         "Wilkinson et al. 1995", MUTED, 8, "start");
     svg += &label(lx, mt + 378.0,
         "Cardoso et al. 2012", MUTED, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Simulation 14: Carbon Dots from Charred Oak — Natural Photocatalysts in Barrel Aging
+///
+/// Hypothesis: Pyrolysis of oak during barrel charring (200-400°C) naturally produces
+/// fluorescent carbon nanoparticles (carbon dots, CDs) that dissolve into the spirit.
+/// These CDs generate singlet oxygen (¹O₂) under ambient warehouse light, providing
+/// a previously unrecognized photocatalytic oxidation pathway.
+///
+/// Evidence threads:
+///   1. Biomass pyrolysis at 200-400°C produces CDs (Φ_Δ up to 0.3-1.3, size 2-10 nm)
+///   2. Aged whiskey shows fluorescence that increases with barrel age (excitation 280-350 nm,
+///      emission 400-500 nm) — matching CD optical signatures
+///   3. Warehouse orientation and light exposure affect aging rate (practical observation)
+///   4. CDs are water/ethanol soluble — would dissolve into spirit from charred surface
+fn sim_carbon_dot_photocatalysis() -> String {
+    let dt = 600.0_f64;    // 10-minute steps
+    let total_days = 365.0; // 1 year
+    let total_s = total_days * 86400.0;
+    let n_steps = (total_s / dt) as usize;
+    let sample_interval = 43200.0_f64; // sample every 12h
+
+    // ---- Carbon dot parameters ----
+    let cd_max = 3.0e-6_f64;  // mol/L max extractable CDs (MW ~1000 Da average)
+    let k_cd_extract_20c = 8.0e-8_f64; // /s at 20°C for barrel SA
+    let ea_extract = 40000.0_f64;
+    let t_ref = 293.15_f64;
+
+    // CD photophysics (from biomass CD literature)
+    let epsilon_cd = 3000.0_f64;   // M⁻¹cm⁻¹ at effective wavelength
+    let phi_isc = 0.40_f64;
+    let s_delta = 0.75_f64;
+    let path_cm = 10.0_f64;
+
+    // Ambient light in warehouse
+    let photon_flux_ambient = 1.0e-10_f64; // mol photons/(L·s) — conservative
+
+    // ¹O₂ kinetics
+    let k_t_o2 = 1.0e9_f64;
+    let k_t_ethanol = 1.0e4_f64;
+    let k_t_phenol = 5.0e7_f64;
+    let k_d_1o2 = 2.0e5_f64;
+    let k_r_ph_1o2 = 1.5e7_f64;
+    let k_r_van_1o2 = 7.0e6_f64;
+
+    // CDs do NOT photobleach significantly (300× more stable than riboflavin)
+    let phi_bleach_cd = 1.0e-6_f64;
+
+    // Standard barrel kinetics
+    let k_ox_20c = 2.5e-7_f64;
+    let ea_ox = 70000.0_f64;
+    let k_ox2_20c = 5.0e-6_f64;
+    let ea_ox2 = 55000.0_f64;
+    let k_cond_20c = 1.0e-4_f64;
+    let ea_cond = 60000.0_f64;
+    let k_wood_20c = 1.0e-6_f64;
+    let ea_wood = 50000.0_f64;
+    let tan_m_max = 3.0e-3_f64;
+    let van_max = 5.0e-4_f64;
+
+    let ethanol = 6.85_f64; // 40% ABV
+    let ethanol_m = ethanol;
+    let o2_sat = 2.7e-4 * 0.8;
+    let kla_barrel = 2.0e-7_f64;
+
+    fn arr(k_ref: f64, ea: f64, t_k: f64, t_ref: f64) -> f64 {
+        k_ref * ((ea / 8.314) * (1.0 / t_ref - 1.0 / t_k)).exp()
+    }
+
+    let temp_at = |t_s: f64| -> f64 {
+        let tc = 18.0 + 10.0 * (2.0 * std::f64::consts::PI * t_s / (365.0 * 86400.0)).sin();
+        tc + 273.15
+    };
+
+    struct Scenario {
+        label: &'static str,
+        color: &'static str,
+        has_cds: bool,
+        light_factor: f64,
+    }
+    let scenarios = [
+        Scenario { label: "Barrel + CDs (south-facing)", color: CYAN,
+                   has_cds: true, light_factor: 3.0 },
+        Scenario { label: "Barrel + CDs (interior rack)", color: PURPLE,
+                   has_cds: true, light_factor: 0.3 },
+        Scenario { label: "Control barrel (no CDs)", color: YELLOW,
+                   has_cds: false, light_factor: 0.0 },
+    ];
+
+    let panel_titles = [
+        "Acetaldehyde (mol/L)",
+        "Polymeric Tannin (mol/L)",
+        "Vanillin (mol/L)",
+        "CD Concentration (\u{00b5}M)",
+        "Cumulative \u{00b9}O\u{2082} (mmol/L)",
+    ];
+
+    let mut all_series: Vec<[Vec<f64>; 5]> = Vec::new();
+
+    for sc in &scenarios {
+        let mut ach = 0.0_f64;
+        let mut tan_m = 0.0_f64;
+        let mut tan_p = 0.0_f64;
+        let mut van = 0.0_f64;
+        let mut o2: f64 = o2_sat;
+        let mut cd: f64 = 0.0;
+        let mut cum_1o2: f64 = 0.0;
+        let mut next_sample: f64 = 0.0;
+        let mut series: [Vec<f64>; 5] = [vec![], vec![], vec![], vec![], vec![]];
+
+        for step in 0..n_steps {
+            let t_s = step as f64 * dt;
+            let t_k = temp_at(t_s);
+
+            // CD extraction from charred wood
+            if sc.has_cds {
+                let k_ext = arr(k_cd_extract_20c, ea_extract, t_k, t_ref);
+                let headroom: f64 = (cd_max - cd).max(0.0);
+                cd += k_ext * headroom * dt;
+            }
+
+            // CD photocatalytic pathway
+            if sc.has_cds && cd > 1.0e-9 {
+                let i_flux = photon_flux_ambient * sc.light_factor;
+                let abs_factor = 1.0 - (-epsilon_cd * cd * path_cm * 2.303_f64).exp();
+                let i_abs = i_flux * abs_factor.max(0.0).min(1.0);
+                let i_triplet = phi_isc * i_abs;
+
+                let o2_c = o2.max(0.0);
+                let ph_c = tan_m.max(0.0);
+                let r_o2 = k_t_o2 * o2_c;
+                let r_eth = k_t_ethanol * ethanol_m;
+                let r_ph = k_t_phenol * ph_c;
+                let r_total = r_o2 + r_eth + r_ph + 1e-10;
+                let f_o2 = r_o2 / r_total;
+                let f_eth = r_eth / r_total;
+                let f_ph = r_ph / r_total;
+
+                let r_1o2 = i_triplet * f_o2 * s_delta;
+                let o2_fac = o2_c / (o2_c + 2e-5);
+                let r_1o2_eff = r_1o2 * o2_fac;
+
+                let total_sink = k_r_ph_1o2 * ph_c + k_r_van_1o2 * van.max(0.0) + k_d_1o2;
+                let f_ph_1o2 = k_r_ph_1o2 * ph_c / total_sink;
+                let f_van_1o2 = k_r_van_1o2 * van.max(0.0) / total_sink;
+
+                tan_m -= r_1o2_eff * f_ph_1o2 * dt;
+                tan_p += r_1o2_eff * f_ph_1o2 * dt;
+                van -= r_1o2_eff * f_van_1o2 * dt;
+                ach += i_triplet * f_eth * 0.7 * dt;
+                cum_1o2 += r_1o2_eff * dt;
+
+                o2 -= (r_1o2_eff + i_triplet * (f_ph + f_eth) * 0.5) * dt;
+                cd -= phi_bleach_cd * i_abs * dt;
+                if cd < 0.0 { cd = 0.0; }
+            }
+
+            // Standard barrel O₂ cascade
+            let k_ox = arr(k_ox_20c, ea_ox, t_k, t_ref);
+            let k_ox2 = arr(k_ox2_20c, ea_ox2, t_k, t_ref);
+            let k_cond = arr(k_cond_20c, ea_cond, t_k, t_ref);
+            let k_wood = arr(k_wood_20c, ea_wood, t_k, t_ref);
+            let k_van_wood = k_wood * 0.25;
+
+            let r_o2_transfer = kla_barrel * (o2_sat - o2.max(0.0));
+            let r1 = k_ox * ethanol * o2.max(0.0);
+            let r2 = k_ox2 * ach.max(0.0) * o2.max(0.0);
+            let r_cond = k_cond * tan_m.max(0.0) * ach.max(0.0);
+            let r_wood_tan = k_wood * (tan_m_max - tan_m.max(0.0)).max(0.0);
+            let r_wood_van = k_van_wood * (van_max - van.max(0.0)).max(0.0);
+
+            ach += (r1 - r2 - r_cond) * dt;
+            o2 += (r_o2_transfer - r1 - r2) * dt;
+            tan_m += (r_wood_tan - r_cond) * dt;
+            tan_p += r_cond * dt;
+            van += r_wood_van * dt;
+
+            for v in [&mut ach, &mut o2, &mut tan_m, &mut tan_p, &mut van, &mut cd] {
+                if *v < 0.0 { *v = 0.0; }
+            }
+
+            next_sample += dt;
+            if next_sample >= sample_interval {
+                series[0].push(ach);
+                series[1].push(tan_p);
+                series[2].push(van);
+                series[3].push(cd * 1e6);
+                series[4].push(cum_1o2 * 1e3);
+                next_sample -= sample_interval;
+            }
+        }
+        all_series.push(series);
+    }
+
+    // ---- SVG rendering (5 panels) ----
+    let w = 820.0;
+    let h = 780.0;
+    let mut svg = svg_header(w, h,
+        "Carbon Dots from Charred Oak: Natural Photocatalysts in Barrel Aging");
+
+    let ml = 100.0;
+    let mt = 38.0;
+    let pw = 420.0;
+    let panel_h = 90.0;
+    let panel_gap = 12.0;
+
+    let label = |x: f64, y: f64, t: &str, c: &str, s: u32, a: &str| -> String {
+        format!("<text x=\"{x}\" y=\"{y}\" fill=\"{c}\" font-size=\"{s}\" \
+                text-anchor=\"{a}\">{t}</text>\n")
+    };
+
+    let mut y_maxes = [0.0_f64; 5];
+    for series in &all_series {
+        for (pi, vals) in series.iter().enumerate() {
+            for &v in vals { if v > y_maxes[pi] { y_maxes[pi] = v; } }
+        }
+    }
+    for ym in y_maxes.iter_mut() { *ym *= 1.15; }
+    for ym in y_maxes.iter_mut() { if *ym < 1e-10 { *ym = 1e-4; } }
+
+    for (pi, title) in panel_titles.iter().enumerate() {
+        let pt = mt + pi as f64 * (panel_h + panel_gap);
+        let pb = pt + panel_h;
+        svg += &label(ml - 5.0, pt + 12.0, title, TEXT, 9, "end");
+        svg += &hline(ml, ml + pw, pb, MUTED, "0.8");
+        svg += &vline(ml, pt, pb, MUTED, "0.8");
+        for g in [0.25, 0.5, 0.75, 1.0] {
+            svg += &hline(ml, ml + pw, pb - g * panel_h, GRID, "0.3");
+        }
+        for (si, sc) in scenarios.iter().enumerate() {
+            let vals = &all_series[si][pi];
+            if vals.is_empty() { continue; }
+            let ym = y_maxes[pi];
+            let points_str: String = vals.iter().enumerate()
+                .map(|(i, &v)| {
+                    let x = ml + (i as f64 / vals.len() as f64) * pw;
+                    let y = pb - (v / ym) * panel_h;
+                    format!("{:.1},{:.1}", x, y)
+                })
+                .collect::<Vec<_>>()
+                .join(" ");
+            svg.push_str(&format!("<polyline points=\"{points_str}\" fill=\"none\" stroke=\"{}\" \
+                stroke-width=\"2\" stroke-linejoin=\"round\"/>\n", sc.color));
+        }
+        let ym = y_maxes[pi];
+        svg += &label(ml - 5.0, pb + 3.0, "0", MUTED, 8, "end");
+        svg += &label(ml - 5.0, pt + 3.0, &format!("{:.2e}", ym), MUTED, 8, "end");
+    }
+
+    let bot = mt + 4.0 * (panel_h + panel_gap) + panel_h;
+    for m in 0..=12 {
+        let frac = m as f64 / 12.0;
+        svg += &label(ml + frac * pw, bot + 14.0,
+            &format!("{}mo", m), MUTED, 9, "middle");
+    }
+
+    let lx = ml + pw + 15.0;
+    for (i, sc) in scenarios.iter().enumerate() {
+        let ly = mt + 10.0 + i as f64 * 22.0;
+        svg.push_str(&format!("<line x1=\"{lx}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" \
+            stroke=\"{}\" stroke-width=\"2.5\"/>\n", lx + 22.0, sc.color));
+        svg += &label(lx + 27.0, ly + 4.0, sc.label, TEXT, 9, "start");
+    }
+
+    svg += &label(lx, mt + 90.0,
+        "Novel hypothesis:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 106.0,
+        "Barrel charring (200\u{2013}400\u{00b0}C)", TEXT, 9, "start");
+    svg += &label(lx, mt + 119.0,
+        "pyrolyzes oak \u{2192} carbon dots", TEXT, 9, "start");
+    svg += &label(lx, mt + 132.0,
+        "(2\u{2013}10 nm fluorescent CDs)", TEXT, 9, "start");
+
+    svg += &label(lx, mt + 155.0,
+        "CD photocatalysis:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 171.0,
+        "\u{03a6}_\u{0394} \u{2248} 0.3\u{2013}0.5 for wood CDs", CYAN, 9, "start");
+    svg += &label(lx, mt + 184.0,
+        "\u{03a6}_ISC \u{2248} 0.4 (N/S doping)", TEXT, 9, "start");
+    svg += &label(lx, mt + 197.0,
+        "\u{03b5} \u{2248} 3000 M\u{207b}\u{00b9}cm\u{207b}\u{00b9}", TEXT, 9, "start");
+
+    svg += &label(lx, mt + 220.0,
+        "Key advantage:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 236.0,
+        "CDs are photostable", GREEN, 9, "start");
+    svg += &label(lx, mt + 249.0,
+        "(unlike riboflavin)", GREEN, 9, "start");
+    svg += &label(lx, mt + 262.0,
+        "\u{2192} continuous catalysis", GREEN, 9, "start");
+    svg += &label(lx, mt + 275.0,
+        "over years, not days", GREEN, 9, "start");
+
+    svg += &label(lx, mt + 300.0,
+        "Explains observations:", YELLOW, 10, "start");
+    svg += &label(lx, mt + 316.0,
+        "\u{2022} Warehouse light matters", TEXT, 9, "start");
+    svg += &label(lx, mt + 329.0,
+        "\u{2022} South-facing ages faster", TEXT, 9, "start");
+    svg += &label(lx, mt + 342.0,
+        "\u{2022} Aged whiskey fluoresces", TEXT, 9, "start");
+    svg += &label(lx, mt + 355.0,
+        "\u{2022} Higher char = more CDs", TEXT, 9, "start");
+
+    svg += &label(lx, mt + 380.0,
+        "Whiskey fluorescence:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 396.0,
+        "Ex: 280\u{2013}350 nm", TEXT, 9, "start");
+    svg += &label(lx, mt + 409.0,
+        "Em: 400\u{2013}500 nm", TEXT, 9, "start");
+    svg += &label(lx, mt + 422.0,
+        "\u{2261} CD optical signature", CYAN, 9, "start");
+
+    svg += &label(lx, mt + 450.0,
+        "Testable prediction:", RED, 10, "start");
+    svg += &label(lx, mt + 466.0,
+        "Filter charred-oak extract", TEXT, 9, "start");
+    svg += &label(lx, mt + 479.0,
+        "through 10 kDa membrane:", TEXT, 9, "start");
+    svg += &label(lx, mt + 492.0,
+        "fluorescence in filtrate", TEXT, 9, "start");
+    svg += &label(lx, mt + 505.0,
+        "= carbon dots confirmed", TEXT, 9, "start");
 
     svg.push_str("</svg>");
     svg
