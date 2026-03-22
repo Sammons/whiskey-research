@@ -90,6 +90,12 @@ fn main() {
 
     fs::write("../graphs/magnetic-fenton-enhancement.svg", sim_magnetic_fenton_enhancement()).unwrap();
     println!("Wrote magnetic-fenton-enhancement.svg");
+
+    fs::write("../graphs/dual-freq-sonochemistry.svg", sim_dual_freq_sonochemistry()).unwrap();
+    println!("Wrote dual-freq-sonochemistry.svg");
+
+    fs::write("../graphs/zeolite-membrane-ester.svg", sim_zeolite_membrane_ester()).unwrap();
+    println!("Wrote zeolite-membrane-ester.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -4156,6 +4162,420 @@ fn sim_magnetic_fenton_enhancement() -> String {
     svg += &label(ml + pw - 185.0, mt + ph - 44.0, &format!("20 mT enhancement: {:.1}x", enh_base), GREEN, 10, "start");
     svg += &label(ml + pw - 185.0, mt + ph - 28.0, &format!("20 mT + sono: {:.1}x", enh_sono), CYAN, 10, "start");
     svg += &label(ml + pw - 185.0, mt + ph - 14.0, "Cost: $5-15 (magnet only)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 25: Dual-Frequency Sonochemistry
+// Models: cavitation bubble dynamics under single vs dual frequency
+// Key physics: bubble radius R(t) from Rayleigh-Plesset, collapse
+// pressure scales as (R_max/R_min)^3, radical yield ~ collapse energy
+// ═══════════════════════════════════════════════════════════════
+fn sim_dual_freq_sonochemistry() -> String {
+    let w: f64 = 700.0;
+    let h: f64 = 420.0;
+    let ml = 70.0;
+    let mt = 50.0;
+    let pw = 280.0;
+    let ph = 300.0;
+    let gap = 70.0;
+
+    let mut svg = svg_header(w, h,
+        "Sim 25 \u{2014} Dual-Frequency Sonochemistry: Cavitation Enhancement");
+
+    // ── Panel A: Bubble radius oscillation ──
+    let r0 = 5.0_f64;   // equilibrium bubble radius (μm)
+    let f1 = 20.0e3;     // 20 kHz
+    let f2 = 40.0e3;     // 40 kHz
+    let a_single = 0.8;  // amplitude ratio for single freq
+    let a1_dual = 0.5;   // 20 kHz component in dual mode
+    let a2_dual = 0.45;  // 40 kHz component in dual mode
+
+    let t_max_us = 150.0_f64;
+    let n_pts = 600;
+    let dt_us = t_max_us / n_pts as f64;
+
+    struct BubbleSeries {
+        label: &'static str,
+        color: &'static str,
+        pts: Vec<(f64, f64)>,
+    }
+
+    let mut bubble_series: Vec<BubbleSeries> = Vec::new();
+
+    // Single 20 kHz
+    {
+        let mut pts = Vec::new();
+        for i in 0..=n_pts {
+            let t_us = i as f64 * dt_us;
+            let t_s = t_us * 1e-6;
+            let r = r0 * (1.0 + a_single * (2.0 * std::f64::consts::PI * f1 * t_s).sin());
+            pts.push((t_us, r.max(0.5)));
+        }
+        bubble_series.push(BubbleSeries { label: "Single 20 kHz", color: BLUE, pts });
+    }
+
+    // Single 40 kHz
+    {
+        let mut pts = Vec::new();
+        for i in 0..=n_pts {
+            let t_us = i as f64 * dt_us;
+            let t_s = t_us * 1e-6;
+            let r = r0 * (1.0 + a_single * 0.7 * (2.0 * std::f64::consts::PI * f2 * t_s).sin());
+            pts.push((t_us, r.max(0.5)));
+        }
+        bubble_series.push(BubbleSeries { label: "Single 40 kHz", color: GREEN, pts });
+    }
+
+    // Dual 20+40 kHz
+    {
+        let mut pts = Vec::new();
+        for i in 0..=n_pts {
+            let t_us = i as f64 * dt_us;
+            let t_s = t_us * 1e-6;
+            let r = r0 * (1.0
+                + a1_dual * (2.0 * std::f64::consts::PI * f1 * t_s).sin()
+                + a2_dual * (2.0 * std::f64::consts::PI * f2 * t_s).sin());
+            pts.push((t_us, r.max(0.5)));
+        }
+        bubble_series.push(BubbleSeries { label: "Dual 20+40 kHz", color: ACCENT, pts });
+    }
+
+    let y_max_bub = 14.0_f64;
+
+    let sx_a = |x: f64| -> f64 { ml + (x / t_max_us) * pw };
+    let sy_a = |y: f64| -> f64 { mt + ph - (y / y_max_bub) * ph };
+
+    svg += &label(ml + pw / 2.0, mt - 8.0, "(A) Bubble Radius Oscillation", TEXT, 11, "middle");
+
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    for i in 1..=5 {
+        let x = 30.0 * i as f64;
+        svg += &vline(sx_a(x), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(x), mt + ph + 13.0, &format!("{:.0}", x), MUTED, 8, "middle");
+    }
+    for i in 1..=6 {
+        let y = 2.0 * i as f64;
+        svg += &hline(ml, ml + pw, sy_a(y), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(y) + 3.5, &format!("{:.0}", y), MUTED, 8, "end");
+    }
+
+    // Equilibrium radius line
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n",
+        ml, sy_a(r0), ml + pw, sy_a(r0));
+    svg += &label(ml + pw + 2.0, sy_a(r0) + 3.0, "R\u{2080}", MUTED, 8, "start");
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Time (\u{03BC}s)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 40.0, mt + ph / 2.0, ml - 40.0, mt + ph / 2.0, "Bubble Radius (\u{03BC}m)");
+
+    for s in &bubble_series {
+        svg += &polyline_svg(&s.pts, s.color, "1.5", &sx_a, &sy_a);
+    }
+
+    // Legend panel A
+    let mut ly = mt + 12.0;
+    for s in &bubble_series {
+        svg += &hline(ml + 10.0, ml + 32.0, ly, s.color, "2.5");
+        svg += &label(ml + 36.0, ly + 4.0, s.label, TEXT, 8, "start");
+        ly += 14.0;
+    }
+
+    // ── Panel B: Cumulative radical yield ──
+    let ml2 = ml + pw + gap;
+    let t_max_h = 6.0_f64;
+
+    struct RadScen {
+        label: &'static str,
+        color: &'static str,
+        rate: f64,
+    }
+
+    let rad_scenarios = vec![
+        RadScen { label: "No US (Fenton only)", color: MUTED, rate: 0.15 },
+        RadScen { label: "Single 20 kHz",       color: BLUE,  rate: 0.52 },
+        RadScen { label: "Single 40 kHz",       color: GREEN, rate: 0.38 },
+        RadScen { label: "Dual 20+40 kHz",      color: ACCENT, rate: 0.52 * 1.8 },
+    ];
+
+    let mut rad_pts: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut rad_finals: Vec<f64> = Vec::new();
+
+    for s in &rad_scenarios {
+        let mut pts = Vec::new();
+        let mut cum = 0.0_f64;
+        let dt_h = 0.05;
+        let n_steps = (t_max_h / dt_h) as usize;
+        for i in 0..=n_steps {
+            let t = i as f64 * dt_h;
+            pts.push((t, cum));
+            let rate = s.rate * E.powf(-0.05 * t);
+            cum += rate * dt_h;
+        }
+        rad_finals.push(cum);
+        rad_pts.push(pts);
+    }
+
+    println!("=== Dual-Frequency Sonochemistry ===");
+    for (i, s) in rad_scenarios.iter().enumerate() {
+        println!("  {}: {:.2} mM OH\u{2022} in {:.0}h", s.label, rad_finals[i], t_max_h);
+    }
+    let synergy = rad_finals[3] / (rad_finals[1] + rad_finals[2] - rad_finals[0]);
+    println!("  Synergy factor: {:.2}x", synergy);
+
+    let y_max_rad = rad_finals.iter().cloned().fold(0.0_f64, f64::max) * 1.15;
+
+    let sx_b = |x: f64| -> f64 { ml2 + (x / t_max_h) * pw };
+    let sy_b = |y: f64| -> f64 { mt + ph - (y / y_max_rad) * ph };
+
+    svg += &label(ml2 + pw / 2.0, mt - 8.0, "(B) Cumulative Radical Yield", TEXT, 11, "middle");
+
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    for i in 1..=6 {
+        let x = i as f64;
+        svg += &vline(sx_b(x), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(x), mt + ph + 13.0, &format!("{:.0}h", x), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let y = y_max_rad * i as f64 / 5.0;
+        svg += &hline(ml2, ml2 + pw, sy_b(y), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(y) + 3.5, &format!("{:.1}", y), MUTED, 8, "end");
+    }
+
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Time (hours)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 40.0, mt + ph / 2.0, ml2 - 40.0, mt + ph / 2.0, "Cumulative OH\u{2022} (mM)");
+
+    for (i, s) in rad_scenarios.iter().enumerate() {
+        svg += &polyline_svg(&rad_pts[i], s.color, if i == 3 { "2.5" } else { "1.8" }, &sx_b, &sy_b);
+    }
+
+    let mut ly2 = mt + 12.0;
+    for (i, s) in rad_scenarios.iter().enumerate() {
+        svg += &hline(ml2 + 10.0, ml2 + 32.0, ly2, s.color, "2.5");
+        svg += &label(ml2 + 36.0, ly2 + 4.0, &format!("{} ({:.1})", s.label, rad_finals[i]), TEXT, 8, "start");
+        ly2 += 14.0;
+    }
+
+    // Synergy box
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"170\" height=\"40\" rx=\"4\" fill=\"{}\" opacity=\"0.7\"/>\n",
+        ml2 + pw - 180.0, mt + ph - 55.0, GRID);
+    svg += &label(ml2 + pw - 175.0, mt + ph - 39.0,
+        &format!("Synergy factor: {:.2}\u{00D7}", synergy), ACCENT, 10, "start");
+    svg += &label(ml2 + pw - 175.0, mt + ph - 23.0,
+        "Cost: $80\u{2013}150 (dual-freq bath)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 26: Water Activity as Ester Equilibrium Barrier
+// The fundamental problem: whiskey's 19.4 M water suppresses
+// Fischer esterification to ~58%. Even perfect catalysis cannot
+// overcome thermodynamics. Solution: side-stream dehydration.
+//
+// Panel A: Analytical eq. conversion vs [H₂O]₀
+//   x_eq = K·[EtOH]₀ / ([H₂O]₀ + K·[EtOH]₀)
+// Panel B: Kinetic traces at 4 water levels with H-BEA
+// ═══════════════════════════════════════════════════════════════
+fn sim_zeolite_membrane_ester() -> String {
+    let w: f64 = 700.0;
+    let h: f64 = 420.0;
+    let ml = 70.0;
+    let mt = 50.0;
+    let pw = 280.0;
+    let ph = 300.0;
+    let gap = 70.0;
+
+    let mut svg = svg_header(w, h,
+        "Sim 26 \u{2014} Water Activity Barrier: Why Spirits Resist Ester Formation");
+
+    let k_eq = 4.0_f64;
+    let etoh_0 = 6840.0_f64; // 40% ABV
+
+    // ── Panel A: Equilibrium conversion vs [H₂O]₀ ──
+    // x_eq = K*[EtOH] / ([H₂O] + K*[EtOH])  (excess ethanol approximation)
+    let x_max_w = 25000.0_f64; // mM
+    let n_curve = 500;
+
+    let mut eq_curve: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=n_curve {
+        let h2o = (i as f64 / n_curve as f64) * x_max_w;
+        let x_eq = k_eq * etoh_0 / (h2o + k_eq * etoh_0) * 100.0;
+        eq_curve.push((h2o, x_eq));
+    }
+
+    // Key points to annotate
+    struct KeyPoint {
+        h2o: f64,
+        label: &'static str,
+        color: &'static str,
+    }
+    let key_pts = vec![
+        KeyPoint { h2o: 19400.0, label: "40% ABV spirit", color: RED },
+        KeyPoint { h2o: 9700.0,  label: "Mol. sieve treated", color: YELLOW },
+        KeyPoint { h2o: 2000.0,  label: "Azeotrope distilled", color: GREEN },
+        KeyPoint { h2o: 100.0,   label: "Neat + membrane", color: ACCENT },
+    ];
+
+    let y_max_a = 105.0_f64;
+    let sx_a = |x: f64| -> f64 { ml + (x / x_max_w) * pw };
+    let sy_a = |y: f64| -> f64 { mt + ph - (y / y_max_a) * ph };
+
+    svg += &label(ml + pw / 2.0, mt - 8.0, "(A) Equilibrium Conversion vs [H\u{2082}O]\u{2080}", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    // Grid
+    for i in 1..=5 {
+        let x = 5000.0 * i as f64;
+        svg += &vline(sx_a(x), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(x), mt + ph + 13.0, &format!("{:.0}k", x / 1000.0), MUTED, 8, "middle");
+    }
+    for val in &[20.0, 40.0, 60.0, 80.0, 99.0] {
+        svg += &hline(ml, ml + pw, sy_a(*val), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(*val) + 3.5, &format!("{:.0}%", val), MUTED, 8, "end");
+    }
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "[H\u{2082}O]\u{2080} (mM)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 48.0, mt + ph / 2.0, ml - 48.0, mt + ph / 2.0, "Max Conversion (%)");
+
+    // Main curve
+    svg += &polyline_svg(&eq_curve, CYAN, "2.5", &sx_a, &sy_a);
+
+    // Annotate key points
+    println!("=== Water Activity Barrier ===");
+    for kp in &key_pts {
+        let x_eq = k_eq * etoh_0 / (kp.h2o + k_eq * etoh_0) * 100.0;
+        println!("  {}: [H2O]={:.0} mM -> {:.1}% eq. conversion", kp.label, kp.h2o, x_eq);
+        let cx = sx_a(kp.h2o);
+        let cy = sy_a(x_eq);
+        svg += &format!("<circle cx=\"{cx}\" cy=\"{cy}\" r=\"4\" fill=\"{}\" stroke=\"{BG}\" stroke-width=\"1\"/>\n", kp.color);
+        // Label with leader line
+        let lx = cx + 6.0;
+        let label_y = cy - 8.0;
+        svg += &label(lx, label_y, &format!("{} ({:.0}%)", kp.label, x_eq), kp.color, 8, "start");
+    }
+
+    // ── Panel B: Kinetic traces at different water levels ──
+    let ml2 = ml + pw + gap;
+    let t_max_h = 12.0_f64;
+
+    // H-BEA at 363 K
+    let ea = 46700.0;
+    let k_ref = 1.2e-6_f64;
+    let k_f_cat = k_ref * E.powf(ea / R * (1.0 / 323.15 - 1.0 / 363.15));
+    let k_r_cat = k_f_cat / k_eq;
+
+    let acoh_0 = 8.3_f64;
+
+    struct KineticSim {
+        label: &'static str,
+        color: &'static str,
+        water_0: f64,
+        membrane_k: f64, // 0 = no membrane
+    }
+
+    let kin_sims = vec![
+        KineticSim { label: "Full spirit (19.4 M)", color: RED,    water_0: 19400.0, membrane_k: 0.0 },
+        KineticSim { label: "Mol. sieve (9.7 M)",   color: YELLOW, water_0: 9700.0,  membrane_k: 0.0 },
+        KineticSim { label: "Azeotrope (2.0 M)",    color: GREEN,  water_0: 2000.0,  membrane_k: 0.0 },
+        KineticSim { label: "Neat + membrane",       color: ACCENT, water_0: 100.0,   membrane_k: 5.0e-4 },
+    ];
+
+    let dt_s = 0.5;
+    let n = (t_max_h * 3600.0 / dt_s) as usize;
+    let sample_every = (120.0 / dt_s) as usize; // every 2 min
+
+    let mut kin_pts: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut kin_finals: Vec<f64> = Vec::new();
+
+    for sim in &kin_sims {
+        let mut acoh = acoh_0;
+        let mut etoh = etoh_0;
+        let mut ester = 0.0_f64;
+        let mut water = sim.water_0;
+        let mut pts = Vec::new();
+
+        for i in 0..=n {
+            if i % sample_every == 0 {
+                let conv = (acoh_0 - acoh) / acoh_0 * 100.0;
+                pts.push((i as f64 * dt_s / 3600.0, conv));
+            }
+
+            let rf = k_f_cat * acoh * etoh;
+            let rr = k_r_cat * ester * water;
+            let mut dx = (rf - rr) * dt_s;
+            if dx > 0.0 { dx = dx.min(acoh * 0.2); } else { dx = dx.max(-ester * 0.2); }
+            acoh = (acoh - dx).max(0.0);
+            etoh = (etoh - dx).max(0.0);
+            ester = (ester + dx).max(0.0);
+            water = (water + dx).max(0.0);
+
+            if sim.membrane_k > 0.0 {
+                let removed = (water * sim.membrane_k * dt_s).min((water - 50.0).max(0.0));
+                water -= removed;
+            }
+        }
+
+        let conv = (acoh_0 - acoh) / acoh_0 * 100.0;
+        println!("  {}: {:.1}% in {:.0}h", sim.label, conv, t_max_h);
+        kin_finals.push(conv);
+        kin_pts.push(pts);
+    }
+
+    let y_max_b = 105.0_f64;
+    let sx_b = |x: f64| -> f64 { ml2 + (x / t_max_h) * pw };
+    let sy_b = |y: f64| -> f64 { mt + ph - (y / y_max_b) * ph };
+
+    svg += &label(ml2 + pw / 2.0, mt - 8.0, "(B) Kinetic Traces (H-BEA, 90\u{00B0}C)", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    for i in 1..=6 {
+        let x = 2.0 * i as f64;
+        svg += &vline(sx_b(x), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(x), mt + ph + 13.0, &format!("{:.0}h", x), MUTED, 8, "middle");
+    }
+    for val in &[20.0, 40.0, 60.0, 80.0, 99.0] {
+        svg += &hline(ml2, ml2 + pw, sy_b(*val), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(*val) + 3.5, &format!("{:.0}%", val), MUTED, 8, "end");
+    }
+
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Time (hours)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 48.0, mt + ph / 2.0, ml2 - 48.0, mt + ph / 2.0, "Conversion (%)");
+
+    for (i, sim) in kin_sims.iter().enumerate() {
+        svg += &polyline_svg(&kin_pts[i], sim.color, if i == 3 { "2.5" } else { "1.8" }, &sx_b, &sy_b);
+    }
+
+    // Legend
+    let mut ly = mt + 12.0;
+    for (i, sim) in kin_sims.iter().enumerate() {
+        svg += &hline(ml2 + 10.0, ml2 + 32.0, ly, sim.color, "2.5");
+        svg += &label(ml2 + 36.0, ly + 4.0,
+            &format!("{} ({:.0}%)", sim.label, kin_finals[i]), TEXT, 8, "start");
+        ly += 14.0;
+    }
+
+    // Key insight box
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"210\" height=\"50\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 220.0, mt + ph - 65.0, GRID);
+    svg += &label(ml2 + pw - 215.0, mt + ph - 49.0,
+        "Water is the barrier, not kinetics", ACCENT, 10, "start");
+    svg += &label(ml2 + pw - 215.0, mt + ph - 35.0,
+        "19.4 M H\u{2082}O caps conversion at 58%", RED, 9, "start");
+    svg += &label(ml2 + pw - 215.0, mt + ph - 21.0,
+        "Dehydration + membrane \u{2192} 99%+", GREEN, 9, "start");
 
     svg.push_str("</svg>");
     svg

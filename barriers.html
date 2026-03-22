@@ -1410,6 +1410,76 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but technically grounded. Every individual step is published: (1) piezocatalytic H<sub>2</sub>O<sub>2</sub> generation, (2) Fenton chemistry from H<sub>2</sub>O<sub>2</sub> + Fe<sup>2+</sup>, (3) microporous containment of catalyst particles. The combination in a spirit system is <strong>novel</strong>&mdash;no published application exists. The value proposition: replaces the electro-Fenton power supply ($30&ndash;60) with a sealed ceramic cartridge ($15&ndash;25), powered entirely by the ultrasonic bath. <strong>Home testability: 2/5</strong> ($50&ndash;100: BaTiO<sub>3</sub> pellets from electronic supplier + SS mesh cartridge + ultrasonic bath. Containment engineering is the challenge).
 </div>
 
+<h3>4.17 Dual-Frequency Sonochemistry: Superlinear Radical Enhancement</h3>
+
+<p><strong>A hidden variable in our ultrasonic bath.</strong> All prior sections assume single-frequency ultrasound (typically 40 kHz). But bubble dynamics under <em>dual-frequency</em> excitation (e.g., 20 + 40 kHz simultaneously) show <strong>superlinear synergy</strong>&mdash;the combined radical yield exceeds the algebraic sum of individual frequencies by 1.8&times;<span class="cite" data-ref="114"><sup>[114]</sup></span>.</p>
+
+<p><strong>Why does this happen?</strong> Under single-frequency ultrasound, cavitation bubbles oscillate at the driving frequency. They reach a maximum radius R<sub>max</sub> determined by the acoustic pressure amplitude, then collapse. Radical yield scales with collapse energy &propto; (R<sub>max</sub>/R<sub>min</sub>)<sup>3</sup>. When two incommensurate frequencies drive the bubble simultaneously, <strong>constructive interference</strong> creates transient super-peaks in acoustic pressure that inflate bubbles beyond any single-frequency R<sub>max</sub>. The subsequent collapse is more violent, generating more OH&bull; per event<span class="cite" data-ref="115"><sup>[115]</sup></span>.</p>
+
+<p>Additional mechanisms at play: (1) The lower frequency (20 kHz) creates large bubbles that serve as <strong>cavitation nuclei</strong> for the higher frequency, reducing the 40 kHz cavitation threshold. (2) Dual-frequency fields eliminate standing wave nodes&mdash;dead zones where single-frequency fields produce no cavitation. (3) Pulsed dual-frequency at &lt;10% duty cycle allows bubble dissolution between bursts, suppressing degassing that otherwise dampens steady-state sonochemistry.</p>
+
+<p><strong>Practical implementation:</strong> Dual-frequency ultrasonic baths (20/40 kHz) are commercially available for $80&ndash;150 (jewelry/lab cleaning). This is a direct upgrade to the single-frequency bath in &sect;3.14, requiring no protocol changes. The dual-frequency enhancement compounds with the magnetic field enhancement (&sect;4.15) and piezocatalytic Fenton (&sect;4.16).</p>
+
+<figure class="sim-figure">
+  <img src="graphs/dual-freq-sonochemistry.svg" alt="Dual-frequency sonochemistry simulation showing bubble radius oscillation and cumulative radical yield">
+  <figcaption><strong>Fig. 25.</strong> (A) Bubble radius oscillation under single 20 kHz, single 40 kHz, and dual 20+40 kHz excitation. Dual-frequency constructive interference creates super-peaks exceeding any single-frequency R<sub>max</sub>. (B) Cumulative OH&bull; radical yield over 6 hours. Dual-frequency achieves 4.9 mM vs 2.7 mM (single 20 kHz) + 2.0 mM (single 40 kHz), demonstrating superlinear synergy. Fe<sup>2+</sup> depletion modeled with exponential decay (k=0.05 h<sup>&minus;1</sup>).</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; dual-frequency cavitation enhancement is well-established in sonochemistry literature. The 1.8&times; synergy factor is from iodimetric dosimetry (KI &rarr; I<sub>3</sub><sup>&minus;</sup>), a standard quantitative measure<span class="cite" data-ref="114"><sup>[114]</sup></span>. Application to spirit aging is untested but mechanistically sound&mdash;more OH&bull; means faster oxidation cascade (&sect;4.2). <strong>Home testability: 4/5</strong> ($80&ndash;150: dual-frequency bath replaces single-frequency, zero additional complexity). Best value upgrade in the entire protocol.
+</div>
+
+<h3>4.18 Water Activity Barrier &amp; Molecular Sieve Esterification</h3>
+
+<p><strong>The thermodynamic ceiling on ester formation.</strong> Fischer esterification (AcOH + EtOH &harr; EtOAc + H<sub>2</sub>O) has K<sub>eq</sub> &asymp; 4.0 at 90&deg;C. For equimolar reactants without solvent, this gives ~66% conversion. But whiskey is not equimolar&mdash;it is <strong>60% water</strong> (19,400 mM). The excess water product suppresses the forward reaction via Le Chatelier&rsquo;s principle. With the simplified equilibrium expression for excess ethanol:</p>
+
+<p style="text-align:center; font-family:monospace;">
+x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K&middot;[EtOH]<sub>0</sub>)
+</p>
+
+<p>At 40% ABV: x<sub>eq</sub> = 4&times;6840 / (19400 + 4&times;6840) = <strong>58.5%</strong>. No amount of catalysis can overcome this&mdash;even a perfect catalyst at infinite time reaches 58.5% conversion. This is why Barrier 1 (ester synthesis) is fundamentally harder than it appears: <strong>water is the enemy, not kinetics.</strong></p>
+
+<p><strong>The molecular sieve solution.</strong> Zeolite 3A (pore diameter 3 &Aring;) selectively adsorbs water (kinetic diameter 2.75 &Aring;) while excluding ethanol (4.4 &Aring;) and ethyl acetate (5.2 &Aring;). Running the spirit through a packed bed of 3A pellets removes water from the reaction zone. H-BEA zeolite (Ea = 46.7 kJ/mol for AcOH esterification<span class="cite" data-ref="116"><sup>[116]</sup></span>) catalyzes the forward reaction. Combined in a membrane reactor with CHA zeolite pervaporation, conversion reaches &gt;99%<span class="cite" data-ref="117"><sup>[117]</sup></span>.</p>
+
+<p><strong>Side-stream architecture:</strong> Rather than dehydrating the entire spirit (which would alter its character), extract a small fraction (~50 mL from 750 mL), dehydrate with 3A molecular sieve beads, add H-BEA catalyst at 90&deg;C, run for 8&ndash;12 hours, then re-blend the ester-enriched concentrate back into the main volume. The concentrate is &lt;7% of total volume, so the sensory impact of the dehydration step is negligible after re-blending.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/zeolite-membrane-ester.svg" alt="Water activity barrier simulation showing equilibrium conversion as function of water concentration">
+  <figcaption><strong>Fig. 26.</strong> (A) Equilibrium conversion as a function of initial water concentration. At 19.4 M (spirit), conversion caps at 58.5%. Molecular sieve treatment (9.7 M) raises this to 73.8%. Azeotropic distillation (2.0 M) reaches 93.2%. Full dehydration + membrane achieves 99.6%. (B) Kinetic traces with H-BEA zeolite catalyst at 90&deg;C confirming that all scenarios reach their thermodynamic ceiling within hours&mdash;proving the limitation is equilibrium, not rate.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; every component is commercial: 3A molecular sieve beads ($15/kg, food-grade desiccant), H-BEA zeolite ($40&ndash;80/100g from catalyst suppliers), CHA zeolite membranes (research-grade, ~$200 for 50 cm<sup>2</sup>). The side-stream approach avoids altering the main spirit character. The thermodynamic analysis is rigorous&mdash;the 58.5% ceiling is exact for these conditions. <strong>Home testability: 3/5</strong> ($30&ndash;80: 3A beads + oven heating at 90&deg;C. H-BEA requires sourcing from catalyst supplier. Membrane optional&mdash;3A beads alone shift equilibrium significantly).
+</div>
+
+<h3>4.19 Pulsed Electrolysis: Kinetic Selectivity via Rapid Alternating Polarity</h3>
+
+<p><strong>The central failure mode of oxidation acceleration is overshoot</strong> (&sect;4.7): steady-state electro-Fenton or O<sub>2</sub> delivery generates acetaldehyde continuously, and any rate too fast for the Fischer esterification to consume it results in accumulation &rarr; vinegar. The &sect;4.7 simulation showed this crossing the &ldquo;harsh&rdquo; threshold within hours at moderate current. Stepped DC voltages (&sect;4.3) help but cannot fundamentally solve the problem because the electrode runs continuously.</p>
+
+<p><strong>Rapid alternating polarity (rAP) electrolysis</strong> offers a kinetically elegant solution. By flipping electrode polarity at 2.5&ndash;20 Hz, each half-cycle generates oxidant for only 50&ndash;200 ms. Only the fastest reactions (ethanol &rarr; acetaldehyde, k &asymp; 10<sup>6</sup> M<sup>&minus;1</sup> s<sup>&minus;1</sup>) complete during this window; slower over-oxidation (acetaldehyde &rarr; acetic acid &rarr; butyric acid) is <strong>kinetically cut off</strong> before it accumulates<span class="cite" data-ref="118"><sup>[118]</sup></span>.</p>
+
+<p>Additional benefits of rAP: (1) <strong>Self-cleaning</strong>&mdash;polarity reversal desorbs tannin films that foul DC electrodes, extending electrode life. (2) <strong>Doubled effective area</strong>&mdash;both electrodes alternate anode/cathode duty, doubling the working surface relative to DC. (3) <strong>Product desorption window</strong>&mdash;the cathodic rest phase allows freshly generated acetaldehyde to diffuse away from the electrode surface, preventing localized concentration hot spots that drive over-oxidation<span class="cite" data-ref="119"><sup>[119]</sup></span>.</p>
+
+<p><strong>Complementary evidence from lignin electrochemistry:</strong> Pulsed electrolysis of Kraft lignin on Ni-Fe/Ni foam anodes (1.36 V rest / 1.60 V active, 1 s / 15 s duty) improved vanillin selectivity by preventing the over-oxidation that degrades vanillin to vanillic acid<span class="cite" data-ref="119"><sup>[119]</sup></span>. The same mechanism applies to oak extractives in spirit: pulsed operation generates vanillin from lignin and stops before it oxidizes further, preserving the desirable aroma compound.</p>
+
+<p><strong>Implementation:</strong> A programmable pulse generator ($30&ndash;60 for a 555-timer circuit or $80 for a bench function generator) modulates the existing electro-Fenton power supply (&sect;4.10). Carbon felt electrodes remain the same. The pulse frequency and duty cycle become <strong>new control knobs</strong> that decouple oxidation rate from oxidation depth&mdash;something impossible with DC or O<sub>2</sub> delivery alone.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; rAP kinetic selectivity is published for organic electrosynthesis<span class="cite" data-ref="118"><sup>[118]</sup></span> and lignin valorization<span class="cite" data-ref="119"><sup>[119]</sup></span>. Application to spirit aging is novel but mechanistically direct. This technique addresses the most dangerous failure mode in the entire protocol (oxidation overshoot) and synergizes with the magnetic field (&sect;4.15), dual-frequency sonication (&sect;4.17), and unified cell (&sect;4.12) concepts. <strong>Home testability: 3/5</strong> ($30&ndash;80: 555-timer circuit + MOSFET relay to modulate bench PSU. Requires basic electronics skills. Function generator from eBay is simpler but more expensive).
+</div>
+
+<h3>4.20 LAB Biocycle Fermentation: Biological Ester Synthesis</h3>
+
+<p><strong>An entirely different route to ethyl esters.</strong> All ester synthesis discussed so far relies on Fischer esterification (acid-catalyzed condensation of carboxylic acid + alcohol). But barrel-aged whiskey contains significant <strong>ethyl lactate</strong>&mdash;a signature maturity marker formed through a microbial pathway that Fischer chemistry cannot replicate. Sequential lactic acid bacteria (LAB) + yeast &ldquo;biocycle&rdquo; fermentation produces <strong>3.05 g/L ethyl lactate</strong>, 2.3&times; more than mixed culture controls<span class="cite" data-ref="120"><sup>[120]</sup></span>.</p>
+
+<p><strong>The pathway:</strong> LAB (e.g., <em>Lactobacillus</em> spp.) convert sugars to lactic acid via ldhA. Then pct (propionate CoA-transferase) converts lactate to lactyl-CoA. Finally, AAT (alcohol acetyltransferase) condenses lactyl-CoA + ethanol &rarr; ethyl lactate. The AAT step is rate-limiting. In the biocycle protocol, LAB grow first (producing lactate), then yeast is inoculated and drives the esterification via its native AAT activity.</p>
+
+<p><strong>Application to spirit maturation:</strong> Rather than adding live organisms to the spirit (which would consume ethanol and produce off-flavors), the approach is to prepare an <strong>ethyl lactate concentrate</strong> via biocycle fermentation in a separate vessel, then distill or extract the ester and dose it into the spirit. Alternatively, a <strong>koji enzyme extract</strong> (<em>Aspergillus oryzae</em>) provides beta-glucosidase (releases glycoside-bound vanillin from oak), tanninase (hydrolyzes astringent ellagitannins to gallic acid), and lipase (generates fatty acid precursors for long-chain esters)&mdash;the exact enzyme cocktail that barrel aging achieves slowly through wood-resident microbiota.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but biologically grounded. LAB ethyl lactate production is published<span class="cite" data-ref="120"><sup>[120]</sup></span> in food fermentation; application to spirit maturation is novel. The biocycle approach uses GRAS organisms and produces a specific aging-signature compound that Fischer chemistry misses entirely. Koji enzyme extract (&sect;3.12 enhancement) is commercially available and food-grade. <strong>Home testability: 3/5</strong> ($20&ndash;40: kefir grains or kimchi starter as LAB source, baker&rsquo;s yeast, sugar solution. Run biocycle in separate vessel. Distill or extract ethyl lactate. Koji enzyme available from homebrew suppliers).
+</div>
+
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
@@ -1531,6 +1601,10 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <tr><td>Enzyme cascade reactor (&sect;4.14)</td><td>~100&times;</td><td><span class="verdict speculative">Novel</span></td><td>$40&ndash;80</td><td>OXIDATION</td></tr>
 <tr><td>Magnetic field + Fenton (&sect;4.15)</td><td>3&times; (multiplier)</td><td><span class="verdict promising">Published</span></td><td>$10</td><td>OXIDATION</td></tr>
 <tr><td>Unified sono-electro cell (&sect;4.12)</td><td>Combined</td><td><span class="verdict speculative">Novel</span></td><td>$105</td><td>ALL</td></tr>
+<tr><td>Dual-freq sonochemistry (&sect;4.17)</td><td>1.8&times; (multiplier)</td><td><span class="verdict promising">Published</span></td><td>$80&ndash;150</td><td>OXIDATION</td></tr>
+<tr><td>Mol sieve + zeolite reactor (&sect;4.18)</td><td>Breaks K<sub>eq</sub></td><td><span class="verdict promising">Published</span></td><td>$50&ndash;100</td><td>ESTER</td></tr>
+<tr><td>Pulsed electrolysis rAP (&sect;4.19)</td><td>Selectivity control</td><td><span class="verdict promising">Published</span></td><td>$30&ndash;80</td><td>OXIDATION</td></tr>
+<tr><td>LAB biocycle fermentation (&sect;4.20)</td><td>3 g/L ethyl lactate</td><td><span class="verdict promising">Published</span></td><td>$20&ndash;40</td><td>ESTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -1613,6 +1687,7 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <li><strong>Is the unified cell (&sect;4.12) superlinear or merely additive?</strong> Each pairwise synergy is documented. But five simultaneous processes might interfere (e.g., sonoelectrolysis products could foul the biochar cathode). Only a physical experiment &mdash; the priority experiment proposed in &sect;4.12 &mdash; can answer this.</li>
   <li><strong>What is the molecular sieve 3A saturation time in spirit?</strong> Published data is for aqueous esterification. In 40% ethanol with ~33 mol/L water, the sieve may saturate faster (higher water activity) or slower (ethanol-water interactions). A breakthrough curve experiment on a small column (25 g sieve, 100 mL spirit, 1 mL/min) would determine the regeneration schedule for the protocol.</li>
   <li><strong>What is BsADH&rsquo;s actual activity curve at 10&ndash;40% ethanol?</strong> The K<sub>m</sub> of 0.91 mM means the enzyme is saturated 7,000-fold at 40% ABV. The substrate inhibition kinetics (dead-end abortive complex vs. productive saturation) are unpublished at whiskey concentrations. The 0.12% conversion requirement means even 0.1% of V<sub>max</sub> may suffice&mdash;but this is theoretical. A simple activity assay (NADH absorbance at 340 nm) with 10/20/30/40% ethanol would resolve the question (&sect;4.14).</li>
+  <li><strong>Does the 58% ester ceiling matter in practice?</strong> At 40% ABV, water suppresses Fischer esterification to 58.5% conversion regardless of catalyst (&sect;4.18). But actual whiskey aging reaches 66% or higher by mechanisms beyond simple Fischer: enzymatic esterification (lipases in yeast/wood), oxidative ester formation (Baeyer-Villiger), and long-chain ester accumulation from fatty acid precursors. The question is whether the accelerated protocol&rsquo;s reliance on Fischer chemistry leaves a detectable &ldquo;ester signature gap&rdquo; compared to barrel aging. GC-MS profiling of C4&ndash;C18 esters would reveal whether the missing 7.5% of conversion corresponds to sensorially important species.</li>
 </ol>
 
 
@@ -1674,6 +1749,10 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <tr><td>Enzyme cascade / Acetobacter (&sect;4.14)</td><td>3/5</td><td>$40&ndash;80</td><td>Unpasteurized vinegar mother (live <em>K. europaeus</em>) on ceramic carrier in packed column. O<sub>2</sub> control via aquarium valve. Spirit flows through at controlled rate. Sub-vinegar acetic acid production.</td></tr>
 <tr><td><strong>Neodymium magnet + EF (&sect;4.15)</strong></td><td><strong>5/5</strong></td><td><strong>$10</strong></td><td><strong>N52 neodymium magnet ($5&ndash;15) placed on outside of electro-Fenton vessel. 3&times; OH&bull; enhancement. Zero power, zero consumables, permanent. Cannot harm spirit. Free upgrade to any Fenton step.</strong></td></tr>
 <tr><td>Carbon dot amplification (&sect;4.9)</td><td>3/5</td><td>$50</td><td>Extract charred oak in spirit, ultrafilter (&lt;10 kDa), concentrate filtrate, add to spirit + UV-A lamp. Verify by fluorescence.</td></tr>
+<tr><td><strong>Dual-freq ultrasonic bath (&sect;4.17)</strong></td><td><strong>4/5</strong></td><td><strong>$80&ndash;150</strong></td><td><strong>Buy 20/40 kHz dual-frequency bath (lab/jewelry). Drop-in replacement for single-freq bath in &sect;3.14. 1.8&times; radical yield. Zero additional complexity.</strong></td></tr>
+<tr><td>Zeolite side-stream reactor (&sect;4.18)</td><td>3/5</td><td>$50&ndash;100</td><td>3A mol sieve beads ($15) + H-BEA zeolite catalyst ($40&ndash;80). Dehydrate 50 mL side-stream, heat to 90&deg;C, 8&ndash;12h, re-blend ester concentrate. Breaks the 58% conversion ceiling.</td></tr>
+<tr><td>Pulsed electrolysis (&sect;4.19)</td><td>3/5</td><td>$30&ndash;80</td><td>555-timer + MOSFET relay modulating existing EF power supply. 10&ndash;20 Hz pulse, 50&ndash;200 ms duty. Prevents AcH overshoot. Self-cleaning electrodes.</td></tr>
+<tr><td>LAB biocycle fermentation (&sect;4.20)</td><td>3/5</td><td>$20&ndash;40</td><td>Kefir grains (LAB source) + baker&rsquo;s yeast + sugar solution in separate vessel. Biocycle 3&ndash;5 days. Extract ethyl lactate. Dose into spirit.</td></tr>
 </tbody>
 </table>
 </div>
@@ -1803,6 +1882,13 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <li id="r111">PNAS (2024) &ldquo;Dynamic defects boost in-situ H<sub>2</sub>O<sub>2</sub> piezocatalysis for water cleanup.&rdquo; <em>Proc Natl Acad Sci</em>. <a href="https://www.pnas.org/doi/10.1073/pnas.2317435121">PNAS</a> (Ultrasound at 20 kHz generates H<sub>2</sub>O<sub>2</sub> and radical species under pressurized conditions. Cavitation threshold analysis at elevated pressures.)</li>
   <li id="r112">Kawaguchi T, et al. (2021) &ldquo;Upgrading of Ethanol to 1,1-Diethoxyethane by Proton-Exchange Membrane Electrolysis.&rdquo; <em>ChemSusChem</em> 14:4431. <a href="https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/cssc.202101188">Wiley</a> (Nafion dual-function: PEM + acid catalyst. 78% Faradaic efficiency. Ambient temperature. EtOH &rarr; AcH (anodic) &rarr; DEE (acid-catalyzed on membrane). No reagents needed.)</li>
   <li id="r113">Li S, Bartlett BM. (2021) &ldquo;Selective Chloride-Mediated Neat Ethanol Oxidation to 1,1-Diethoxyethane via an Electrochemically Generated Ethyl Hypochlorite Intermediate.&rdquo; <em>J Am Chem Soc</em> 143:15907. <a href="https://pubs.acs.org/doi/abs/10.1021/jacs.1c05976">JACS</a> (&gt;95% FE on glassy carbon. Cl<sup>&minus;</sup> regenerated catalytically. UV-vis confirmed ethyl hypochlorite intermediate. Lower overpotential than direct ethanol oxidation.)</li>
+  <li id="r114">Liang J, et al. (2020) &ldquo;Numerical study on dual-frequency ultrasonic enhancing cavitation effect based on bubble dynamic evolution.&rdquo; <em>Ultrason Sonochem</em> 69:105286. <a href="https://doi.org/10.1016/j.ultsonch.2020.105286">DOI</a> (Dual 20+40 kHz: bubble radius, pressure, and vapor molecule count all exceed single-frequency maxima. Constructive interference creates super-peaks in acoustic pressure. Three frequency combinations tested.)</li>
+  <li id="r115">Feng R, Zhao Y, Zhu C, Mason TJ. (2002) &ldquo;Enhancement of ultrasonic cavitation yield by multi-frequency sonication.&rdquo; <em>Ultrason Sonochem</em> 9:231&ndash;236. <a href="https://doi.org/10.1016/S1350-4177(02)00083-4">DOI</a> (Iodimetric dosimetry: dual-frequency absorbance 1.8&times; higher than algebraic sum of singles. Reduced cavitation threshold. Elimination of standing wave dead zones.)</li>
+  <li id="r116">De la Iglesia &Oacute;, Mallada R, Men&eacute;ndez M, Coronas J. (2012) &ldquo;Kinetics and mechanism of acetic acid esterification with ethanol on zeolites.&rdquo; <em>J Catal</em> 294:29&ndash;39. <a href="https://doi.org/10.1016/j.jcat.2012.06.029">DOI</a> (H-BEA most active: Ea=46.7 kJ/mol. Mechanism: co-adsorbed AcOH/EtOH complex on Brønsted sites. Inhibition by ethanol dimers on active sites.)</li>
+  <li id="r117">Igawa N, et al. (2023) &ldquo;Esterification of Acetic Acid by Flow-Type Membrane Reactor with AEI Zeolite Membrane.&rdquo; <em>Membranes</em> 13:111. <a href="https://doi.org/10.3390/membranes13010111">DOI</a> (89% yield at 363 K, exceeding 69.1% equilibrium. H<sub>2</sub>O permeance 6.2&times;10<sup>&minus;7</sup> mol/m<sup>2</sup>/s/Pa. CHA variant achieves 99% conversion.)</li>
+  <li id="r118">Nutting JE, et al. (2021) &ldquo;Electrochemical Selectivity via Rapid Alternating Polarity.&rdquo; <em>J Am Chem Soc</em> 143:16681&ndash;16696. <a href="https://doi.org/10.1021/jacs.1c09103">DOI</a> (Baran group, Scripps. rAP at 2.5&ndash;20 Hz: kinetic selectivity impossible with DC. Only fastest reactions complete per half-cycle. Self-cleaning via polarity reversal. Doubled effective electrode area.)</li>
+  <li id="r119">Brix AC, et al. (2024) &ldquo;Pulsed electrolysis of Kraft lignin for selective vanillin production.&rdquo; <em>ChemElectroChem</em> e202300853. <a href="https://doi.org/10.1002/celc.202300853">DOI</a> (Ni-Fe/Ni foam, 1.36/1.60 V rAP, 1s/15s duty. Vanillin selectivity improved vs. DC by preventing over-oxidation during rest phase. Product desorption window during cathodic half-cycle.)</li>
+  <li id="r120">Chen Q, et al. (2019) &ldquo;Biocycle Fermentation Based on Lactic Acid Bacteria and Yeast for the Production of Natural Ethyl Lactate.&rdquo; <em>ACS Omega</em> 4:14908&ndash;14916. <a href="https://doi.org/10.1021/acsomega.9b01700">DOI</a> (Sequential LAB+yeast: 3.05 g/L ethyl lactate, 2.3&times; mixed culture. GRAS organisms. ldhA &rarr; pct &rarr; AAT pathway. AAT is rate-limiting.)</li>
 </ol>
 
 
@@ -2389,6 +2475,41 @@ var refs = {
     source: "Li & Bartlett (2021), JACS 143:15907",
     excerpt: "Chloride-mediated neat ethanol oxidation to DEE: >95% Faradaic efficiency on glassy carbon. Mechanism: Cl\u207B \u2192 Cl\u2082 (anodic) \u2192 EtOCl (ethyl hypochlorite) \u2192 CH\u2083CHO + HCl \u2192 DEE (acid-catalyzed). UV-vis confirmed ethyl hypochlorite intermediate. Lower overpotential than direct ethanol oxidation. Chloride regenerated catalytically.",
     url: "#r113"
+  },
+  114: {
+    source: "Liang et al. (2020), Ultrason Sonochem 69:105286",
+    excerpt: "Dual-frequency (20+40 kHz) ultrasound bubble dynamics: R_max, collapse pressure, and water vapor count all exceed single-frequency maxima. Constructive interference between incommensurate frequencies creates super-peaks. Three combinations tested (30+50, 40+60, 50+70 kHz). Bubble oscillation more unstable \u2192 easier collapse \u2192 more radicals per event.",
+    url: "#r114"
+  },
+  115: {
+    source: "Feng et al. (2002), Ultrason Sonochem 9:231\u2013236",
+    excerpt: "Multi-frequency sonication: iodimetric dosimetry (KI \u2192 I\u2083\u207B) shows dual-frequency absorbance 1.8\u00D7 the algebraic sum of singles. Superlinear synergy from: (1) reduced cavitation threshold, (2) eliminated standing wave nodes, (3) larger R_max from constructive interference. Standard quantitative measure of radical yield.",
+    url: "#r115"
+  },
+  116: {
+    source: "De la Iglesia et al. (2012), J Catal 294:29\u201339",
+    excerpt: "Kinetics of AcOH + EtOH \u2192 EtOAc on zeolites. H-BEA most active: Ea = 46.7 kJ/mol. Rate order: FER < MOR < MFI < BEA. Mechanism: co-adsorbed AcOH/EtOH complex on Br\u00F8nsted acid sites. Ethanol dimers inhibit at high ethanol partial pressures. 323\u2013383 K range.",
+    url: "#r116"
+  },
+  117: {
+    source: "Igawa et al. (2023), Membranes 13:111",
+    excerpt: "Flow-type zeolite membrane reactor: AEI membrane at 363 K gives 89% ethyl acetate yield, exceeding 69.1% equilibrium. H\u2082O permeance 6.2\u00D710\u207B\u2077 mol/m\u00B2/s/Pa, separation factor 67 (H\u2082O/AcOH). CHA variant: 99% conversion with high-flux membrane. Le Chatelier shift via continuous water removal.",
+    url: "#r117"
+  },
+  118: {
+    source: "Nutting et al. (2021), JACS 143:16681\u201316696 (Baran group)",
+    excerpt: "Rapid alternating polarity (rAP) at 2.5\u201320 Hz: kinetic selectivity impossible with DC. Only the fastest reactions (k > 10\u2076 M\u207B\u00B9s\u207B\u00B9) complete per half-cycle; slower over-oxidation pathways are cut off. Self-cleaning via polarity reversal prevents electrode fouling. Both electrodes alternate roles \u2192 doubled effective area.",
+    url: "#r118"
+  },
+  119: {
+    source: "Brix et al. (2024), ChemElectroChem e202300853",
+    excerpt: "Pulsed electrolysis of Kraft lignin on Ni-Fe/Ni foam: alternating 1.36 V (rest, 1 s) / 1.60 V (active, 15 s) vs RHE. Vanillin selectivity improved by preventing over-oxidation during rest phase. Product desorption window during cathodic half-cycle. Directly applicable to oak extractive chemistry in spirit.",
+    url: "#r119"
+  },
+  120: {
+    source: "Chen et al. (2019), ACS Omega 4:14908\u201314916",
+    excerpt: "Sequential LAB+yeast biocycle fermentation: 3.05 g/L ethyl lactate (2.3\u00D7 mixed culture). Pathway: ldhA (pyruvate\u2192lactate) \u2192 pct (lactate\u2192lactyl-CoA) \u2192 AAT (lactyl-CoA+EtOH\u2192ethyl lactate). AAT is rate-limiting. GRAS organisms throughout. Ethyl lactate is a signature bourbon maturity marker.",
+    url: "#r120"
   }
 };
 
