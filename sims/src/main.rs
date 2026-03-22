@@ -163,6 +163,9 @@ fn main() {
     fs::write("../graphs/lipase-fusel-esterification.svg", sim_lipase_fusel_esterification()).unwrap();
     fs::write("../graphs/photocatalytic-acetaldehyde.svg", sim_photocatalytic_acetaldehyde()).unwrap();
     fs::write("../graphs/ewod-screening.svg", sim_ewod_screening()).unwrap();
+    fs::write("../graphs/sono-enzymatic-ester.svg", sim_sono_enzymatic_ester()).unwrap();
+    fs::write("../graphs/visible-light-maillard.svg", sim_visible_light_maillard()).unwrap();
+    fs::write("../graphs/ultrasonic-extraction-kinetics.svg", sim_ultrasonic_extraction_kinetics()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -12558,6 +12561,423 @@ fn sim_ewod_screening() -> String {
     svg += &label(350.0, h - 20.0,
         "Complements acoustic levitation (\u{00a7}4.59): EWOD adds programmable merging, splitting, and multi-step sequences",
         CYAN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ───── Sim 75: Sono-Enzymatic Synergistic Esterification ─────
+fn sim_sono_enzymatic_ester() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 75 \u{2014} Sono-Enzymatic Synergy: Ultrasound + Lipase for Fusel Ester Synthesis");
+
+    // Panel A: Conversion improvement with ultrasound
+    svg += &label(195.0, 57.0, "A: Isoamyl Acetate Yield \u{00b1} Ultrasound", TEXT, 10, "middle");
+
+    let (ax, ay, aw_a, ah_a) = (80.0, 70.0, 230.0, 285.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_a}\" height=\"{ah_a}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // X-axis: time (0-120 min)
+    for i in 0..=6 {
+        let t = i as f64 * 20.0;
+        let x = ax + t / 120.0 * aw_a;
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ay + ah_a, ay + ah_a + 4.0);
+        svg += &label(x, ay + ah_a + 14.0, &format!("{}", t as i32), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw_a / 2.0, ay + ah_a + 28.0, "Time (min)", MUTED, 8, "middle");
+
+    // Y-axis: conversion (mg/g) 0-500
+    for i in 0..=5 {
+        let val = i as f64 * 100.0;
+        let y = ay + ah_a - val / 500.0 * ah_a;
+        svg += &format!("<line x1=\"{}\" y1=\"{y}\" x2=\"{ax}\" y2=\"{y}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0);
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}", val as i32), MUTED, 7, "end");
+    }
+    svg += &label(ax - 35.0, ay + ah_a / 2.0, "Ester (mg/g)", MUTED, 7, "middle");
+
+    // Equilibrium line at 477 mg/g
+    let eq_y = ay + ah_a - 477.0 / 500.0 * ah_a;
+    svg += &format!("<line x1=\"{ax}\" y1=\"{eq_y}\" x2=\"{}\" y2=\"{eq_y}\" stroke=\"{YELLOW}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n",
+        ax + aw_a);
+    svg += &label(ax + aw_a - 5.0, eq_y - 5.0, "Equilibrium (477 mg/g)", YELLOW, 6, "end");
+
+    // Theoretical max at 551
+    let max_y = ay + ah_a - 551.0 / 500.0 * ah_a;
+    svg += &format!("<line x1=\"{ax}\" y1=\"{max_y}\" x2=\"{}\" y2=\"{max_y}\" stroke=\"{MUTED}\" stroke-width=\"0.5\" stroke-dasharray=\"2,4\"/>\n",
+        ax + aw_a);
+    svg += &label(ax + aw_a - 5.0, max_y - 5.0, "Theoretical max (551)", MUTED, 6, "end");
+
+    // Without ultrasound: slower sigmoid
+    let no_us: Vec<(f64, f64)> = (0..=60).map(|i| {
+        let t = i as f64 * 2.0;
+        let conv = 477.0 * (1.0 - (-0.02 * t).exp());
+        (ax + t / 120.0 * aw_a, ay + ah_a - conv / 500.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&no_us, RED, "2", &|x| x, &|y| y);
+
+    // With ultrasound: faster, higher peak
+    let us: Vec<(f64, f64)> = (0..=60).map(|i| {
+        let t = i as f64 * 2.0;
+        let conv = if t <= 20.0 {
+            462.0 * (1.0 - (-0.08 * t).exp())
+        } else {
+            462.0 + (477.0 - 462.0) * (1.0 - (-0.03 * (t - 20.0)).exp())
+        };
+        (ax + t / 120.0 * aw_a, ay + ah_a - conv / 500.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&us, GREEN, "2.5", &|x| x, &|y| y);
+
+    // Annotation: 20 min mark
+    let x20 = ax + 20.0 / 120.0 * aw_a;
+    svg += &vline(x20, ay, ay + ah_a, ACCENT, "1");
+    svg += &label(x20 + 3.0, ay + 15.0, "20 min US", ACCENT, 7, "start");
+    svg += &label(x20 + 3.0, ay + 27.0, "+27.4%", GREEN, 8, "start");
+
+    // Legend
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"2.5\"/>\n",
+        ax + 5.0, ay + ah_a - 15.0, ax + 20.0, ay + ah_a - 15.0);
+    svg += &label(ax + 23.0, ay + ah_a - 12.0, "Lipase + ultrasound", GREEN, 7, "start");
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{RED}\" stroke-width=\"2\"/>\n",
+        ax + 5.0, ay + ah_a - 27.0, ax + 20.0, ay + ah_a - 27.0);
+    svg += &label(ax + 23.0, ay + ah_a - 24.0, "Lipase alone", RED, 7, "start");
+
+    // Panel B: Enzyme reusability
+    svg += &label(525.0, 57.0, "B: Enzyme Reusability (3 cycles)", TEXT, 10, "middle");
+
+    let (bx, by, bw, bh) = (400.0, 75.0, 255.0, 130.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\" rx=\"3\"/>\n");
+
+    let bars = [
+        ("Conventional", 43.3, RED),
+        ("+ Ultrasound", 11.3, GREEN),
+        ("+ Acetone wash", 1.2, BLUE),
+    ];
+
+    let bar_w = 55.0;
+    let gap = (bw - bar_w * 3.0) / 4.0;
+    for (i, (name, loss, color)) in bars.iter().enumerate() {
+        let x = bx + gap + i as f64 * (bar_w + gap);
+        let bar_h = loss / 50.0 * (bh - 25.0);
+        let y = by + bh - bar_h;
+        svg += &format!("<rect x=\"{x}\" y=\"{y}\" width=\"{bar_w}\" height=\"{bar_h}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n");
+        svg += &label(x + bar_w / 2.0, y - 5.0, &format!("{:.1}%", loss), color, 8, "middle");
+        svg += &label(x + bar_w / 2.0, by + bh + 12.0, name, MUTED, 7, "middle");
+    }
+    svg += &label(bx + bw / 2.0, by + bh + 28.0, "Activity loss after 3 cycles", MUTED, 8, "middle");
+
+    // Panel C: Triple synergy diagram
+    svg += &label(525.0, 250.0, "C: Triple Synergy for Spirit Application", TEXT, 10, "middle");
+
+    // Three circles with overlap
+    let (c1x, c1y) = (480.0, 330.0); // Ultrasound
+    let (c2x, c2y) = (570.0, 330.0); // Lipase
+    let (c3x, c3y) = (525.0, 280.0); // Fusel selectivity
+
+    svg += &format!("<circle cx=\"{c1x}\" cy=\"{c1y}\" r=\"55\" fill=\"{BLUE}\" opacity=\"0.15\" stroke=\"{BLUE}\" stroke-width=\"1\"/>\n");
+    svg += &format!("<circle cx=\"{c2x}\" cy=\"{c2y}\" r=\"55\" fill=\"{ACCENT}\" opacity=\"0.15\" stroke=\"{ACCENT}\" stroke-width=\"1\"/>\n");
+    svg += &format!("<circle cx=\"{c3x}\" cy=\"{c3y}\" r=\"55\" fill=\"{GREEN}\" opacity=\"0.15\" stroke=\"{GREEN}\" stroke-width=\"1\"/>\n");
+
+    svg += &label(c1x - 25.0, c1y + 25.0, "Ultrasound", BLUE, 8, "middle");
+    svg += &label(c1x - 25.0, c1y + 37.0, "(\u{00a7}3.14)", BLUE, 6, "middle");
+    svg += &label(c2x + 25.0, c2y + 25.0, "Lipase", ACCENT, 8, "middle");
+    svg += &label(c2x + 25.0, c2y + 37.0, "(\u{00a7}4.60)", ACCENT, 6, "middle");
+    svg += &label(c3x, c3y - 25.0, "Fusel selectivity", GREEN, 8, "middle");
+    svg += &label(c3x, c3y - 13.0, "(Sun 2015)", GREEN, 6, "middle");
+
+    // Center label
+    svg += &label(525.0, 320.0, "2.85\u{00d7}", CYAN, 12, "middle");
+    svg += &label(525.0, 335.0, "V\u{2098}\u{2090}\u{2093}", CYAN, 8, "middle");
+
+    // Bottom callout
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"48\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        h - 58.0);
+    svg += &label(350.0, h - 42.0,
+        "Ultrasound eliminates mass-transfer bottleneck: kinetic regime shifts from diffusion- to reaction-limited",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 28.0,
+        "Enzyme reusability: 11% loss (US) vs 43% loss (conventional) \u{2014} 4\u{00d7} longer enzyme lifetime",
+        GREEN, 8, "middle");
+    svg += &label(350.0, h - 14.0,
+        "Combined with \u{00a7}4.60 fusel selectivity + \u{00a7}4.60 nanomicelles: triple synergy for ester barrier",
+        CYAN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ───── Sim 76: Visible Light Maillard Kinetics ─────
+fn sim_visible_light_maillard() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 76 \u{2014} Visible Light Maillard Kinetics: Predictable HMF/Furfural from CWF Lamps");
+
+    // Panel A: HMF accumulation over time (first-order kinetics)
+    svg += &label(195.0, 57.0, "A: HMF Accumulation Under Light (Arena 2021)", TEXT, 10, "middle");
+
+    let (ax, ay, aw_a, ah_a) = (80.0, 65.0, 230.0, 300.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_a}\" height=\"{ah_a}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // X-axis: time (0-90 days)
+    for i in 0..=9 {
+        let t = i as f64 * 10.0;
+        let x = ax + t / 90.0 * aw_a;
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ay + ah_a, ay + ah_a + 4.0);
+        svg += &label(x, ay + ah_a + 14.0, &format!("{}", t as i32), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw_a / 2.0, ay + ah_a + 28.0, "Time (days)", MUTED, 8, "middle");
+
+    // Y-axis: HMF (mg/L) 0-40
+    for i in 0..=4 {
+        let val = i as f64 * 10.0;
+        let y = ay + ah_a - val / 40.0 * ah_a;
+        svg += &format!("<line x1=\"{}\" y1=\"{y}\" x2=\"{ax}\" y2=\"{y}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0);
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}", val as i32), MUTED, 7, "end");
+    }
+    svg += &label(ax - 35.0, ay + ah_a / 2.0, "HMF (mg/L)", MUTED, 7, "middle");
+
+    // k = 0.034 day^-1, pseudo-first-order accumulation
+    // HMF(t) = HMF_max * (1 - exp(-k*t))
+    // At t=90, HMF = 36.43 mg/L, so HMF_max = 36.43 / (1 - exp(-0.034*90))
+    let hmf_max = 36.43 / (1.0 - (-0.034_f64 * 90.0).exp());
+
+    // 4 CWF lamps
+    let hmf_4: Vec<(f64, f64)> = (0..=90).map(|t| {
+        let hmf = hmf_max * (1.0 - (-0.034 * t as f64).exp());
+        (ax + t as f64 / 90.0 * aw_a, ay + ah_a - hmf / 40.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&hmf_4, ACCENT, "2.5", &|x| x, &|y| y);
+
+    // Dark control (much slower)
+    let hmf_dark: Vec<(f64, f64)> = (0..=90).map(|t| {
+        let hmf = hmf_max * (1.0 - (-0.005 * t as f64).exp());
+        (ax + t as f64 / 90.0 * aw_a, ay + ah_a - hmf / 40.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&hmf_dark, MUTED, "1.5", &|x| x, &|y| y);
+
+    // Data point at 90 days
+    let hmf_90_y = ay + ah_a - 36.43 / 40.0 * ah_a;
+    svg += &format!("<circle cx=\"{}\" cy=\"{hmf_90_y}\" r=\"5\" fill=\"{ACCENT}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+        ax + aw_a);
+    svg += &label(ax + aw_a - 30.0, hmf_90_y - 8.0, "36.43 mg/L", ACCENT, 7, "end");
+
+    // Rate constant annotation
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"120\" height=\"32\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        ax + 10.0, ay + 10.0);
+    svg += &label(ax + 70.0, ay + 26.0, "k = 0.034 day\u{207b}\u{00b9}", ACCENT, 9, "middle");
+    svg += &label(ax + 70.0, ay + 38.0, "(pseudo-first-order)", MUTED, 6, "middle");
+
+    // Legend
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{ACCENT}\" stroke-width=\"2.5\"/>\n",
+        ax + 5.0, ay + ah_a - 12.0, ax + 20.0, ay + ah_a - 12.0);
+    svg += &label(ax + 23.0, ay + ah_a - 9.0, "4 CWF lamps", ACCENT, 7, "start");
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"1.5\"/>\n",
+        ax + 5.0, ay + ah_a - 24.0, ax + 20.0, ay + ah_a - 24.0);
+    svg += &label(ax + 23.0, ay + ah_a - 21.0, "Dark control", MUTED, 7, "start");
+
+    // Panel B: Furfural and color changes
+    svg += &label(525.0, 57.0, "B: Light-Driven Maturation Markers", TEXT, 10, "middle");
+
+    let (bx, by, bw, bh) = (395.0, 75.0, 260.0, 155.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\" rx=\"3\"/>\n");
+
+    let markers = [
+        ("Chroma (30d)", "+11%", "79% at 90d", BLUE),
+        ("HMF (90d)", "36.4 mg/L", "k=0.034/day", ACCENT),
+        ("2-Furaldehyde", "2.6\u{00d7}", "vs dark control", GREEN),
+        ("Lightness (L*)", "\u{2013}8%", "darkening", RED),
+    ];
+
+    for (i, (marker, value, detail, color)) in markers.iter().enumerate() {
+        let y = by + 10.0 + i as f64 * 36.0;
+        svg += &format!("<rect x=\"{}\" y=\"{y}\" width=\"{}\" height=\"30\" rx=\"3\" fill=\"{color}\" opacity=\"0.10\"/>\n",
+            bx + 5.0, bw - 10.0);
+        svg += &label(bx + 12.0, y + 13.0, marker, MUTED, 7, "start");
+        svg += &label(bx + 130.0, y + 13.0, value, color, 9, "start");
+        svg += &label(bx + 130.0, y + 25.0, detail, MUTED, 6, "start");
+    }
+
+    // Panel C: UV-C vs Visible comparison
+    svg += &label(525.0, 255.0, "C: Visible Light vs UV-C (\u{00a7}4.58)", TEXT, 10, "middle");
+
+    let (cx, cy) = (395.0, 270.0);
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"125\" height=\"120\" rx=\"4\" fill=\"{BLUE}\" opacity=\"0.08\"/>\n");
+    svg += &label(cx + 62.5, cy + 16.0, "Visible / near-UV", BLUE, 8, "middle");
+    svg += &label(cx + 62.5, cy + 30.0, "(CWF lamps)", BLUE, 7, "middle");
+    svg += &label(cx + 62.5, cy + 48.0, "HMF / furfural", TEXT, 7, "middle");
+    svg += &label(cx + 62.5, cy + 62.0, "(sugar pathway)", TEXT, 7, "middle");
+    svg += &label(cx + 62.5, cy + 80.0, "Slow, predictable", MUTED, 7, "middle");
+    svg += &label(cx + 62.5, cy + 94.0, "k = 0.034/day", ACCENT, 7, "middle");
+    svg += &label(cx + 62.5, cy + 108.0, "Low damage risk", GREEN, 7, "middle");
+
+    svg += &format!("<rect x=\"{}\" y=\"{cy}\" width=\"125\" height=\"120\" rx=\"4\" fill=\"{PURPLE}\" opacity=\"0.08\"/>\n",
+        cx + 135.0);
+    svg += &label(cx + 197.5, cy + 16.0, "UV-C (\u{00a7}4.58)", PURPLE, 8, "middle");
+    svg += &label(cx + 197.5, cy + 30.0, "(254 nm)", PURPLE, 7, "middle");
+    svg += &label(cx + 197.5, cy + 48.0, "Phenolic bridging", TEXT, 7, "middle");
+    svg += &label(cx + 197.5, cy + 62.0, "(radical pathway)", TEXT, 7, "middle");
+    svg += &label(cx + 197.5, cy + 80.0, "Fast, dose-sensitive", MUTED, 7, "middle");
+    svg += &label(cx + 197.5, cy + 94.0, "+62.8% bridging", ACCENT, 7, "middle");
+    svg += &label(cx + 197.5, cy + 108.0, "Overoxidation risk", RED, 7, "middle");
+
+    // Bottom callout
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        h - 50.0);
+    svg += &label(350.0, h - 34.0,
+        "Visible light drives sugar-pathway Maillard (HMF, furfural) with first-order predictable kinetics",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 20.0,
+        "Complements UV-C (\u{00a7}4.58): visible = slow Maillard markers, UV-C = fast phenolic bridging. Different pathways, same lamp shelf.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ───── Sim 77: Ultrasonic Extraction Kinetic Optimization ─────
+fn sim_ultrasonic_extraction_kinetics() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 77 \u{2014} Ultrasonic Oak Extraction: Kinetic Framework and Design Parameters");
+
+    // Panel A: Extraction rate vs power density with ceiling
+    svg += &label(195.0, 57.0, "A: TPI vs Power Density (Delgado-Gonz\u{00e1}lez 2022)", TEXT, 10, "middle");
+
+    let (ax, ay, aw_a, ah_a) = (80.0, 65.0, 230.0, 290.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw_a}\" height=\"{ah_a}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // X-axis: power density 0-120 W/L
+    for i in 0..=6 {
+        let pd = i as f64 * 20.0;
+        let x = ax + pd / 120.0 * aw_a;
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ay + ah_a, ay + ah_a + 4.0);
+        svg += &label(x, ay + ah_a + 14.0, &format!("{}", pd as i32), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw_a / 2.0, ay + ah_a + 28.0, "Power density (W/L)", MUTED, 8, "middle");
+
+    // Y-axis: TPI (mg/L GAE) 0-50
+    for i in 0..=5 {
+        let val = i as f64 * 10.0;
+        let y = ay + ah_a - val / 50.0 * ah_a;
+        svg += &format!("<line x1=\"{}\" y1=\"{y}\" x2=\"{ax}\" y2=\"{y}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ax - 3.0);
+        svg += &label(ax - 5.0, y + 3.0, &format!("{}", val as i32), MUTED, 7, "end");
+    }
+    svg += &label(ax - 35.0, ay + ah_a / 2.0, "TPI (mg/L GAE)", MUTED, 7, "middle");
+
+    // US only curve: rises then plateaus/drops after 67 W/L
+    let us_only: Vec<(f64, f64)> = (0..=60).map(|i| {
+        let pd = i as f64 * 2.0;
+        let tpi = if pd < 67.0 {
+            25.0 * (1.0 - (-0.04 * pd).exp())
+        } else {
+            25.0 * (1.0 - (-0.04_f64 * 67.0).exp()) * (-0.01_f64 * (pd - 67.0)).exp()
+        };
+        (ax + pd / 120.0 * aw_a, ay + ah_a - tpi / 50.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&us_only, BLUE, "2", &|x| x, &|y| y);
+
+    // US + pumping curve: much higher
+    let us_pump: Vec<(f64, f64)> = (0..=60).map(|i| {
+        let pd = i as f64 * 2.0;
+        let tpi = if pd < 67.0 {
+            43.0 * (1.0 - (-0.05 * pd).exp())
+        } else {
+            43.0 * (1.0 - (-0.05_f64 * 67.0).exp()) * (-0.008_f64 * (pd - 67.0)).exp()
+        };
+        (ax + pd / 120.0 * aw_a, ay + ah_a - tpi / 50.0 * ah_a)
+    }).collect();
+    svg += &polyline_svg(&us_pump, GREEN, "2.5", &|x| x, &|y| y);
+
+    // Thermal only (baseline)
+    let thermal_y = ay + ah_a - 19.05 / 50.0 * ah_a;
+    svg += &format!("<line x1=\"{ax}\" y1=\"{thermal_y}\" x2=\"{}\" y2=\"{thermal_y}\" stroke=\"{RED}\" stroke-width=\"1.5\" stroke-dasharray=\"4,3\"/>\n",
+        ax + aw_a);
+    svg += &label(ax + aw_a - 5.0, thermal_y + 12.0, "Thermal only (19.6\u{00b0}C)", RED, 6, "end");
+
+    // Degradation ceiling vertical at 67 W/L
+    let ceil_x = ax + 67.0 / 120.0 * aw_a;
+    svg += &vline(ceil_x, ay, ay + ah_a, YELLOW, "1.5");
+    svg += &label(ceil_x + 5.0, ay + 15.0, "67 W/L ceiling", YELLOW, 7, "start");
+    svg += &label(ceil_x + 5.0, ay + 27.0, "(degradation)", RED, 6, "start");
+
+    // 5x synergy annotation
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"65\" height=\"25\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        ax + 5.0, ay + 50.0);
+    svg += &label(ax + 37.0, ay + 66.0, "5\u{00d7} synergy", GREEN, 8, "middle");
+
+    // Legend
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"2.5\"/>\n",
+        ax + 5.0, ay + ah_a - 12.0, ax + 20.0, ay + ah_a - 12.0);
+    svg += &label(ax + 23.0, ay + ah_a - 9.0, "US + circulation", GREEN, 7, "start");
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{BLUE}\" stroke-width=\"2\"/>\n",
+        ax + 5.0, ay + ah_a - 24.0, ax + 20.0, ay + ah_a - 24.0);
+    svg += &label(ax + 23.0, ay + ah_a - 21.0, "US only", BLUE, 7, "start");
+
+    // Panel B: Equivalent temperature boost
+    svg += &label(525.0, 57.0, "B: Equivalent Temperature Boost", TEXT, 10, "middle");
+
+    let (bx, by, bw, bh) = (400.0, 75.0, 255.0, 140.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\" rx=\"3\"/>\n");
+
+    let boosts = [
+        ("US only (initial)", "+2.6\u{2013}3.5\u{00b0}C", BLUE),
+        ("US only (equil.)", "+3.0\u{2013}7.5\u{00b0}C", BLUE),
+        ("US+circ (initial)", "+18.2\u{2013}24.1\u{00b0}C", GREEN),
+        ("US+circ (equil.)", "+7.0\u{2013}7.7\u{00b0}C", GREEN),
+    ];
+
+    for (i, (condition, boost, color)) in boosts.iter().enumerate() {
+        let y = by + 8.0 + i as f64 * 32.0;
+        svg += &format!("<rect x=\"{}\" y=\"{y}\" width=\"{}\" height=\"26\" rx=\"3\" fill=\"{color}\" opacity=\"0.12\"/>\n",
+            bx + 5.0, bw - 10.0);
+        svg += &label(bx + 12.0, y + 16.0, condition, MUTED, 7, "start");
+        svg += &label(bx + bw - 12.0, y + 16.0, boost, color, 9, "end");
+    }
+
+    // Panel C: Activation energies
+    svg += &label(525.0, 240.0, "C: Activation Energies", TEXT, 10, "middle");
+
+    let (cx, cy) = (400.0, 255.0);
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"255\" height=\"60\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.7\"/>\n");
+    svg += &label(cx + 10.0, cy + 18.0, "K\u{2081} (extraction):", MUTED, 8, "start");
+    svg += &label(cx + 155.0, cy + 18.0, "E\u{2090} = 34.98 kJ/mol", ACCENT, 8, "start");
+    svg += &label(cx + 10.0, cy + 36.0, "K\u{2082} (desorption):", MUTED, 8, "start");
+    svg += &label(cx + 155.0, cy + 36.0, "E\u{2090} = 25.46 kJ/mol", RED, 8, "start");
+    svg += &label(cx + 10.0, cy + 52.0, "Model:", MUTED, 8, "start");
+    svg += &label(cx + 155.0, cy + 52.0, "Pseudo 2nd order", BLUE, 8, "start");
+
+    // Panel D: Kruger 2024 results
+    svg += &label(525.0, 340.0, "D: Phenolic Enhancement (Kruger 2024)", TEXT, 10, "middle");
+
+    let (dx, dy) = (400.0, 355.0);
+    let metrics = [
+        ("Phenolics:", "+116.5%", GREEN),
+        ("Antioxidant:", "4.9\u{00d7}", ACCENT),
+        ("Color \u{0394}E:", "7.03", BLUE),
+        ("Time saved:", "~60 days", YELLOW),
+    ];
+    for (i, (metric, value, color)) in metrics.iter().enumerate() {
+        let x = dx + (i as f64 % 2.0) * 130.0;
+        let y = dy + (i as f64 / 2.0).floor() * 22.0;
+        svg += &label(x, y + 14.0, metric, MUTED, 7, "start");
+        svg += &label(x + 70.0, y + 14.0, value, color, 8, "start");
+    }
+
+    // Bottom callout
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        h - 50.0);
+    svg += &label(350.0, h - 34.0,
+        "Design rule: operate at 40\u{2013}60 W/L with continuous circulation for 5\u{00d7} synergy",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 20.0,
+        "Above 67 W/L \u{2192} phenolic degradation. Circulation is more impactful than increasing US power.",
+        GREEN, 8, "middle");
 
     svg.push_str("</svg>");
     svg

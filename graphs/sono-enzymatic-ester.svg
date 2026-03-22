@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 75 — Sono-Enzymatic Synergy: Ultrasound + Lipase for Fusel Ester Synthesis</text>
+<text x="195" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Isoamyl Acetate Yield ± Ultrasound</text>
+<rect x="80" y="70" width="230" height="285" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="80" y1="355" x2="80" y2="359" stroke="#8b949e" stroke-width="0.5"/>
+<text x="80" y="369" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="118.33333333333333" y1="355" x2="118.33333333333333" y2="359" stroke="#8b949e" stroke-width="0.5"/>
+<text x="118.33333333333333" y="369" fill="#8b949e" font-size="7" text-anchor="middle">20</text>
+<line x1="156.66666666666666" y1="355" x2="156.66666666666666" y2="359" stroke="#8b949e" stroke-width="0.5"/>
+<text x="156.66666666666666" y="369" fill="#8b949e" font-size="7" text-anchor="middle">40</text>
+<line x1="195" y1="355" x2="195" y2="359" stroke="#8b949e" stroke-width="0.5"/>
+<text x="195" y="369" fill="#8b949e" font-size="7" text-anchor="middle">60</text>
+<line x1="233.33333333333331" y1="355" x2="233.33333333333331" y2="359" stroke="#8b949e" stroke-width="0.5"/>
+<text x="233.33333333333331" y="369" fill="#8b949e" font-size="7" text-anchor="middle">80</text>
+<line x1="271.6666666666667" y1="355" x2="271.6666666666667" y2="359" stroke="#8b949e" stroke-width="0.5"/>
+<text x="271.6666666666667" y="369" fill="#8b949e" font-size="7" text-anchor="middle">100</text>
+<line x1="310" y1="355" x2="310" y2="359" stroke="#8b949e" stroke-width="0.5"/>
+<text x="310" y="369" fill="#8b949e" font-size="7" text-anchor="middle">120</text>
+<text x="195" y="383" fill="#8b949e" font-size="8" text-anchor="middle">Time (min)</text>
+<line x1="77" y1="355" x2="80" y2="355" stroke="#8b949e" stroke-width="0.5"/>
+<text x="75" y="358" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<line x1="77" y1="298" x2="80" y2="298" stroke="#8b949e" stroke-width="0.5"/>
+<text x="75" y="301" fill="#8b949e" font-size="7" text-anchor="end">100</text>
+<line x1="77" y1="241" x2="80" y2="241" stroke="#8b949e" stroke-width="0.5"/>
+<text x="75" y="244" fill="#8b949e" font-size="7" text-anchor="end">200</text>
+<line x1="77" y1="184" x2="80" y2="184" stroke="#8b949e" stroke-width="0.5"/>
+<text x="75" y="187" fill="#8b949e" font-size="7" text-anchor="end">300</text>
+<line x1="77" y1="127" x2="80" y2="127" stroke="#8b949e" stroke-width="0.5"/>
+<text x="75" y="130" fill="#8b949e" font-size="7" text-anchor="end">400</text>
+<line x1="77" y1="70" x2="80" y2="70" stroke="#8b949e" stroke-width="0.5"/>
+<text x="75" y="73" fill="#8b949e" font-size="7" text-anchor="end">500</text>
+<text x="45" y="212.5" fill="#8b949e" font-size="7" text-anchor="middle">Ester (mg/g)</text>
+<line x1="80" y1="83.11000000000001" x2="310" y2="83.11000000000001" stroke="#d29922" stroke-width="1" stroke-dasharray="4,3"/>
+<text x="305" y="78.11000000000001" fill="#d29922" font-size="6" text-anchor="end">Equilibrium (477 mg/g)</text>
+<line x1="80" y1="40.92999999999995" x2="310" y2="40.92999999999995" stroke="#8b949e" stroke-width="0.5" stroke-dasharray="2,4"/>
+<text x="305" y="35.92999999999995" fill="#8b949e" font-size="6" text-anchor="end">Theoretical max (551)</text>
+<polyline points="80.0,355.0 83.8,344.3 87.7,334.1 91.5,324.3 95.3,314.8 99.2,305.7 103.0,297.0 106.8,288.6 110.7,280.5 114.5,272.8 118.3,265.4 122.2,258.2 126.0,251.4 129.8,244.8 133.7,238.4 137.5,232.3 141.3,226.5 145.2,220.9 149.0,215.5 152.8,210.3 156.7,205.3 160.5,200.5 164.3,195.9 168.2,191.5 172.0,187.2 175.8,183.1 179.7,179.2 183.5,175.4 187.3,171.8 191.2,168.3 195.0,165.0 198.8,161.8 202.7,158.7 206.5,155.7 210.3,152.9 214.2,150.2 218.0,147.5 221.8,145.0 225.7,142.6 229.5,140.2 233.3,138.0 237.2,135.9 241.0,133.8 244.8,131.8 248.7,129.9 252.5,128.1 256.3,126.3 260.2,124.6 264.0,123.0 267.8,121.4 271.7,119.9 275.5,118.5 279.3,117.1 283.2,115.7 287.0,114.5 290.8,113.2 294.7,112.1 298.5,110.9 302.3,109.8 306.2,108.8 310.0,107.8" fill="none" stroke="#f85149" stroke-width="2"/>
+<polyline points="80.0,355.0 83.8,316.1 87.7,282.9 91.5,254.6 95.3,230.5 99.2,210.0 103.0,192.5 106.8,177.6 110.7,164.9 114.5,154.1 118.3,144.8 122.2,91.2 126.0,90.7 129.8,90.3 133.7,89.8 137.5,89.4 141.3,89.1 145.2,88.7 149.0,88.4 152.8,88.1 156.7,87.8 160.5,87.5 164.3,87.3 168.2,87.0 172.0,86.8 175.8,86.6 179.7,86.4 183.5,86.2 187.3,86.0 191.2,85.8 195.0,85.7 198.8,85.5 202.7,85.4 206.5,85.3 210.3,85.1 214.2,85.0 218.0,84.9 221.8,84.8 225.7,84.7 229.5,84.6 233.3,84.5 237.2,84.4 241.0,84.4 244.8,84.3 248.7,84.2 252.5,84.2 256.3,84.1 260.2,84.0 264.0,84.0 267.8,83.9 271.7,83.9 275.5,83.8 279.3,83.8 283.2,83.8 287.0,83.7 290.8,83.7 294.7,83.7 298.5,83.6 302.3,83.6 306.2,83.6 310.0,83.5" fill="none" stroke="#3fb950" stroke-width="2.5"/>
+<line x1="118.33333333333333" y1="70" x2="118.33333333333333" y2="355" stroke="#e8a665" stroke-width="1"/>
+<text x="121.33333333333333" y="85" fill="#e8a665" font-size="7" text-anchor="start">20 min US</text>
+<text x="121.33333333333333" y="97" fill="#3fb950" font-size="8" text-anchor="start">+27.4%</text>
+<line x1="85" y1="340" x2="100" y2="340" stroke="#3fb950" stroke-width="2.5"/>
+<text x="103" y="343" fill="#3fb950" font-size="7" text-anchor="start">Lipase + ultrasound</text>
+<line x1="85" y1="328" x2="100" y2="328" stroke="#f85149" stroke-width="2"/>
+<text x="103" y="331" fill="#f85149" font-size="7" text-anchor="start">Lipase alone</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Enzyme Reusability (3 cycles)</text>
+<rect x="400" y="75" width="255" height="130" fill="none" stroke="#8b949e" stroke-width="1" rx="3"/>
+<rect x="422.5" y="114.07000000000001" width="55" height="90.92999999999999" fill="#f85149" opacity="0.7" rx="2"/>
+<text x="450" y="109.07000000000001" fill="#f85149" font-size="8" text-anchor="middle">43.3%</text>
+<text x="450" y="217" fill="#8b949e" font-size="7" text-anchor="middle">Conventional</text>
+<rect x="500" y="181.27" width="55" height="23.73" fill="#3fb950" opacity="0.7" rx="2"/>
+<text x="527.5" y="176.27" fill="#3fb950" font-size="8" text-anchor="middle">11.3%</text>
+<text x="527.5" y="217" fill="#8b949e" font-size="7" text-anchor="middle">+ Ultrasound</text>
+<rect x="577.5" y="202.48" width="55" height="2.52" fill="#58a6ff" opacity="0.7" rx="2"/>
+<text x="605" y="197.48" fill="#58a6ff" font-size="8" text-anchor="middle">1.2%</text>
+<text x="605" y="217" fill="#8b949e" font-size="7" text-anchor="middle">+ Acetone wash</text>
+<text x="527.5" y="233" fill="#8b949e" font-size="8" text-anchor="middle">Activity loss after 3 cycles</text>
+<text x="525" y="250" fill="#e6edf3" font-size="10" text-anchor="middle">C: Triple Synergy for Spirit Application</text>
+<circle cx="480" cy="330" r="55" fill="#58a6ff" opacity="0.15" stroke="#58a6ff" stroke-width="1"/>
+<circle cx="570" cy="330" r="55" fill="#e8a665" opacity="0.15" stroke="#e8a665" stroke-width="1"/>
+<circle cx="525" cy="280" r="55" fill="#3fb950" opacity="0.15" stroke="#3fb950" stroke-width="1"/>
+<text x="455" y="355" fill="#58a6ff" font-size="8" text-anchor="middle">Ultrasound</text>
+<text x="455" y="367" fill="#58a6ff" font-size="6" text-anchor="middle">(§3.14)</text>
+<text x="595" y="355" fill="#e8a665" font-size="8" text-anchor="middle">Lipase</text>
+<text x="595" y="367" fill="#e8a665" font-size="6" text-anchor="middle">(§4.60)</text>
+<text x="525" y="255" fill="#3fb950" font-size="8" text-anchor="middle">Fusel selectivity</text>
+<text x="525" y="267" fill="#3fb950" font-size="6" text-anchor="middle">(Sun 2015)</text>
+<text x="525" y="320" fill="#39d2c0" font-size="12" text-anchor="middle">2.85×</text>
+<text x="525" y="335" fill="#39d2c0" font-size="8" text-anchor="middle">Vₘₐₓ</text>
+<rect x="60" y="422" width="580" height="48" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="438" fill="#e8a665" font-size="8" text-anchor="middle">Ultrasound eliminates mass-transfer bottleneck: kinetic regime shifts from diffusion- to reaction-limited</text>
+<text x="350" y="452" fill="#3fb950" font-size="8" text-anchor="middle">Enzyme reusability: 11% loss (US) vs 43% loss (conventional) — 4× longer enzyme lifetime</text>
+<text x="350" y="466" fill="#39d2c0" font-size="8" text-anchor="middle">Combined with §4.60 fusel selectivity + §4.60 nanomicelles: triple synergy for ester barrier</text>
+</svg>

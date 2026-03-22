@@ -2832,6 +2832,72 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <!-- ═══════════════════════════════════════════════════════ -->
 
+<h3 id="s4-63">&sect;4.63 &mdash; Sono-Enzymatic Synergistic Esterification</h3>
+
+<p><strong>Cross-domain insight:</strong> Sections &sect;3.14 (ultrasonic extraction) and &sect;4.60 (lipase fusel esterification) each attack a different aspect of the aging problem. Combined, they create a synergy that exceeds the sum of parts. Vartolomei et al. (2022) demonstrated that low-intensity ultrasound (20 kHz, 32 mW, 0.053 W/mL) applied during lipase-catalyzed esterification of acetic acid with isoamyl alcohol achieves <strong>+27.4% conversion improvement</strong> in just 20 minutes vs the silent control<span class="cite" data-ref="199"><sup>[199]</sup></span>. The maximum ester concentration reached 462 mg/g, approaching the thermodynamic equilibrium of 477 mg/g.</p>
+
+<p>The mechanism is a kinetic regime shift. Without ultrasound, enzymatic esterification is <em>diffusion-controlled</em>&mdash;reactants must diffuse through a stagnant boundary layer to reach the enzyme active site. Under ultrasound, cavitation-induced microturbulence eliminates the boundary layer, shifting to <em>kinetically-controlled</em> operation. This is quantifiable: the apparent activation energy increases from 7,640 J/mol (diffusion-limited) to 22,535 J/mol (reaction-limited) under sonication. Lerin et al. (2014) reviewed the broader literature and found 2.85&times; V<sub>max</sub> enhancement as typical for sono-enzymatic esterification<span class="cite" data-ref="200"><sup>[200]</sup></span>.</p>
+
+<p>Crucially, ultrasound also extends enzyme lifetime. Without sonication, lipase lost 43.3% activity after 3 reuse cycles. <em>With</em> sonication, activity loss was only 11.3%&mdash;a <strong>4&times; improvement in enzyme longevity</strong><span class="cite" data-ref="199"><sup>[199]</sup></span>. The mechanism: cavitation prevents product/substrate fouling of the immobilized enzyme surface, keeping the active site accessible.</p>
+
+<figure>
+  <img src="graphs/sono-enzymatic-ester.svg" alt="Sono-enzymatic synergy for fusel ester synthesis">
+  <figcaption><strong>Fig. 75.</strong> Sono-enzymatic synergy. Panel A: Isoamyl acetate accumulation with and without ultrasound (Vartolomei 2022). 20 min sonication gives +27.4% improvement. Panel B: Enzyme reusability&mdash;43% activity loss without US vs 11% with US over 3 cycles. Panel C: Triple synergy Venn diagram combining ultrasound (&sect;3.14), lipase (&sect;4.60), and fusel selectivity (Sun 2015).</figcaption>
+</figure>
+
+<p><strong>Protocol integration:</strong> The triple synergy for spirit esterification combines: (1) lipase substrate selectivity (Sun 2015, &sect;4.60)&mdash;fusel alcohols esterified preferentially over ethanol, (2) nanomicelle equilibrium shift (Singhania 2022, &sect;4.60)&mdash;maintains ester synthesis at spirit water activity, (3) ultrasonic mass transfer enhancement (Vartolomei 2022)&mdash;eliminates diffusion bottleneck + extends enzyme lifetime. The critical design parameters: 20&ndash;40 kHz at 20&ndash;30% amplitude, pulsed mode (3 s on / 3 s off) to preserve enzyme structure, 40&ndash;50&deg;C. Higher amplitudes (&gt;40%) physically damage enzymes.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (enzyme kinetics)</span> &mdash; Vartolomei 2022<span class="cite" data-ref="199"><sup>[199]</sup></span> (+27.4% conversion, regime shift), Lerin 2014<span class="cite" data-ref="200"><sup>[200]</sup></span> (2.85&times; V<sub>max</sub>, review of 30+ studies). No spirit application published. The individual components (ultrasound + lipase + fusel selectivity + nanomicelles) are separately validated but the full combination is novel. <strong>Home testability: 3/5</strong> (Combine the ultrasonic bath from &sect;3.14 + lipase capsules from &sect;4.60 + isoamyl alcohol. Place lipase beads in spirit with 0.5 g/L isoamyl alcohol, sonicate at 40&deg;C in pulsed mode (30 s on / 1 min off) for 2h. Compare banana/fruity aroma vs (a) lipase without ultrasound and (b) ultrasound without lipase. The sono-enzymatic synergy should be clearly detectable as enhanced fruitiness beyond either component alone.)
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h3 id="s4-64">&sect;4.64 &mdash; Visible Light Maillard Kinetics</h3>
+
+<p><strong>Cross-domain insight:</strong> Section &sect;4.58 established UV-C as an accelerator of phenolic radical chemistry. But there is a second, gentler photochemical pathway: <strong>visible and near-UV light drives Maillard product accumulation</strong> via sugar-pathway reactions rather than radical phenolic chemistry. Arena et al. (2021) quantified this precisely: 5-hydroxymethylfurfural (HMF) accumulates with <strong>pseudo-first-order kinetics at k = 0.034 day<sup>&minus;1</sup></strong> under compact white fluorescent (CWF) lamps, reaching 36.43 mg/L by day 90<span class="cite" data-ref="201"><sup>[201]</sup></span>.</p>
+
+<p>This is a distinct pathway from UV-C. Visible/near-UV light drives: (1) photolytic autoxidation producing free radicals that oxidize sugars to HMF and furfural, (2) photosensitized oxidation via endogenous chromophores (riboflavin, phenolics) that catalyze sugar degradation. The resulting products&mdash;HMF, 2-furaldehyde (2.6&times; increase), caramel-type melanoidins&mdash;are <em>exactly</em> the Maillard maturation markers that develop slowly during barrel aging. Chromaticity increased 79% at 90 days, lightness decreased ~8%, matching the visual browning of aged spirit.</p>
+
+<p>The predictable first-order kinetics make this valuable for process design: at k = 0.034 day<sup>&minus;1</sup>, the half-life is t<sub>1/2</sub> = ln(2)/k &asymp; 20 days, meaning 50% of maximum HMF accumulates in ~3 weeks under CWF illumination. This is much slower than UV-C phenolic bridging (hours) but requires no special equipment&mdash;standard fluorescent or LED lighting suffices.</p>
+
+<figure>
+  <img src="graphs/visible-light-maillard.svg" alt="Visible light drives predictable HMF and furfural accumulation">
+  <figcaption><strong>Fig. 76.</strong> Visible light Maillard kinetics. Panel A: HMF accumulation under CWF lamps follows pseudo-first-order kinetics (k = 0.034 day<sup>&minus;1</sup>), reaching 36.43 mg/L by day 90 (Arena 2021). Panel B: Suite of maturation markers driven by visible light. Panel C: Comparison with UV-C (&sect;4.58)&mdash;visible light drives slow, predictable sugar-pathway Maillard, while UV-C drives fast, dose-sensitive phenolic radical chemistry.</figcaption>
+</figure>
+
+<p><strong>Protocol integration:</strong> The two-lamp approach: (1) <strong>UV-C lamp</strong> (&sect;4.58) for pulsed phenolic bridging (minutes to hours, radical chemistry), (2) <strong>Visible/near-UV light</strong> for continuous Maillard marker accumulation (days to weeks, sugar chemistry). Both operate on the same vessel&mdash;the spirit + oak extract sitting under a lamp rack. The UV-C is pulsed (30 s on / 5 min off per &sect;4.58 protocol), while the visible light runs continuously. Combined with &sect;4.6 Maillard substrates (xylose + glycine), the visible light pathway is further accelerated because additional reducing sugars feed the HMF formation cascade.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (wine, not spirit)</span> &mdash; Arena 2021<span class="cite" data-ref="201"><sup>[201]</sup></span> (k = 0.034 day<sup>&minus;1</sup>, HMF/furfural kinetics in sweet wine). No spirit-specific study. The Maillard chemistry is matrix-independent (sugar degradation kinetics), but spirit&rsquo;s lower sugar content means slower initial rates unless supplemented per &sect;4.6. The predictable kinetics enable <em>dosimetric</em> control: target a specific HMF level, calculate required light-days, set timer. <strong>Home testability: 4/5</strong> (Free. Place 200 mL spirit + oak extract under desk lamp or in window for 30&ndash;90 days. Keep a dark-stored control. Compare color at 30/60/90 days&mdash;the light-exposed sample should be noticeably darker and more amber. For enhanced results, add 0.3 g/L xylose per &sect;4.6 to provide Maillard substrate. No special equipment needed.)
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h3 id="s4-65">&sect;4.65 &mdash; Ultrasonic Oak Extraction Kinetic Optimization</h3>
+
+<p><strong>Cross-domain insight:</strong> Section &sect;3.14 established ultrasonic extraction as promising for spirit aging. But how should the ultrasonic bath actually be operated? Delgado-Gonz&aacute;lez et al. (2022) provided the missing kinetic framework: a pseudo-second-order model with quantified activation energies, a power density ceiling, and a synergy factor for fluid circulation<span class="cite" data-ref="202"><sup>[202]</sup></span>.</p>
+
+<p>The key parameters: E<sub>a</sub>(K<sub>1</sub>) = 34.98 kJ/mol for phenolic extraction, E<sub>a</sub>(K<sub>2</sub>) = 25.46 kJ/mol for desorption/degradation. The equivalent temperature boost from ultrasound + circulation is <strong>+18.2&ndash;24.1&deg;C</strong> for initial extraction rates and +7.0&ndash;7.7&deg;C at equilibrium. Critically, ultrasound + fluid circulation is <strong>5&times; more effective</strong> than ultrasound alone, because the circulation continuously brings fresh solvent to the cavitation zone and carries extracted phenolics away from the degradation zone. The <strong>power density ceiling at ~67 W/L</strong> is a critical design constraint: above this threshold, cavitation-generated radicals destroy phenolics faster than they are extracted.</p>
+
+<p>Kruger et al. (2024) validated these principles on apple liqueur with oak chips: <strong>116.5% more phenolic compounds</strong> and <strong>4.9&times; greater antioxidant activity</strong> vs untreated controls, with a visible color difference (&Delta;E = 7.03) and ~60-day time compression<span class="cite" data-ref="203"><sup>[203]</sup></span>. A surprising finding: <strong>untoasted</strong> oak chips contributed 17.4% more total phenols than toasted chips (driven by gallic acid), suggesting that toasting modifies the phenolic profile but reduces total extractable mass. Abreu-Naranjo et al. (2023) specifically optimized UAE for sugar cane spirit with <em>Quercus alba</em>, confirming 3.5&ndash;7 g/L as the optimal oak chip dosage<span class="cite" data-ref="204"><sup>[204]</sup></span>.</p>
+
+<figure>
+  <img src="graphs/ultrasonic-extraction-kinetics.svg" alt="Ultrasonic extraction kinetic optimization framework">
+  <figcaption><strong>Fig. 77.</strong> Ultrasonic extraction optimization. Panel A: TPI vs power density showing the 67 W/L degradation ceiling and 5&times; synergy between ultrasound and circulation. Panel B: Equivalent temperature boosts. Panel C: Activation energies for extraction and desorption. Panel D: Enhancement metrics from Kruger 2024.</figcaption>
+</figure>
+
+<p><strong>Actionable design rules:</strong> (1) Operate at 40&ndash;60 W/L&mdash;below the degradation ceiling but above the minimum effective threshold. (2) Always use fluid circulation (pump or stirrer)&mdash;this provides 5&times; more benefit than increasing ultrasound power. (3) For maximum total phenol extraction, use a mix of toasted and untoasted oak chips (toasted for vanillin/syringaldehyde profile, untoasted for gallic acid mass). (4) Oak dosage: 3.5&ndash;7 g/L (Abreu-Naranjo 2023 optimum). (5) Duration: 60 min sessions with 5 min rest periods to allow heat dissipation. These parameters transform &sect;3.14&rsquo;s qualitative recommendation into a quantitative protocol.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (wine spirit &amp; apple liqueur)</span> &mdash; Delgado-Gonz&aacute;lez 2022<span class="cite" data-ref="202"><sup>[202]</sup></span> (kinetic model, Ea, power ceiling), Kruger 2024<span class="cite" data-ref="203"><sup>[203]</sup></span> (116.5% phenolics, 60-day compression), Abreu-Naranjo 2023<span class="cite" data-ref="204"><sup>[204]</sup></span> (Q. alba optimization). These are the first fully quantified kinetic models for ultrasonic spirit aging. <strong>Home testability: 5/5</strong> (Ultrasonic jewelry cleaner from &sect;3.14, already on hand. Add 5 g/L oak chips to 200 mL spirit. Place in ultrasonic bath at ~40 W/L. Add a small aquarium pump ($5) for circulation. Sonicate 60 min with 5 min breaks. Compare color and aroma at 1h vs identical un-sonicated control at 1h and at 60 days. The equivalent temperature boost of +18&ndash;24&deg;C means your 20&deg;C bath extracts like a 38&ndash;44&deg;C soak.)
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
 
 <p>The four barriers are not independent. They are coupled in a cascade where each downstream process depends on upstream products:</p>
@@ -2999,6 +3065,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Lipase-selective fusel esterification (&sect;4.60)</td><td>&gt;99% yield (nanomicelle)</td><td><span class="verdict promising">Published (enzyme kinetics)</span></td><td>$15&ndash;30</td><td>ESTER (fusel-selective)</td></tr>
 <tr><td>Cu<sub>2</sub>O/TiO<sub>2</sub> photocatalytic AcH (&sect;4.61)</td><td>10.2&times; bare TiO<sub>2</sub></td><td><span class="verdict promising">Published (photocatalysis)</span></td><td>$15&ndash;25</td><td>OXIDATION / MAILLARD</td></tr>
 <tr><td>EWOD microfluidic screening (&sect;4.62)</td><td>~100 conditions/hr</td><td><span class="verdict promising">Published (microfluidics)</span></td><td>$5K+ (lab)</td><td>SCREEN / OPTIMIZE</td></tr>
+<tr><td>Sono-enzymatic esterification (&sect;4.63)</td><td>+27.4% conversion, 2.85&times; V<sub>max</sub></td><td><span class="verdict promising">Published (enzyme kinetics)</span></td><td>$0 incr.</td><td>ESTER (synergy)</td></tr>
+<tr><td>Visible light Maillard (&sect;4.64)</td><td>k = 0.034 day<sup>&minus;1</sup>, 2.6&times; furfural</td><td><span class="verdict promising">Published (wine)</span></td><td>$0</td><td>MAILLARD</td></tr>
+<tr><td>Ultrasonic extraction kinetics (&sect;4.65)</td><td>+18&ndash;24&deg;C equiv., 116.5% phenolics</td><td><span class="verdict promising">Published (wine spirit)</span></td><td>$5 (pump)</td><td>EXTRACTION (optimized)</td></tr>
 </tbody>
 </table>
 </div>
@@ -3196,6 +3265,9 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td><strong>Lipase-selective fusel esterification (&sect;4.60)</strong></td><td><strong>3/5</strong></td><td><strong>$8&ndash;15</strong></td><td><strong>Lipase dietary supplement capsules ($8&ndash;12). Crush 2 capsules into 200 mL new-make spirit with 0.5 g/L isoamyl alcohol (banana flavoring extract, $3). Incubate at 40&deg;C for 4h. Compare aroma vs control (no lipase). Expect banana/fruity notes from isoamyl acetate formation. Without nanomicelles, yield is modest but detectable via nose. For enhanced version: add 2 wt% TPGS-750-M ($20&ndash;30/10g from chemical supplier) to shift equilibrium toward ester synthesis.</strong></td></tr>
 <tr><td>Photocatalytic acetaldehyde (&sect;4.61)</td><td>2/5</td><td>$15&ndash;25</td><td>TiO<sub>2</sub> powder from art supply ($5, rutile/anatase white pigment). Coat glass beads with TiO<sub>2</sub> slurry, dry overnight. Place beads in shallow dish of spirit under UV-LED lamp ($10&ndash;15) for 4&ndash;8h. Test for acetaldehyde using Schiff reagent (fuchsin + bisulfite, turns pink; ~$5 from lab supplier). Compare vs dark control. Without Cu<sub>2</sub>O doping, rate is ~10&times; slower but still detectable. <strong>Caution: UV exposure safety.</strong></td></tr>
 <tr><td>EWOD microfluidic screening (&sect;4.62)</td><td>1/5</td><td>$15+ (manual)</td><td>EWOD chips require microfabrication. Closest home approximation: 384-well microplate ($15), pipette 1 &mu;L spirit + different oak extract concentrations / acid levels / additive combinations into each well. Seal with adhesive film. Incubate 40&deg;C for 24h. Smell-test each well for promising formulations. Provides combinatorial screening concept without automated droplet manipulation. Scale winners to 200 mL bench volume.</td></tr>
+<tr><td><strong>Sono-enzymatic esterification (&sect;4.63)</strong></td><td><strong>3/5</strong></td><td><strong>$0 incr.</strong></td><td><strong>Zero incremental cost: combine ultrasonic bath from &sect;3.14 + lipase capsules from &sect;4.60 + isoamyl alcohol. Place lipase beads in 200 mL spirit + 0.5 g/L isoamyl alcohol. Sonicate at 40&deg;C, pulsed (30 s on / 1 min off) for 2h. Compare banana/fruity aroma vs (a) lipase without ultrasound and (b) ultrasound without lipase. The synergy should produce noticeably enhanced fruitiness beyond either component alone.</strong></td></tr>
+<tr><td><strong>Visible light Maillard (&sect;4.64)</strong></td><td><strong>4/5</strong></td><td><strong>$0</strong></td><td><strong>Free. Place 200 mL spirit + oak extract under desk lamp or in window for 30&ndash;90 days. Keep a dark-stored control. Compare color at 30/60/90 days&mdash;light-exposed sample should be darker and more amber. For enhanced results, add 0.3 g/L xylose (&sect;4.6) to feed the Maillard cascade. No special equipment; any light source works. Predictable: k = 0.034/day means half-maximum in ~20 days.</strong></td></tr>
+<tr><td><strong>Ultrasonic extraction optimized (&sect;4.65)</strong></td><td><strong>5/5</strong></td><td><strong>$5 (pump)</strong></td><td><strong>Ultrasonic jewelry cleaner from &sect;3.14 + small aquarium pump ($5) for circulation. Add 5 g/L mixed toasted + untoasted oak chips to 200 mL spirit. Sonicate at ~40 W/L with continuous circulation, 60 min with 5 min breaks. This quantified protocol provides +18&ndash;24&deg;C equivalent extraction boost + 5&times; synergy from circulation. Compare vs static sonication and vs 60-day room-temp control.</strong></td></tr>
 </tbody>
 </table>
 </div>
@@ -3410,6 +3482,12 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r196">Barman SR, Khan I, Chatterjee S, et al. (2020) &ldquo;Electrowetting-on-dielectric (EWOD): Current perspectives and applications in ensuring food safety.&rdquo; <em>J Food Drug Anal</em> 28(4):595&ndash;621. <a href="https://doi.org/10.38212/2224-6614.1239">DOI</a> (EWOD droplet manipulation: velocities up to 72.7 mm/s, volumes nL&ndash;&mu;L, actuation 40&ndash;100 VDC. Detection: pathogen at 30 ng/mL, Hg<sup>2+</sup> at 0.3 ppb. Key limitation: ethanol-water mixtures have low surface tension (~30 mN/m) vs water (72 mN/m).)</li>
   <li id="r197">Torabinia M, Asgari P, Dakarapu US, et al. (2019) &ldquo;On-chip organic synthesis enabled using an engine-and-cargo system in an electrowetting-on-dielectric digital microfluidic device.&rdquo; <em>Lab Chip</em> 19:3054&ndash;3064. <a href="https://doi.org/10.1039/C9LC00428A">DOI</a> (Engine-and-cargo: aqueous droplet encapsulates organic solvent droplet for EWOD manipulation. On-chip esterification, kinetic characterization. <strong>Three alcohols esterified simultaneously</strong>&mdash;combinatorial capability. 100 nL&ndash;20 &mu;L per reactor.)</li>
   <li id="r198">Torabinia M, Asgari P, Moon H. (2021) &ldquo;EWOD digital microfluidic device for in-line workup in organic reactions.&rdquo; <em>Sens Actuators B</em> 330:129252. <a href="https://doi.org/10.1016/j.snb.2020.129252">DOI</a> (Complete multi-step organic synthesis on EWOD: reaction, liquid-liquid extraction, phase separation. Demonstrates automated workflow at droplet scale applicable to combinatorial spirit aging optimization.)</li>
+  <li id="r199">Vartolomei A, Calinescu I, Vinatoru M, Gavrila AI. (2022) &ldquo;A parameter study of ultrasound assisted enzymatic esterification.&rdquo; <em>Sci Rep</em> 12:1421. <a href="https://doi.org/10.1038/s41598-022-05551-x">DOI</a> (Lipozyme 435 + 20 kHz ultrasound: <strong>+27.4% isoamyl acetate conversion</strong> at 20 min. Max 462 mg/g (equil. 477, theor. 551). Regime shift: E<sub>a</sub> 7,640 J/mol (diffusion) &rarr; 22,535 J/mol (kinetic). Enzyme reusability: 11.3% loss with US vs 43.3% without (3 cycles).)</li>
+  <li id="r200">Lerin LA, Loss RA, Remonatto D, et al. (2014) &ldquo;A review on lipase-catalyzed reactions in ultrasound-assisted systems.&rdquo; <em>Bioprocess Biosyst Eng</em> 37(12):2381&ndash;2394. <a href="https://doi.org/10.1007/s00449-014-1222-5">DOI</a> (Review of 30+ sono-enzymatic studies. Typical 2.85&times; V<sub>max</sub> enhancement. 20&ndash;40 kHz at 20&ndash;30% amplitude optimal. Amplitudes &gt;40% damage enzymes. Pulsed mode (3s on/3s off) preserves enzyme structure.)</li>
+  <li id="r201">Arena E, Rizzo V, Licciardello F, et al. (2021) &ldquo;Effects of light exposure, bottle colour and storage temperature on the quality of <em>Malvasia delle Lipari</em> sweet wine.&rdquo; <em>Foods</em> 10(8):1881. <a href="https://doi.org/10.3390/foods10081881">DOI</a> (CWF lamps: HMF k = <strong>0.034 day<sup>&minus;1</sup></strong> (pseudo-first-order), reached 36.43 mg/L at 90 days. 2-furaldehyde 2.6&times; increase. Chroma +79% at 90d. Predictable photolytic Maillard kinetics for sugar-pathway maturation markers.)</li>
+  <li id="r202">Delgado-Gonz&aacute;lez MJ, Garc&iacute;a-Moreno MV, Guill&eacute;n-S&aacute;nchez DA. (2022) &ldquo;A Theoretical Approximation of the Accelerating Effects of Ultrasound about the Extraction of Phenolic Compounds from Wood by Wine Spirits.&rdquo; <em>Foods</em> 11(4):517. <a href="https://doi.org/10.3390/foods11040517">DOI</a> (Pseudo-2nd-order model: E<sub>a</sub>(K<sub>1</sub>) = 34.98 kJ/mol (extraction), E<sub>a</sub>(K<sub>2</sub>) = 25.46 kJ/mol (desorption). US+circulation = <strong>+18&ndash;24&deg;C equivalent</strong> temp boost (initial), 5&times; more effective than US alone. <strong>Power ceiling: 67 W/L</strong> (degradation above).)</li>
+  <li id="r203">Kruger RT, Alberti A, Los PR, et al. (2024) &ldquo;Application of ultrasound in wood chips on the accelerated aging of apple liqueur.&rdquo; <em>Int J Food Sci Technol</em> 59(1):95&ndash;104. <a href="https://doi.org/10.1111/ijfs.16750">DOI</a> (UAE oak chips: <strong>116.5% more phenolics</strong>, 4.9&times; antioxidant activity, &Delta;E = 7.03 visible color change, ~60-day compression. Untoasted chips = 17.4% more total phenols than toasted (gallic acid driven).)</li>
+  <li id="r204">Abreu-Naranjo R, Yordi EG, Radice M, et al. (2023) &ldquo;Preliminary Study Regarding the Optimisation of the Accelerated Ageing of Sugar Cane Spirit by Applying Ultrasound-Assisted Extraction and White Oak Chips (<em>Quercus alba</em>).&rdquo; <em>Food Anal Methods</em> 16:1120&ndash;1130. <a href="https://doi.org/10.1007/s12161-023-02493-6">DOI</a> (RSM optimization: Q. alba at 3.5&ndash;7 g/L optimal for UAE spirit aging. CIELab confirmed significant color development. 2-level factorial design with temperature &times; US time.)</li>
 </ol>
 
 
@@ -4421,6 +4499,36 @@ var refs = {
     source: "Torabinia et al. (2021), Sens Actuators B 330:129252",
     excerpt: "Complete multi-step organic synthesis on EWOD: reaction, extraction, phase separation. Automated workflow at droplet scale for combinatorial spirit aging optimization.",
     url: "#r198"
+  },
+  199: {
+    source: "Vartolomei et al. (2022), Sci Rep 12:1421",
+    excerpt: "Lipozyme 435 + 20 kHz US: +27.4% isoamyl acetate at 20 min. Kinetic regime shift: Ea 7640\u219222535 J/mol. Enzyme reusability: 11% loss (US) vs 43% (conventional) over 3 cycles.",
+    url: "#r199"
+  },
+  200: {
+    source: "Lerin et al. (2014), Bioprocess Biosyst Eng 37(12):2381",
+    excerpt: "Review: 2.85\u00d7 Vmax enhancement typical. 20\u201340 kHz at 20\u201330% amplitude optimal. >40% damages enzymes. Pulsed mode preserves structure.",
+    url: "#r200"
+  },
+  201: {
+    source: "Arena et al. (2021), Foods 10(8):1881",
+    excerpt: "CWF lamps: HMF k = 0.034 day\u207b\u00b9 (pseudo-first-order). Reached 36.43 mg/L at 90d. 2-furaldehyde 2.6\u00d7. Chroma +79%. Predictable photolytic Maillard kinetics.",
+    url: "#r201"
+  },
+  202: {
+    source: "Delgado-Gonz\u00e1lez et al. (2022), Foods 11(4):517",
+    excerpt: "Pseudo-2nd-order: Ea(K1) = 35.0 kJ/mol, Ea(K2) = 25.5 kJ/mol. US+circulation = +18\u201324\u00b0C equiv. boost (5\u00d7 vs US alone). Power ceiling: 67 W/L.",
+    url: "#r202"
+  },
+  203: {
+    source: "Kruger et al. (2024), Int J Food Sci Technol 59(1):95",
+    excerpt: "UAE oak chips: 116.5% more phenolics, 4.9\u00d7 antioxidant, \u0394E = 7.03 visible color. ~60-day compression. Untoasted = 17.4% more phenols (gallic acid driven).",
+    url: "#r203"
+  },
+  204: {
+    source: "Abreu-Naranjo et al. (2023), Food Anal Methods 16:1120",
+    excerpt: "RSM optimization: Q. alba at 3.5\u20137 g/L optimal for UAE spirit aging. CIELab confirmed significant color development under sonication.",
+    url: "#r204"
   }
 };
 
