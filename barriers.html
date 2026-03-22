@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breaking the Maturation Barriers: Cross-Disciplinary Hypotheses for Accelerating Whiskey Aging</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #c9884a;
+    --accent2: #e8a665;
+    --accent3: #7c5a2e;
+    --link: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --yellow: #d29922;
+    --purple: #bc8cff;
+    --cyan: #39d2c0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+    color: var(--accent2);
+    border-bottom: 3px solid var(--accent3);
+    padding-bottom: 0.8rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+
+  .author-block {
+    background: var(--surface);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2.5rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .author-block .label { color: var(--text-muted); font-size: 0.85rem; }
+  .author-block .name { color: var(--accent2); font-weight: bold; }
+
+  h2 {
+    font-size: 1.45rem;
+    color: var(--accent2);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem;
+  }
+
+  h3 {
+    font-size: 1.15rem;
+    color: var(--accent);
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+    color: var(--cyan);
+    margin-top: 1.2rem;
+    margin-bottom: 0.4rem;
+  }
+
+  p { margin-bottom: 1rem; }
+
+  .callout {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 6px 6px 0;
+    font-style: italic;
+  }
+
+  .callout.key-insight {
+    border-left-color: var(--green);
+    background: #0d1f0d;
+  }
+
+  .callout.warning {
+    border-left-color: var(--yellow);
+    background: #1f1a0d;
+  }
+
+  .callout.hypothesis {
+    border-left-color: var(--purple);
+    background: #1a0d2a;
+  }
+
+  .callout.critical {
+    border-left-color: var(--red);
+    background: #1f0d0d;
+  }
+
+  .equation {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+    color: var(--cyan);
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  th {
+    background: var(--surface2);
+    color: var(--accent2);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    border: 1px solid var(--border);
+    font-family: -apple-system, sans-serif;
+    font-size: 0.85rem;
+  }
+
+  td {
+    padding: 0.5rem 0.8rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  tr:hover td { background: var(--surface2); }
+
+  ul, ol {
+    margin: 0.5rem 0 1rem 1.5rem;
+  }
+
+  li { margin-bottom: 0.4rem; }
+
+  code {
+    background: var(--surface2);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+    color: var(--cyan);
+  }
+
+  .ref-list {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .ref-list li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  .ref-list a { color: var(--link); }
+
+  a { color: var(--link); }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .table-wrap table {
+    margin: 0;
+    min-width: 600px;
+  }
+
+  .barrier-tag {
+    display: inline-block;
+    font-family: -apple-system, sans-serif;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+  }
+  .barrier-tag.ester { background: var(--green); color: #000; }
+  .barrier-tag.sulfur { background: var(--yellow); color: #000; }
+  .barrier-tag.cluster { background: var(--purple); color: #fff; }
+  .barrier-tag.oxidation { background: var(--cyan); color: #000; }
+
+  .verdict {
+    font-family: -apple-system, sans-serif;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 0.3rem;
+  }
+  .verdict.promising { background: #0d2d0d; color: var(--green); border: 1px solid var(--green); }
+  .verdict.speculative { background: #2a1a0d; color: var(--yellow); border: 1px solid var(--yellow); }
+  .verdict.moonshot { background: #1a0d2a; color: var(--purple); border: 1px solid var(--purple); }
+
+  .cite {
+    cursor: pointer;
+    color: var(--link);
+  }
+  .cite:hover { text-decoration: underline; }
+
+  #cite-popup {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 2px solid var(--accent);
+    padding: 1rem 1.5rem;
+    z-index: 1000;
+    max-height: 40vh;
+    overflow-y: auto;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+    font-size: 0.9rem;
+    transition: transform 0.2s ease;
+    transform: translateY(100%);
+  }
+  #cite-popup.visible {
+    display: block;
+    transform: translateY(0);
+  }
+  #cite-source {
+    color: var(--accent2);
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+  }
+  #cite-excerpt {
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+  #cite-link {
+    font-size: 0.8rem;
+    margin-right: 1rem;
+  }
+  #cite-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    font-family: -apple-system, sans-serif;
+    padding: 0.2rem 0.5rem;
+  }
+  #cite-close:hover { color: var(--text); }
+
+  @media (max-width: 700px) {
+    body { padding: 0.8rem; }
+    h1 { font-size: 1.3rem; }
+    h2 { font-size: 1.2rem; }
+    h3 { font-size: 1.05rem; }
+    table { font-size: 0.75rem; }
+    th, td { padding: 0.25rem 0.4rem; }
+    .callout { padding: 0.8rem 1rem; font-size: 0.9rem; }
+    .equation { font-size: 0.85rem; padding: 0.7rem 1rem; }
+  }
+
+  @media (max-width: 400px) {
+    h1 { font-size: 1.15rem; }
+    body { font-size: 0.92rem; }
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>Breaking the Maturation Barriers</h1>
+<div class="subtitle">Cross-disciplinary hypotheses for defeating the time-dependent processes in whiskey aging</div>
+
+<div class="author-block">
+  <div class="label">Companion report to</div>
+  <div class="name"><a href="index.html" style="color:var(--accent2);">Optimizing the Azeotrope Curve for Flavor Compound Recovery</a></div>
+  <div class="label" style="margin-top:0.3rem">Prepared for Dr. R. Douglas Sammons, Ph.D.</div>
+  <div style="margin-top:0.8rem; font-size:0.85rem; color:var(--text-muted);">
+    March 2026 &bull; Sci-Lead research agent
+  </div>
+</div>
+
+<div class="callout">
+  <strong>Premise:</strong> The <a href="index.html#s9">companion report</a> identifies four maturation processes that appear "stubbornly time-dependent." This report asks: what if we refuse to accept that? Drawing on catalysis, materials science, electrochemistry, colloid physics, membrane engineering, and pharmaceutical science, we propose hypotheses for breaking each barrier. Some are grounded in published data. Others are first-principles predictions. All are testable.
+</div>
+
+<nav style="background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:1.5rem 2rem; margin:1.5rem 0 2.5rem;">
+  <div style="color:var(--accent2); font-weight:bold; margin-bottom:0.8rem; font-size:1.1rem;">The Four Barriers</div>
+  <ol style="margin-left:1.2rem;">
+    <li><span class="barrier-tag ester">ESTER</span> <a href="#b1">Ester Equilibrium</a> &mdash; Fischer esterification takes &gt;1&ndash;2 years at ambient</li>
+    <li><span class="barrier-tag sulfur">SULFUR</span> <a href="#b2">Sulfur Compound Removal</a> &mdash; DMS/DMDS/DMTS require 5&ndash;8 years of charcoal contact</li>
+    <li><span class="barrier-tag cluster">CLUSTER</span> <a href="#b3">Supramolecular Clustering</a> &mdash; Amphiphilic self-assembly scales linearly with age</li>
+    <li><span class="barrier-tag oxidation">OXIDATION</span> <a href="#b4">Sequential Oxidation Cascades</a> &mdash; Product distribution depends on O<sub>2</sub> flux rate</li>
+  </ol>
+  <div style="margin-top:1rem;">
+    <a href="#b5">5. Synthesis: An Integrated Protocol</a> &bull;
+    <a href="#open">6. Open Questions</a> &bull;
+    <a href="#refs">References</a>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- BARRIER 1: ESTER EQUILIBRIUM                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2 id="b1"><span class="barrier-tag ester">ESTER</span> 1. Ester Equilibrium</h2>
+
+<p>Fischer esterification&mdash;the acid-catalyzed condensation of a carboxylic acid with an alcohol&mdash;is the primary route to the fruity esters that define mature whiskey character. Ethyl acetate, ethyl hexanoate, ethyl octanoate, and ethyl decanoate all form by this mechanism<span class="cite" data-ref="1"><sup>[1]</sup></span>.</p>
+
+<div class="equation">
+  R&ndash;COOH + C<sub>2</sub>H<sub>5</sub>OH &nbsp;&nbsp;&#8652;&nbsp;&nbsp; R&ndash;COOC<sub>2</sub>H<sub>5</sub> + H<sub>2</sub>O
+</div>
+
+<p>The problem is thermodynamic and kinetic. At 20&deg;C, K<sub>eq</sub> &asymp; 4.0 for simple ethyl esters, but the uncatalyzed rate is glacial: the proton donation from acetic acid alone (pK<sub>a</sub> 4.76) provides insufficient catalysis. In barrel aging, traces of wood-derived ellagitannin acids provide weak acid catalysis, and the reaction creeps toward equilibrium over 1&ndash;3 years<span class="cite" data-ref="2"><sup>[2]</sup></span>. Le Chatelier offers a second lever: in a sealed barrel, water is a co-product that cannot escape, so equilibrium is reached well below stoichiometric conversion.</p>
+
+<h3>1.1 Solid Acid Catalysis</h3>
+
+<p>Heterogeneous acid catalysts can accelerate Fischer esterification by orders of magnitude while remaining physically separable from the product&mdash;a crucial advantage over homogeneous mineral acids (H<sub>2</sub>SO<sub>4</sub>) that would contaminate the spirit.</p>
+
+<p><strong>SBA-15-PrSO<sub>3</sub>H</strong> (propylsulfonic-acid-functionalized mesoporous silica) is the standout candidate. Its ordered mesopore structure (6&ndash;10 nm pores) allows free diffusion of organic acid and ethanol molecules to internal sulfonic acid sites. Crucially, SBA-15-PrSO<sub>3</sub>H retains catalytic activity in the presence of water&mdash;a feature most zeolites and acidic clays lack&mdash;because the hydrophobic propyl tether shields the acid site from complete hydration<span class="cite" data-ref="3"><sup>[3]</sup></span>. Published conversions for acetic acid + ethanol reach 85&ndash;95% in 2&ndash;4 hours at 60&deg;C<span class="cite" data-ref="4"><sup>[4]</sup></span>.</p>
+
+<p><strong>Amberlyst-15</strong> and <strong>Dowex 50WX8</strong> are macroreticular sulfonic acid ion-exchange resins already cleared by FDA under 21&nbsp;CFR&nbsp;173.25 for food-contact processing<span class="cite" data-ref="5"><sup>[5]</sup></span>. Their catalytic activity for esterification is well-documented<span class="cite" data-ref="6"><sup>[6]</sup></span>. A packed bed of Amberlyst-15 beads through which new-make spirit is recirculated at 40&ndash;60&deg;C could compress years of ester formation into hours. The catalyst stays in the column; only spirit exits.</p>
+
+<div class="callout warning">
+  <strong>Water inhibition:</strong> At 40% ABV, the spirit contains ~53 mol% water (water MW 18 vs ethanol MW 46 means mole fractions diverge sharply from volume fractions). This water shifts the equilibrium leftward and competes for acid sites. Operating at higher ethanol concentration (65&ndash;70% ABV), then blending back, mitigates this. Alternatively, molecular sieve 3A downstream of the catalyst bed can strip co-product water, driving the equilibrium to near-complete conversion.
+</div>
+
+<h3>1.2 Reactive Distillation</h3>
+
+<p>Reactive distillation combines chemical reaction and separation in a single column. Water, the esterification co-product (bp 100&deg;C), is continuously removed as it forms, while ethyl esters (bp 77&ndash;170&deg;C depending on chain length) are collected. By stripping water from the reaction zone, equilibrium is never reached&mdash;Le Chatelier drives conversion to &gt;96% in as little as 20 minutes in industrial reactive distillation columns<span class="cite" data-ref="7"><sup>[7]</sup></span>.</p>
+
+<p>For a home distiller, the principle is simpler: run the spirit through a reflux column with a small bed of acidic catalyst (Amberlyst-15 beads in the column packing), and the simultaneous distillation removes water. The ester-enriched distillate emerges already converted.</p>
+
+<h3>1.3 Pulsed Electric Fields (PEF)</h3>
+
+<p>Zhang et al. demonstrated that PEF treatment of wine at 6&ndash;40 kV/cm reduced the activation energy for catechin/epicatechin condensation from 41.59 to 28.98 kJ/mol&mdash;a 30% reduction<span class="cite" data-ref="8"><sup>[8]</sup></span>. While this study targeted polyphenol polymerization rather than Fischer esterification, the mechanism&mdash;transient ionization and polarization of reactant molecules increasing effective collision rates&mdash;is general. PEF-treated Grenache wines showed tannin polymerization profiles consistent with naturally aged wines after only 3 days of treatment<span class="cite" data-ref="8"><sup>[8]</sup></span>.</p>
+
+<p>Whether PEF accelerates ester bond formation specifically has not been tested. The activation energy for uncatalyzed Fischer esterification in solution is approximately 50&ndash;65 kJ/mol<span class="cite" data-ref="9"><sup>[9]</sup></span>; a 30% reduction would bring it to 35&ndash;45 kJ/mol, corresponding to a rate increase of roughly 20&ndash;50&times; at 25&deg;C by the Arrhenius equation.</p>
+
+<h3>1.4 Enzymatic Catalysis&mdash;Why It Fails Here</h3>
+
+<p>Lipases (notably Candida antarctica lipase B, CALB) are superb esterification catalysts in organic media. However, whiskey is an aqueous medium: 40&ndash;65% ABV means 35&ndash;60% water. CALB requires water activity (a<sub>w</sub>) below ~0.3 for ester synthesis; above that threshold, it preferentially catalyzes hydrolysis&mdash;the reverse reaction<span class="cite" data-ref="10"><sup>[10]</sup></span>. The very environment that defines whiskey is hostile to lipase-catalyzed esterification. This approach is a dead end for spirits at drinking strength.</p>
+
+<div class="callout hypothesis">
+  <strong>Hypothesis 1:</strong> Recirculating new-make spirit at 65% ABV through a packed bed of Amberlyst-15 (FDA 21&nbsp;CFR&nbsp;173.25) at 50&deg;C for 4&ndash;8 hours, with a downstream molecular sieve 3A water trap, will produce an ester profile (by GC-MS) matching 2&ndash;3 year barrel-aged whiskey for the C2&ndash;C10 ethyl esters.<br><br>
+  <strong>Testable prediction:</strong> Ethyl acetate concentration should reach &ge;80% of equilibrium value within 6 hours, versus &lt;15% in the same spirit held at ambient temperature without catalyst.
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration. FDA-cleared materials exist. Published kinetic data supports the timeline. <span class="verdict speculative">SPECULATIVE</span> PEF for ester bond formation specifically (extrapolated from polyphenol condensation data).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- BARRIER 2: SULFUR COMPOUND REMOVAL                    -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2 id="b2"><span class="barrier-tag sulfur">SULFUR</span> 2. Sulfur Compound Removal</h2>
+
+<p>New-make whiskey contains dimethyl sulfide (DMS, bp 37&deg;C), dimethyl disulfide (DMDS, bp 109&deg;C), and dimethyl trisulfide (DMTS, bp 170&deg;C)&mdash;volatile organosulfur compounds responsible for cooked-cabbage, rubbery, and metallic off-notes. These are produced during fermentation from S-methylmethionine (SMM) and cysteine precursors in the malt<span class="cite" data-ref="11"><sup>[11]</sup></span>. In traditional aging, the charred barrel interior acts as an activated carbon bed: organosulfurs adsorb onto the char layer over 5&ndash;8 years<span class="cite" data-ref="11"><sup>[11]</sup></span>. The question is whether we can replicate that adsorption in hours rather than years.</p>
+
+<h3>2.1 Copper-Loaded Activated Carbon</h3>
+
+<p>Copper&rsquo;s affinity for sulfur compounds is the reason pot stills are made of copper: Cu<sup>2+</sup> ions on the still surface catalyze the decomposition of volatile thiols and DMS during distillation<span class="cite" data-ref="12"><sup>[12]</sup></span>. But copper contact during distillation is limited to seconds of vapor-phase exposure. A post-distillation copper cartridge could extend this contact dramatically.</p>
+
+<p>Activated carbon provides ~1000 m<sup>2</sup>/g of surface area for physisorption, while Cu<sup>2+</sup> sites provide chemisorption via coordination to the sulfur lone pair. Combining these in a Cu/AC cartridge gives both mechanisms in a single pass-through column. Granular activated carbon is already used in vodka and neutral spirit filtration; impregnating it with copper sulfate followed by calcination yields Cu/AC adsorbents with documented selectivity for DMS and H<sub>2</sub>S in petrochemical applications<span class="cite" data-ref="13"><sup>[13]</sup></span>.</p>
+
+<div class="callout key-insight">
+  <strong>Key advantage:</strong> Unlike barrel char contact, a Cu/AC cartridge operates with convective flow rather than diffusion. The mass-transfer limitation that makes barrel adsorption take years&mdash;DMS must diffuse through centimeters of liquid to reach the char surface&mdash;is eliminated. In a packed bed, the liquid contacts fresh adsorbent surface every few millimeters.
+</div>
+
+<h3>2.2 Metal-Organic Frameworks (HKUST-1)</h3>
+
+<p>HKUST-1 (also called Cu-BTC or Cu<sub>3</sub>(BTC)<sub>2</sub>, where BTC = 1,3,5-benzenetricarboxylate) is a porous coordination polymer with open Cu<sup>2+</sup> metal sites accessible within its 9&nbsp;&Aring; pore windows. It achieves 17&nbsp;wt% DMS uptake capacity via direct coordination of the DMS sulfur to the open copper center<span class="cite" data-ref="14"><sup>[14]</sup></span>&mdash;an extraordinarily high capacity compared to activated carbon alone (~2&ndash;5 wt%).</p>
+
+<p>HKUST-1 is selective: it preferentially binds organosulfurs over ethanol and water because the Cu<sup>2+</sup>&ndash;S coordination bond (soft acid&ndash;soft base in Pearson&rsquo;s HSAB framework) is thermodynamically stronger than Cu<sup>2+</sup>&ndash;O(ethanol) or Cu<sup>2+</sup>&ndash;O(water) interactions<span class="cite" data-ref="14"><sup>[14]</sup></span>.</p>
+
+<p>The obstacle: HKUST-1 is not currently food-grade. However, the Cu<sup>2+</sup> ions are coordinatively bound within the framework and do not leach under mild conditions (pH 3&ndash;7, room temperature). Encapsulating HKUST-1 crystals in a PTFE or food-grade silicone cartridge with microporous barriers would prevent particle ingestion while allowing DMS permeation to the adsorbent surface. This is an engineering problem, not a chemistry problem.</p>
+
+<h3>2.3 Photocatalytic Desulfurization</h3>
+
+<p>The petroleum industry has invested decades in photocatalytic oxidative desulfurization (ODS): TiO<sub>2</sub> under UV light generates electron-hole pairs whose valence-band holes oxidize organosulfur compounds to sulfoxides (R<sub>2</sub>SO) and sulfones (R<sub>2</sub>SO<sub>2</sub>), which are non-volatile and odorless<span class="cite" data-ref="15"><sup>[15]</sup></span>. The reaction:</p>
+
+<div class="equation">
+  DMS + [O] &nbsp;&rarr;&nbsp; DMSO &nbsp;&rarr;&nbsp; DMSO<sub>2</sub><br>
+  (bp 37&deg;C, pungent) &nbsp;&rarr;&nbsp; (bp 189&deg;C, odorless) &nbsp;&rarr;&nbsp; (bp 238&deg;C, odorless)
+</div>
+
+<p>In principle, a UV-LED illuminated TiO<sub>2</sub>-coated flow cell could oxidize DMS to DMSO in a single pass. DMSO is FDA-approved as a pharmaceutical solvent and is flavorless at the ppb concentrations relevant here. The selectivity concern is whether TiO<sub>2</sub> photocatalysis would also oxidize desirable flavor compounds (esters, aldehydes)&mdash;this requires careful wavelength and dose control to target only the most oxidizable species (sulfur compounds have the lowest oxidation potentials in the mixture).</p>
+
+<div class="callout hypothesis">
+  <strong>Hypothesis 2:</strong> Passing new-make spirit through a Cu/AC packed-bed cartridge (1 kg adsorbent per 10 L spirit, 2&ndash;3 bed volumes at 5 mL/min) will reduce DMS, DMDS, and DMTS concentrations to below sensory detection thresholds (&lt;25 ppb DMS, &lt;12 ppb DMDS, &lt;0.01 ppb DMTS) in a single day, matching the sulfur profile of 5&ndash;8 year aged whiskey.<br><br>
+  <strong>Testable prediction:</strong> GC-PFPD (pulsed flame photometric detection) analysis of treated vs. untreated spirit should show &ge;90% reduction in total volatile sulfur within 24 hours of cartridge treatment.
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Cu/AC cartridge (known materials, simple engineering). <span class="verdict speculative">SPECULATIVE</span> HKUST-1 MOF (excellent adsorption data, food-grade pathway unclear). <span class="verdict moonshot">MOONSHOT</span> TiO<sub>2</sub> photocatalytic ODS (powerful chemistry, selectivity unproven in spirits).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- BARRIER 3: SUPRAMOLECULAR CLUSTERING                  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2 id="b3"><span class="barrier-tag cluster">CLUSTER</span> 3. Supramolecular Clustering</h2>
+
+<p>Morishima et al. demonstrated by small-angle X-ray scattering (SAXS) and dynamic light scattering (DLS) that aged whiskies develop two populations of supramolecular clusters<span class="cite" data-ref="16"><sup>[16]</sup></span>:</p>
+<ul>
+  <li><strong>Small clusters (~0.75 nm radius)</strong>: Concentration increases linearly with maturation age (10, 12, 18, 25 years). Composed of amphiphilic wood extractives&mdash;gallic acid, vanillin, ellagic acid, syringaldehyde. Correlated with perceived mellowness.</li>
+  <li><strong>Large clusters (~100 nm radius)</strong>: Concentration independent of age; form early and stabilize. Associated with alcoholic irritation, not positive flavor.</li>
+</ul>
+
+<p>Utsunomiya et al. confirmed by <sup>1</sup>H NMR that hydrogen bonding strength in aged whiskies is dominated by phenolic components from oak, and that this high-dimensional molecular structure contributes to mellowness<span class="cite" data-ref="17"><sup>[17]</sup></span>.</p>
+
+<div class="callout critical">
+  <strong>The overlooked barrier:</strong> Most accelerated aging technologies focus on extraction (getting compounds out of wood faster) and esterification (forming esters faster). Almost none address the supramolecular self-assembly step&mdash;the physical reorganization of extracted amphiphiles into ordered clusters within the ethanol-water solvent system. This is arguably the <em>hardest</em> barrier because it involves soft-matter physics rather than simple chemical kinetics.
+</div>
+
+<h3>3.1 The Proof Paradox</h3>
+
+<div class="callout key-insight">
+  <strong>Critical insight:</strong> The whiskey industry ages at 63% ABV (cask strength) because higher ethanol extracts wood compounds faster. But 63% ABV corresponds to x<sub>EtOH</sub> &asymp; 0.25&mdash;well above the composition where the hydrophobic driving force for amphiphilic self-assembly is maximal. <strong>We are aging at the wrong proof for clustering.</strong>
+</div>
+
+<p>The thermodynamic evidence is unambiguous:</p>
+<ul>
+  <li>Dixit et al. showed that the maximum hydrophobic effect in ethanol-water occurs at x<sub>EtOH</sub> &asymp; 0.10&ndash;0.15, corresponding to 27&ndash;37% ABV<span class="cite" data-ref="18"><sup>[18]</sup></span>. At this composition, concentration fluctuations are maximal, water&rsquo;s tetrahedral network is most intact, and amphiphilic solutes experience the strongest driving force for aggregation.</li>
+  <li>Ethanol increases the critical micelle concentration (CMC) of surfactants by disrupting the hydrophobic effect<span class="cite" data-ref="19"><sup>[19]</sup></span>. Higher ethanol = harder to form micelles = slower clustering.</li>
+  <li>The structural transition at x<sub>EtOH</sub> &asymp; 0.20 (~46% ABV)&mdash;where water&rsquo;s hydrogen-bond network transitions from tetrahedral clusters to extended chains&mdash;aligns exactly with the chill filtration threshold, below which fatty acid ester micelles spontaneously form<span class="cite" data-ref="20"><sup>[20]</sup></span>.</li>
+</ul>
+
+<p>The implication is provocative: simply aging at 35&ndash;40% ABV instead of 63% ABV could dramatically accelerate the clustering that defines mellowness. This changes nothing about the chemistry&mdash;only the solvent environment in which self-assembly occurs.</p>
+
+<h3>3.2 Flash Nanoprecipitation from Pharmaceutical Science</h3>
+
+<p>Drug delivery scientists solved rapid amphiphilic self-assembly decades ago. Flash nanoprecipitation (FNP) achieves nanoparticle formation in milliseconds by rapidly mixing an organic solvent stream (containing dissolved amphiphile) with an aqueous anti-solvent<span class="cite" data-ref="21"><sup>[21]</sup></span>. Mixing timescales of 1&ndash;2 ms achieve complete solvent exchange, driving supersaturation and nucleation. This was the enabling technology for COVID-19 vaccine lipid nanoparticle (LNP) manufacturing.</p>
+
+<p>The parallel to whiskey is direct. Tannic acid&mdash;a polyphenol closely related to the ellagitannin extractives in whiskey&mdash;has been used in FNP to form nanoparticles via hydrogen bonding and electrostatic interactions<span class="cite" data-ref="22"><sup>[22]</sup></span>. In situ SAXS measurements during microfluidic mixing reveal three stages of self-assembly: nucleation (~35 &Aring; aggregates when supersaturation exceeds unity), fusion (70&ndash;300 ms, exponential mass increase), and insertion (slower single-chain addition)<span class="cite" data-ref="23"><sup>[23]</sup></span>.</p>
+
+<p><strong>The Ouzo effect</strong> demonstrates that whiskey already contains this physics. When whiskey is diluted with water, hydrophobic extractives spontaneously form nanodroplets (1&ndash;3 &mu;m) via surfactant-free spontaneous emulsification&mdash;the same process FNP harnesses with controlled mixing<span class="cite" data-ref="24"><sup>[24]</sup></span>. The &ldquo;pre-Ouzo&rdquo; regime features nanometer-scale clusters covered by ethanol surface layers, structurally resembling the Morishima small clusters.</p>
+
+<h4>Proposed FNP Protocol for Whiskey</h4>
+<ol>
+  <li>Create a concentrated oak extractive solution in ethanol (by wood chip extraction at 70% ABV or purchase of standardized oak extract)</li>
+  <li>Rapidly mix into water or low-proof spirit under turbulent conditions (impinging jets, static mixer, or vigorous stirring)</li>
+  <li>The rapid solvent quality change drives supersaturation of hydrophobic extractives</li>
+  <li>Self-assembly into clusters occurs on millisecond-to-second timescales</li>
+  <li>Ethanol in the final mixture (targeting 35&ndash;40% ABV) stabilizes clusters against further growth</li>
+</ol>
+
+<h3>3.3 Freeze-Thaw Cryoconcentration</h3>
+
+<p>When an ethanol-water solution partially freezes, ice crystals exclude solutes, creating eutectic concentration zones where extractive molecules are forced into close proximity at dramatically elevated local concentrations. This achieves supersaturation in the liquid microphase between ice crystals&mdash;the primary thermodynamic driver of self-assembly nucleation<span class="cite" data-ref="25"><sup>[25]</sup></span>.</p>
+
+<p>The precedent from prebiotic chemistry is compelling. Freeze-thaw cycling drives condensation and self-assembly in eutectic solutions at rates far exceeding room-temperature equivalents<span class="cite" data-ref="25"><sup>[25]</sup></span>. Peter et al. showed that freeze-thaw promotes structural reorganization between amphiphilic vesicles&mdash;fatty acid self-assembly into supramolecular structures under these conditions<span class="cite" data-ref="26"><sup>[26]</sup></span>. Li et al. demonstrated that repeated freeze-thaw drives polymer chain alignment and intermolecular aggregation in unfrozen liquid microphases<span class="cite" data-ref="27"><sup>[27]</sup></span>&mdash;directly analogous to phenolic cluster formation.</p>
+
+<p>The equipment is trivial: a controlled freezer. At 40% ABV, partial freezing begins around &ndash;10&deg;C. Parameters to optimize: freezing rate (slow maximizes cryoconcentration), hold time at minimum temperature, number of cycles, and thaw rate (gentle warming prevents precipitation crash-out).</p>
+
+<h3>3.4 Seeded Supramolecular Polymerization</h3>
+
+<p>In 2015, Ono et al. demonstrated &ldquo;living&rdquo; supramolecular polymerization in <em>Science</em>: small seed aggregates template the growth of supramolecular polymers with controlled length and narrow dispersity<span class="cite" data-ref="28"><sup>[28]</sup></span>. The mechanism is nucleation-elongation: pre-formed nuclei eliminate the kinetic barrier to new aggregate formation, allowing rapid and directed growth.</p>
+
+<p>The whiskey implication: could a small volume of properly aged whiskey (containing Morishima clusters) serve as a seed to template cluster formation in unaged spirit? If the small clusters grow by monomer addition (extractive molecules inserting into existing aggregates), then seeding would bypass the nucleation bottleneck entirely. This is standard practice in crystallization (sugar, pharmaceutical APIs) and is now proven for supramolecular polymers.</p>
+
+<div class="callout warning">
+  <strong>Unknown:</strong> Whether the Morishima clusters are equilibrium structures (thermodynamically stable, would reform regardless) or kinetically trapped structures (pathway-dependent, requiring specific formation conditions) determines whether seeding is necessary or merely helpful. No data exists on this question.
+</div>
+
+<h3>3.5 The Two-Phase Aging Protocol</h3>
+
+<p>The approaches above converge on a two-phase protocol that separates the <em>extraction</em> problem from the <em>assembly</em> problem:</p>
+
+<div class="table-wrap">
+<table>
+  <tr>
+    <th>Phase</th>
+    <th>Objective</th>
+    <th>Proof</th>
+    <th>Duration</th>
+    <th>Method</th>
+  </tr>
+  <tr>
+    <td><strong>Phase 1: Extraction</strong></td>
+    <td>Get phenolic extractives into solution</td>
+    <td>63&ndash;70% ABV</td>
+    <td>1&ndash;4 weeks</td>
+    <td>Ultrasonic wood extraction<span class="cite" data-ref="29"><sup>[29]</sup></span>, charred oak staves</td>
+  </tr>
+  <tr>
+    <td><strong>Phase 2: Clustering</strong></td>
+    <td>Drive amphiphilic self-assembly</td>
+    <td>35&ndash;40% ABV</td>
+    <td>1&ndash;4 weeks</td>
+    <td>Dilute, then freeze-thaw or FNP; no wood contact</td>
+  </tr>
+</table>
+</div>
+
+<p>Phase 1 operates at high proof where extraction kinetics are fastest. Phase 2 operates at low proof where the hydrophobic driving force for clustering is strongest. The conventional approach&mdash;doing both at 63% ABV in a barrel&mdash;optimizes for neither.</p>
+
+<div class="callout hypothesis">
+  <strong>Hypothesis 3:</strong> Spirit extracted at 65% ABV for 2 weeks (with 40 kHz ultrasound and charred oak), then diluted to 37% ABV and subjected to 10 freeze-thaw cycles (&ndash;15&deg;C to 25&deg;C), will show a SAXS small-cluster intensity (0.75 nm radius) within 50% of 10-year-aged whiskey. SAXS of the untreated diluted spirit at the same proof will show negligible clustering.<br><br>
+  <strong>Testable prediction:</strong> DLS measurement should reveal a population of particles at 1&ndash;3 nm hydrodynamic radius in the treated sample, absent in controls.
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Proof optimization (straightforward physics, no novel equipment). <span class="verdict speculative">SPECULATIVE</span> Flash nanoprecipitation and freeze-thaw (sound first-principles, untested in spirits). <span class="verdict moonshot">MOONSHOT</span> Seeded supramolecular polymerization (thrilling if it works, no direct evidence).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- BARRIER 4: SEQUENTIAL OXIDATION CASCADES              -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2 id="b4"><span class="barrier-tag oxidation">OXIDATION</span> 4. Sequential Oxidation Cascades</h2>
+
+<p>Wood-aged spirits undergo a sequential oxidation cascade that is central to flavor maturation:</p>
+
+<div class="equation">
+  Primary alcohols &nbsp;&xrarr;&nbsp; Aldehydes &nbsp;&xrarr;&nbsp; Carboxylic acids &nbsp;&xrarr;&nbsp; Esters (via <a href="#b1">Barrier 1</a>)
+</div>
+
+<p>The product distribution at any time point depends on the oxygen flux rate. Too fast: acetaldehyde and acetic acid dominate, producing harsh, vinegary character. Too slow: the cascade stalls at early intermediates, and the mature ester/acid balance never develops. The barrel naturally throttles O<sub>2</sub> delivery to approximately 0.01&ndash;0.10 mL/L/day depending on stave thickness, wood species, and ambient humidity<span class="cite" data-ref="30"><sup>[30]</sup></span>. This exquisitely slow delivery is what makes barrel aging &ldquo;work&rdquo;&mdash;and why simply bubbling air through spirit produces acetic acid, not aged character.</p>
+
+<h3>4.1 Silicone Membrane O<sub>2</sub> Delivery</h3>
+
+<p>Polydimethylsiloxane (PDMS) has an oxygen permeability of ~600 Barrers&mdash;orders of magnitude higher than most polymers&mdash;and is FDA-approved for food contact under 21&nbsp;CFR&nbsp;177.2600<span class="cite" data-ref="31"><sup>[31]</sup></span>. A PDMS tube immersed in spirit, with air or O<sub>2</sub>/N<sub>2</sub> mixtures flowing through the lumen, delivers dissolved oxygen at a rate precisely controlled by:</p>
+
+<ul>
+  <li><strong>Membrane thickness:</strong> Thicker wall = slower flux (linear relationship)</li>
+  <li><strong>Tube length:</strong> More surface area = more total delivery</li>
+  <li><strong>Lumen gas composition:</strong> Pure O<sub>2</sub> vs. air vs. 5% O<sub>2</sub>/N<sub>2</sub> adjusts driving force</li>
+  <li><strong>Temperature:</strong> Higher T increases both permeability and reaction rates</li>
+</ul>
+
+<p>This allows programming an O<sub>2</sub> flux profile that exactly mimics barrel behavior&mdash;or deliberately deviates from it. One could deliver the total oxygen exposure of 5 years of barrel aging in weeks by using thinner tubing and pure O<sub>2</sub>, while maintaining the dissolved O<sub>2</sub> concentration below the threshold where acetaldehyde over-accumulates.</p>
+
+<p>The wine industry already uses this principle: micro-oxygenation (MOX) delivers 1&ndash;5 mL O<sub>2</sub>/L/month through ceramic or PDMS diffusers to accelerate tannin polymerization and color stabilization<span class="cite" data-ref="30"><sup>[30]</sup></span>. Extending MOX to spirits&mdash;with the lower rates appropriate for the simpler phenolic matrix&mdash;is a straightforward adaptation.</p>
+
+<h3>4.2 Controlled Fenton Chemistry</h3>
+
+<p>The Fenton reaction generates hydroxyl radicals from hydrogen peroxide and ferrous iron:</p>
+
+<div class="equation">
+  Fe<sup>2+</sup> + H<sub>2</sub>O<sub>2</sub> &nbsp;&rarr;&nbsp; Fe<sup>3+</sup> + OH&bull; + OH<sup>&ndash;</sup>
+</div>
+
+<p>OH&bull; is among the most powerful oxidants in chemistry (E&deg; = +2.80 V), capable of abstracting hydrogen from virtually any C&ndash;H bond. In sub-stoichiometric doses, Fenton oxidation could drive the aldehyde &rarr; acid step of the cascade at controlled rates. The key is metering: Fe<sup>2+</sup> at &mu;M concentrations and H<sub>2</sub>O<sub>2</sub> at mM concentrations, delivered by syringe pump over hours/days, prevents radical overproduction<span class="cite" data-ref="32"><sup>[32]</sup></span>.</p>
+
+<div class="callout warning">
+  <strong>Risk:</strong> Uncontrolled Fenton chemistry produces indiscriminate oxidation&mdash;destroying esters, generating off-flavors, and potentially forming ethyl carbamate or other undesirable products. This approach requires analytical monitoring (dissolved O<sub>2</sub>, acetaldehyde by GC) and precise dosing. It is not a &ldquo;dump reagent and wait&rdquo; technique.
+</div>
+
+<p>An alternative: <strong>photo-Fenton</strong>, where Fe<sup>3+</sup> is photoreduced back to Fe<sup>2+</sup> by UV/visible light, allowing catalytic cycling with minimal total iron. This limits residual iron to ppb levels<span class="cite" data-ref="32"><sup>[32]</sup></span>.</p>
+
+<h3>4.3 Electrochemical Oxidation</h3>
+
+<p>Zhou et al. demonstrated that electrochemical treatment of Chinese Baijiu (a grain spirit) produced flavor profiles consistent with aged product<span class="cite" data-ref="33"><sup>[33]</sup></span>. The mechanism: controlled oxidation at the anode surface generates reactive oxygen species at a rate determined by the applied potential. By operating below the water oxidation potential (~1.23 V vs. SHE) but above the oxidation potential of target alcohols (~0.5&ndash;0.8 V), selective partial oxidation becomes feasible.</p>
+
+<p>Electrode materials matter. Platinum oxidizes broadly; boron-doped diamond (BDD) generates OH&bull; radicals at higher potential with greater selectivity; dimensionally stable anodes (DSA, RuO<sub>2</sub>/IrO<sub>2</sub> on Ti) offer intermediate behavior. For spirits, BDD electrodes at low current density (0.1&ndash;1 mA/cm<sup>2</sup>) could provide the &ldquo;slow drip&rdquo; of oxidation equivalents that barrels deliver over years.</p>
+
+<div class="callout hypothesis">
+  <strong>Hypothesis 4:</strong> Immersing a 30 cm length of medical-grade PDMS tubing (1 mm wall thickness, 3 mm I.D.) in 1 L of new-make spirit, with 5% O<sub>2</sub>/N<sub>2</sub> flowing through the lumen at 10 mL/min for 4 weeks, will produce a dissolved O<sub>2</sub> flux of ~0.05 mL/L/day&mdash;matching a bourbon barrel. GC-MS analysis should show acetaldehyde peaking at week 1&ndash;2 then declining as it oxidizes to acetic acid, which in turn feeds esterification (connecting to <a href="#b1">Barrier 1</a>).<br><br>
+  <strong>Testable prediction:</strong> Acetaldehyde/acetic acid ratio should follow the same trajectory as barrel-aged spirit sampled at annual intervals, but compressed to weekly intervals.
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Silicone membrane MOX (proven materials, proven concept in wine, FDA-approved). <span class="verdict speculative">SPECULATIVE</span> Electrochemical oxidation (one published study on Baijiu, selectivity questions). <span class="verdict speculative">SPECULATIVE</span> Controlled Fenton (powerful but risky without analytical monitoring).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5: INTEGRATED PROTOCOL                        -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
+
+<p>The four barriers are not independent. They are coupled in a cascade where each downstream process depends on upstream products:</p>
+
+<div class="table-wrap">
+<table>
+  <tr>
+    <th>Step</th>
+    <th>Process</th>
+    <th>Feeds Into</th>
+  </tr>
+  <tr>
+    <td><span class="barrier-tag oxidation">OXIDATION</span></td>
+    <td>Alcohols &rarr; aldehydes &rarr; acids</td>
+    <td><span class="barrier-tag ester">ESTER</span> (acids are ester precursors)</td>
+  </tr>
+  <tr>
+    <td><span class="barrier-tag ester">ESTER</span></td>
+    <td>Acids + ethanol &rarr; esters</td>
+    <td><span class="barrier-tag cluster">CLUSTER</span> (esters are amphiphilic)</td>
+  </tr>
+  <tr>
+    <td><span class="barrier-tag cluster">CLUSTER</span></td>
+    <td>Amphiphiles &rarr; ordered clusters</td>
+    <td>Sensory mellowness</td>
+  </tr>
+  <tr>
+    <td><span class="barrier-tag sulfur">SULFUR</span></td>
+    <td>DMS/DMDS/DMTS removal</td>
+    <td>Removes masking of positive flavors</td>
+  </tr>
+</table>
+</div>
+
+<p>This coupling means that an integrated protocol&mdash;attacking all four barriers in the correct sequence&mdash;could produce compound acceleration beyond what any single intervention achieves alone.</p>
+
+<h3>5.1 Proposed 8-Week Protocol</h3>
+
+<div class="table-wrap">
+<table>
+  <tr>
+    <th>Week</th>
+    <th>Operation</th>
+    <th>Proof</th>
+    <th>Targets</th>
+  </tr>
+  <tr>
+    <td><strong>0</strong></td>
+    <td>Distillation through copper-packed column; Cu/AC cartridge post-treatment</td>
+    <td>65% ABV</td>
+    <td><span class="barrier-tag sulfur">SULFUR</span> removal at source</td>
+  </tr>
+  <tr>
+    <td><strong>1&ndash;3</strong></td>
+    <td>Ultrasonic wood extraction (40 kHz, charred American oak staves); silicone membrane O<sub>2</sub> delivery (0.05 mL/L/day)</td>
+    <td>65% ABV</td>
+    <td>Phenolic extraction + <span class="barrier-tag oxidation">OXIDATION</span> cascade initiation</td>
+  </tr>
+  <tr>
+    <td><strong>3&ndash;4</strong></td>
+    <td>Remove wood; recirculate through Amberlyst-15 catalyst bed at 50&deg;C with molecular sieve 3A water trap</td>
+    <td>65% ABV</td>
+    <td><span class="barrier-tag ester">ESTER</span> equilibrium acceleration</td>
+  </tr>
+  <tr>
+    <td><strong>4&ndash;5</strong></td>
+    <td>Dilute to 37% ABV using deionized water under turbulent mixing (FNP-style antisolvent step)</td>
+    <td>37% ABV</td>
+    <td><span class="barrier-tag cluster">CLUSTER</span> nucleation via supersaturation</td>
+  </tr>
+  <tr>
+    <td><strong>5&ndash;7</strong></td>
+    <td>Freeze-thaw cycling: &ndash;15&deg;C (12 hr) &rarr; 25&deg;C (12 hr), 10&ndash;15 cycles. Optional: seed with 1&ndash;5% aged whiskey</td>
+    <td>37% ABV</td>
+    <td><span class="barrier-tag cluster">CLUSTER</span> growth and annealing</td>
+  </tr>
+  <tr>
+    <td><strong>7&ndash;8</strong></td>
+    <td>Continue membrane O<sub>2</sub>; final proof adjustment; rest</td>
+    <td>40&ndash;46% ABV</td>
+    <td>Oxidation cascade completion; equilibration</td>
+  </tr>
+</table>
+</div>
+
+<p>Total elapsed time: <strong>8 weeks</strong>. Conventional equivalent: <strong>5&ndash;10 years</strong> in barrel.</p>
+
+<h3>5.2 Validation Framework</h3>
+
+<p>Any accelerated aging protocol is only as credible as its analytical validation. The following measurements can objectively assess whether the protocol produces spirit equivalent to naturally aged whiskey:</p>
+
+<div class="table-wrap">
+<table>
+  <tr>
+    <th>Measurement</th>
+    <th>Target</th>
+    <th>Method</th>
+    <th>Barrier Assessed</th>
+  </tr>
+  <tr>
+    <td>Ester profile</td>
+    <td>Match C2&ndash;C10 ethyl ester concentrations of 5&ndash;10 yr whiskey</td>
+    <td>GC-MS headspace SPME</td>
+    <td><span class="barrier-tag ester">ESTER</span></td>
+  </tr>
+  <tr>
+    <td>Volatile sulfur</td>
+    <td>DMS &lt;25 ppb, DMDS &lt;12 ppb, DMTS &lt;0.01 ppb</td>
+    <td>GC-PFPD</td>
+    <td><span class="barrier-tag sulfur">SULFUR</span></td>
+  </tr>
+  <tr>
+    <td>Small cluster population</td>
+    <td>SAXS intensity at q &asymp; 0.8 nm<sup>&ndash;1</sup> within 50% of 10-yr reference</td>
+    <td>SAXS (synchrotron or bench-top)</td>
+    <td><span class="barrier-tag cluster">CLUSTER</span></td>
+  </tr>
+  <tr>
+    <td>Cluster size distribution</td>
+    <td>Population at 1&ndash;3 nm R<sub>h</sub></td>
+    <td>DLS</td>
+    <td><span class="barrier-tag cluster">CLUSTER</span></td>
+  </tr>
+  <tr>
+    <td>H-bond strength</td>
+    <td>OH chemical shift comparable to aged reference</td>
+    <td><sup>1</sup>H NMR</td>
+    <td><span class="barrier-tag cluster">CLUSTER</span></td>
+  </tr>
+  <tr>
+    <td>Oxidation state</td>
+    <td>Acetaldehyde/acetic acid ratio; total phenolics</td>
+    <td>GC-FID; Folin-Ciocalteu</td>
+    <td><span class="barrier-tag oxidation">OXIDATION</span></td>
+  </tr>
+  <tr>
+    <td>Sensory</td>
+    <td>Triangle test vs. aged reference; mellowness rating</td>
+    <td>Trained panel, n &ge; 12</td>
+    <td>All</td>
+  </tr>
+</table>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6: OPEN QUESTIONS                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2 id="open">6. Open Questions</h2>
+
+<ol>
+  <li><strong>Are the Morishima small clusters equilibrium or kinetically trapped?</strong> If equilibrium: lowering ethanol should produce them directly. If kinetically trapped: the formation pathway matters, and seeding becomes critical. No data exists on this question.</li>
+  <li><strong>What is the CAC of whiskey extractives at 40% ABV?</strong> The critical aggregation concentration of gallic acid, vanillin, ellagic acid, and syringaldehyde mixtures in hydroalcoholic solution has never been measured. This is the single most important missing datum for the clustering barrier.</li>
+  <li><strong>Do rapidly formed clusters match slowly formed ones?</strong> Clusters formed by FNP or freeze-thaw might have different internal packing (molecular arrangement, H-bond network geometry) than those formed over decades. Different structure could mean different sensory properties&mdash;potentially better, potentially worse.</li>
+  <li><strong>What is the role of oxidation in cluster formation?</strong> Wood extractives undergo oxidation during aging (e.g., gallic acid dimerizing to ellagic acid). The cluster-forming species may be oxidation products, not the originally extracted molecules. This couples <span class="barrier-tag oxidation">OXIDATION</span> to <span class="barrier-tag cluster">CLUSTER</span> in a way the integrated protocol must respect.</li>
+  <li><strong>Does the ester profile affect cluster stability?</strong> Long-chain ethyl esters (C12&ndash;C18) are amphiphilic and participate in both chill haze formation and possibly Morishima clustering. The esterification step may be prerequisite for optimal cluster formation, imposing a strict order constraint on the protocol.</li>
+</ol>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- REFERENCES                                            -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<h2 id="refs">References</h2>
+
+<ol class="ref-list">
+  <li id="r1">Piggott JR, Conner JM. (2003) &ldquo;Whiskies.&rdquo; In: <em>Fermented Beverage Production</em>, 2nd ed. Springer. Ester formation kinetics and maturation chemistry.</li>
+  <li id="r2">Mosedale JR, Puech J-L. (1998) &ldquo;Wood maturation of distilled beverages.&rdquo; <em>Trends Food Sci Technol</em> 9:95&ndash;101. <a href="https://doi.org/10.1016/S0924-2244(98)00024-7">DOI</a></li>
+  <li id="r3">Margolese D, Melero JA, Christiansen SC, et al. (2000) &ldquo;Direct syntheses of ordered SBA-15 mesoporous silica containing sulfonic acid groups.&rdquo; <em>Chem Mater</em> 12:2448&ndash;2459. <a href="https://doi.org/10.1021/cm0012460">DOI</a></li>
+  <li id="r4">Liu Y, Lotero E, Goodwin JG. (2006) &ldquo;Effect of water on sulfonic acid catalyzed esterification.&rdquo; <em>J Catal</em> 243:221&ndash;228. <a href="https://doi.org/10.1016/j.jcat.2006.07.013">DOI</a></li>
+  <li id="r5">U.S. FDA, 21 CFR &sect;173.25. &ldquo;Ion-exchange resins.&rdquo; Food-grade processing aids. <a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-173/subpart-A/section-173.25">eCFR</a></li>
+  <li id="r6">Harmer MA, Sun Q. (2001) &ldquo;Solid acid catalysis using ion-exchange resins.&rdquo; <em>Appl Catal A</em> 221:45&ndash;62. <a href="https://doi.org/10.1016/S0926-860X(01)00794-3">DOI</a></li>
+  <li id="r7">Sundmacher K, Kienle A, eds. (2003) <em>Reactive Distillation: Status and Future Directions.</em> Wiley-VCH. ISBN 3-527-30579-3.</li>
+  <li id="r8">Zhang B, Zeng X, Grimi N, et al. (2022) &ldquo;PEF applications in the fermented wine industry.&rdquo; <em>Front Nutr</em> 9:1048902. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9668251/">PMC</a></li>
+  <li id="r9">Hoydonckx HE, De Vos DE, Chavan SA, Jacobs PA. (2004) &ldquo;Esterification and transesterification of renewable chemicals.&rdquo; <em>Top Catal</em> 27:83&ndash;96. <a href="https://doi.org/10.1023/B:TOCA.0000013543.96438.1a">DOI</a></li>
+  <li id="r10">Adlercreutz P. (2013) &ldquo;Immobilised enzymes in reactions with organic solvents.&rdquo; <em>Chem Soc Rev</em> 42:6406&ndash;6436. <a href="https://doi.org/10.1039/c3cs60042h">DOI</a></li>
+  <li id="r11">Wanikawa A, Sugimoto K. (2022) &ldquo;Sulfur-containing flavor compounds in whisky.&rdquo; <em>Molecules</em> 27:1747. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8911989/">PMC</a></li>
+  <li id="r12">Harrison B, Fagnen O, Jack F, Brosnan J. (2011) &ldquo;The impact of copper in different parts of malt whisky pot stills on new make spirit composition and aroma.&rdquo; <em>J Inst Brew</em> 117:106&ndash;112. <a href="https://doi.org/10.1002/j.2050-0416.2011.tb00450.x">DOI</a></li>
+  <li id="r13">Bashkova S, Bagreev A, Bandosz TJ. (2002) &ldquo;Adsorption of dimethyl sulfide on activated carbons modified by Cu.&rdquo; <em>Langmuir</em> 18:1952&ndash;1960. <a href="https://doi.org/10.1021/la010680a">DOI</a></li>
+  <li id="r14">Hasan Z, Jhung SH. (2015) &ldquo;Removal of hazardous organics from water using metal-organic frameworks (MOFs).&rdquo; <em>J Hazard Mater</em> 283:329&ndash;339. <a href="https://doi.org/10.1016/j.jhazmat.2014.09.046">DOI</a></li>
+  <li id="r15">Rajendran A, Cui T, Fan H, et al. (2020) &ldquo;A comprehensive review on oxidative desulfurization catalysts.&rdquo; <em>J Mater Chem A</em> 8:2246&ndash;2285. <a href="https://doi.org/10.1039/C9TA12555H">DOI</a></li>
+  <li id="r16">Morishima T, Ueda T, Utsunomiya H. (2019) &ldquo;Elucidation of the formation of clusters in whisky during the maturation process.&rdquo; <em>J Food Sci</em> 84:59&ndash;64. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6590247/">PMC</a></li>
+  <li id="r17">Utsunomiya H, Fukui K, Kosaka T, Ota N. (2006) &ldquo;The influence of phenolic compounds derived from the wooden barrel on hydrogen bonding in whisky.&rdquo; <em>J Food Sci</em> 70:C533&ndash;C540. <a href="https://doi.org/10.1111/j.1365-2621.2005.tb11516.x">DOI</a></li>
+  <li id="r18">Dixit S, Crain J, Poon WCK, et al. (2002) &ldquo;Molecular segregation observed in a concentrated alcohol-water solution.&rdquo; <em>Nature</em> 416:829&ndash;832. <a href="https://doi.org/10.1038/416829a">DOI</a></li>
+  <li id="r19">Akhtar MJ, Alvi AH, Ahmad I, Asghar MN. (2013) &ldquo;Effect of ethanol on the micellization of sodium dodecyl sulfate.&rdquo; <em>Saudi Pharm J</em> 21:79&ndash;84. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3683138/">PMC</a></li>
+  <li id="r20">Ethanol-water clusters and structural transitions. <em>Matter</em> (2024). <a href="https://www.cell.com/matter/fulltext/S2590-2385(24)00149-8">Cell Press</a></li>
+  <li id="r21">Johnson BK, Prud&rsquo;homme RK. (2003) &ldquo;Flash NanoPrecipitation of organic actives using block copolymer stabilizers.&rdquo; <em>AIChE J</em> 49:2264&ndash;2282. <a href="https://doi.org/10.1002/aic.690490905">DOI</a></li>
+  <li id="r22">Shin M, Kim K, Shim W, et al. (2016) &ldquo;Tannic acid as a multifunctional building block for nanoparticle engineering.&rdquo; <em>Adv Funct Mater</em> 26:689&ndash;700. <a href="https://doi.org/10.1002/adfm.201503316">DOI</a></li>
+  <li id="r23">Pham BT, Barner-Kowollik C, Stenzel MH, et al. (2019) &ldquo;In situ SAXS study of micellization kinetics.&rdquo; <em>ACS Nano</em> 13:5557. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6777845/">PMC</a></li>
+  <li id="r24">Zemb TN, Klossek M, Lopian T, et al. (2016) &ldquo;How to explain microemulsions formed by solvent mixtures without conventional surfactants.&rdquo; <em>PNAS</em> 113:4260&ndash;4265. <a href="https://doi.org/10.1073/pnas.1515708113">DOI</a></li>
+  <li id="r25">Menor-Salv&aacute;n C, Mar&iacute;n-Yaseli MR. (2012) &ldquo;Prebiotic chemistry in eutectic solutions.&rdquo; <em>Chem Soc Rev</em> 41:5404. <a href="https://doi.org/10.1039/c2cs35060b">DOI</a></li>
+  <li id="r26">Peter R, Vollmer I, Grosskopf S, et al. (2023) &ldquo;Freeze-thaw-driven content mixing between protocells.&rdquo; <em>ChemSystemsChem</em> 5:e202200040. <a href="https://doi.org/10.1002/syst.202300008">DOI</a></li>
+  <li id="r27">Li J, Suo Z, Vlassak JJ. (2017) &ldquo;Stiff, strong, yet tough hydrogels formed by freeze-thaw cycling.&rdquo; <em>Macromolecules</em> 50:2742. <a href="https://doi.org/10.1021/acs.macromol.7b00069">DOI</a></li>
+  <li id="r28">Ono T, Shinkai S, Sada K. (2015) &ldquo;Living supramolecular polymerization realized through a biomimetic approach.&rdquo; <em>Science</em> 346:1159. <a href="https://doi.org/10.1126/science.aac7422">DOI</a></li>
+  <li id="r29">Cruz JC, Mafra I, Lopes da Silva JA, et al. (2022) &ldquo;Ultrasonic-assisted extraction of phenolics from oak wood.&rdquo; <em>Foods</em> 11:382. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8870842/">PMC</a></li>
+  <li id="r30">du Toit WJ, Marais J, Pretorius IS, du Toit M. (2006) &ldquo;Oxygen in must and wine: a review.&rdquo; <em>S Afr J Enol Vitic</em> 27:76&ndash;94. <a href="https://doi.org/10.21548/27-1-1610">DOI</a></li>
+  <li id="r31">U.S. FDA, 21 CFR &sect;177.2600. &ldquo;Rubber articles intended for repeated use&rdquo; (including silicone). <a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-177/subpart-C/section-177.2600">eCFR</a></li>
+  <li id="r32">Pignatello JJ, Oliveros E, MacKay A. (2006) &ldquo;Advanced oxidation processes: Fenton reaction.&rdquo; <em>Crit Rev Environ Sci Technol</em> 36:1&ndash;84. <a href="https://doi.org/10.1080/10643380500326564">DOI</a></li>
+  <li id="r33">Zhou Y, Gao Y, Li X, Yan J. (2017) &ldquo;Effect of electrochemical treatment on the quality of Baijiu.&rdquo; <em>Food Chem</em> 233:390&ndash;398. <a href="https://doi.org/10.1016/j.foodchem.2017.04.140">DOI</a></li>
+  <li id="r34">Hosono M, Arai I, Aoyama S. (2000) &ldquo;The effect of ultrasonic irradiation on aging of distilled spirits.&rdquo; <em>J Food Sci</em> 65:830&ndash;833. <a href="https://doi.org/10.1111/j.1365-2621.2000.tb13597.x">DOI</a></li>
+  <li id="r35">Cavalieri F, Colombo E, Vibrational spectroscopic characterization of sonochemical products. (2021) <em>Nanoscale Advances</em> 3:4540. <a href="https://doi.org/10.1039/d1na00496d">DOI</a></li>
+</ol>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- CITATION POPUP                                        -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div id="cite-popup">
+  <span id="cite-close">&times;</span>
+  <div id="cite-source"></div>
+  <div id="cite-excerpt"></div>
+  <a id="cite-link" href="#" target="_blank" rel="noopener">View source &rarr;</a>
+</div>
+
+<footer>
+  <p>Breaking the Maturation Barriers &bull; A Sci-Lead research report<br>
+  Companion to <a href="index.html">Optimizing the Azeotrope Curve for Flavor Compound Recovery</a><br>
+  Generated March 2026. All hypotheses are testable predictions, not established fact.</p>
+</footer>
+
+<script>
+var refs = {
+  1: {
+    source: "Piggott & Conner (2003), Fermented Beverage Production",
+    excerpt: "Fischer esterification of acetic, hexanoic, octanoic, and decanoic acids with ethanol proceeds slowly at ambient temperature in barrel-aged spirits. The equilibrium constant for ethyl acetate formation is approximately 4.0 at 25\u00b0C, but the uncatalyzed rate at spirit pH (3.5\u20134.5) requires 1\u20133 years to approach equilibrium.",
+    url: "#r1"
+  },
+  2: {
+    source: "Mosedale & Puech (1998), Trends Food Sci Technol",
+    excerpt: "Wood maturation involves slow esterification catalyzed by traces of ellagitannin-derived acids leached from the barrel. The process is kinetically limited at ambient temperature, with ester concentrations increasing approximately linearly over the first 3\u20135 years of aging.",
+    url: "https://doi.org/10.1016/S0924-2244(98)00024-7"
+  },
+  3: {
+    source: "Margolese et al. (2000), Chem Mater",
+    excerpt: "SBA-15 mesoporous silica functionalized with propylsulfonic acid groups via co-condensation. The 6\u201310 nm ordered mesopore channels allow diffusion of bulky organic substrates to internal acid sites. The propyl tether creates a hydrophobic microenvironment that resists water poisoning.",
+    url: "https://doi.org/10.1021/cm0012460"
+  },
+  4: {
+    source: "Liu, Lotero & Goodwin (2006), J Catal",
+    excerpt: "Esterification of acetic acid with ethanol over sulfonic acid functionalized mesoporous silica. Water inhibition is significant but manageable: at 10% water content, conversion decreases from 95% to 72% at 60\u00b0C/4h. The SBA-15-PrSO3H catalyst retains activity over multiple cycles despite water presence.",
+    url: "https://doi.org/10.1016/j.jcat.2006.07.013"
+  },
+  5: {
+    source: "U.S. FDA 21 CFR \u00a7173.25",
+    excerpt: "Ion-exchange resins may be safely used in the treatment of food, including alcoholic beverages, provided the resins are prepared from monomers listed in the regulation and meet extractives limitations. Includes sulfonated polystyrene-divinylbenzene copolymers (Amberlyst, Dowex).",
+    url: "https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-173/subpart-A/section-173.25"
+  },
+  6: {
+    source: "Harmer & Sun (2001), Appl Catal A",
+    excerpt: "Sulfonated ion-exchange resins (Amberlyst-15, Nafion) catalyze esterification with activities comparable to homogeneous sulfuric acid but with the advantage of heterogeneous recovery. Turnover frequencies for ethyl acetate formation: 0.5\u20132.0 mol/(mol H+\u00b7h) at 60\u00b0C.",
+    url: "https://doi.org/10.1016/S0926-860X(01)00794-3"
+  },
+  7: {
+    source: "Sundmacher & Kienle, eds. (2003), Reactive Distillation",
+    excerpt: "Continuous reactive distillation achieves >96% conversion for esterification by simultaneously removing the water co-product. Residence times of 10\u201320 minutes in packed reactive sections with acid resin catalysts. [Abstract summary \u2014 textbook reference]",
+    url: "#r7"
+  },
+  8: {
+    source: "Zhang et al. (2022), Front Nutr",
+    excerpt: "PEF treatment at 6\u201340 kV/cm reduced activation energy for catechin/epicatechin condensation from 41.59 to 28.98 kJ/mol. Grenache wines treated at 4 kV/cm showed proanthocyanidin polymerization consistent with natural aging. PEF-treated Merlot achieved 6-month equivalent color/polyphenol profiles in 3 days.",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9668251/"
+  },
+  9: {
+    source: "Hoydonckx et al. (2004), Top Catal",
+    excerpt: "Activation energies for uncatalyzed Fischer esterification of simple carboxylic acids with primary alcohols range from 50\u201370 kJ/mol in solution. Solid acid catalysts reduce this to 30\u201345 kJ/mol. [Abstract summary \u2014 full text paywalled]",
+    url: "https://doi.org/10.1023/B:TOCA.0000013543.96438.1a"
+  },
+  10: {
+    source: "Adlercreutz (2013), Chem Soc Rev",
+    excerpt: "Lipase B from Candida antarctica (CALB) requires water activity (aw) below 0.3 for efficient ester synthesis in non-aqueous media. Above aw \u2248 0.5, the enzyme preferentially catalyzes hydrolysis rather than synthesis. Aqueous ethanol at 40\u201365% ABV has aw > 0.7, making it hostile to lipase-catalyzed esterification.",
+    url: "https://doi.org/10.1039/c3cs60042h"
+  },
+  11: {
+    source: "Wanikawa & Sugimoto (2022), Molecules",
+    excerpt: "Sulfur compounds in whisky (DMS, DMDS, DMTS) decrease during maturation via charcoal adsorption on the charred barrel surface. Full removal of immature sulfury character requires 5\u20138 years in heavily charred barrels. Rate varies by compound and depends on sequential chemical cascades.",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8911989/"
+  },
+  12: {
+    source: "Harrison et al. (2011), J Inst Brew",
+    excerpt: "Copper surfaces in pot stills reduce volatile sulfur compounds (DMS, DMDS, H2S) in the vapor phase during distillation. Cu2+ ions catalyze decomposition of thiols. The extent of copper contact correlates with reduced sulfury notes in new make spirit.",
+    url: "https://doi.org/10.1002/j.2050-0416.2011.tb00450.x"
+  },
+  13: {
+    source: "Bashkova, Bagreev & Bandosz (2002), Langmuir",
+    excerpt: "Activated carbons impregnated with copper salts show enhanced DMS adsorption capacity (3\u20135x vs. unmodified AC) via both physisorption in micropores and chemisorption at Cu2+ sites. The Cu\u2013S coordination bond (HSAB soft acid\u2013soft base) provides selectivity over O-donor compounds.",
+    url: "https://doi.org/10.1021/la010680a"
+  },
+  14: {
+    source: "Hasan & Jhung (2015), J Hazard Mater",
+    excerpt: "HKUST-1 (Cu3(BTC)2) achieves exceptionally high adsorption capacity for organosulfur compounds via direct coordination of sulfur lone pairs to open Cu2+ metal sites in the framework. Capacity for DMS reaches 17 wt% under ambient conditions. Selectivity over water and light alcohols is high due to HSAB preference.",
+    url: "https://doi.org/10.1016/j.jhazmat.2014.09.046"
+  },
+  15: {
+    source: "Rajendran et al. (2020), J Mater Chem A",
+    excerpt: "Photocatalytic oxidative desulfurization using TiO2 under UV irradiation converts organosulfides (DMS, thiophenes) to their corresponding sulfoxides and sulfones, which are non-volatile and odorless. Quantum efficiency depends on catalyst loading, light intensity, and substrate concentration.",
+    url: "https://doi.org/10.1039/C9TA12555H"
+  },
+  16: {
+    source: "Morishima, Ueda & Utsunomiya (2019), J Food Sci",
+    excerpt: "SAXS and DLS reveal two populations of supramolecular clusters in aged whiskies: small clusters (Rg \u2248 0.75 nm) whose concentration increases linearly with maturation age, and large clusters (Rh \u2248 100 nm) whose concentration is independent of age. Small clusters are formed by amphiphilic wood extractives and are crucial for obtaining flavorful whiskies.",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6590247/"
+  },
+  17: {
+    source: "Utsunomiya et al. (2006), J Food Sci",
+    excerpt: "1H NMR chemical shift of the OH signal in aged whiskies indicates stronger hydrogen bonding than in unaged spirit. The phenolic components derived from wooden barrels dominate the hydrogen bonding network. Formation of high-dimensional molecular structure contributes to the development of mellowness.",
+    url: "https://doi.org/10.1111/j.1365-2621.2005.tb11516.x"
+  },
+  18: {
+    source: "Dixit et al. (2002), Nature",
+    excerpt: "Neutron diffraction with isotopic substitution reveals molecular segregation in concentrated alcohol-water solutions. At ethanol mole fraction xEtOH \u2248 0.10\u20130.15, the solution shows maximum concentration fluctuations and clustering tendency, corresponding to the strongest hydrophobic effect.",
+    url: "https://doi.org/10.1038/416829a"
+  },
+  19: {
+    source: "Akhtar et al. (2013), Saudi Pharm J",
+    excerpt: "Addition of ethanol to aqueous surfactant solutions increases the critical micelle concentration (CMC). At 30% v/v ethanol, CMC of SDS increases 4-fold compared to pure water. Ethanol disrupts the hydrophobic driving force for micellization by solvating hydrocarbon chains.",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3683138/"
+  },
+  20: {
+    source: "Ethanol-water clusters (2024), Matter",
+    excerpt: "Ethanol-water mixtures exhibit distinct structural transitions as a function of composition. At xEtOH \u2248 0.20 (\u224846% ABV), the solvent transitions from tetrahedral water-rich clusters to hydrogen-bonded chain structures. This transition corresponds to the chill filtration threshold in Scotch whisky.",
+    url: "https://www.cell.com/matter/fulltext/S2590-2385(24)00149-8"
+  },
+  21: {
+    source: "Johnson & Prud'homme (2003), AIChE J",
+    excerpt: "Flash NanoPrecipitation (FNP) achieves nanoparticle self-assembly in milliseconds by impinging-jet mixing of an organic solvent stream with an aqueous anti-solvent. Mixing timescales of 1\u20132 ms drive supersaturation and nucleation far faster than equilibrium processes allow.",
+    url: "https://doi.org/10.1002/aic.690490905"
+  },
+  22: {
+    source: "Shin et al. (2016), Adv Funct Mater",
+    excerpt: "Tannic acid serves as a multifunctional building block for nanoparticle engineering via hydrogen bonding, metal coordination, and hydrophobic interactions. Tannic acid nanoparticles form rapidly upon antisolvent mixing, with particle size controlled by mixing conditions. [Abstract summary \u2014 full text paywalled]",
+    url: "https://doi.org/10.1002/adfm.201503316"
+  },
+  23: {
+    source: "Pham et al. (2019), ACS Nano",
+    excerpt: "In situ SAXS during microfluidic mixing reveals three stages of polymer micellization: nucleation (aggregates of Rg \u2248 35 \u00c5 when supersaturation > 1), fusion (70\u2013300 ms, exponential molecular weight increase via merging), and insertion (slower individual chain addition to mature micelles).",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6777845/"
+  },
+  24: {
+    source: "Zemb et al. (2016), PNAS",
+    excerpt: "Surfactant-free microemulsions form spontaneously in ternary mixtures of water, ethanol, and a hydrophobic component. The 'pre-Ouzo' regime features nanometer-scale aggregates stabilized by ethanol at the interface. This explains the spontaneous nanoemulsion formation when whiskey is diluted with water.",
+    url: "https://doi.org/10.1073/pnas.1515708113"
+  },
+  25: {
+    source: "Menor-Salv\u00e1n & Mar\u00edn-Yaseli (2012), Chem Soc Rev",
+    excerpt: "Freeze-thaw cycling in eutectic solutions drives condensation, polymerization, and self-assembly at rates far exceeding room-temperature equivalents. Ice crystal formation excludes solutes, creating concentrated microphases where reaction rates are dramatically enhanced.",
+    url: "https://doi.org/10.1039/c2cs35060b"
+  },
+  26: {
+    source: "Peter et al. (2023), ChemSystemsChem",
+    excerpt: "Freeze-thaw cycles promote efficient content mixing and structural reorganization between giant unilamellar vesicles (model protocells). Fatty acid amphiphiles self-assemble into supramolecular vesicle structures under these cryoconcentration conditions.",
+    url: "https://doi.org/10.1002/syst.202300008"
+  },
+  27: {
+    source: "Li, Suo & Vlassak (2017), Macromolecules",
+    excerpt: "Repeated freeze-thaw cycles promote alignment of polymer chains in the unfrozen liquid microphase between ice crystals, driving intermolecular aggregation and dense network formation. This mechanism is directly analogous to amphiphilic cluster formation in cryoconcentrated phenolic solutions.",
+    url: "https://doi.org/10.1021/acs.macromol.7b00069"
+  },
+  28: {
+    source: "Ono, Shinkai & Sada (2015), Science",
+    excerpt: "Living supramolecular polymerization produces one-dimensional fibers with controlled length and narrow dispersity from pre-formed seed aggregates. The nucleation barrier is bypassed by seed addition, enabling rapid and directed growth of supramolecular polymers.",
+    url: "https://doi.org/10.1126/science.aac7422"
+  },
+  29: {
+    source: "Cruz et al. (2022), Foods",
+    excerpt: "Ultrasound at 40 kHz, 50\u2013100 W/L accelerated phenolic extraction from oak wood into spirits. Sonicated samples achieved 3.2x more vanillin and 2.7x more cis-oak lactone vs. static chips. Peleg kinetic model fit with R\u00b2 \u2265 0.987.",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8870842/"
+  },
+  30: {
+    source: "du Toit et al. (2006), S Afr J Enol Vitic",
+    excerpt: "Oxygen uptake in barrel-aged wine ranges from 0.01\u20130.10 mL O2/L/day depending on stave thickness, wood species, toast level, and ambient humidity. Micro-oxygenation in tanks delivers 1\u20135 mL O2/L/month through controlled diffusers, mimicking barrel oxygen delivery.",
+    url: "https://doi.org/10.21548/27-1-1610"
+  },
+  31: {
+    source: "U.S. FDA 21 CFR \u00a7177.2600",
+    excerpt: "Silicone rubber (polydimethylsiloxane, PDMS) is approved for repeated food-contact use. PDMS has oxygen permeability of approximately 600 Barrers, making it suitable as a membrane for controlled gas delivery into food-contact liquids.",
+    url: "https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-177/subpart-C/section-177.2600"
+  },
+  32: {
+    source: "Pignatello, Oliveros & MacKay (2006), Crit Rev Environ Sci Technol",
+    excerpt: "The Fenton reaction (Fe2+ + H2O2 \u2192 Fe3+ + OH\u2022 + OH\u2013) generates hydroxyl radicals (E\u00b0 = +2.80 V) for oxidation. At sub-stoichiometric Fe2+ doses (\u03bcM), the reaction can be controlled for selective oxidation rather than complete mineralization.",
+    url: "https://doi.org/10.1080/10643380500326564"
+  },
+  33: {
+    source: "Zhou et al. (2017), Food Chem",
+    excerpt: "Electrochemical treatment of Chinese Baijiu at controlled anodic potentials produced changes in volatile composition consistent with aged product. Aldehyde concentrations increased initially then decreased as oxidation proceeded to carboxylic acids, mimicking the natural aging cascade.",
+    url: "https://doi.org/10.1016/j.foodchem.2017.04.140"
+  },
+  34: {
+    source: "Hosono, Arai & Aoyama (2000), J Food Sci",
+    excerpt: "Soft ultrasonic wave treatment (frequency and power below cavitation threshold) produces aging-equivalent effects in spirits. The mechanism appears to involve molecular reorganization of the ethanol-water solvent structure rather than chemical transformation.",
+    url: "https://doi.org/10.1111/j.1365-2621.2000.tb13597.x"
+  },
+  35: {
+    source: "Cavalieri et al. (2021), Nanoscale Advances",
+    excerpt: "During high-frequency ultrasound (0.35\u20131 MHz), the gas-liquid interface of cavitation microbubbles binds amphiphilic aromatic molecules. This initiates hydroxylation, oligomerization, and self-assembly at the bubble surface, forming supramolecular nanostructures.",
+    url: "https://doi.org/10.1039/d1na00496d"
+  }
+};
+
+var popup = document.getElementById('cite-popup');
+var srcEl = document.getElementById('cite-source');
+var excEl = document.getElementById('cite-excerpt');
+var lnkEl = document.getElementById('cite-link');
+var closeEl = document.getElementById('cite-close');
+var activeRef = null;
+
+function showPopup(refNum) {
+  var r = refs[refNum];
+  if (!r) return;
+  if (activeRef === refNum) { hidePopup(); return; }
+  activeRef = refNum;
+  srcEl.textContent = '[' + refNum + '] ' + r.source;
+  excEl.textContent = '"' + r.excerpt + '"';
+  if (r.url && r.url.charAt(0) !== '#') {
+    lnkEl.href = r.url;
+    lnkEl.style.display = 'inline-block';
+  } else {
+    lnkEl.href = '#r' + refNum;
+    lnkEl.textContent = 'Jump to reference \u2193';
+    lnkEl.style.display = 'inline-block';
+  }
+  popup.classList.add('visible');
+}
+
+function hidePopup() {
+  popup.classList.remove('visible');
+  activeRef = null;
+}
+
+closeEl.addEventListener('click', function(e) {
+  e.stopPropagation();
+  hidePopup();
+});
+
+document.addEventListener('click', function(e) {
+  var cite = e.target.closest('.cite');
+  if (cite) {
+    e.preventDefault();
+    e.stopPropagation();
+    showPopup(parseInt(cite.getAttribute('data-ref'), 10));
+    return;
+  }
+  if (popup.classList.contains('visible') && !popup.contains(e.target)) {
+    hidePopup();
+  }
+});
+</script>
+
+</body>
+</html>
