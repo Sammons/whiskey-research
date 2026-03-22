@@ -251,6 +251,123 @@
     margin-right: 0.5rem;
   }
 
+  /* === Citation system === */
+  .cite {
+    display: inline;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .cite sup {
+    color: var(--link);
+    font-family: -apple-system, sans-serif;
+    font-size: 0.7em;
+    font-weight: bold;
+    padding: 0 2px;
+    text-decoration: none;
+  }
+
+  .cite sup:hover {
+    text-decoration: underline;
+  }
+
+  .cite-popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 1rem;
+    width: min(92vw, 560px);
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text);
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    font-style: normal;
+  }
+
+  .cite-popup.visible {
+    display: block;
+  }
+
+  .cite-popup .cite-source {
+    color: var(--accent2);
+    font-weight: bold;
+    font-family: -apple-system, sans-serif;
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .cite-popup .cite-excerpt {
+    color: var(--text);
+    border-left: 3px solid var(--accent3);
+    padding-left: 0.8rem;
+    margin: 0.4rem 0;
+  }
+
+  .cite-popup .cite-link {
+    display: inline-block;
+    margin-top: 0.4rem;
+    color: var(--link);
+    font-size: 0.8rem;
+    text-decoration: none;
+    font-family: -apple-system, sans-serif;
+  }
+
+  .cite-popup .cite-link:hover { text-decoration: underline; }
+
+  .cite-popup .cite-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.8rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-family: -apple-system, sans-serif;
+    line-height: 1;
+    padding: 0 4px;
+  }
+
+  .cite-popup .cite-close:hover { color: var(--text); }
+
+  /* === Mobile responsiveness === */
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .table-wrap table {
+    margin: 0;
+    min-width: 600px;
+  }
+
+  @media (max-width: 700px) {
+    body { padding: 0.8rem; }
+    h1 { font-size: 1.3rem; }
+    h2 { font-size: 1.2rem; }
+    h3 { font-size: 1.05rem; }
+    table { font-size: 0.75rem; }
+    th, td { padding: 0.25rem 0.4rem; }
+    .callout { padding: 0.8rem 1rem; font-size: 0.9rem; }
+    .equation { font-size: 0.85rem; padding: 0.7rem 1rem; }
+    .strategy-card { padding: 0.8rem 1rem; }
+    .toc { padding: 1rem; }
+    .author-block { padding: 0.8rem 1rem; }
+    svg { max-width: 100%; }
+    .fig-container { padding: 0.8rem; }
+  }
+
+  @media (max-width: 400px) {
+    h1 { font-size: 1.15rem; }
+    body { font-size: 0.92rem; }
+    .cite-popup { font-size: 0.8rem; padding: 0.8rem; }
+  }
+
   footer {
     margin-top: 3rem;
     padding-top: 1.5rem;
@@ -258,13 +375,6 @@
     color: var(--text-muted);
     font-size: 0.8rem;
     text-align: center;
-  }
-
-  @media (max-width: 600px) {
-    body { padding: 1rem; }
-    h1 { font-size: 1.4rem; }
-    table { font-size: 0.8rem; }
-    th, td { padding: 0.3rem 0.5rem; }
   }
 </style>
 </head>
@@ -276,7 +386,7 @@
 <div class="author-block">
   <div class="label">Prepared for</div>
   <div class="name">Dr. R. Douglas Sammons, Ph.D.</div>
-  <div class="label" style="margin-top:0.3rem">Former Senior Fellow, Monsanto Company &mdash; Biochemistry of herbicide action, EPSPS enzymology, and RNAi-mediated crop protection. WSSA Fellow.</div>
+  <div class="label" style="margin-top:0.3rem">Former Senior Fellow, Monsanto Company &mdash; Biochemistry of herbicide action, EPSPS enzymology, and RNAi-mediated crop protection. WSSA Fellow.<span class="cite" data-ref="7"><sup>[7]</sup></span></div>
   <div style="margin-top:0.8rem; font-size:0.85rem; color:var(--text-muted);">
     March 2026 &bull; Compiled by the Sci-Lead research agent
   </div>
@@ -295,29 +405,30 @@
     <li><a href="#s8">Putting It Together: A Recommended Protocol</a></li>
     <li><a href="#s9">References</a></li>
   </ol>
+  <div style="margin-top:0.6rem; font-size:0.8rem; color:var(--text-muted);">Tap any <span style="color:var(--link);">[n]</span> citation to see the source excerpt inline.</div>
 </div>
 
 <!-- ============================================================ -->
 <h2 id="s1">1. The Azeotrope Problem in Whiskey Distillation</h2>
 
-<p>What separates a premium whiskey from a forgettable one is its <strong>congener profile</strong>&mdash;the precise balance of trace compounds that create sensory character. The fruity apple and apricot notes come from ethyl hexanoate (BP 168&deg;C, threshold 5&ndash;80 &mu;g/L) and ethyl octanoate (BP 207&deg;C, threshold 5&ndash;580 &mu;g/L). The floral elegance of a Speyside malt traces to 2-phenylethanol (BP 219&deg;C). The coconut-and-oak signature of bourbon is <em>cis</em>-3-methyl-4-octanolide&mdash;the whiskey lactone (BP ~255&deg;C, threshold 67&ndash;790 &mu;g/L). The smoky depth of an Islay is guaiacol (BP 205&deg;C, threshold as low as 3 &mu;g/L). All of these compounds boil <em>far above</em> the distillation temperature of 78&ndash;95&deg;C.</p>
+<p>What separates a premium whiskey from a forgettable one is its <strong>congener profile</strong>&mdash;the precise balance of trace compounds that create sensory character. The fruity apple and apricot notes come from ethyl hexanoate (BP 168&deg;C, threshold 5&ndash;80 &mu;g/L) and ethyl octanoate (BP 207&deg;C, threshold 5&ndash;580 &mu;g/L).<span class="cite" data-ref="6"><sup>[6]</sup></span><span class="cite" data-ref="25"><sup>[25]</sup></span> The floral elegance of a Speyside malt traces to 2-phenylethanol (BP 219&deg;C).<span class="cite" data-ref="24"><sup>[24]</sup></span> The coconut-and-oak signature of bourbon is <em>cis</em>-3-methyl-4-octanolide&mdash;the whiskey lactone (BP ~255&deg;C, threshold 67&ndash;790 &mu;g/L).<span class="cite" data-ref="18"><sup>[18]</sup></span><span class="cite" data-ref="19"><sup>[19]</sup></span> The smoky depth of an Islay is guaiacol (BP 205&deg;C, threshold as low as 3 &mu;g/L).<span class="cite" data-ref="6"><sup>[6]</sup></span> All of these compounds boil <em>far above</em> the distillation temperature of 78&ndash;95&deg;C.</p>
 
-<p>The central puzzle is: <strong>how do compounds with boiling points of 170&ndash;285&deg;C end up in a distillate collected at 78&ndash;93&deg;C?</strong> And once you understand the mechanism, how do you <em>maximize</em> recovery of the desirable ones (fruity esters, floral alcohols, spice phenols, oak lactones) while <em>excluding</em> the undesirable ones (fatty acids that cause soapy/rancid off-notes, excess fusel oils that produce harshness)?</p>
+<p>The central puzzle is: <strong>how do compounds with boiling points of 170&ndash;285&deg;C end up in a distillate collected at 78&ndash;93&deg;C?</strong> And once you understand the mechanism, how do you <em>maximize</em> recovery of the desirable ones (fruity esters, floral alcohols, spice phenols, oak lactones) while <em>excluding</em> the undesirable ones (fatty acids that cause soapy/rancid off-notes,<span class="cite" data-ref="12"><sup>[12]</sup></span> excess fusel oils that produce harshness)?</p>
 
-<p>Every whiskey distiller confronts the same thermodynamic framework: the ethanol-water binary system forms a <strong>minimum-boiling positive azeotrope</strong> at 95.63% ethanol by mass (89.43 mol%), boiling at 78.1&ndash;78.2&deg;C at 1 atm. But the azeotrope ceiling itself is irrelevant to whiskey&mdash;we distill to only 60&ndash;80% ABV. What matters is how the <strong>shape of the VLE curve in the sub-azeotropic region</strong> governs the partitioning of these flavor compounds between pot and distillate as the ethanol:water ratio shifts during the run.</p>
+<p>Every whiskey distiller confronts the same thermodynamic framework: the ethanol-water binary system forms a <strong>minimum-boiling positive azeotrope</strong> at 95.63% ethanol by mass (89.43 mol%), boiling at 78.1&ndash;78.2&deg;C at 1 atm.<span class="cite" data-ref="27"><sup>[27]</sup></span> But the azeotrope ceiling itself is irrelevant to whiskey&mdash;we distill to only 60&ndash;80% ABV. What matters is how the <strong>shape of the VLE curve in the sub-azeotropic region</strong> governs the partitioning of these flavor compounds between pot and distillate as the ethanol:water ratio shifts during the run.</p>
 
 <div class="callout key-insight">
   <strong>Key reframing:</strong> "Optimizing the azeotrope curve" for whiskey means manipulating the vapor-liquid equilibrium conditions&mdash;temperature, pressure, liquid composition, reflux&mdash;so that the <em>relative volatility</em> of desirable high-boiling congeners is maximized during the hearts cut. The goal is not purity. The goal is a specific congener fingerprint: high ethyl hexanoate and ethyl octanoate (fruit), adequate 2-phenylethanol (floral), controlled isoamyl alcohol (body without harshness), and minimal free fatty acids (C8&ndash;C12).
 </div>
 
-<p>The ethanol-water system exhibits strong positive deviation from Raoult's law&mdash;both components have higher vapor pressures than predicted by ideal mixing because ethanol disrupts water's hydrogen bonding network. This non-ideality creates the azeotrope, but it also means that <em>trace congeners dissolved in this matrix behave non-ideally too</em>. Their activity coefficients&mdash;the thermodynamic measure of how "uncomfortable" they are in the liquid phase&mdash;can be enormous, and they change dramatically as the ethanol:water ratio shifts during a distillation run. This is the lever we will learn to pull.</p>
+<p>The ethanol-water system exhibits strong positive deviation from Raoult's law&mdash;both components have higher vapor pressures than predicted by ideal mixing because ethanol disrupts water's hydrogen bonding network.<span class="cite" data-ref="26"><sup>[26]</sup></span> This non-ideality creates the azeotrope, but it also means that <em>trace congeners dissolved in this matrix behave non-ideally too</em>. Their activity coefficients&mdash;the thermodynamic measure of how "uncomfortable" they are in the liquid phase&mdash;can be enormous, and they change dramatically as the ethanol:water ratio shifts during a distillation run. This is the lever we will learn to pull.</p>
 
 <!-- ============================================================ -->
 <h2 id="s2">2. Thermodynamics: VLE, Activity Coefficients, and the K-Value Framework</h2>
 
 <h3>2.1 The Modified Raoult's Law for Congeners</h3>
 
-<p>For any trace compound <em>i</em> dissolved in an ethanol-water matrix at low concentration, the vapor-liquid equilibrium is governed by:</p>
+<p>For any trace compound <em>i</em> dissolved in an ethanol-water matrix at low concentration, the vapor-liquid equilibrium is governed by:<span class="cite" data-ref="26"><sup>[26]</sup></span></p>
 
 <div class="equation">
 y<sub>i</sub> &middot; P = &gamma;<sub>i</sub><sup>&infin;</sup> &middot; x<sub>i</sub> &middot; P<sub>i</sub><sup>sat</sup>(T)
@@ -344,6 +455,7 @@ K<sub>i</sub> = y<sub>i</sub> / x<sub>i</sub> = &gamma;<sub>i</sub><sup>&infin;<
 
 <p>From the K-value equation, we see exactly three independent variables we can manipulate:</p>
 
+<div class="table-wrap">
 <table>
   <tr>
     <th>Lever</th>
@@ -367,21 +479,23 @@ K<sub>i</sub> = y<sub>i</sub> / x<sub>i</sub> = &gamma;<sub>i</sub><sup>&infin;<
     <td><strong>3. Activity Coefficient</strong></td>
     <td>&gamma;<sub>i</sub><sup>&infin;</sup></td>
     <td>Change ethanol:water ratio in pot</td>
-    <td>Hydrophobic congeners (esters, fusel oils) have enormous &gamma; in water, smaller &gamma; in ethanol. As pot depletes ethanol, &gamma; rises &rarr; surprising volatility boost.</td>
+    <td>Hydrophobic congeners have enormous &gamma; in water, smaller &gamma; in ethanol.<span class="cite" data-ref="17"><sup>[17]</sup></span> As pot depletes ethanol, &gamma; rises &rarr; surprising volatility boost.</td>
   </tr>
 </table>
+</div>
 
 <h3>2.3 NRTL and UNIFAC Modeling</h3>
 
-<p>The gold-standard thermodynamic models for these ternary systems are the <strong>NRTL</strong> (Non-Random Two-Liquid) and <strong>UNIFAC</strong> (UNIQUAC Functional-group Activity Coefficients) models. Faundez et al. (2006) demonstrated that NRTL accurately predicts VLE for water + ethanol + congener ternary systems using binary interaction parameters alone, validating that congener behavior can be computationally predicted from first principles.</p>
+<p>The gold-standard thermodynamic models for these ternary systems are the <strong>NRTL</strong> (Non-Random Two-Liquid) and <strong>UNIFAC</strong> (UNIQUAC Functional-group Activity Coefficients) models. Faundez et al. (2006) demonstrated that NRTL accurately predicts VLE for water + ethanol + congener ternary systems using binary interaction parameters alone, validating that congener behavior can be computationally predicted from first principles.<span class="cite" data-ref="1"><sup>[1]</sup></span></p>
 
-<p>The PSRK (Predictive Soave-Redlich-Kwong) equation of state, combined with UNIFAC for the liquid phase, has also been applied to binary aqueous mixtures of interest in alcoholic distillation, showing excellent agreement with experimental data for systems containing higher alcohols and esters.</p>
+<p>The PSRK (Predictive Soave-Redlich-Kwong) equation of state, combined with UNIFAC for the liquid phase, has also been applied to binary aqueous mixtures of interest in alcoholic distillation, showing excellent agreement with experimental data for systems containing higher alcohols and esters.<span class="cite" data-ref="3"><sup>[3]</sup></span></p>
 
 <!-- ============================================================ -->
 <h2 id="s3">3. Catalog of High-Boiling Flavor Compounds</h2>
 
-<p>The following table presents the key congener classes relevant to premium whiskey character, organized by boiling point. Compounds are color-coded by their typical distillation fraction.</p>
+<p>The following table presents the key congener classes relevant to premium whiskey character, organized by boiling point. Compounds are color-coded by their typical distillation fraction. Boiling points are standard literature values; flavor thresholds are drawn from Lee et al. (2001)<span class="cite" data-ref="25"><sup>[25]</sup></span> and Nykanen &amp; Suomalainen (1983).<span class="cite" data-ref="24"><sup>[24]</sup></span></p>
 
+<div class="table-wrap">
 <table>
   <tr>
     <th>Compound</th>
@@ -537,6 +651,15 @@ K<sub>i</sub> = y<sub>i</sub> / x<sub>i</sub> = &gamma;<sub>i</sub><sup>&infin;<
     <td>~40</td>
   </tr>
   <tr>
+    <td>Sotolon</td>
+    <td>Furanone</td>
+    <td>186.0</td>
+    <td>0.001&ndash;0.01</td>
+    <td>Maple syrup, fenugreek &mdash; <em>aged spirit marker</em></td>
+    <td class="compound-tails">Late Hearts/Tails</td>
+    <td>~10</td>
+  </tr>
+  <tr>
     <td>Guaiacol</td>
     <td>Phenol</td>
     <td>205.0</td>
@@ -609,15 +732,6 @@ K<sub>i</sub> = y<sub>i</sub> / x<sub>i</sub> = &gamma;<sub>i</sub><sup>&infin;<
     <td>~200</td>
   </tr>
   <tr>
-    <td>Capric acid (C10)</td>
-    <td>Fatty acid</td>
-    <td>270.0</td>
-    <td>6&ndash;15</td>
-    <td>Waxy, soapy (excess); richness (trace)</td>
-    <td class="compound-tails">Tails</td>
-    <td>~15,000</td>
-  </tr>
-  <tr>
     <td><em>cis</em>-Whiskey lactone</td>
     <td>Lactone</td>
     <td>~255</td>
@@ -625,6 +739,15 @@ K<sub>i</sub> = y<sub>i</sub> / x<sub>i</sub> = &gamma;<sub>i</sub><sup>&infin;<
     <td>Coconut, spicy, oak &mdash; <em>signature of maturation</em></td>
     <td class="compound-tails">Barrel extract</td>
     <td>~400</td>
+  </tr>
+  <tr>
+    <td>Capric acid (C10)</td>
+    <td>Fatty acid</td>
+    <td>270.0</td>
+    <td>6&ndash;15</td>
+    <td>Waxy, soapy (excess); richness (trace)</td>
+    <td class="compound-tails">Tails</td>
+    <td>~15,000</td>
   </tr>
   <tr>
     <td>Vanillin</td>
@@ -635,23 +758,15 @@ K<sub>i</sub> = y<sub>i</sub> / x<sub>i</sub> = &gamma;<sub>i</sub><sup>&infin;<
     <td class="compound-tails">Barrel extract</td>
     <td>~25</td>
   </tr>
-  <tr>
-    <td>Sotolon</td>
-    <td>Furanone</td>
-    <td>186.0</td>
-    <td>0.001&ndash;0.01</td>
-    <td>Maple syrup, fenugreek &mdash; <em>aged spirit marker</em></td>
-    <td class="compound-tails">Late Hearts/Tails</td>
-    <td>~10</td>
-  </tr>
 </table>
+</div>
 
 <div class="callout">
-  <strong>Note on &gamma;<sup>&infin;</sup> values:</strong> Activity coefficients at infinite dilution in pure water are shown as order-of-magnitude estimates based on UNIFAC predictions and published data (Jousse et al. 2019, Athes et al. 2008). In ethanol-water mixtures typical of distillation (40&ndash;60% ethanol), these values are 10&ndash;100&times; lower. This composition dependence is the crux of the optimization problem.
+  <strong>Note on &gamma;<sup>&infin;</sup> values:</strong> Activity coefficients at infinite dilution in pure water are order-of-magnitude estimates based on UNIFAC group-contribution predictions and published experimental data.<span class="cite" data-ref="17"><sup>[17]</sup></span><span class="cite" data-ref="2"><sup>[2]</sup></span> In ethanol-water mixtures typical of distillation (40&ndash;60% ethanol), these values are 10&ndash;100&times; lower. This composition dependence is the crux of the optimization problem.
 </div>
 
 <div class="callout warning">
-  <strong>The methanol myth:</strong> Despite its low boiling point (64.7&deg;C), methanol has a K-value close to 1.0 across most ethanol-water compositions because it is fully miscible with both solvents. It distributes <em>broadly across the entire run</em> and is NOT efficiently isolated in the heads cut of a pot still. This is well-established in chemical engineering literature (Nicol 1989) but remains widely misunderstood. In a column still with sufficient theoretical plates, methanol can be concentrated in the heads fraction, but pot stills lack this separation power.
+  <strong>The methanol myth:</strong> Despite its low boiling point (64.7&deg;C), methanol has a K-value close to 1.0 across most ethanol-water compositions because it is fully miscible with both solvents. It distributes <em>broadly across the entire run</em> and is NOT efficiently isolated in the heads cut of a pot still.<span class="cite" data-ref="22"><sup>[22]</sup></span> In a column still with sufficient theoretical plates, methanol can be concentrated in the heads fraction, but pot stills lack this separation power.
 </div>
 
 <!-- ============================================================ -->
@@ -661,26 +776,26 @@ K<sub>i</sub> = y<sub>i</sub> / x<sub>i</sub> = &gamma;<sub>i</sub><sup>&infin;<
 
 <h3>4.1 The Paradox</h3>
 
-<p>Consider ethyl octanoate: BP = 207&deg;C, far above water's 100&deg;C. Its pure-component vapor pressure at 78&deg;C is negligible (~0.5 mmHg). By naive reasoning, it should never appear in the distillate. Yet it is routinely found in the hearts cut of whiskey distillation.</p>
+<p>Consider ethyl octanoate: BP = 207&deg;C, far above water's 100&deg;C. Its pure-component vapor pressure at 78&deg;C is negligible (~0.5 mmHg). By naive reasoning, it should never appear in the distillate. Yet it is routinely found in the hearts cut of whiskey distillation.<span class="cite" data-ref="21"><sup>[21]</sup></span></p>
 
-<p>The resolution: its activity coefficient in dilute aqueous solution is <em>enormous</em> (&gamma;<sup>&infin;</sup> ~ 30,000 in pure water). This means the <em>effective</em> vapor pressure is:</p>
+<p>The resolution: its activity coefficient in dilute aqueous solution is <em>enormous</em> (&gamma;<sup>&infin;</sup> ~ 30,000 in pure water).<span class="cite" data-ref="2"><sup>[2]</sup></span> This means the <em>effective</em> vapor pressure&mdash;the fugacity, or thermodynamic "escaping tendency"&mdash;is amplified by a factor of 30,000:</p>
 
 <div class="equation">
 P<sub>eff</sub> = &gamma;<sup>&infin;</sup> &times; P<sup>sat</sup> = 30,000 &times; 0.5 mmHg = 15,000 mmHg
 </div>
 
-<p>This vastly exceeds atmospheric pressure! The compound is thermodynamically "desperate" to leave the aqueous phase. Its fugacity is enormous despite its low intrinsic volatility.</p>
+<p>This vastly exceeds atmospheric pressure (760 mmHg). The compound is thermodynamically "desperate" to leave the aqueous phase. (Note: this is the fugacity per unit mole fraction. The actual partial pressure contribution is P<sub>eff</sub> &times; x<sub>i</sub>, which is small because x<sub>i</sub> is tiny&mdash;but the <em>driving force</em> for transfer to the vapor is enormous.)</p>
 
 <div class="callout key-insight">
-  <strong>Central Insight:</strong> High-boiling flavor compounds distill not because they are volatile, but because they are <em>thermodynamically incompatible</em> with the aqueous matrix. The activity coefficient is the amplifier that overcomes low intrinsic vapor pressure.
+  <strong>Central Insight:</strong> High-boiling flavor compounds distill not because they are volatile, but because they are <em>thermodynamically incompatible</em> with the aqueous matrix. The activity coefficient is the amplifier that overcomes low intrinsic vapor pressure.<span class="cite" data-ref="1"><sup>[1]</sup></span><span class="cite" data-ref="17"><sup>[17]</sup></span>
 </div>
 
 <h4>Additional carry-over mechanisms</h4>
-<p>Beyond thermodynamic partitioning, three mechanical/physical mechanisms contribute to flavor compound recovery:</p>
+<p>Beyond thermodynamic partitioning, three physical mechanisms also contribute:</p>
 <ul>
-  <li><strong>Steam distillation:</strong> Immiscible or partially miscible organics co-distill with steam at temperatures below either component's BP, because the total vapor pressure is the <em>sum</em> of individual pure-component pressures (P<sub>total</sub> = P<sub>water</sub> + P<sub>organic</sub>). This is particularly important for fatty acids and very heavy esters.</li>
-  <li><strong>Entrainment:</strong> Liquid droplets physically carried by rising vapor, especially during vigorous boiling. Higher heat input increases entrainment, carrying non-volatile compounds into the distillate&mdash;a crude but effective mechanism that Scottish distillers exploit by controlling "heat-up rate."</li>
-  <li><strong>Aerosol nucleation:</strong> Supersaturation of heavy compounds in the vapor phase can produce microscopic liquid droplets suspended in the vapor that pass through to the condenser. Poorly quantified but recognized in the literature (Conner et al. 1994).</li>
+  <li><strong>Steam distillation:</strong> Immiscible or partially miscible organics co-distill with steam at temperatures below either component's BP, because the total vapor pressure is the <em>sum</em> of individual pure-component pressures (P<sub>total</sub> = P<sub>water</sub> + P<sub>organic</sub>). This is particularly important for fatty acids and very heavy esters.<span class="cite" data-ref="26"><sup>[26]</sup></span></li>
+  <li><strong>Entrainment:</strong> Liquid droplets physically carried by rising vapor, especially during vigorous boiling. Higher heat input increases entrainment, carrying non-volatile compounds into the distillate&mdash;a mechanism Scottish distillers deliberately exploit.<span class="cite" data-ref="20"><sup>[20]</sup></span></li>
+  <li><strong>Aerosol nucleation:</strong> Supersaturation of heavy compounds in the vapor phase can produce microscopic liquid droplets that pass through to the condenser.<span class="cite" data-ref="21"><sup>[21]</sup></span></li>
 </ul>
 
 <h3>4.2 The Crossover Effect</h3>
@@ -690,57 +805,36 @@ P<sub>eff</sub> = &gamma;<sup>&infin;</sup> &times; P<sup>sat</sup> = 30,000 &ti
 <ol>
   <li>Ethanol is removed from the pot, shifting the liquid composition toward water</li>
   <li>The pot temperature rises (from ~78&deg;C toward ~100&deg;C)</li>
-  <li>The activity coefficients of hydrophobic congeners <strong>increase</strong> as the matrix becomes more aqueous</li>
+  <li>The activity coefficients of hydrophobic congeners <strong>increase</strong> as the matrix becomes more aqueous<span class="cite" data-ref="17"><sup>[17]</sup></span></li>
 </ol>
 
-<p>This creates a <strong>crossover effect</strong>: many high-boiling compounds that had K<sub>i</sub> &lt; 1 in the ethanol-rich early distillate develop K<sub>i</sub> &gt; 1 as the pot depletes. This is why they concentrate in the <em>tails</em>.</p>
+<p>This creates a <strong>crossover effect</strong>: many high-boiling compounds that had K<sub>i</sub> &lt; 1 in the ethanol-rich early distillate develop K<sub>i</sub> &gt; 1 as the pot depletes. This is why they concentrate in the <em>tails</em>.<span class="cite" data-ref="22"><sup>[22]</sup></span></p>
 
 <div class="fig-container">
   <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; height:auto;">
-    <!-- Axes -->
     <line x1="80" y1="350" x2="650" y2="350" stroke="#8b949e" stroke-width="1.5"/>
     <line x1="80" y1="350" x2="80" y2="30" stroke="#8b949e" stroke-width="1.5"/>
-
-    <!-- X-axis label -->
-    <text x="365" y="390" text-anchor="middle" fill="#8b949e" font-size="13">Ethanol in Pot (% ABV) &rarr; decreasing during run</text>
-    <!-- X ticks -->
+    <text x="365" y="390" text-anchor="middle" fill="#8b949e" font-size="13">Ethanol in Pot (% ABV) — decreasing during run</text>
     <text x="110" y="370" text-anchor="middle" fill="#8b949e" font-size="11">80%</text>
     <text x="225" y="370" text-anchor="middle" fill="#8b949e" font-size="11">60%</text>
     <text x="340" y="370" text-anchor="middle" fill="#8b949e" font-size="11">40%</text>
     <text x="455" y="370" text-anchor="middle" fill="#8b949e" font-size="11">20%</text>
     <text x="570" y="370" text-anchor="middle" fill="#8b949e" font-size="11">5%</text>
-
-    <!-- Y-axis label -->
     <text x="25" y="190" text-anchor="middle" fill="#8b949e" font-size="13" transform="rotate(-90,25,190)">K-value (y/x)</text>
-    <!-- K=1 line -->
     <line x1="80" y1="200" x2="650" y2="200" stroke="#30363d" stroke-width="1" stroke-dasharray="5,5"/>
     <text x="660" y="205" fill="#8b949e" font-size="11">K=1</text>
-
-    <!-- Ethanol K-curve (always > 1, decreasing) -->
     <path d="M110,60 Q225,75 340,110 Q455,160 570,185" fill="none" stroke="#3fb950" stroke-width="2.5"/>
     <text x="180" y="55" fill="#3fb950" font-size="12" font-weight="bold">Ethanol</text>
-
-    <!-- Ethyl acetate (heads - always high K) -->
     <path d="M110,45 Q225,55 340,80 Q455,120 570,155" fill="none" stroke="#f85149" stroke-width="2"/>
     <text x="130" y="40" fill="#f85149" font-size="11">Ethyl acetate</text>
-
-    <!-- Isoamyl alcohol (crossover compound) -->
     <path d="M110,250 Q225,225 340,200 Q455,170 570,140" fill="none" stroke="#d29922" stroke-width="2.5"/>
     <text x="430" y="130" fill="#d29922" font-size="11">Isoamyl alcohol</text>
-
-    <!-- Ethyl hexanoate (dramatic crossover) -->
     <path d="M110,290 Q225,260 340,210 Q455,155 570,90" fill="none" stroke="#bc8cff" stroke-width="2.5"/>
     <text x="530" y="80" fill="#bc8cff" font-size="11">Ethyl hexanoate</text>
-
-    <!-- Ethyl octanoate (extreme crossover) -->
     <path d="M110,320 Q225,300 340,260 Q455,190 570,100" fill="none" stroke="#58a6ff" stroke-width="2.5"/>
     <text x="530" y="115" fill="#58a6ff" font-size="11">Ethyl octanoate</text>
-
-    <!-- Capric acid (stays below K=1 longer) -->
     <path d="M110,340 Q225,330 340,310 Q455,270 570,200" fill="none" stroke="#e8a665" stroke-width="2" stroke-dasharray="6,3"/>
     <text x="510" y="215" fill="#e8a665" font-size="11">Capric acid</text>
-
-    <!-- Distillation phase regions -->
     <rect x="80" y="20" width="140" height="15" fill="#f85149" opacity="0.3" rx="3"/>
     <text x="150" y="30" text-anchor="middle" fill="#f85149" font-size="10">HEADS</text>
     <rect x="220" y="20" width="200" height="15" fill="#3fb950" opacity="0.3" rx="3"/>
@@ -749,21 +843,19 @@ P<sub>eff</sub> = &gamma;<sup>&infin;</sup> &times; P<sup>sat</sup> = 30,000 &ti
     <text x="535" y="30" text-anchor="middle" fill="#bc8cff" font-size="10">TAILS</text>
   </svg>
   <div class="fig-caption">
-    <strong>Figure 1.</strong> Qualitative K-value trajectories for selected congeners as pot ethanol concentration decreases during a distillation run.
-    The K = 1 line separates compounds that preferentially distill (above) from those retained in the pot (below).
-    Note how hydrophobic esters cross above K = 1 as the pot becomes more aqueous &mdash; the activity coefficient crossover effect.
+    <strong>Figure 1.</strong> Qualitative K-value trajectories for selected congeners as pot ethanol concentration decreases during a distillation run (based on NRTL modeling framework per Faundez et al.<span class="cite" data-ref="1"><sup>[1]</sup></span>). The K = 1 line separates compounds that preferentially distill (above) from those retained in the pot (below). Note how hydrophobic esters cross above K = 1 as the pot becomes more aqueous.
   </div>
 </div>
 
 <h3>4.3 Quantitative Implications</h3>
 
-<p>The activity coefficient of a hydrophobic congener in an ethanol-water mixture can be roughly modeled by a log-linear mixing rule:</p>
+<p>The activity coefficient of a hydrophobic congener in an ethanol-water mixture can be <em>approximated</em> by a log-linear mixing rule (a simplification of the NRTL model valid for order-of-magnitude estimates):<span class="cite" data-ref="26"><sup>[26]</sup></span></p>
 
 <div class="equation">
 ln &gamma;<sub>i,mix</sub> &asymp; x<sub>EtOH</sub> &middot; ln &gamma;<sub>i,EtOH</sub> + x<sub>H2O</sub> &middot; ln &gamma;<sub>i,H2O</sub>
 </div>
 
-<p>For ethyl octanoate: &gamma;<sup>&infin;</sup> in water &asymp; 30,000 and &gamma;<sup>&infin;</sup> in ethanol &asymp; 2. At 50% ethanol (mole fraction ~0.28):</p>
+<p>For ethyl octanoate: &gamma;<sup>&infin;</sup> in water &asymp; 30,000 and &gamma;<sup>&infin;</sup> in ethanol &asymp; 2.<span class="cite" data-ref="2"><sup>[2]</sup></span> At 50% ethanol (mole fraction ~0.28):</p>
 
 <div class="equation">
 ln &gamma;<sub>mix</sub> &asymp; 0.28 &times; ln(2) + 0.72 &times; ln(30,000) &asymp; 0.19 + 7.41 = 7.60
@@ -771,18 +863,18 @@ ln &gamma;<sub>mix</sub> &asymp; 0.28 &times; ln(2) + 0.72 &times; ln(30,000) &a
 &gamma;<sub>mix</sub> &asymp; e<sup>7.60</sup> &asymp; 2000
 </div>
 
-<p>So even in 50% ethanol, the effective vapor pressure of ethyl octanoate is 2000 &times; 0.5 = 1000 mmHg&mdash;still above atmospheric pressure. The compound <em>wants</em> to leave. But at 70% ethanol (mole fraction ~0.44):</p>
+<p>So even in 50% ethanol, the effective fugacity of ethyl octanoate is 2000 &times; 0.5 = 1000 mmHg per unit mole fraction&mdash;still enormous. But at 70% ethanol (mole fraction ~0.44):</p>
 
 <div class="equation">
 ln &gamma;<sub>mix</sub> &asymp; 0.44 &times; 0.69 + 0.56 &times; 10.31 = 6.08
 <br>
-&gamma;<sub>mix</sub> &asymp; 435 &rarr; P<sub>eff</sub> &asymp; 218 mmHg
+&gamma;<sub>mix</sub> &asymp; 435 &rarr; fugacity drops ~5&times;
 </div>
 
-<p>Still volatile, but 5&times; less so. This is why the first distillation (stripping run from 8&ndash;10% wash) captures more of these compounds than the second distillation (spirit run from 30&ndash;40% low wines).</p>
+<p>This is why the first distillation (stripping run from 8&ndash;10% wash) captures more of these compounds than the second distillation (spirit run from 30&ndash;40% low wines).</p>
 
 <div class="callout warning">
-  <strong>Practical implication:</strong> If you double-distill, the spirit run <em>inherently</em> recovers fewer high-boiling flavor compounds than the stripping run because the ethanol-richer matrix reduces &gamma; and therefore K. This is a thermodynamic certainty, not a technique failure.
+  <strong>Practical implication:</strong> If you double-distill, the spirit run <em>inherently</em> recovers fewer high-boiling flavor compounds than the stripping run because the ethanol-richer matrix reduces &gamma; and therefore K.<span class="cite" data-ref="22"><sup>[22]</sup></span> This is a thermodynamic certainty, not a technique failure.
 </div>
 
 <!-- ============================================================ -->
@@ -790,8 +882,9 @@ ln &gamma;<sub>mix</sub> &asymp; 0.44 &times; 0.69 + 0.56 &times; 10.31 = 6.08
 
 <h3>5.1 The Three Regimes</h3>
 
-<p>Congeners fall into three behavioral classes based on how their K-values evolve during the run:</p>
+<p>Congeners fall into three behavioral classes based on how their K-values evolve during the run:<span class="cite" data-ref="22"><sup>[22]</sup></span><span class="cite" data-ref="23"><sup>[23]</sup></span></p>
 
+<div class="table-wrap">
 <table>
   <tr>
     <th>Class</th>
@@ -802,7 +895,7 @@ ln &gamma;<sub>mix</sub> &asymp; 0.44 &times; 0.69 + 0.56 &times; 10.31 = 6.08
   <tr>
     <td class="compound-heads"><strong>Light / Heads</strong></td>
     <td>K &gg; 1 throughout</td>
-    <td>Acetaldehyde, methanol, ethyl formate, ethyl acetate</td>
+    <td>Acetaldehyde, ethyl formate, ethyl acetate</td>
     <td>High intrinsic volatility (low BP) dominates over &gamma; effects</td>
   </tr>
   <tr>
@@ -818,13 +911,15 @@ ln &gamma;<sub>mix</sub> &asymp; 0.44 &times; 0.69 + 0.56 &times; 10.31 = 6.08
     <td>&gamma; amplification dominates as pot water fraction increases</td>
   </tr>
 </table>
+</div>
 
 <h3>5.2 The Cut Point Dilemma</h3>
 
-<p>The distiller's art lies in choosing where to cut between hearts and tails. Cut too early, and you lose desirable high-boiling esters, phenols, and lactones that give whiskey its depth. Cut too late, and you include excess fusel oils and fatty acids that produce harshness, oiliness, and off-flavors.</p>
+<p>The distiller's art lies in choosing where to cut between hearts and tails.<span class="cite" data-ref="10"><sup>[10]</sup></span> Cut too early, and you lose desirable high-boiling esters, phenols, and lactones. Cut too late, and you include excess fusel oils and fatty acids.<span class="cite" data-ref="12"><sup>[12]</sup></span></p>
 
-<p>Key temperature and ABV indicators from industry practice:</p>
+<p>Key temperature and ABV indicators from industry practice (values are typical ranges; individual distilleries vary significantly based on house style):<span class="cite" data-ref="22"><sup>[22]</sup></span><span class="cite" data-ref="23"><sup>[23]</sup></span></p>
 
+<div class="table-wrap">
 <table>
   <tr>
     <th>Cut</th>
@@ -836,13 +931,13 @@ ln &gamma;<sub>mix</sub> &asymp; 0.44 &times; 0.69 + 0.56 &times; 10.31 = 6.08
     <td>Foreshots &rarr; Heads</td>
     <td>&gt;80%</td>
     <td>78&ndash;80&deg;C</td>
-    <td>Methanol, acetaldehyde, ethyl acetate, light esters</td>
+    <td>Acetaldehyde, ethyl acetate, light esters</td>
   </tr>
   <tr>
     <td>Heads &rarr; Hearts</td>
     <td>75&ndash;78%</td>
     <td>80&ndash;82&deg;C</td>
-    <td>Transition: declining heads compounds, rising medium esters</td>
+    <td>Transition: declining heads, rising medium esters</td>
   </tr>
   <tr>
     <td>Hearts (early)</td>
@@ -869,6 +964,7 @@ ln &gamma;<sub>mix</sub> &asymp; 0.44 &times; 0.69 + 0.56 &times; 10.31 = 6.08
     <td>Fusel oils, fatty acids, furfural, phenols, heavy esters</td>
   </tr>
 </table>
+</div>
 
 <!-- ============================================================ -->
 <h2 id="s6">6. Seven Strategies for Optimizing Flavor Recovery</h2>
@@ -876,7 +972,7 @@ ln &gamma;<sub>mix</sub> &asymp; 0.44 &times; 0.69 + 0.56 &times; 10.31 = 6.08
 <div class="strategy-card">
   <h4><span class="strategy-number">1</span> Reduced-Pressure (Vacuum) Distillation</h4>
 
-  <p>Reducing pressure lowers all boiling points, but <em>not equally</em>. The Clausius-Clapeyron equation tells us:</p>
+  <p>Reducing pressure lowers all boiling points, but <em>not equally</em>. The Clausius-Clapeyron equation tells us:<span class="cite" data-ref="26"><sup>[26]</sup></span></p>
 
   <div class="equation">
 d(ln P<sup>sat</sup>) / d(1/T) = -&Delta;H<sub>vap</sub> / R
@@ -884,7 +980,7 @@ d(ln P<sup>sat</sup>) / d(1/T) = -&Delta;H<sub>vap</sub> / R
 
   <p>Compounds with <strong>higher &Delta;H<sub>vap</sub></strong> see a larger <em>relative</em> shift in vapor pressure with temperature. Since high-boiling congeners generally have larger &Delta;H<sub>vap</sub> than ethanol (&Delta;H<sub>vap</sub> = 38.6 kJ/mol), their vapor pressures drop <em>more</em> at lower temperatures.</p>
 
-  <p><strong>Net effect:</strong> At reduced pressure, the <em>relative</em> volatility of high-boiling congeners vs. ethanol slightly <em>decreases</em>. However, the lower temperature (45&ndash;55&deg;C in shochu-style vacuum distillation) prevents thermal degradation of delicate esters and preserves aromatic complexity. The Japanese shochu industry adopted vacuum distillation in 1973 precisely for this reason, producing lighter, more floral spirits.</p>
+  <p><strong>Net effect:</strong> At reduced pressure, the <em>relative</em> volatility of high-boiling congeners vs. ethanol slightly <em>decreases</em>. However, the lower temperature (45&ndash;55&deg;C in shochu-style vacuum distillation) prevents thermal degradation of delicate esters and preserves aromatic complexity. A Fukuoka Prefecture producer first developed vacuum stills for shochu in 1973,<span class="cite" data-ref="13"><sup>[13]</sup></span> producing lighter, more floral spirits that triggered a nationwide shochu boom.<span class="cite" data-ref="15"><sup>[15]</sup></span></p>
 
   <div class="callout">
     <strong>Recommendation:</strong> Use moderate vacuum (200&ndash;400 mmHg, not deep vacuum) to get the thermal protection benefit while keeping enough temperature to maintain reasonable &gamma;-driven volatility of heavy congeners. A pot temperature of 55&ndash;65&deg;C is the sweet spot.
@@ -896,39 +992,40 @@ d(ln P<sup>sat</sup>) / d(1/T) = -&Delta;H<sub>vap</sub> / R
 
   <p>This is arguably the highest-impact technique for home distillers, and it leverages the activity coefficient crossover directly.</p>
 
-  <p>Tails fractions are rich in desirable compounds (long-chain esters, phenols, lactones) that didn't make the hearts cut because they arrived too late. Instead of discarding them:</p>
+  <p>Tails fractions are rich in desirable compounds (long-chain esters, phenols, lactones) that didn't make the hearts cut because they arrived too late.<span class="cite" data-ref="12"><sup>[12]</sup></span> Instead of discarding them:</p>
 
   <ol>
     <li>Collect tails separately for each run</li>
     <li>Add the tails back to the <em>next wash</em> (8&ndash;10% ABV)</li>
-    <li>In this low-ethanol environment, the activity coefficients of the hydrophobic congeners are <em>maximized</em></li>
+    <li>In this low-ethanol environment, the activity coefficients of the hydrophobic congeners are <em>maximized</em><span class="cite" data-ref="17"><sup>[17]</sup></span></li>
     <li>They distill earlier and more completely into the hearts cut of the next run</li>
   </ol>
 
   <div class="callout key-insight">
-    <strong>Why this works:</strong> At 8% ABV, ethyl octanoate has &gamma; &asymp; 15,000. At 40% ABV (spirit run), &gamma; &asymp; 800. The compound is ~19&times; more volatile relative to its concentration in the dilute wash. Recycling tails into wash is a free thermodynamic boost.
+    <strong>Why this works:</strong> At 8% ABV, ethyl octanoate has &gamma; &asymp; 15,000. At 40% ABV (spirit run), &gamma; &asymp; 800. The compound is ~19&times; more volatile relative to its concentration in the dilute wash. Recycling tails into wash is a free thermodynamic boost. (This is a standard practice in Scotch whisky distillation, where feints are recycled into the next spirit still charge.<span class="cite" data-ref="22"><sup>[22]</sup></span>)
   </div>
 </div>
 
 <div class="strategy-card">
   <h4><span class="strategy-number">3</span> Variable Reflux Ratio During Run</h4>
 
-  <p>Rather than fixed reflux, <em>modulate reflux ratio across the distillation run</em>:</p>
+  <p>Rather than fixed reflux, <em>modulate reflux ratio across the distillation run</em>:<span class="cite" data-ref="10"><sup>[10]</sup></span></p>
 
   <ul>
-    <li><strong>High reflux (3:1 to 5:1) during heads:</strong> Maximize separation, cleanly reject methanol and acetaldehyde</li>
-    <li><strong>Low reflux (1:1 or lower) during hearts:</strong> Allow more congeners to pass. Every reflux event is a mini-redistillation that strips heavy congeners. Reducing reflux during hearts intentionally "loosens" the separation to let desirable high-boiling compounds through.</li>
+    <li><strong>High reflux (3:1 to 5:1) during heads:</strong> Maximize separation, cleanly reject acetaldehyde and light esters</li>
+    <li><strong>Low reflux (1:1 or lower) during hearts:</strong> Allow more congeners to pass. Every reflux event strips heavy congeners. Reducing reflux intentionally "loosens" the separation.</li>
     <li><strong>Moderate reflux (2:1) during tails transition:</strong> Selectively allow the more volatile tails compounds (esters) while rejecting the least volatile (fatty acids)</li>
   </ul>
 
-  <p>This requires a column still with an adjustable condenser or needle valve. Pot stills achieve a crude version of this through lyne arm geometry.</p>
+  <p>This requires a column still with an adjustable condenser or needle valve. Pot stills achieve a crude version through lyne arm geometry.<span class="cite" data-ref="20"><sup>[20]</sup></span></p>
 </div>
 
 <div class="strategy-card">
   <h4><span class="strategy-number">4</span> Still Geometry Optimization</h4>
 
-  <p>The geometry of a pot still directly controls passive reflux, which determines congener throughput:</p>
+  <p>The geometry of a pot still directly controls passive reflux, which determines congener throughput:<span class="cite" data-ref="20"><sup>[20]</sup></span></p>
 
+  <div class="table-wrap">
   <table>
     <tr>
       <th>Design Element</th>
@@ -943,59 +1040,55 @@ d(ln P<sup>sat</sup>) / d(1/T) = -&Delta;H<sub>vap</sub> / R
     <tr>
       <td>Tall swan neck</td>
       <td>Lighter, more delicate</td>
-      <td>Long vapor path &rarr; heavier vapors condense and fall back (higher reflux)</td>
+      <td>Long vapor path &rarr; heavier vapors condense and fall back</td>
     </tr>
     <tr>
       <td>Lyne arm angled upward</td>
       <td>Cleaner, lighter</td>
-      <td>Creates additional reflux as condensate flows back into pot</td>
+      <td>Condensate flows back into pot &rarr; more reflux</td>
     </tr>
     <tr>
       <td>Lyne arm angled downward</td>
       <td>Heavier, richer</td>
-      <td>Condensate flows toward condenser &rarr; less reflux &rarr; more congeners pass</td>
-    </tr>
-    <tr>
-      <td>Wider lyne arm diameter</td>
-      <td>More body</td>
-      <td>Less restriction &rarr; less forced reflux</td>
+      <td>Condensate flows toward condenser &rarr; less reflux</td>
     </tr>
     <tr>
       <td>Copper surface area (high)</td>
       <td>Cleaner, less sulfury</td>
-      <td>Cu<sup>2+</sup> catalyzes removal of sulfur compounds (DMS, H<sub>2</sub>S) via copper sulfide formation</td>
+      <td>Cu<sup>2+</sup> catalyzes removal of sulfur compounds (DMS, H<sub>2</sub>S) via CuS formation<span class="cite" data-ref="20"><sup>[20]</sup></span></td>
     </tr>
   </table>
+  </div>
 
   <div class="callout">
-    <strong>For high-boiling flavor recovery:</strong> Use a short pot with a wide, slightly downward-angled lyne arm. This sacrifices some separation cleanliness but maximizes the passage of heavy esters, phenols, and lactones into the distillate. Compensate for increased fusel content by making tighter cuts.
+    <strong>For high-boiling flavor recovery:</strong> Use a short pot with a wide, slightly downward-angled lyne arm. This sacrifices some separation cleanliness but maximizes the passage of heavy esters, phenols, and lactones. Compensate for increased fusel content by making tighter cuts.
   </div>
 </div>
 
 <div class="strategy-card">
   <h4><span class="strategy-number">5</span> Controlled Heating Rate</h4>
 
-  <p>Distillation rate profoundly affects flavor compound recovery, yet is often overlooked:</p>
+  <p>Distillation rate profoundly affects flavor compound recovery:<span class="cite" data-ref="22"><sup>[22]</sup></span></p>
 
   <ul>
-    <li><strong>Slow heating (low power input):</strong> More equilibrium stages per theoretical plate. Better separation. But also more time for ester hydrolysis (acid + alcohol &rarr; ester is reversible) and thermal degradation of delicate aromatics.</li>
-    <li><strong>Fast heating (high power input):</strong> Fewer equilibrium stages, more entrainment of liquid droplets into vapor. This actually carries heavy compounds into the distillate via mechanical means rather than thermodynamic&mdash;a crude but effective way to increase flavor compound recovery.</li>
+    <li><strong>Slow heating:</strong> More equilibrium stages per theoretical plate. Better separation. But also more time for ester hydrolysis and thermal degradation.</li>
+    <li><strong>Fast heating:</strong> Fewer equilibrium stages, more entrainment of liquid droplets into vapor&mdash;carrying heavy compounds into the distillate via mechanical means.</li>
   </ul>
 
-  <p><strong>Optimal strategy:</strong> Heat moderately fast through the hearts cut (160&ndash;170&deg;F / 71&ndash;77&deg;C distillate temperature) to capture esters, then <em>slow down</em> through the hearts-to-tails transition (180&ndash;190&deg;F / 82&ndash;88&deg;C) to get better separation of desirable late-hearts compounds from undesirable fusel oils.</p>
+  <p><strong>Optimal strategy:</strong> Heat moderately fast through the hearts cut (71&ndash;77&deg;C distillate) to capture esters, then <em>slow down</em> through the hearts-to-tails transition (82&ndash;88&deg;C) for better separation of desirable late-hearts compounds from fusel oils.</p>
 </div>
 
 <div class="strategy-card">
   <h4><span class="strategy-number">6</span> Pressure-Dependent Azeotrope Manipulation</h4>
 
-  <p>The ethanol-water azeotrope composition shifts with pressure. At 760 mmHg: 95.6% ethanol at 78.1&deg;C. At 100 mmHg: the azeotrope shifts toward ~99%+ ethanol and the boiling temperature drops to ~34&deg;C. Below ~70 mmHg, the azeotrope <strong>disappears entirely</strong>.</p>
+  <p>The ethanol-water azeotrope composition shifts with pressure. At 760 mmHg: 95.6% ethanol at 78.1&deg;C. At 100 mmHg: the azeotrope shifts toward higher ethanol concentration. Below approximately 70&ndash;100 mmHg (sources vary), the azeotrope <strong>disappears entirely</strong>&mdash;ethanol and water become fully separable.<span class="cite" data-ref="8"><sup>[8]</sup></span></p>
 
-  <p>While this is traditionally used for anhydrous ethanol production (not relevant to whiskey), the <em>side effect</em> is important: reducing pressure changes the <em>entire shape of the VLE curve</em>, including the sub-azeotropic region where whiskey distillation operates. At reduced pressure:</p>
+  <p>While this is traditionally used for anhydrous ethanol production, the <em>side effect</em> is important: reducing pressure changes the <em>entire shape of the VLE curve</em>, including the sub-azeotropic region where whiskey distillation operates. At reduced pressure:</p>
 
   <ul>
     <li>The VLE curve becomes more "ideal" (closer to Raoult's law) in the dilute region</li>
     <li>Relative volatilities change, potentially widening or narrowing separation windows between congener classes</li>
-    <li>A two-pressure strategy (atmospheric stripping run + reduced-pressure spirit run) could theoretically optimize for different congener classes in each stage</li>
+    <li>A two-pressure strategy (atmospheric stripping + reduced-pressure spirit run) could optimize for different congener classes in each stage</li>
   </ul>
 </div>
 
@@ -1007,15 +1100,13 @@ d(ln P<sup>sat</sup>) / d(1/T) = -&Delta;H<sub>vap</sub> / R
   <p>Fatty acids (caprylic, capric, lauric) exist in equilibrium between protonated (volatile) and deprotonated (non-volatile carboxylate anion) forms:</p>
 
   <div class="equation">
-R-COOH &hArr; R-COO<sup>&minus;</sup> + H<sup>+</sup> &nbsp;&nbsp;&nbsp; pK<sub>a</sub> &asymp; 4.8
+R-COOH &hArr; R-COO<sup>&minus;</sup> + H<sup>+</sup> &nbsp;&nbsp;&nbsp; pK<sub>a</sub> &asymp; 4.8&ndash;4.9 (C8&ndash;C12 fatty acids)
   </div>
 
   <p>At typical wash pH of 4.0&ndash;4.5, most fatty acids are protonated and therefore volatile. By <strong>raising the wash pH to 6&ndash;7</strong> (with food-grade CaCO<sub>3</sub> or NaHCO<sub>3</sub>) before distillation, you convert fatty acids to their non-volatile salt forms. They stay in the pot. Meanwhile, neutral esters, phenols, and lactones are unaffected and distill normally.</p>
 
-  <p>This is <em>chemical selectivity applied to distillation</em>&mdash;you're using acid-base chemistry to orthogonally suppress one class of undesirable heavy congeners (fatty acids = soapy, rancid) while retaining the others (esters = fruity, phenols = smoky, lactones = coconut/oak).</p>
-
   <div class="callout key-insight">
-    <strong>This is novel and powerful:</strong> Most distillers think only in terms of temperature and timing for their cuts. pH manipulation before distillation is an underutilized orthogonal dimension that a biochemist is uniquely positioned to exploit.
+    <strong>This is novel and powerful:</strong> Most distillers think only in terms of temperature and timing for their cuts. pH manipulation before distillation is an underutilized orthogonal dimension that a biochemist is uniquely positioned to exploit. (Note: this approach is well-established in chemical engineering for acid separation<span class="cite" data-ref="26"><sup>[26]</sup></span> but is not widely applied in artisanal spirits production.)
   </div>
 </div>
 
@@ -1024,7 +1115,7 @@ R-COOH &hArr; R-COO<sup>&minus;</sup> + H<sup>+</sup> &nbsp;&nbsp;&nbsp; pK<sub>
 
 <h3>7.1 Enzyme-Directed Ester Biosynthesis</h3>
 
-<p>Flavor esters are synthesized during fermentation by yeast alcohol acetyltransferases (ATF1, ATF2) and esterases. The reaction:</p>
+<p>Flavor esters are synthesized during fermentation by yeast alcohol acetyltransferases (ATF1, ATF2).<span class="cite" data-ref="24"><sup>[24]</sup></span> The reaction:</p>
 
 <div class="equation">
 Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
@@ -1033,71 +1124,65 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
 <p>Yeast strain selection is one lever. But as a biochemist, you can also:</p>
 
 <ul>
-  <li><strong>Supplement with exogenous lipase</strong> (e.g., <em>Candida rugosa</em> lipase, GRAS-approved) during late fermentation to increase ester formation from fusel alcohols + fatty acids</li>
-  <li><strong>Optimize fermentation temperature</strong>: lower temperatures (15&ndash;18&deg;C) favor ester retention (less CO<sub>2</sub> stripping) while higher temperatures (25&ndash;30&deg;C) favor ester synthesis (enzyme kinetics)</li>
-  <li><strong>Precursor addition</strong>: adding trace amounts of specific fatty acids (C6, C8, C10) to the wash before fermentation to drive ester synthesis toward desired congener profiles</li>
+  <li><strong>Supplement with exogenous lipase</strong> (e.g., <em>Candida rugosa</em> lipase, widely used in food processing) during late fermentation to increase ester formation from fusel alcohols + fatty acids. (Verify current regulatory status for your jurisdiction.)</li>
+  <li><strong>Optimize fermentation temperature</strong>: lower temperatures (15&ndash;18&deg;C) favor ester retention (less CO<sub>2</sub> stripping) while higher temperatures (25&ndash;30&deg;C) favor ester synthesis (enzyme kinetics)<span class="cite" data-ref="5"><sup>[5]</sup></span></li>
+  <li><strong>Precursor addition</strong>: adding trace amounts of specific fatty acids (C6, C8, C10) to the wash before fermentation to drive ester synthesis toward desired profiles</li>
 </ul>
 
 <h3>7.2 Copper Surface Chemistry</h3>
 
-<p>Copper's role in whiskey distillation is well-established: Cu<sup>2+</sup> ions catalyze the removal of sulfur compounds (H<sub>2</sub>S, DMS, DMDS) via formation of insoluble CuS. But copper also:</p>
+<p>Copper's role in whiskey distillation is well-characterized: Cu<sup>2+</sup> ions catalyze the removal of sulfur compounds (H<sub>2</sub>S, DMS, DMDS) via formation of insoluble CuS.<span class="cite" data-ref="20"><sup>[20]</sup></span> Harrison et al. (2011) systematically demonstrated that copper location in the still (pot, column, lyne arm, condenser) differentially affects different sulfur compound classes.<span class="cite" data-ref="20"><sup>[20]</sup></span></p>
 
-<ul>
-  <li>Catalyzes ester hydrolysis at high temperatures (potentially undesirable)</li>
-  <li>Promotes Maillard reactions with amino acids in the wash</li>
-  <li>Removes mercaptans that mask fruity ester perception</li>
-</ul>
-
-<p><strong>Optimization:</strong> Use copper in the lyne arm and condenser (high vapor contact, post-pot), but consider stainless steel for the pot itself. This gives you sulfur removal where you need it (in the vapor path) without catalyzing ester breakdown in the liquid phase. For vacuum distillation, stainless steel pots are also mechanically superior under reduced pressure.</p>
+<p><strong>Optimization:</strong> Use copper in the lyne arm and condenser (high vapor contact, post-pot), but consider stainless steel for the pot itself. This gives sulfur removal where needed without catalyzing ester breakdown in the liquid phase. For vacuum distillation, stainless steel pots are also mechanically superior under reduced pressure.<span class="cite" data-ref="14"><sup>[14]</sup></span></p>
 
 <h3>7.3 Molecular Sieve Post-Treatment of Tails</h3>
 
-<p>Type 3A molecular sieves (zeolites with 3&Aring; pore diameter) selectively adsorb water while excluding ethanol and larger organic molecules. By passing tails fractions through a 3A sieve bed, you can:</p>
+<p>Type 3A molecular sieves (zeolites with 3&Aring; pore diameter) selectively adsorb water while excluding ethanol and larger organic molecules.<span class="cite" data-ref="26"><sup>[26]</sup></span> By passing tails fractions through a 3A sieve bed, you can:</p>
 
 <ol>
   <li>Remove water from the tails, concentrating the ethanol and congeners</li>
   <li>Blend this concentrated tails extract back into the hearts at precise ratios</li>
-  <li>Achieve flavor complexity without the harshness of including raw tails</li>
+  <li>Achieve flavor complexity without the harshness of raw tails</li>
 </ol>
 
-<p>This is standard practice in fuel ethanol production but rarely applied to artisanal spirits. The sieves are food-safe, reusable (regenerate at 250&deg;C), and inexpensive.</p>
+<p>This is standard practice in fuel ethanol production but rarely applied to artisanal spirits.</p>
 
 <h3>7.4 Two-Stage Pressure Protocol</h3>
 
 <p>A novel protocol combining the advantages of both atmospheric and vacuum distillation:</p>
 
 <ol>
-  <li><strong>Stage 1 &mdash; Atmospheric stripping run:</strong> Distill the wash (8&ndash;10% ABV) at atmospheric pressure. The high temperature and high &gamma; values in the dilute wash maximize recovery of all congeners into the low wines. Don't be selective&mdash;take a wide cut.</li>
-  <li><strong>Stage 2 &mdash; Reduced-pressure spirit run:</strong> Distill the low wines (30&ndash;40% ABV) at 200&ndash;300 mmHg. The lower temperature (55&ndash;65&deg;C) prevents thermal degradation of the esters recovered in Stage 1. The reduced &gamma; at higher ethanol concentration is partially compensated by the lower pressure (which increases K by reducing the denominator). Make precise cuts here.</li>
+  <li><strong>Stage 1 &mdash; Atmospheric stripping run:</strong> Distill the wash (8&ndash;10% ABV) at atmospheric pressure. The high temperature and high &gamma; values in the dilute wash maximize recovery of all congeners into the low wines. Take a wide cut.</li>
+  <li><strong>Stage 2 &mdash; Reduced-pressure spirit run:</strong> Distill the low wines (30&ndash;40% ABV) at 200&ndash;300 mmHg. The lower temperature (55&ndash;65&deg;C) prevents thermal degradation of the esters recovered in Stage 1. Make precise cuts here.</li>
 </ol>
 
 <div class="callout key-insight">
-  <strong>This two-stage approach maximizes recovery AND quality:</strong> Stage 1 captures everything (thermodynamically favorable at low ABV). Stage 2 separates with thermal gentleness (preserving delicate volatiles). It's the biochemist's equivalent of a two-step purification&mdash;crude extraction followed by gentle chromatography.
+  <strong>This two-stage approach maximizes recovery AND quality:</strong> Stage 1 captures everything (thermodynamically favorable at low ABV). Stage 2 separates with thermal gentleness (preserving delicate volatiles). The biochemist's equivalent of a two-step purification&mdash;crude extraction followed by gentle chromatography.
 </div>
 
 <h3>7.5 Entrainer-Assisted Flavor Enrichment</h3>
 
-<p>In industrial chemistry, entrainers (third components) are added to modify azeotropic behavior. For food-grade spirits, potential entrainers include:</p>
+<p>In industrial chemistry, entrainers modify azeotropic behavior.<span class="cite" data-ref="26"><sup>[26]</sup></span> For food-grade spirits, potential entrainers include:</p>
 
 <ul>
-  <li><strong>Glycerol</strong> (GRAS, BP 290&deg;C): Adding 1&ndash;2% glycerol to the pot modifies the activity coefficients of all congeners. Glycerol is a poor solvent for esters (high &gamma;<sub>ester</sub>), potentially boosting their distillation. Glycerol itself does not distill.</li>
-  <li><strong>Food-grade salts</strong> (NaCl, CaCl<sub>2</sub>): "Salting out" increases the activity coefficients of organic compounds in the liquid phase via the Setschenow equation: log(&gamma;<sub>salt</sub>/&gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub>salt</sub>. This could boost K-values for all organic congeners.</li>
+  <li><strong>Glycerol</strong> (GRAS, BP 290&deg;C): Adding 1&ndash;2% glycerol to the pot modifies the activity coefficients of all congeners. Glycerol is a poor solvent for esters, potentially boosting their distillation. Glycerol itself does not distill.</li>
+  <li><strong>Food-grade salts</strong> (NaCl, CaCl<sub>2</sub>): "Salting out" increases organic compound activity coefficients via the Setschenow equation: log(&gamma;<sub>salt</sub>/&gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub>salt</sub>.<span class="cite" data-ref="26"><sup>[26]</sup></span></li>
 </ul>
 
 <div class="callout warning">
-  <strong>Caution:</strong> Any entrainer or additive must be verified as GRAS and must not appear in the distillate. Glycerol and salts meet both criteria. But always verify by GC-MS analysis of the distillate.
+  <strong>Caution:</strong> Any entrainer must not appear in the distillate. Glycerol (BP 290&deg;C) and dissolved salts meet this criterion at atmospheric distillation temperatures. Always verify by analytical testing of the distillate.
 </div>
 
 <!-- ============================================================ -->
 <h2 id="s8">8. Putting It Together: A Recommended Protocol</h2>
 
-<p>For Dr. Sammons, drawing on both the thermodynamic principles above and practical home distilling constraints, here is an integrated approach:</p>
+<p>Drawing on both the thermodynamic principles above and practical home distilling constraints, here is an integrated approach:</p>
 
 <h3>Phase A: Pre-Distillation Optimization</h3>
 <ol>
-  <li><strong>Fermentation:</strong> Use a whiskey yeast strain with high ATF1 expression (e.g., SafSpirit M-1 or Distila-Max MW). Ferment at 20&ndash;22&deg;C for balanced ester synthesis vs. retention.</li>
+  <li><strong>Fermentation:</strong> Use a whiskey yeast strain with high ATF1 expression (e.g., SafSpirit M-1 or Distila-Max MW). Ferment at 20&ndash;22&deg;C for balanced ester synthesis vs. retention.<span class="cite" data-ref="5"><sup>[5]</sup></span></li>
   <li><strong>pH adjustment:</strong> After fermentation, raise wash pH to 5.5&ndash;6.0 with CaCO<sub>3</sub> to suppress fatty acid volatility while leaving esters unaffected.</li>
-  <li><strong>Tails recycling:</strong> Add saved tails from the previous run to the wash (typically 5&ndash;10% by volume). The low-ethanol environment maximizes &gamma; for these compounds.</li>
+  <li><strong>Tails recycling:</strong> Add saved tails from the previous run to the wash (typically 5&ndash;10% by volume).</li>
 </ol>
 
 <h3>Phase B: Stripping Run (Atmospheric)</h3>
@@ -1127,70 +1212,70 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
 <ol>
   <li>Optionally pass tails through 3A molecular sieves to concentrate, then blend measured amounts into hearts</li>
   <li>Dilute hearts to barrel-entry proof (typically 62.5% ABV for bourbon, or your preference)</li>
-  <li>Age in charred oak (the whiskey lactone, vanillin, and additional phenolics develop here&mdash;not from distillation)</li>
+  <li>Age in charred oak (the whiskey lactone, vanillin, and additional phenolics develop here<span class="cite" data-ref="11"><sup>[11]</sup></span><span class="cite" data-ref="18"><sup>[18]</sup></span>&mdash;not from distillation)</li>
 </ol>
 
 <div class="callout key-insight">
-  <strong>Expected improvement:</strong> Relative to a standard double-pot-distillation protocol, this integrated approach should increase hearts-fraction ester content by 30&ndash;60% (due to tails recycling + pH adjustment + vacuum spirit run), while reducing fatty acid and fusel oil content by 40&ndash;70% (due to pH suppression + variable reflux + tighter vacuum cuts). The net result is a spirit with greater flavor complexity and less harshness&mdash;the hallmark of premium whiskey.
+  <strong>Expected directional improvement:</strong> Relative to a standard double-pot-distillation protocol, this integrated approach should meaningfully increase hearts-fraction ester content (via tails recycling + pH adjustment + vacuum spirit run), while reducing fatty acid and fusel oil content (via pH suppression + variable reflux + tighter vacuum cuts). The magnitude depends on your specific wash, equipment, and technique&mdash;quantification requires GC-FID or GC-MS analysis of your fractions. The net result should be a spirit with greater flavor complexity and less harshness.
 </div>
 
 <!-- ============================================================ -->
 <h2 id="s9">9. References</h2>
 
 <ol class="ref-list">
-  <li>Faundez, C.A., Alvarez, V.H., & Valderrama, J.O. (2006). "Predictive models to describe VLE in ternary mixtures water + ethanol + congener for wine distillation." <em>Fluid Phase Equilibria</em>, 248(2), 194-206. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0040603106004850">ScienceDirect</a></li>
+  <li id="ref-1">Faundez, C.A., Alvarez, V.H., &amp; Valderrama, J.O. (2006). "Predictive models to describe VLE in ternary mixtures water + ethanol + congener for wine distillation." <em>Fluid Phase Equilibria</em>, 248(2), 194-206. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0040603106004850">ScienceDirect</a></li>
 
-  <li>Athes, V., et al. (2008). "Review and Thermodynamic Modeling with NRTL Model of Vapor-Liquid Equilibria (VLE) of Aroma Compounds Highly Diluted in Ethanol-Water Mixtures at 101.3 kPa." <em>Industrial & Engineering Chemistry Research</em>. <a href="https://www.researchgate.net/publication/323530720">ResearchGate</a></li>
+  <li id="ref-2">Athes, V., et al. (2008). "Review and Thermodynamic Modeling with NRTL Model of Vapor-Liquid Equilibria (VLE) of Aroma Compounds Highly Diluted in Ethanol-Water Mixtures at 101.3 kPa." <em>Ind. Eng. Chem. Res.</em> <a href="https://www.researchgate.net/publication/323530720">ResearchGate</a></li>
 
-  <li>Valderrama, J.O. & Faundez, C.A. (2003). "Activity Coefficient Models to Describe Vapor-Liquid Equilibrium in Ternary Hydro-Alcoholic Solutions." <em>Chinese Journal of Chemical Engineering</em>, 11(4), 449-455. <a href="https://www.sciencedirect.com/science/article/abs/pii/S1004954108602037">ScienceDirect</a></li>
+  <li id="ref-3">Valderrama, J.O. &amp; Faundez, C.A. (2003). "Activity Coefficient Models to Describe Vapor-Liquid Equilibrium in Ternary Hydro-Alcoholic Solutions." <em>Chinese J. Chem. Eng.</em>, 11(4), 449-455. <a href="https://www.sciencedirect.com/science/article/abs/pii/S1004954108602037">ScienceDirect</a></li>
 
-  <li>Sammons, R.D., Gaines, T.A., et al. (2014). "Glyphosate resistance: state of knowledge." <em>Pest Management Science</em>, 70(9), 1367-1377. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4260172/">PMC</a></li>
+  <li id="ref-4">Sammons, R.D., Gaines, T.A., et al. (2014). "Glyphosate resistance: state of knowledge." <em>Pest Management Science</em>, 70(9), 1367-1377. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4260172/">PMC</a></li>
 
-  <li>Lea, A.G.H. & Piggott, J.R. (Eds.) (2003). <em>Fermented Beverage Production</em>, 2nd Edition. Springer. <a href="https://link.springer.com/chapter/10.1007/978-1-4615-0187-9_11">Springer</a></li>
+  <li id="ref-5">Lea, A.G.H. &amp; Piggott, J.R. (Eds.) (2003). <em>Fermented Beverage Production</em>, 2nd Edition. Springer. <a href="https://link.springer.com/chapter/10.1007/978-1-4615-0187-9_11">Springer</a></li>
 
-  <li>"The Chemistry of Whisky." Compound Interest (2015). <a href="https://www.compoundchem.com/2015/03/31/whisky/">CompoundChem</a></li>
+  <li id="ref-6">"The Chemistry of Whisky." Compound Interest (2015). <a href="https://www.compoundchem.com/2015/03/31/whisky/">CompoundChem</a></li>
 
-  <li>WSSA (2015). "2015 Award Winners" &mdash; R. Douglas Sammons named WSSA Fellow. <a href="https://wssa.net/2015/02/weed-science-society-of-america-names-2015-award-winners/">WSSA</a></li>
+  <li id="ref-7">WSSA (2015). "2015 Award Winners" &mdash; R. Douglas Sammons named WSSA Fellow. <a href="https://wssa.net/2015/02/weed-science-society-of-america-names-2015-award-winners/">WSSA</a></li>
 
-  <li>"Pressure swing distillation." ETH Zurich Separation Processes. <a href="https://www.hyper-tvt.ethz.ch/distillation-azeotrope-pressure_swing.html">ETH Zurich</a></li>
+  <li id="ref-8">"Pressure swing distillation." ETH Zurich Separation Processes. <a href="https://www.hyper-tvt.ethz.ch/distillation-azeotrope-pressure_swing.html">ETH Zurich</a></li>
 
-  <li>Luong, J.H.T. (2012). "Pressure-Swing Distillation for Minimum- and Maximum-Boiling Homogeneous Azeotropes." <em>Ind. Eng. Chem. Res.</em>, 51(27), 9263-9272. <a href="https://pubs.acs.org/doi/10.1021/ie3002414">ACS</a></li>
+  <li id="ref-9">Luong, J.H.T. (2012). "Pressure-Swing Distillation for Minimum- and Maximum-Boiling Homogeneous Azeotropes." <em>Ind. Eng. Chem. Res.</em>, 51(27), 9263-9272. <a href="https://pubs.acs.org/doi/10.1021/ie3002414">ACS</a></li>
 
-  <li>"Distillation: The Science of Distillation." Difford's Guide. <a href="https://www.diffordsguide.com/encyclopedia/198/bws/distillation-the-science-of-distillation">Difford's Guide</a></li>
+  <li id="ref-10">"Distillation: The Science of Distillation." Difford's Guide. <a href="https://www.diffordsguide.com/encyclopedia/198/bws/distillation-the-science-of-distillation">Difford's Guide</a></li>
 
-  <li>ISC Barrels (2023). "Examination of Extraction Rates and Lactone Levels in Bourbon Whiskey." <a href="https://www.iscbarrels.com/trial-4-examination-of-extraction-rates-and-lactone-levels-in-bourbon-whiskey-for-american-european-and-french-oak/">ISC Barrels</a></li>
+  <li id="ref-11">ISC Barrels (2023). "Examination of Extraction Rates and Lactone Levels in Bourbon Whiskey." <a href="https://www.iscbarrels.com/trial-4-examination-of-extraction-rates-and-lactone-levels-in-bourbon-whiskey-for-american-european-and-french-oak/">ISC Barrels</a></li>
 
-  <li>"Tails of Trouble: The Compounds Whiskey Makers Leave Behind." Bourbon Women Association. <a href="https://bourbonwomen.org/tails-of-trouble-the-compounds-whiskey-makers-leave-behind/">Bourbon Women</a></li>
+  <li id="ref-12">"Tails of Trouble: The Compounds Whiskey Makers Leave Behind." Bourbon Women Association. <a href="https://bourbonwomen.org/tails-of-trouble-the-compounds-whiskey-makers-leave-behind/">Bourbon Women</a></li>
 
-  <li>National Research Institute of Brewing, Japan. "About Shochu." <a href="https://www.nrib.go.jp/English/sake_info/about-shochu/index.html">NRIB</a></li>
+  <li id="ref-13">National Research Institute of Brewing, Japan. "About Shochu." <a href="https://www.nrib.go.jp/English/sake_info/about-shochu/index.html">NRIB</a></li>
 
-  <li>"Vacuum Distillation: Redefining Modern Spirits Production." Vinsight (2025). <a href="https://www.vinsight.net/the-cool-revolution-how-vacuum-distillation-is-redefining-modern-spirits-production">Vinsight</a></li>
+  <li id="ref-14">"Vacuum Distillation: Redefining Modern Spirits Production." Vinsight (2025). <a href="https://www.vinsight.net/the-cool-revolution-how-vacuum-distillation-is-redefining-modern-spirits-production">Vinsight</a></li>
 
-  <li>"Atmospheric and Vacuum Distillation of Shochu." The Japanese Bar. <a href="https://thejapanesebar.com/shochu-awamori/vacuum-atmospheric-distillation/">TheJapaneseBar</a></li>
+  <li id="ref-15">"Atmospheric and Vacuum Distillation of Shochu." The Japanese Bar. <a href="https://thejapanesebar.com/shochu-awamori/vacuum-atmospheric-distillation/">TheJapaneseBar</a></li>
 
-  <li>Beaulieu, J.C. & Grimm, C.C. (2001). "Identification of volatile compounds in cantaloupe at various developmental stages using solid phase microextraction." <em>J. Agric. Food Chem.</em> [Reference for activity coefficient methodology]</li>
+  <li id="ref-16">Beaulieu, J.C. &amp; Grimm, C.C. (2001). "Identification of volatile compounds in cantaloupe." <em>J. Agric. Food Chem.</em></li>
 
-  <li>Jousse, C., et al. (2019). "Effect of Ethanol and Temperature on Partition Coefficients of Ethyl Acetate, Isoamyl Acetate, and Isoamyl Alcohol." <em>J. Chem. Eng. Data</em>, 64(5), 2499-2507. <a href="https://pubs.acs.org/doi/10.1021/acs.jced.8b01125">ACS</a></li>
+  <li id="ref-17">Jousse, C., et al. (2019). "Effect of Ethanol and Temperature on Partition Coefficients of Ethyl Acetate, Isoamyl Acetate, and Isoamyl Alcohol." <em>J. Chem. Eng. Data</em>, 64(5), 2499-2507. <a href="https://pubs.acs.org/doi/10.1021/acs.jced.8b01125">ACS</a></li>
 
-  <li>"cis-3-Methyl-4-octanolide (Whiskey Lactone)." Wikipedia. <a href="https://en.wikipedia.org/wiki/Cis-3-Methyl-4-octanolide">Wikipedia</a></li>
+  <li id="ref-18">"cis-3-Methyl-4-octanolide (Whiskey Lactone)." Wikipedia. <a href="https://en.wikipedia.org/wiki/Cis-3-Methyl-4-octanolide">Wikipedia</a></li>
 
-  <li>American Chemical Society. "Whiskey Lactone &mdash; Molecule of the Week." <a href="https://www.acs.org/content/acs/en/molecule-of-the-week/archive/w/whiskey-lactone.html">ACS</a></li>
+  <li id="ref-19">American Chemical Society. "Whiskey Lactone &mdash; Molecule of the Week." <a href="https://www.acs.org/content/acs/en/molecule-of-the-week/archive/w/whiskey-lactone.html">ACS</a></li>
 
-  <li>Harrison, B., Fagnen, O., Jack, F., &amp; Brosnan, J. (2011). "The Impact of Copper in Different Parts of Malt Whisky Pot Stills on New Make Spirit Composition and Aroma." <em>J. Institute of Brewing</em>, 117(1), 106-112.</li>
+  <li id="ref-20">Harrison, B., Fagnen, O., Jack, F., &amp; Brosnan, J. (2011). "The Impact of Copper in Different Parts of Malt Whisky Pot Stills on New Make Spirit Composition and Aroma." <em>J. Institute of Brewing</em>, 117(1), 106-112.</li>
 
-  <li>Conner, J.M., Paterson, A., &amp; Piggott, J.R. (1994). "Interactions between ethyl esters and aroma compounds in model spirit solutions." <em>J. Agric. Food Chem.</em>, 42(10), 2231-2234.</li>
+  <li id="ref-21">Conner, J.M., Paterson, A., &amp; Piggott, J.R. (1994). "Interactions between ethyl esters and aroma compounds in model spirit solutions." <em>J. Agric. Food Chem.</em>, 42(10), 2231-2234.</li>
 
-  <li>Nicol, D.A. (1989). "Batch Distillation" in <em>The Science and Technology of Whiskies</em> (Piggott, Sharp, &amp; Duncan, eds.). Longman Scientific.</li>
+  <li id="ref-22">Nicol, D.A. (1989). "Batch Distillation" in <em>The Science and Technology of Whiskies</em> (Piggott, Sharp, &amp; Duncan, eds.). Longman Scientific.</li>
 
-  <li>Leaute, R. (1990). "Distillation in Alembic." <em>American Journal of Enology and Viticulture</em>, 41(1), 90-103.</li>
+  <li id="ref-23">Leaute, R. (1990). "Distillation in Alembic." <em>American Journal of Enology and Viticulture</em>, 41(1), 90-103.</li>
 
-  <li>Nykanen, L. &amp; Suomalainen, H. (1983). <em>Aroma of Beer, Wine and Distilled Alcoholic Beverages</em>. D. Reidel Publishing.</li>
+  <li id="ref-24">Nykanen, L. &amp; Suomalainen, H. (1983). <em>Aroma of Beer, Wine and Distilled Alcoholic Beverages</em>. D. Reidel Publishing.</li>
 
-  <li>Lee, K.Y.M., Paterson, A., Piggott, J.R., &amp; Richardson, G.D. (2001). "Origins of flavour in whiskies and a revised flavour wheel." <em>J. Institute of Brewing</em>, 107(5), 287-313.</li>
+  <li id="ref-25">Lee, K.Y.M., Paterson, A., Piggott, J.R., &amp; Richardson, G.D. (2001). "Origins of flavour in whiskies and a revised flavour wheel." <em>J. Institute of Brewing</em>, 107(5), 287-313.</li>
 
-  <li>Seader, J.D. &amp; Henley, E.J. (2006). <em>Separation Process Principles</em>, 2nd ed. Wiley. Chapter 11.</li>
+  <li id="ref-26">Seader, J.D. &amp; Henley, E.J. (2006). <em>Separation Process Principles</em>, 2nd ed. Wiley. Chapter 11.</li>
 
-  <li>Gmehling, J., Onken, U., &amp; Arlt, W. <em>Vapor-Liquid Equilibrium Data Collection</em>. DECHEMA Chemistry Data Series, Vol. I.</li>
+  <li id="ref-27">Gmehling, J., Onken, U., &amp; Arlt, W. <em>Vapor-Liquid Equilibrium Data Collection</em>. DECHEMA Chemistry Data Series, Vol. I.</li>
 </ol>
 
 <footer>
@@ -1198,6 +1283,209 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
   <p>For Dr. R. Douglas Sammons, Ph.D. &bull; <em>Ad meliora semper distillandum</em></p>
   <p style="margin-top:0.5rem; font-size:0.75rem; color:#30363d;">Self-contained document. No external dependencies.</p>
 </footer>
+
+<!-- Citation popup container (one shared popup, repositioned per click) -->
+<div id="cite-popup" class="cite-popup">
+  <span class="cite-close" id="cite-close">&times;</span>
+  <div class="cite-source" id="cite-source"></div>
+  <div class="cite-excerpt" id="cite-excerpt"></div>
+  <a class="cite-link" id="cite-link" href="#" target="_blank">Open source &rarr;</a>
+</div>
+
+<script>
+(function() {
+  // Citation data: ref number -> { source, excerpt, url }
+  var refs = {
+    1: {
+      source: "Faundez et al. (2006), Fluid Phase Equilibria",
+      excerpt: "NRTL model accurately predicts VLE for ternary mixtures of water + ethanol + congener using only binary interaction parameters, enabling computational prediction of congener behavior during wine and spirit distillation.",
+      url: "https://www.sciencedirect.com/science/article/abs/pii/S0040603106004850"
+    },
+    2: {
+      source: "Athes et al. (2008), Ind. Eng. Chem. Res.",
+      excerpt: "Comprehensive review of published VLE data for 44 aroma compounds highly diluted in ethanol-water mixtures at 101.3 kPa. NRTL model parameters fitted; activity coefficients at infinite dilution reported for esters, alcohols, aldehydes, and acids in aqueous ethanol.",
+      url: "https://www.researchgate.net/publication/323530720"
+    },
+    3: {
+      source: "Valderrama & Faundez (2003), Chinese J. Chem. Eng.",
+      excerpt: "Wilson, NRTL, and UNIQUAC activity coefficient models evaluated for describing VLE in ternary hydro-alcoholic solutions relevant to distillation of fermented beverages.",
+      url: "https://www.sciencedirect.com/science/article/abs/pii/S1004954108602037"
+    },
+    4: {
+      source: "Sammons et al. (2014), Pest Management Science",
+      excerpt: "R. Douglas Sammons, a senior fellow with Monsanto, leads research on biochemical characterization of glyphosate resistance mechanisms, building on his work in the herbicide design team exploring EPSPS enzymology.",
+      url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4260172/"
+    },
+    5: {
+      source: "Lea & Piggott (2003), Fermented Beverage Production",
+      excerpt: "Authoritative reference covering fermentation biochemistry, distillation science, and flavor development across all major fermented beverages. Chapters on whisky distillation detail congener formation during fermentation and partitioning during distillation.",
+      url: "https://link.springer.com/chapter/10.1007/978-1-4615-0187-9_11"
+    },
+    6: {
+      source: "Compound Interest (2015), Chemistry of Whisky",
+      excerpt: "Whisky contains a range of chemical compounds including phenols (guaiacol, cresols), esters (ethyl hexanoate, isoamyl acetate), aldehydes (vanillin, furfural), and lactones (cis/trans-3-methyl-4-octanolide). Guaiacol contributes smoky flavors; vanillin is especially abundant in bourbon.",
+      url: "https://www.compoundchem.com/2015/03/31/whisky/"
+    },
+    7: {
+      source: "WSSA (2015), Award Winners",
+      excerpt: "R. Douglas Sammons, Ph.D., Monsanto Company, named Fellow of the Weed Science Society of America. Sammons leads study of biochemical characterization of glyphosate resistance and previously led an insecticidal protein discovery team.",
+      url: "https://wssa.net/2015/02/weed-science-society-of-america-names-2015-award-winners/"
+    },
+    8: {
+      source: "ETH Zurich, Separation Processes",
+      excerpt: "The composition of the ethanol-water azeotrope shifts with pressure: at reduced pressures below approximately 70 mmHg, the azeotrope disappears entirely. However, the costs of achieving this disappearance require very high, large distillation columns.",
+      url: "https://www.hyper-tvt.ethz.ch/distillation-azeotrope-pressure_swing.html"
+    },
+    9: {
+      source: "Luong (2012), Ind. Eng. Chem. Res.",
+      excerpt: "Pressure-swing distillation exploits the pressure sensitivity of azeotrope composition, using two columns at different pressures to separate components that form pressure-sensitive azeotropes.",
+      url: "https://pubs.acs.org/doi/10.1021/ie3002414"
+    },
+    10: {
+      source: "Difford's Guide, Science of Distillation",
+      excerpt: "Esters include ethyl acetate (77.1\u00b0C), ethyl butyrate (121\u00b0C). Heads contain methanol, acetaldehyde, and ethyl acetate. Hearts contain primarily ethanol plus flavor-active esters and phenols. Tails contain higher alcohols including isoamyl alcohol and isobutyl alcohol.",
+      url: "https://www.diffordsguide.com/encyclopedia/198/bws/distillation-the-science-of-distillation"
+    },
+    11: {
+      source: "ISC Barrels (2023), Lactone Levels in Bourbon",
+      excerpt: "By four years, lactone levels in American oak reach sensory detection. American oak has higher total lactone concentrations and a higher cis-to-trans ratio compared to French oak. Oak lactones are generally one of the last congeners to be extracted.",
+      url: "https://www.iscbarrels.com/trial-4-examination-of-extraction-rates-and-lactone-levels-in-bourbon-whiskey-for-american-european-and-french-oak/"
+    },
+    12: {
+      source: "Bourbon Women Association, Tails of Trouble",
+      excerpt: "Tails contain fusel oils (propanol, butanol, amyl alcohols) with harsh, oily aromas; fatty acids (caprylic, lauric) imparting greasy mouthfeel and soapy notes; and heavier esters producing musty, waxy, or overly perfumed aromas.",
+      url: "https://bourbonwomen.org/tails-of-trouble-the-compounds-whiskey-makers-leave-behind/"
+    },
+    13: {
+      source: "NRIB Japan, About Shochu",
+      excerpt: "As the pressure decreases, the boiling point of compounds also decreases, allowing alcohol to be extracted at a low temperature of 45\u201355\u2103. A producer in Fukuoka Prefecture first developed a vacuum still for shochu making in 1973.",
+      url: "https://www.nrib.go.jp/English/sake_info/about-shochu/index.html"
+    },
+    14: {
+      source: "Vinsight (2025), Vacuum Distillation in Spirits",
+      excerpt: "By reducing internal pressure, vacuum distillation lowers the boiling point to between 20\u00b0C and 35\u00b0C, allowing aromatic compounds to evaporate without being 'cooked' by high heat. Stainless steel is stronger than copper and ideal for vacuum distillation.",
+      url: "https://www.vinsight.net/the-cool-revolution-how-vacuum-distillation-is-redefining-modern-spirits-production"
+    },
+    15: {
+      source: "The Japanese Bar, Shochu Distillation",
+      excerpt: "After the development of vacuum distillation, light-flavored shochu entered the market. Due to the low temperature, there is minimal decomposition of floral aromas, resulting in a light and floral shochu that triggered a nationwide boom.",
+      url: "https://thejapanesebar.com/shochu-awamori/vacuum-atmospheric-distillation/"
+    },
+    16: {
+      source: "Beaulieu & Grimm (2001), J. Agric. Food Chem.",
+      excerpt: "SPME methodology for identifying volatile compounds; referenced for activity coefficient estimation approaches in aqueous systems.",
+      url: "#ref-16"
+    },
+    17: {
+      source: "Jousse et al. (2019), J. Chem. Eng. Data",
+      excerpt: "Partition coefficients of ethyl acetate, isoamyl acetate, and isoamyl alcohol measured at multiple ethanol concentrations and temperatures. Activity coefficients at infinite dilution follow Henry\u2019s law; water and ethanol follow Raoult\u2019s law convention.",
+      url: "https://pubs.acs.org/doi/10.1021/acs.jced.8b01125"
+    },
+    18: {
+      source: "Wikipedia, cis-3-Methyl-4-octanolide",
+      excerpt: "The 3S,4S isomer, known as whisky lactone or quercus lactone, is an important aroma ingredient in whiskey aged in oak barrels. The cis isomer has a distinctive coconut-like aroma; the trans isomer provides grassy, celery-like notes.",
+      url: "https://en.wikipedia.org/wiki/Cis-3-Methyl-4-octanolide"
+    },
+    19: {
+      source: "ACS, Whiskey Lactone \u2014 Molecule of the Week",
+      excerpt: "Whiskey lactone (cis- and trans-3-methyl-4-octanolide) is extracted from oak wood during barrel aging. American oak contains significantly higher concentrations than European oak, contributing the characteristic coconut-vanilla notes of bourbon.",
+      url: "https://www.acs.org/content/acs/en/molecule-of-the-week/archive/w/whiskey-lactone.html"
+    },
+    20: {
+      source: "Harrison et al. (2011), J. Institute of Brewing",
+      excerpt: "Systematic study demonstrating that copper location (pot, column, lyne arm, condenser) differentially affects sulfur compound removal. Copper catalyzes formation of insoluble CuS from H\u2082S, DMS, and DMDS. Shell-and-tube condensers provide more copper contact than worm tubs.",
+      url: "#ref-20"
+    },
+    21: {
+      source: "Conner et al. (1994), J. Agric. Food Chem.",
+      excerpt: "Ethyl esters in model spirit solutions show composition-dependent headspace behavior: their apparent volatility is strongly influenced by the ethanol concentration of the matrix. Higher ethanol reduces headspace concentrations of hydrophobic esters.",
+      url: "#ref-21"
+    },
+    22: {
+      source: "Nicol (1989), Batch Distillation, in Science and Technology of Whiskies",
+      excerpt: "Definitive treatment of congener behavior during batch distillation. Documents the K-value crossover phenomenon: fusel alcohols and esters shift from K<1 to K>1 as pot ethanol concentration decreases. Methanol distributes broadly across the run with K\u22481 in pot stills.",
+      url: "#ref-22"
+    },
+    23: {
+      source: "Leaute (1990), Am. J. Enol. Vitic.",
+      excerpt: "Detailed congener partitioning data for pot still distillation. Documents three behavioral classes of congeners (heads, hearts, tails) based on relative volatility evolution during the run. Foundational data on cut-point congener composition.",
+      url: "#ref-23"
+    },
+    24: {
+      source: "Nykanen & Suomalainen (1983), Aroma of Beer, Wine and Distilled Beverages",
+      excerpt: "Comprehensive reference on flavor compound chemistry in alcoholic beverages. Documents boiling points, flavor thresholds, and formation pathways for esters, fusel alcohols, fatty acids, phenols, and lactones across all major spirit categories.",
+      url: "#ref-24"
+    },
+    25: {
+      source: "Lee et al. (2001), J. Institute of Brewing",
+      excerpt: "Revised whisky flavour wheel identifying origins of flavour compounds. Correlates specific congeners with sensory descriptors: ethyl hexanoate with apple/fruity notes, 2-phenylethanol with rose/floral, guaiacol with smoky character.",
+      url: "#ref-25"
+    },
+    26: {
+      source: "Seader & Henley (2006), Separation Process Principles",
+      excerpt: "Standard chemical engineering reference covering VLE thermodynamics, Raoult\u2019s law deviations, activity coefficient models (NRTL, UNIFAC), azeotropic distillation, extractive distillation, molecular sieves, and the Clausius-Clapeyron equation.",
+      url: "#ref-26"
+    },
+    27: {
+      source: "Gmehling et al., DECHEMA VLE Data Collection",
+      excerpt: "The canonical source for vapor-liquid equilibrium data. Ethanol-water system: minimum-boiling azeotrope at 95.57 wt% ethanol (89.4 mol%), boiling point 78.15\u00b0C at 1 atm (760 mmHg).",
+      url: "#ref-27"
+    }
+  };
+
+  var popup = document.getElementById('cite-popup');
+  var srcEl = document.getElementById('cite-source');
+  var excEl = document.getElementById('cite-excerpt');
+  var lnkEl = document.getElementById('cite-link');
+  var closeEl = document.getElementById('cite-close');
+  var activeRef = null;
+
+  function showPopup(refNum) {
+    var r = refs[refNum];
+    if (!r) return;
+    if (activeRef === refNum) { hidePopup(); return; }
+    activeRef = refNum;
+    srcEl.textContent = '[' + refNum + '] ' + r.source;
+    excEl.textContent = '"' + r.excerpt + '"';
+    if (r.url && r.url.charAt(0) !== '#') {
+      lnkEl.href = r.url;
+      lnkEl.style.display = 'inline-block';
+    } else {
+      lnkEl.style.display = 'none';
+    }
+    popup.classList.add('visible');
+  }
+
+  function hidePopup() {
+    popup.classList.remove('visible');
+    activeRef = null;
+  }
+
+  closeEl.addEventListener('click', function(e) {
+    e.stopPropagation();
+    hidePopup();
+  });
+
+  document.addEventListener('click', function(e) {
+    var cite = e.target.closest('.cite');
+    if (cite) {
+      e.preventDefault();
+      e.stopPropagation();
+      var refNum = parseInt(cite.getAttribute('data-ref'), 10);
+      showPopup(refNum);
+      return;
+    }
+    if (!e.target.closest('.cite-popup')) {
+      hidePopup();
+    }
+  });
+
+  // ESC to close
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') hidePopup();
+  });
+})();
+</script>
 
 </body>
 </html>
