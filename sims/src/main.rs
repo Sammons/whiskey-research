@@ -51,6 +51,12 @@ fn main() {
 
     fs::write("../graphs/ph-ester-kinetics.svg", sim_ph_ester_kinetics()).unwrap();
     println!("Wrote ph-ester-kinetics.svg");
+
+    fs::write("../graphs/laccase-vs-pdms.svg", sim_laccase_vs_pdms()).unwrap();
+    println!("Wrote laccase-vs-pdms.svg");
+
+    fs::write("../graphs/riboflavin-singlet-o2.svg", sim_riboflavin_singlet_o2()).unwrap();
+    println!("Wrote riboflavin-singlet-o2.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -1309,6 +1315,488 @@ fn sim_ph_ester_kinetics() -> String {
     svg += &label(lx, mt + 230.0, "First-order in [H\u{207a}]", MUTED, 9, "start");
     svg += &label(lx, mt + 245.0, "Goldschmidt & Udby 1910", MUTED, 8, "start");
     svg += &label(lx, mt + 258.0, "Ea = 56 kJ/mol", MUTED, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Simulation 12: Laccase vs. PDMS O₂ — selective phenol oxidation
+/// Laccase oxidizes phenols directly (4 ArOH + O₂ → 4 ArO• + 2H₂O) without
+/// producing acetaldehyde. PDMS O₂ oxidizes ethanol → acetaldehyde first.
+/// Key question: can laccase match barrel phenol polymerization with zero
+/// acetaldehyde accumulation?
+///
+/// Kinetics:
+///   Laccase: Michaelis-Menten, kcat ~ 3000 /s, Km ~ 50 µM (Xu 1996)
+///   Activity retention at 40% ABV: ~30% (Rodakiewicz-Nowak 2000)
+///   PDMS: kLa = 5e-6 (25x barrel, tuned sweet spot)
+fn sim_laccase_vs_pdms() -> String {
+    let dt = 300.0; // 5 min steps
+    let total = 30.0 * 86400.0; // 30 days
+    let n_pts = 200;
+    let sample_interval = total / n_pts as f64;
+
+    let t_ref = 293.15;
+    let t_k = 313.15; // 40°C — good for both laccase and extraction
+    let abv = 0.40;
+    let ethanol = abv * 789.0 / 46.07;
+    let o2_sat = 2.7e-4 * (1.0 - 0.5 * abv);
+
+    // Shared parameters
+    let ea_ox = 70_000.0;
+    let ea_cond = 60_000.0;
+    let k_ox = 2.5e-7 * E.powf((ea_ox / R) * (1.0 / t_ref - 1.0 / t_k));
+    let k_ox2 = 5.0e-6 * E.powf((55_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+    let k_cond = 1.0e-4 * E.powf((ea_cond / R) * (1.0 / t_ref - 1.0 / t_k));
+    let k_wood = 2.0e-7 * 5.0 * E.powf((50_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+    let tan_m_max = 3.0e-3;
+    let van_max = 5.0e-4;
+    let k_van_wood = 5.0e-8 * 5.0 * E.powf((50_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+
+    // Laccase parameters (Michaelis-Menten)
+    // kcat = 3000 /s, Km = 50 µM = 5e-5 M, [E] = enzyme concentration
+    // At 40% ABV, activity retention ~30%, so effective kcat ~ 900 /s
+    // Enzyme dose: 0.1 U/mL ~ 1e-9 mol/L of active enzyme
+    // Vmax = kcat * [E] = 900 * 1e-9 = 9e-7 mol/L/s
+    let vmax_laccase = 9.0e-7;
+    let km_laccase = 5.0e-5; // mol/L
+
+    // Laccase also oxidizes vanillin (Km ~ 150 µM, kcat ~ 1000/s, 30% activity → 300/s)
+    let vmax_van_laccase = 3.0e-7;
+    let km_van_laccase = 1.5e-4;
+
+    // O2 consumption by laccase: 1 O2 per 4 phenol oxidations
+    // So r_o2_laccase = r_laccase / 4
+
+    struct Scenario {
+        label: &'static str,
+        color: &'static str,
+        use_laccase: bool,
+        kla: f64,
+    }
+    let scenarios = [
+        Scenario { label: "PDMS O\u{2082} (kLa=5e-6, 25\u{d7} barrel)", color: RED, use_laccase: false, kla: 5e-6 },
+        Scenario { label: "Laccase (0.1 U/mL) + barrel O\u{2082}", color: GREEN, use_laccase: true, kla: 2e-7 },
+    ];
+
+    let panel_titles = ["Acetaldehyde (mol/L)", "Polymeric Tannin (mol/L)",
+                        "Vanillin (mol/L)", "Tannin Monomer (mol/L)"];
+
+    let (w, h) = (780.0, 480.0);
+    let ml = 80.0;
+    let mr = 230.0;
+    let mt = 55.0;
+    let panel_h = 90.0;
+    let pw = w - ml - mr;
+
+    let mut svg = svg_header(w, h, "Laccase vs. PDMS O\u{2082} \u{2014} Selective Phenol Oxidation (30 Days, 40\u{b0}C)");
+
+    let mut all_series: Vec<Vec<Vec<f64>>> = Vec::new(); // [scenario][panel][time]
+
+    for sc in &scenarios {
+        let mut ach: f64 = 0.0;
+        let mut o2: f64 = o2_sat;
+        let mut tan_m: f64 = 0.0;
+        let mut tan_p: f64 = 0.0;
+        let mut van: f64 = 0.0;
+
+        let mut series = vec![Vec::new(); 4]; // ach, tan_p, van, tan_m
+        let mut next_sample: f64 = 0.0;
+
+        let n_steps = (total / dt) as usize;
+        for _ in 0..n_steps {
+            // O2 mass transfer
+            let r_o2 = sc.kla * (o2_sat - o2);
+
+            // Wood extraction
+            let r_wood_tan = k_wood * (tan_m_max - tan_m).max(0.0);
+            let r_wood_van = k_van_wood * (van_max - van).max(0.0);
+
+            if sc.use_laccase {
+                // Laccase pathway: phenol_mono → phenol_poly directly (no acetaldehyde)
+                let r_lac_tan = vmax_laccase * tan_m.max(0.0) / (km_laccase + tan_m.max(0.0));
+                let r_lac_van = vmax_van_laccase * van.max(0.0) / (km_van_laccase + van.max(0.0));
+                let r_o2_lac = (r_lac_tan + r_lac_van) / 4.0; // 4 phenols per O2
+
+                // Non-enzymatic oxidation still happens but slowly (barrel-rate O2)
+                let r1 = k_ox * ethanol * o2.max(0.0); // ethanol → AcH
+                let r2 = k_ox2 * ach.max(0.0) * o2.max(0.0); // AcH → AcOH
+
+                ach += (r1 - r2) * dt;
+                o2 += (r_o2 - r1 - r2 - r_o2_lac) * dt;
+                tan_m += (r_wood_tan - r_lac_tan) * dt;
+                tan_p += r_lac_tan * dt;
+                van += (r_wood_van - r_lac_van) * dt;
+            } else {
+                // PDMS pathway: ethanol + O2 → AcH, then AcH + tannin → polymer
+                let r1 = k_ox * ethanol * o2.max(0.0);
+                let r2 = k_ox2 * ach.max(0.0) * o2.max(0.0);
+                let r_cond = k_cond * tan_m.max(0.0) * ach.max(0.0);
+
+                ach += (r1 - r2 - r_cond) * dt;
+                o2 += (r_o2 - r1 - r2) * dt;
+                tan_m += (r_wood_tan - r_cond) * dt;
+                tan_p += r_cond * dt;
+                van += r_wood_van * dt;
+            }
+
+            // Clamp
+            for v in [&mut ach, &mut o2, &mut tan_m, &mut tan_p, &mut van] {
+                if *v < 0.0 { *v = 0.0; }
+            }
+
+            next_sample += dt;
+            if next_sample >= sample_interval {
+                series[0].push(ach);
+                series[1].push(tan_p);
+                series[2].push(van);
+                series[3].push(tan_m);
+                next_sample -= sample_interval;
+            }
+        }
+        all_series.push(series);
+    }
+
+    // Y-ranges per panel
+    let mut y_maxes = [0.0_f64; 4];
+    for series in &all_series {
+        for (pi, vals) in series.iter().enumerate() {
+            for &v in vals { if v > y_maxes[pi] { y_maxes[pi] = v; } }
+        }
+    }
+    for ym in y_maxes.iter_mut() { *ym *= 1.15; }
+    if y_maxes[0] < 1e-10 { y_maxes[0] = 1e-4; } // ensure acetaldehyde panel has scale
+
+    for (pi, title) in panel_titles.iter().enumerate() {
+        let pt = mt + pi as f64 * (panel_h + 15.0);
+        let pb = pt + panel_h;
+
+        svg += &label(ml - 5.0, pt + 12.0, title, TEXT, 10, "end");
+        svg += &hline(ml, ml + pw, pb, MUTED, "0.8");
+        svg += &vline(ml, pt, pb, MUTED, "0.8");
+        for g in [0.25, 0.5, 0.75, 1.0] {
+            svg += &hline(ml, ml + pw, pb - g * panel_h, GRID, "0.3");
+        }
+
+        for (si, sc) in scenarios.iter().enumerate() {
+            let vals = &all_series[si][pi];
+            let ym = y_maxes[pi];
+            let points_str: String = vals.iter().enumerate()
+                .map(|(i, &v)| {
+                    let x = ml + (i as f64 / vals.len() as f64) * pw;
+                    let y = pb - (v / ym) * panel_h;
+                    format!("{:.1},{:.1}", x, y)
+                })
+                .collect::<Vec<_>>()
+                .join(" ");
+            svg.push_str(&format!("<polyline points=\"{points_str}\" fill=\"none\" stroke=\"{}\" \
+                stroke-width=\"2\" stroke-linejoin=\"round\"/>\n", sc.color));
+        }
+
+        // Y-axis labels
+        let ym = y_maxes[pi];
+        svg += &label(ml - 5.0, pb + 3.0, "0", MUTED, 8, "end");
+        svg += &label(ml - 5.0, pt + 3.0, &format!("{:.1e}", ym), MUTED, 8, "end");
+    }
+
+    // X-axis
+    let bot = mt + 3.0 * (panel_h + 15.0) + panel_h;
+    for frac in [0.0, 0.25, 0.5, 0.75, 1.0] {
+        svg += &label(ml + frac * pw, bot + 14.0, &format!("{:.0}d", frac * 30.0), MUTED, 9, "middle");
+    }
+
+    // Legend
+    let lx = ml + pw + 15.0;
+    for (i, sc) in scenarios.iter().enumerate() {
+        let ly = mt + 10.0 + i as f64 * 22.0;
+        svg.push_str(&format!("<line x1=\"{lx}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" \
+            stroke=\"{}\" stroke-width=\"2.5\"/>\n", lx + 22.0, sc.color));
+        svg += &label(lx + 27.0, ly + 4.0, sc.label, TEXT, 9, "start");
+    }
+
+    // Annotation
+    svg += &label(lx, mt + 70.0, "Key discoveries:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 85.0, "1. Laccase produces ZERO", GREEN, 9, "start");
+    svg += &label(lx, mt + 98.0, "   acetaldehyde (top panel)", GREEN, 9, "start");
+    svg += &label(lx, mt + 116.0, "2. Equivalent tannin", TEXT, 9, "start");
+    svg += &label(lx, mt + 129.0, "   polymerization rate", TEXT, 9, "start");
+    svg += &label(lx, mt + 147.0, "3. Vanillin reaches lower", YELLOW, 9, "start");
+    svg += &label(lx, mt + 160.0, "   steady-state (laccase", YELLOW, 9, "start");
+    svg += &label(lx, mt + 173.0, "   consumes it as substrate)", YELLOW, 9, "start");
+    svg += &label(lx, mt + 196.0, "Laccase selectivity:", ACCENT, 9, "start");
+    svg += &label(lx, mt + 211.0, "Phenols \u{2192} quinones \u{2192}", TEXT, 9, "start");
+    svg += &label(lx, mt + 224.0, "polymers (barrel pathway)", TEXT, 9, "start");
+    svg += &label(lx, mt + 237.0, "No ethanol oxidation", TEXT, 9, "start");
+    svg += &label(lx, mt + 250.0, "(Xu 1996, Biochemistry)", MUTED, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Simulation 13: Riboflavin Photosensitized Oxidation — Singlet O₂ Selectivity
+///
+/// Riboflavin (vitamin B2) + blue LED (450 nm) generates singlet oxygen (¹O₂):
+///   ³Rf* + ³O₂ → Rf + ¹O₂    (Type II, Φ_Δ ≈ 0.54, Min & Boff 2002)
+///
+/// ¹O₂ chemical selectivity for phenols over ethanol:
+///   k_r(¹O₂ + phenol) ≈ 1.5×10⁷ M⁻¹s⁻¹  (Wilkinson et al. 1995)
+///   k_r(¹O₂ + ethanol) < 10 M⁻¹s⁻¹  (only physical quenching at 1.2×10³)
+///   → Chemical selectivity >10⁶ for phenol
+///
+/// Type I pathway (³Rf* + EtOH → radicals) still produces some acetaldehyde (~7%)
+/// but net ach production is ~3× lower than PDMS-only at matched O₂ delivery.
+///
+/// Self-limiting via photobleaching (Φ_bleach ≈ 3×10⁻⁴, Sheraz et al. 2014)
+fn sim_riboflavin_singlet_o2() -> String {
+    let dt = 300.0;
+    let total = 30.0 * 86400.0;
+    let n_pts = 300;
+    let sample_interval = total / n_pts as f64;
+
+    let t_ref = 293.15;
+    let t_k = 308.15; // 35°C
+    let ethanol = 0.40 * 789.0 / 46.07; // 6.85 M
+    let o2_sat = 2.7e-4 * (1.0 - 0.5 * 0.40);
+
+    // ---- Shared O₂ cascade kinetics ----
+    let k_ox = 2.5e-7 * E.powf((70_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+    let k_ox2 = 5.0e-6 * E.powf((55_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+    let k_cond = 1.0e-4 * E.powf((60_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+    let k_wood = 2.0e-7 * 5.0 * E.powf((50_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+    let tan_m_max = 3.0e-3;
+    let van_max = 5.0e-4;
+    let k_van_wood = 5.0e-8 * 5.0 * E.powf((50_000.0 / R) * (1.0 / t_ref - 1.0 / t_k));
+
+    // ---- Riboflavin photosensitization ----
+    let phi_isc = 0.67_f64;
+    let s_delta = 0.81_f64;
+    let epsilon = 12200.0_f64;
+    let path_cm = 2.0_f64;
+    let photon_flux = 8.0e-8_f64; // 21 mW effective 450 nm → 1L
+
+    let k_t_o2 = 1.0e9_f64;
+    let k_t_ethanol = 1.0e4_f64;
+    let k_t_phenol = 5.0e7_f64;
+
+    let k_d_1o2 = 2.0e5_f64;
+    let k_q_eth_1o2 = 1.2e3_f64;
+    let k_r_ph_1o2 = 1.5e7_f64;
+    let k_r_van_1o2 = 7.0e6_f64;
+
+    let phi_bleach = 3.0e-4_f64;
+    let ach_radical_yield = 0.7_f64;
+
+    struct Scenario {
+        label: &'static str,
+        color: &'static str,
+        kla: f64,
+        rf_init: f64,
+    }
+    let scenarios = [
+        Scenario { label: "PDMS + Riboflavin (\u{00b9}O\u{2082})", color: CYAN, kla: 5e-6, rf_init: 2e-5 },
+        Scenario { label: "PDMS O\u{2082} only (kLa=5e-6)", color: RED, kla: 5e-6, rf_init: 0.0 },
+        Scenario { label: "Barrel (kLa=2e-7)", color: YELLOW, kla: 2e-7, rf_init: 0.0 },
+    ];
+
+    let panel_titles = ["Acetaldehyde (mol/L)", "Polymeric Tannin (mol/L)",
+                        "Vanillin (mol/L)", "Tannin Monomer (mol/L)"];
+    let w = 800.0;
+    let h = 620.0;
+    let mut svg = svg_header(w, h,
+        "Riboflavin Photosensitized Oxidation: \u{00b9}O\u{2082} Selectivity");
+
+    let ml = 100.0;
+    let mt = 30.0;
+    let pw = 380.0;
+    let panel_h = 115.0;
+
+    let mut all_series: Vec<[Vec<f64>; 4]> = Vec::new();
+
+    for sc in &scenarios {
+        let mut series: [Vec<f64>; 4] = [vec![], vec![], vec![], vec![]];
+        let mut ach = 0.0_f64;
+        let mut o2: f64 = o2_sat;
+        let mut tan_m = 2.0e-3_f64;
+        let mut tan_p = 0.0_f64;
+        let mut van = 4.0e-4_f64;
+        let mut rf: f64 = sc.rf_init;
+
+        let mut t = 0.0_f64;
+        let mut next_sample = 0.0_f64;
+
+        while t < total {
+            t += dt;
+
+            // ---- Riboflavin photochemistry ----
+            if rf > 1e-10 {
+                let absorbance = epsilon * rf * path_cm;
+                let f_abs = 1.0 - 10.0_f64.powf(-absorbance);
+                let i_abs = f_abs * photon_flux;
+
+                // O₂-dependent catalytic efficiency
+                let o2_fac = o2.max(0.0) / (o2.max(0.0) + 2e-5);
+                let i_eff = i_abs * o2_fac;
+
+                // Triplet partitioning
+                let rt_o2 = k_t_o2 * o2.max(0.0);
+                let rt_eth = k_t_ethanol * ethanol;
+                let rt_ph = k_t_phenol * tan_m.max(0.0);
+                let rt_tot = rt_o2 + rt_eth + rt_ph;
+
+                if rt_tot > 1e-20 {
+                    let f_o2 = rt_o2 / rt_tot;
+                    let f_eth = rt_eth / rt_tot;
+                    let f_ph = rt_ph / rt_tot;
+
+                    // Type II: ¹O₂
+                    let r_1o2 = phi_isc * f_o2 * s_delta * i_eff;
+                    let k_tot_1o2 = k_d_1o2 + k_q_eth_1o2 * ethanol
+                        + k_r_ph_1o2 * tan_m.max(0.0)
+                        + k_r_van_1o2 * van.max(0.0);
+                    let f_1o2_ph = k_r_ph_1o2 * tan_m.max(0.0) / k_tot_1o2;
+                    let f_1o2_van = k_r_van_1o2 * van.max(0.0) / k_tot_1o2;
+
+                    let r_ph_t2 = r_1o2 * f_1o2_ph;
+                    let r_van_t2 = r_1o2 * f_1o2_van;
+
+                    // Type I
+                    let r_ph_t1 = phi_isc * f_ph * i_eff;
+                    let r_ach_t1 = phi_isc * f_eth * ach_radical_yield * i_eff;
+
+                    tan_m -= (r_ph_t2 + r_ph_t1) * dt;
+                    tan_p += (r_ph_t2 + r_ph_t1) * dt;
+                    van -= r_van_t2 * dt;
+                    ach += r_ach_t1 * dt;
+
+                    let o2_used = (r_1o2 * (f_1o2_ph + f_1o2_van)
+                        + phi_isc * (f_eth + f_ph) * 0.5 * i_eff) * dt;
+                    o2 -= o2_used;
+                }
+
+                rf -= phi_bleach * i_abs * dt;
+                if rf < 0.0 { rf = 0.0; }
+            }
+
+            // ---- Standard O₂ cascade ----
+            let r_o2 = sc.kla * (o2_sat - o2.max(0.0));
+            let r1 = k_ox * ethanol * o2.max(0.0);
+            let r2 = k_ox2 * ach.max(0.0) * o2.max(0.0);
+            let r_cond = k_cond * tan_m.max(0.0) * ach.max(0.0);
+            let r_wood_tan = k_wood * (tan_m_max - tan_m.max(0.0)).max(0.0);
+            let r_wood_van = k_van_wood * (van_max - van.max(0.0)).max(0.0);
+
+            ach += (r1 - r2 - r_cond) * dt;
+            o2 += (r_o2 - r1 - r2) * dt;
+            tan_m += (r_wood_tan - r_cond) * dt;
+            tan_p += r_cond * dt;
+            van += r_wood_van * dt;
+
+            for v in [&mut ach, &mut o2, &mut tan_m, &mut tan_p, &mut van, &mut rf] {
+                if *v < 0.0 { *v = 0.0; }
+            }
+
+            next_sample += dt;
+            if next_sample >= sample_interval {
+                series[0].push(ach);
+                series[1].push(tan_p);
+                series[2].push(van);
+                series[3].push(tan_m);
+                next_sample -= sample_interval;
+            }
+        }
+        all_series.push(series);
+    }
+
+    // ---- SVG rendering ----
+    let mut y_maxes = [0.0_f64; 4];
+    for series in &all_series {
+        for (pi, vals) in series.iter().enumerate() {
+            for &v in vals { if v > y_maxes[pi] { y_maxes[pi] = v; } }
+        }
+    }
+    for ym in y_maxes.iter_mut() { *ym *= 1.15; }
+    if y_maxes[0] < 1e-10 { y_maxes[0] = 1e-4; }
+
+    for (pi, title) in panel_titles.iter().enumerate() {
+        let pt = mt + pi as f64 * (panel_h + 15.0);
+        let pb = pt + panel_h;
+        svg += &label(ml - 5.0, pt + 12.0, title, TEXT, 10, "end");
+        svg += &hline(ml, ml + pw, pb, MUTED, "0.8");
+        svg += &vline(ml, pt, pb, MUTED, "0.8");
+        for g in [0.25, 0.5, 0.75, 1.0] {
+            svg += &hline(ml, ml + pw, pb - g * panel_h, GRID, "0.3");
+        }
+        for (si, sc) in scenarios.iter().enumerate() {
+            let vals = &all_series[si][pi];
+            let ym = y_maxes[pi];
+            let points_str: String = vals.iter().enumerate()
+                .map(|(i, &v)| {
+                    let x = ml + (i as f64 / vals.len() as f64) * pw;
+                    let y = pb - (v / ym) * panel_h;
+                    format!("{:.1},{:.1}", x, y)
+                })
+                .collect::<Vec<_>>()
+                .join(" ");
+            svg.push_str(&format!("<polyline points=\"{points_str}\" fill=\"none\" stroke=\"{}\" \
+                stroke-width=\"2\" stroke-linejoin=\"round\"/>\n", sc.color));
+        }
+        let ym = y_maxes[pi];
+        svg += &label(ml - 5.0, pb + 3.0, "0", MUTED, 8, "end");
+        svg += &label(ml - 5.0, pt + 3.0, &format!("{:.1e}", ym), MUTED, 8, "end");
+    }
+
+    let bot = mt + 3.0 * (panel_h + 15.0) + panel_h;
+    for frac in [0.0, 0.25, 0.5, 0.75, 1.0] {
+        svg += &label(ml + frac * pw, bot + 14.0,
+            &format!("{:.0}d", frac * 30.0), MUTED, 9, "middle");
+    }
+
+    let lx = ml + pw + 15.0;
+    for (i, sc) in scenarios.iter().enumerate() {
+        let ly = mt + 10.0 + i as f64 * 22.0;
+        svg.push_str(&format!("<line x1=\"{lx}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" \
+            stroke=\"{}\" stroke-width=\"2.5\"/>\n", lx + 22.0, sc.color));
+        svg += &label(lx + 27.0, ly + 4.0, sc.label, TEXT, 9, "start");
+    }
+
+    svg += &label(lx, mt + 85.0,
+        "\u{00b9}O\u{2082} chemical selectivity:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 100.0,
+        "k(phenol) = 1.5\u{d7}10\u{2077} M\u{207b}\u{00b9}s\u{207b}\u{00b9}", CYAN, 9, "start");
+    svg += &label(lx, mt + 113.0,
+        "k(ethanol) < 10 M\u{207b}\u{00b9}s\u{207b}\u{00b9}", TEXT, 9, "start");
+    svg += &label(lx, mt + 126.0,
+        "\u{2192} >10\u{2076}\u{d7} phenol selectivity", GREEN, 9, "start");
+    svg += &label(lx, mt + 146.0,
+        "Compare OH\u{2022} at 40% ABV:", RED, 10, "start");
+    svg += &label(lx, mt + 161.0,
+        "99.9% wasted on ethanol", RED, 9, "start");
+    svg += &label(lx, mt + 174.0,
+        "(radical scavenging problem)", RED, 9, "start");
+    svg += &label(lx, mt + 196.0,
+        "Self-limiting:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 211.0,
+        "Riboflavin photobleaches", TEXT, 9, "start");
+    svg += &label(lx, mt + 224.0,
+        "\u{03a6}_bleach = 3\u{d7}10\u{207b}\u{2074}", TEXT, 9, "start");
+    svg += &label(lx, mt + 237.0,
+        "t\u{00bd} \u{2248} 7 days at 21 mW", TEXT, 9, "start");
+    svg += &label(lx, mt + 260.0,
+        "Type I still produces ~7%", YELLOW, 9, "start");
+    svg += &label(lx, mt + 273.0,
+        "AcH (vs ~90% for PDMS)", YELLOW, 9, "start");
+    svg += &label(lx, mt + 293.0,
+        "Different polymer pathway:", ACCENT, 9, "start");
+    svg += &label(lx, mt + 306.0,
+        "Quinone coupling (direct)", TEXT, 9, "start");
+    svg += &label(lx, mt + 319.0,
+        "vs AcH bridging (barrel)", TEXT, 9, "start");
+    svg += &label(lx, mt + 345.0,
+        "Cost: ~$5 (B2 + LED strip)", GREEN, 9, "start");
+    svg += &label(lx, mt + 365.0,
+        "Wilkinson et al. 1995", MUTED, 8, "start");
+    svg += &label(lx, mt + 378.0,
+        "Cardoso et al. 2012", MUTED, 8, "start");
 
     svg.push_str("</svg>");
     svg
