@@ -194,6 +194,11 @@ fn main() {
     fs::write("../graphs/pervaporation-ester-reactor.svg", sim_pervaporation_ester_reactor()).unwrap();
     fs::write("../graphs/poms-ester-recovery.svg", sim_poms_ester_recovery()).unwrap();
     fs::write("../graphs/molecular-distillation.svg", sim_molecular_distillation()).unwrap();
+    fs::write("../graphs/scco2-ester-extraction.svg", sim_scco2_ester_extraction()).unwrap();
+    fs::write("../graphs/spinning-band-fractionation.svg", sim_spinning_band_fractionation()).unwrap();
+    fs::write("../graphs/smbr-reactive-chromatography.svg", sim_smbr_reactive_chromatography()).unwrap();
+    fs::write("../graphs/ptmsp-membrane.svg", sim_ptmsp_membrane()).unwrap();
+    fs::write("../graphs/integrated-separation-train.svg", sim_integrated_separation_train()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -16434,6 +16439,575 @@ fn sim_molecular_distillation() -> String {
         ACCENT, 8, "middle");
     svg += &label(350.0, h - 18.0,
         "Wiped-film molecular distillation: purely physical, food-grade, no reagents",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 106: scCO2 Ester Extraction from Spirit
+// ═══════════════════════════════════════════════════════════════
+fn sim_scco2_ester_extraction() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 106 \u{2014} Supercritical CO\u{2082} Selective Ester Extraction from Spirit");
+
+    let ax = 70.0_f64;
+    let ay = 65.0_f64;
+    let aw = 260.0_f64;
+    let ah = 310.0_f64;
+    svg += &label(ax + aw / 2.0, 57.0, "A: Partition Selectivity (scCO\u{2082}, 35\u{00b0}C, 100 bar)", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Bar chart of relative partition into CO2 phase
+    let compounds = [
+        ("Water", 1.0_f64, MUTED),
+        ("EtOH", 8.0_f64, BLUE),
+        ("EtOAc\n(C2)", 45.0_f64, CYAN),
+        ("EtHex\n(C6)", 120.0_f64, GREEN),
+        ("EtOct\n(C8)", 280.0_f64, ACCENT),
+        ("EtDec\n(C10)", 350.0_f64, RED),
+    ];
+
+    let k_max = 400.0_f64;
+    let bar_w = 32.0_f64;
+    let gap = 8.0_f64;
+    let start_x = ax + 12.0;
+
+    svg += &label(ax + aw / 2.0, ay + ah + 18.0, "Compound", MUTED, 8, "middle");
+    svg += &label(ax - 15.0, ay + ah / 2.0, "Relative K (CO\u{2082}/liquid)", MUTED, 7, "middle");
+
+    for k in (0..=400).step_by(100) {
+        let y = ay + ah - k as f64 / k_max * ah;
+        svg += &hline(ax, ax + aw, y, GRID, "0.3");
+        svg += &label(ax - 5.0, y + 3.0, &format!("{k}"), MUTED, 7, "end");
+    }
+
+    for (i, (name, k_val, color)) in compounds.iter().enumerate() {
+        let x = start_x + i as f64 * (bar_w + gap);
+        let bar_h = k_val / k_max * ah;
+        let y_top = ay + ah - bar_h;
+        svg += &format!("<rect x=\"{x}\" y=\"{y_top}\" width=\"{bar_w}\" height=\"{bar_h}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n");
+        svg += &label(x + bar_w / 2.0, y_top - 5.0, &format!("{k_val:.0}"), color, 7, "middle");
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (j, line) in lines.iter().enumerate() {
+            svg += &label(x + bar_w / 2.0, ay + ah + 10.0 + j as f64 * 10.0, line, MUTED, 6, "middle");
+        }
+    }
+
+    // Panel B: Process schematic
+    let bx = 390.0_f64;
+    let bw = 270.0_f64;
+    svg += &label(bx + bw / 2.0, 57.0, "B: scCO\u{2082} Extraction Workflow", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{ay}\" width=\"{bw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Process boxes
+    let boxes = [
+        (bx + 20.0, ay + 30.0, "Spirit\n(40% ABV)", BLUE),
+        (bx + 20.0, ay + 100.0, "scCO\u{2082} extractor\n35\u{00b0}C, 100 bar", ACCENT),
+        (bx + 20.0, ay + 170.0, "Depressurize", GREEN),
+        (bx + 20.0, ay + 240.0, "Ester concentrate\n(no residue)", RED),
+    ];
+
+    for (bxx, byy, text, color) in &boxes {
+        svg += &format!("<rect x=\"{bxx}\" y=\"{byy}\" width=\"150\" height=\"45\" rx=\"4\" fill=\"{GRID}\" stroke=\"{color}\" stroke-width=\"1.5\"/>\n");
+        let lines: Vec<&str> = text.split('\n').collect();
+        for (j, line) in lines.iter().enumerate() {
+            svg += &label(bxx + 75.0, byy + 20.0 + j as f64 * 14.0, line, color, 8, "middle");
+        }
+    }
+
+    // Arrows
+    for i in 0..3 {
+        let y1 = ay + 30.0 + i as f64 * 70.0 + 45.0;
+        let y2 = y1 + 25.0;
+        svg += &format!("<line x1=\"{}\" y1=\"{y1}\" x2=\"{}\" y2=\"{y2}\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n",
+            bx + 95.0, bx + 95.0);
+    }
+
+    // Advantages box
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"100\" height=\"70\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        bx + bw - 115.0, ay + 50.0);
+    svg += &label(bx + bw - 110.0, ay + 65.0, "Advantages:", TEXT, 7, "start");
+    svg += &label(bx + bw - 110.0, ay + 78.0, "\u{2022} GRAS solvent", GREEN, 6, "start");
+    svg += &label(bx + bw - 110.0, ay + 90.0, "\u{2022} No residue", GREEN, 6, "start");
+    svg += &label(bx + bw - 110.0, ay + 102.0, "\u{2022} Low temp (35\u{00b0}C)", GREEN, 6, "start");
+    svg += &label(bx + bw - 110.0, ay + 114.0, "\u{2022} Ester-selective", GREEN, 6, "start");
+
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "scCO\u{2082} at 35\u{00b0}C/100 bar selectively extracts C6\u{2013}C10 esters over ethanol (35\u{2013}44\u{00d7} selectivity)",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "GRAS, no residue, low temperature preserves thermolabile aroma compounds",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 107: Spinning Band Ester Fractionation
+// ═══════════════════════════════════════════════════════════════
+fn sim_spinning_band_fractionation() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 107 \u{2014} Spinning Band Distillation: Individual Ester Fractionation");
+
+    let ax = 70.0_f64;
+    let ay = 65.0_f64;
+    let aw = 260.0_f64;
+    let ah = 310.0_f64;
+    svg += &label(ax + aw / 2.0, 57.0, "A: Theoretical Plates vs BP Difference", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // X: BP difference 0-60°C
+    let bp_max = 60.0_f64;
+    let sx_a = |bp: f64| -> f64 { ax + bp / bp_max * aw };
+    // Y: theoretical plates needed 0-200
+    let tp_max = 200.0_f64;
+    let sy_a = |tp: f64| -> f64 { ay + ah - tp / tp_max * ah };
+
+    svg += &label(ax + aw / 2.0, ay + ah + 18.0, "BP difference (\u{00b0}C)", MUTED, 8, "middle");
+    svg += &label(ax - 15.0, ay + ah / 2.0, "Plates for 95% purity", MUTED, 7, "middle");
+
+    for bp in (0..=60).step_by(10) {
+        let x = sx_a(bp as f64);
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ay + ah, ay + ah + 4.0);
+        svg += &label(x, ay + ah + 12.0, &format!("{bp}"), MUTED, 7, "middle");
+    }
+    for tp in (0..=200).step_by(40) {
+        let y = sy_a(tp as f64);
+        svg += &hline(ax, ax + aw, y, GRID, "0.3");
+        svg += &label(ax - 5.0, y + 3.0, &format!("{tp}"), MUTED, 7, "end");
+    }
+
+    // Plates needed curve: approx log relationship
+    let plate_pts: Vec<(f64, f64)> = (5..=600).map(|i| {
+        let bp = i as f64 / 10.0;
+        let plates = if bp > 50.0 { 4.0 } else { 200.0 / bp.powf(0.7) * 2.5 };
+        (bp, plates.min(200.0))
+    }).collect();
+    svg += &polyline_svg(&plate_pts, ACCENT, "2.5", &sx_a, &sy_a);
+
+    // Whiskey ester gaps
+    let ester_gaps = [
+        ("EtOAc\u{2192}EtBut", 44.0_f64, GREEN),
+        ("EtBut\u{2192}EtHex", 46.0_f64, BLUE),
+        ("EtHex\u{2192}EtOct", 41.0_f64, CYAN),
+        ("EtOct\u{2192}EtDec", 35.0_f64, PURPLE),
+    ];
+    for (name, gap_bp, color) in &ester_gaps {
+        let x = sx_a(*gap_bp);
+        let plates_needed = 200.0 / gap_bp.powf(0.7) * 2.5;
+        let y = sy_a(plates_needed);
+        svg += &format!("<circle cx=\"{x}\" cy=\"{y}\" r=\"4\" fill=\"{color}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n");
+        svg += &label(x, y - 8.0, name, color, 6, "middle");
+    }
+
+    // Spinning band capability line
+    svg += &hline(ax, ax + aw, sy_a(30.0), GREEN, "1.5");
+    svg += &label(ax + 5.0, sy_a(30.0) - 5.0, "Spinning band (30 plates)", GREEN, 7, "start");
+    svg += &format!("<rect x=\"{ax}\" y=\"{}\" width=\"{aw}\" height=\"{}\" fill=\"{GREEN}\" opacity=\"0.08\"/>\n",
+        sy_a(30.0), ay + ah - sy_a(30.0));
+
+    // Panel B: Resolution of ester homologs
+    let bx = 390.0_f64;
+    let bw = 270.0_f64;
+    svg += &label(bx + bw / 2.0, 57.0, "B: Ester Boiling Point Ladder", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{ay}\" width=\"{bw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let esters_bp = [
+        ("Ethyl acetate", 77.0_f64, MUTED),
+        ("Ethyl butyrate", 121.0, BLUE),
+        ("Ethyl hexanoate", 167.0, GREEN),
+        ("Ethyl octanoate", 208.0, ACCENT),
+        ("Ethyl decanoate", 243.0, RED),
+    ];
+
+    let bp_vis_min = 60.0_f64;
+    let bp_vis_max = 260.0_f64;
+    let sy_b = |bp: f64| -> f64 { ay + ah - (bp - bp_vis_min) / (bp_vis_max - bp_vis_min) * ah };
+
+    for bp_tick in (60..=260).step_by(20) {
+        let y = sy_b(bp_tick as f64);
+        svg += &hline(bx, bx + bw, y, GRID, "0.3");
+        svg += &label(bx + bw + 3.0, y + 3.0, &format!("{bp_tick}\u{00b0}C"), MUTED, 6, "start");
+    }
+
+    let bar_x = bx + 80.0;
+    let bar_w_b = 100.0_f64;
+    for (i, (name, bp, color)) in esters_bp.iter().enumerate() {
+        let y = sy_b(*bp);
+        svg += &format!("<rect x=\"{bar_x}\" y=\"{}\" width=\"{bar_w_b}\" height=\"12\" fill=\"{color}\" opacity=\"0.8\" rx=\"2\"/>\n",
+            y - 6.0);
+        svg += &label(bar_x - 5.0, y + 3.0, name, color, 7, "end");
+        if i > 0 {
+            let prev_bp = esters_bp[i - 1].1;
+            let gap = bp - prev_bp;
+            let mid_y = (sy_b(*bp) + sy_b(prev_bp)) / 2.0;
+            svg += &label(bar_x + bar_w_b + 5.0, mid_y + 3.0,
+                &format!("\u{0394}{gap:.0}\u{00b0}C"), GREEN, 7, "start");
+        }
+    }
+
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Whiskey esters have 35\u{2013}46\u{00b0}C gaps \u{2014} a 30-plate spinning band cleanly resolves each one",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Enables precision dosing: add exact amounts of individual esters to hit target profile",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 108: SMBR Reactive Chromatography
+// ═══════════════════════════════════════════════════════════════
+fn sim_smbr_reactive_chromatography() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 108 \u{2014} SMBR Reactive Chromatography: Simultaneous Ester Synthesis + Separation");
+
+    let ax = 70.0_f64;
+    let ay = 65.0_f64;
+    let aw = 260.0_f64;
+    let ah = 310.0_f64;
+    svg += &label(ax + aw / 2.0, 57.0, "A: Conversion: Batch vs SMBR", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let t_max = 8.0_f64;
+    let sx_a = |t: f64| -> f64 { ax + t / t_max * aw };
+    let sy_a = |c: f64| -> f64 { ay + ah - c / 100.0 * ah };
+
+    svg += &label(ax + aw / 2.0, ay + ah + 18.0, "Residence time (hours)", MUTED, 8, "middle");
+    svg += &label(ax - 15.0, ay + ah / 2.0, "Conversion (%)", MUTED, 7, "middle");
+
+    for t in 0..=8 {
+        let x = sx_a(t as f64);
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            ay + ah, ay + ah + 4.0);
+        svg += &label(x, ay + ah + 12.0, &format!("{t}"), MUTED, 7, "middle");
+    }
+    for c in (0..=100).step_by(20) {
+        let y = sy_a(c as f64);
+        svg += &hline(ax, ax + aw, y, GRID, "0.3");
+        svg += &label(ax - 5.0, y + 3.0, &format!("{c}"), MUTED, 7, "end");
+    }
+
+    // Batch: approaches 55% equilibrium
+    let batch_pts: Vec<(f64, f64)> = (0..=80).map(|i| {
+        let t = i as f64 / 10.0;
+        (t, 55.0 * (1.0 - (-0.8 * t).exp()))
+    }).collect();
+    svg += &polyline_svg(&batch_pts, RED, "2.5", &sx_a, &sy_a);
+
+    // SMBR: approaches 95%
+    let smbr_pts: Vec<(f64, f64)> = (0..=80).map(|i| {
+        let t = i as f64 / 10.0;
+        (t, 95.0 * (1.0 - (-0.6 * t).exp()))
+    }).collect();
+    svg += &polyline_svg(&smbr_pts, GREEN, "2.5", &sx_a, &sy_a);
+
+    // PV membrane: approaches 95% but slower
+    let pv_pts: Vec<(f64, f64)> = (0..=80).map(|i| {
+        let t = i as f64 / 10.0;
+        (t, 95.0 * (1.0 - (-0.4 * t).exp()))
+    }).collect();
+    svg += &polyline_svg(&pv_pts, YELLOW, "2", &sx_a, &sy_a);
+
+    svg += &hline(ax, ax + aw, sy_a(55.0), RED, "1");
+    svg += &label(ax + aw + 3.0, sy_a(55.0) + 3.0, "55%", RED, 7, "start");
+    svg += &hline(ax, ax + aw, sy_a(95.0), GREEN, "1");
+    svg += &label(ax + aw + 3.0, sy_a(95.0) + 3.0, "95%", GREEN, 7, "start");
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"140\" height=\"48\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        ax + aw - 150.0, ay + ah - 60.0);
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{RED}\" stroke-width=\"2.5\"/>\n",
+        ax + aw - 145.0, ay + ah - 47.0, ax + aw - 125.0, ay + ah - 47.0);
+    svg += &label(ax + aw - 120.0, ay + ah - 44.0, "Batch reactor", RED, 7, "start");
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{YELLOW}\" stroke-width=\"2\"/>\n",
+        ax + aw - 145.0, ay + ah - 34.0, ax + aw - 125.0, ay + ah - 34.0);
+    svg += &label(ax + aw - 120.0, ay + ah - 31.0, "PV membrane reactor", YELLOW, 7, "start");
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"2.5\"/>\n",
+        ax + aw - 145.0, ay + ah - 21.0, ax + aw - 125.0, ay + ah - 21.0);
+    svg += &label(ax + aw - 120.0, ay + ah - 18.0, "SMBR (react+separate)", GREEN, 7, "start");
+
+    // Panel B: SMBR principle
+    let bx = 390.0_f64;
+    let bw = 270.0_f64;
+    svg += &label(bx + bw / 2.0, 57.0, "B: SMBR Operating Principle", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{ay}\" width=\"{bw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Zones
+    let zones = [
+        ("Zone I\nDesorption", ay + 20.0, BLUE),
+        ("Zone II\nReaction", ay + 95.0, GREEN),
+        ("Zone III\nReaction", ay + 170.0, ACCENT),
+        ("Zone IV\nAdsorption", ay + 245.0, RED),
+    ];
+    for (name, zy, color) in &zones {
+        svg += &format!("<rect x=\"{}\" y=\"{zy}\" width=\"230\" height=\"55\" rx=\"4\" fill=\"{color}\" opacity=\"0.12\" stroke=\"{color}\" stroke-width=\"1\"/>\n",
+            bx + 20.0);
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (j, line) in lines.iter().enumerate() {
+            svg += &label(bx + 135.0, zy + 22.0 + j as f64 * 14.0, line, color, 8, "middle");
+        }
+    }
+
+    // Flow arrows
+    svg += &label(bx + 20.0, ay + 85.0, "Desorbent \u{2192}", BLUE, 7, "start");
+    svg += &label(bx + 190.0, ay + 85.0, "\u{2192} Extract (ester)", GREEN, 7, "start");
+    svg += &label(bx + 20.0, ay + 235.0, "Feed (acid+EtOH) \u{2192}", ACCENT, 7, "start");
+    svg += &label(bx + 160.0, ay + 235.0, "\u{2192} Raffinate (H\u{2082}O)", RED, 7, "start");
+
+    // Key numbers
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"120\" height=\"38\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        bx + bw - 130.0, ay + ah - 50.0);
+    svg += &label(bx + bw - 125.0, ay + ah - 35.0, "C18 stationary phase", TEXT, 7, "start");
+    svg += &label(bx + bw - 125.0, ay + ah - 22.0, "EtOH/H\u{2082}O mobile phase", MUTED, 7, "start");
+
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "SMBR combines esterification + product separation in one unit: 55% \u{2192} 95% conversion",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Continuous water removal via chromatographic separation drives equilibrium forward",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 109: PTMSP Ultra-High-Flux Membrane
+// ═══════════════════════════════════════════════════════════════
+fn sim_ptmsp_membrane() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 109 \u{2014} PTMSP Membrane: Ultra-High Selectivity Aroma Ester Recovery");
+
+    let ax = 70.0_f64;
+    let ay = 65.0_f64;
+    let aw = 260.0_f64;
+    let ah = 310.0_f64;
+    svg += &label(ax + aw / 2.0, 57.0, "A: Separation Factor Comparison", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Bar chart: PDMS vs POMS vs PTMSP separation factors
+    let membranes = [
+        ("PDMS", [6.5_f64, 35.0, 65.0], MUTED),
+        ("POMS", [48.0_f64, 118.0, 210.0], BLUE),
+        ("PTMSP", [150.0_f64, 440.0, 701.0], GREEN),
+        ("PTMSP/\nHCPS", [300.0_f64, 700.0, 1238.0], ACCENT),
+    ];
+
+    let sf_max = 1400.0_f64;
+    let group_w = 55.0_f64;
+    let bar_w = 14.0_f64;
+    let start_x = ax + 15.0;
+
+    svg += &label(ax + aw / 2.0, ay + ah + 18.0, "Membrane Material", MUTED, 8, "middle");
+    svg += &label(ax - 15.0, ay + ah / 2.0, "Separation Factor", MUTED, 7, "middle");
+
+    for sf in (0..=1400).step_by(200) {
+        let y = ay + ah - sf as f64 / sf_max * ah;
+        svg += &hline(ax, ax + aw, y, GRID, "0.3");
+        if sf % 400 == 0 {
+            svg += &label(ax - 5.0, y + 3.0, &format!("{sf}"), MUTED, 7, "end");
+        }
+    }
+
+    let ester_colors = [CYAN, GREEN, RED]; // C2, C6, C8+
+
+    for (i, (name, sfs, _color)) in membranes.iter().enumerate() {
+        let gx = start_x + i as f64 * group_w;
+        for (j, sf) in sfs.iter().enumerate() {
+            let x = gx + j as f64 * (bar_w + 1.0);
+            let bar_h = sf / sf_max * ah;
+            let y_top = ay + ah - bar_h;
+            svg += &format!("<rect x=\"{x}\" y=\"{y_top}\" width=\"{bar_w}\" height=\"{bar_h}\" fill=\"{}\" opacity=\"0.7\" rx=\"1\"/>\n",
+                ester_colors[j]);
+            if *sf > 100.0 {
+                svg += &label(x + bar_w / 2.0, y_top - 4.0, &format!("{sf:.0}"), ester_colors[j], 6, "middle");
+            }
+        }
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (k, line) in lines.iter().enumerate() {
+            svg += &label(gx + 22.0, ay + ah + 10.0 + k as f64 * 10.0, line, MUTED, 6, "middle");
+        }
+    }
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"70\" height=\"48\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        ax + aw - 80.0, ay + 10.0);
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"8\" height=\"8\" fill=\"{CYAN}\"/>\n", ax + aw - 75.0, ay + 18.0);
+    svg += &label(ax + aw - 63.0, ay + 25.0, "C2 ester", CYAN, 6, "start");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"8\" height=\"8\" fill=\"{GREEN}\"/>\n", ax + aw - 75.0, ay + 31.0);
+    svg += &label(ax + aw - 63.0, ay + 38.0, "C6 ester", GREEN, 6, "start");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"8\" height=\"8\" fill=\"{RED}\"/>\n", ax + aw - 75.0, ay + 44.0);
+    svg += &label(ax + aw - 63.0, ay + 51.0, "C8+ ester", RED, 6, "start");
+
+    // Panel B: Flux comparison
+    let bx = 390.0_f64;
+    let bw = 270.0_f64;
+    svg += &label(bx + bw / 2.0, 57.0, "B: Permeate Flux Comparison", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{ay}\" width=\"{bw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let flux_data = [
+        ("PDMS\n(standard)", 150.0_f64, MUTED),
+        ("POMS", 500.0_f64, BLUE),
+        ("PTMSP", 450.0_f64, GREEN),
+        ("PTMSP/HCPS", 830.0_f64, ACCENT),
+    ];
+
+    let flux_max = 1000.0_f64;
+    let bar_w_b = 50.0_f64;
+    let gap = 10.0_f64;
+    let start_x_b = bx + 15.0;
+
+    svg += &label(bx + bw / 2.0, ay + ah + 18.0, "Membrane", MUTED, 8, "middle");
+    svg += &label(bx - 5.0, ay + ah / 2.0, "Flux (g/m\u{00b2}\u{00b7}h)", MUTED, 7, "middle");
+
+    for f in (0..=1000).step_by(200) {
+        let y = ay + ah - f as f64 / flux_max * ah;
+        svg += &hline(bx, bx + bw, y, GRID, "0.3");
+        svg += &label(bx - 3.0, y + 3.0, &format!("{f}"), MUTED, 6, "end");
+    }
+
+    for (i, (name, flux, color)) in flux_data.iter().enumerate() {
+        let x = start_x_b + i as f64 * (bar_w_b + gap);
+        let bar_h = flux / flux_max * ah;
+        let y_top = ay + ah - bar_h;
+        svg += &format!("<rect x=\"{x}\" y=\"{y_top}\" width=\"{bar_w_b}\" height=\"{bar_h}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n");
+        svg += &label(x + bar_w_b / 2.0, y_top - 5.0, &format!("{flux:.0}"), color, 7, "middle");
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (j, line) in lines.iter().enumerate() {
+            svg += &label(x + bar_w_b / 2.0, ay + ah + 10.0 + j as f64 * 10.0, line, MUTED, 6, "middle");
+        }
+    }
+
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "PTMSP/HCPS composites achieve separation factors up to 1,238 \u{2014} 5\u{00d7} better than POMS",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Higher selectivity + higher flux = more concentrated aroma ester permeate per unit area",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 110: Integrated Separation Train
+// ═══════════════════════════════════════════════════════════════
+fn sim_integrated_separation_train() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 110 \u{2014} Integrated Separation Train: Reactor \u{2192} Membrane \u{2192} Distillation");
+
+    let ax = 70.0_f64;
+    let ay = 65.0_f64;
+    let aw = 560.0_f64;
+    let ah = 250.0_f64;
+    svg += &label(350.0, 57.0, "A: Process Flow with Concentration at Each Stage", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Process stages with concentrations
+    let stages = [
+        ("Spirit\n40% ABV", "Esters:\n~1 ppm", 0, MUTED),
+        ("Ester Reactor\n(Amberlyst, 70\u{00b0}C)", "Esters:\n~100 ppm", 1, BLUE),
+        ("PTMSP/POMS\nPervaporation", "Esters:\n~20,000 ppm\n(2%)", 2, GREEN),
+        ("Molecular\nDistillation", "C6-C10 esters:\n~50,000 ppm\n(5%)", 3, ACCENT),
+        ("Spinning Band\nFractionation", "Individual\nesters:\n>95% pure", 4, RED),
+    ];
+
+    let stage_w = 95.0_f64;
+    let stage_h = 60.0_f64;
+    let stage_gap = 15.0_f64;
+
+    for (i, (name, conc, _idx, color)) in stages.iter().enumerate() {
+        let x = ax + 10.0 + i as f64 * (stage_w + stage_gap);
+        let y = ay + 20.0;
+
+        svg += &format!("<rect x=\"{x}\" y=\"{y}\" width=\"{stage_w}\" height=\"{stage_h}\" rx=\"4\" fill=\"{GRID}\" stroke=\"{color}\" stroke-width=\"1.5\"/>\n");
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (j, line) in lines.iter().enumerate() {
+            svg += &label(x + stage_w / 2.0, y + 18.0 + j as f64 * 13.0, line, color, 7, "middle");
+        }
+
+        // Concentration below
+        let cy = y + stage_h + 10.0;
+        svg += &format!("<rect x=\"{x}\" y=\"{cy}\" width=\"{stage_w}\" height=\"50\" rx=\"3\" fill=\"{color}\" opacity=\"0.10\"/>\n");
+        let clines: Vec<&str> = conc.split('\n').collect();
+        for (j, line) in clines.iter().enumerate() {
+            svg += &label(x + stage_w / 2.0, cy + 14.0 + j as f64 * 12.0, line, color, 7, "middle");
+        }
+
+        // Arrow to next
+        if i < stages.len() - 1 {
+            let arrow_x = x + stage_w + 2.0;
+            svg += &format!("<line x1=\"{arrow_x}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n",
+                y + stage_h / 2.0, arrow_x + stage_gap - 4.0, y + stage_h / 2.0);
+        }
+    }
+
+    // Enrichment factors between stages
+    let enrichments = [
+        (0, "100\u{00d7}"),
+        (1, "200\u{00d7}"),
+        (2, "2.5\u{00d7}"),
+        (3, "\u{2192} pure"),
+    ];
+    for (i, (_, enrich)) in enrichments.iter().enumerate() {
+        let x = ax + 10.0 + (i as f64 + 0.5) * (stage_w + stage_gap) + stage_w / 2.0;
+        svg += &label(x, ay + 190.0, enrich, ACCENT, 7, "middle");
+    }
+
+    // Panel B: Dosing back to spirit
+    let by = ay + ah + 20.0;
+    svg += &label(350.0, by + 10.0, "B: Precision Dosing to Target Profile", TEXT, 10, "middle");
+
+    let targets = [
+        ("EtHex (apple)", 0.056_f64, GREEN),
+        ("EtOct (apricot)", 0.102, ACCENT),
+        ("EtDec (grape)", 0.062, RED),
+        ("IsoAmAc (banana)", 0.918, BLUE),
+        ("EtLact (buttery)", 1.2, PURPLE),
+    ];
+
+    let t_max_val = 1.5_f64;
+    let bar_start = ax + 30.0;
+    let bar_max_w = 480.0_f64;
+
+    for (i, (name, conc, color)) in targets.iter().enumerate() {
+        let y = by + 25.0 + i as f64 * 22.0;
+        let bw_val = conc / t_max_val * bar_max_w;
+        svg += &format!("<rect x=\"{bar_start}\" y=\"{}\" width=\"{bw_val}\" height=\"14\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n",
+            y - 7.0);
+        svg += &label(bar_start - 5.0, y + 3.0, name, color, 7, "end");
+        svg += &label(bar_start + bw_val + 5.0, y + 3.0, &format!("{conc:.3} mg/L"), color, 7, "start");
+    }
+
+    svg += &label(bar_start + bar_max_w / 2.0, by + 145.0, "Target concentration in finished spirit (mg/L)", MUTED, 7, "middle");
+
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Complete pipeline: 1 ppm \u{2192} 100 ppm \u{2192} 20,000 ppm \u{2192} 50,000 ppm \u{2192} >95% pure individual esters",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Dose back at sub-mg/L levels to match natural barrel-aged whiskey ester profiles",
         GREEN, 8, "middle");
 
     svg.push_str("</svg>");

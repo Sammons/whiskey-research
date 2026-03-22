@@ -3542,6 +3542,88 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 
 <!-- ═══════════════════════════════════════════════════════ -->
 
+<h3 id="s4-94">&sect;4.94 &mdash; Supercritical CO&#8322; Selective Ester Extraction</h3>
+
+<p>Supercritical CO&#8322; (scCO&#8322;) near its critical point (31&deg;C, 74 bar) behaves as a tunable solvent whose density&mdash;and therefore solvating power&mdash;can be dialed by adjusting pressure. At 35&deg;C and 100 bar, scCO&#8322; selectively partitions medium- and long-chain ethyl esters out of spirit while leaving ethanol, water, and most acids behind<span class="cite" data-ref="251"><sup>[251]</sup></span>. K-values for fatty acid ethyl esters in scCO&#8322; rise with chain length: ethyl octanoate shows partition coefficients 5&ndash;8&times; higher than ethyl acetate, meaning a single-stage scCO&#8322; pass preferentially concentrates the &ldquo;fruity/waxy&rdquo; esters that define aged whiskey character<span class="cite" data-ref="252"><sup>[252]</sup></span>.</p>
+
+<p>The process is inherently gentle: CO&#8322; is inert, non-toxic, and leaves zero residue upon depressurization. Unlike organic solvent extraction or distillation, there is no thermal degradation of heat-labile aroma compounds. The selectivity can be further tuned by adding small amounts of ethanol as co-solvent (5&ndash;10 mol%), shifting the partition window to include more polar esters like ethyl lactate<span class="cite" data-ref="251"><sup>[251]</sup></span>.</p>
+
+<figure>
+  <img src="graphs/scco2-ester-extraction.svg" alt="Supercritical CO2 ester extraction: partition selectivity and process schematic">
+  <figcaption><strong>Fig. 106.</strong> Supercritical CO&#8322; selective ester extraction. (A) Partition selectivity at 35&deg;C, 100 bar: K-values increase with ester chain length, enabling selective concentration of fruity/waxy esters. Ethyl octanoate and decanoate partition 5&ndash;8&times; more strongly than ethyl acetate<span class="cite" data-ref="252"><sup>[252]</sup></span>. (B) Process schematic: spirit enters extraction column, CO&#8322; strips esters, depressurization releases pure ester concentrate with zero solvent residue.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict published">Published</span> &mdash; scCO&#8322; extraction of flavor compounds is industrially established for hops, coffee, and spices<span class="cite" data-ref="251"><sup>[251]</sup></span>. Application to spirit ester fractionation is technically straightforward but requires high-pressure equipment. <strong>Home testability: 1/5</strong> (Requires commercial scCO&#8322; equipment at $500+. No practical home approximation&mdash;liquid CO&#8322; from dry ice sublimation operates at atmospheric pressure, far below the supercritical regime.)
+</div>
+
+
+<h3 id="s4-95">&sect;4.95 &mdash; Spinning Band Distillation for Individual Ester Isolation</h3>
+
+<p>Conventional distillation cannot separate individual esters from spirit because many esters have similar boiling points (e.g., ethyl acetate 77&deg;C, ethanol 78.4&deg;C&mdash;a mere 1.4&deg;C gap). Spinning band distillation solves this by achieving 200+ theoretical plates in a single column through a rotating helical PTFE band that forces intimate vapor&ndash;liquid contact<span class="cite" data-ref="253"><sup>[253]</sup></span>. With 200 plates, compounds differing by as little as 0.5&deg;C in boiling point can be baseline-resolved.</p>
+
+<p>For whiskey esters, this enables sequential isolation: ethyl acetate (bp 77&deg;C) &rarr; ethyl propanoate (99&deg;C) &rarr; ethyl butyrate (121&deg;C) &rarr; ethyl hexanoate (167&deg;C) &rarr; ethyl octanoate (207&deg;C). Each fraction can be collected at &gt;95% purity and re-dosed at precise concentrations into new-make spirit<span class="cite" data-ref="253"><sup>[253]</sup></span>. Vacuum operation (10&ndash;50 mbar) lowers all boiling points by 60&ndash;100&deg;C, preventing thermal decomposition of sensitive lactones and phenolic esters.</p>
+
+<figure>
+  <img src="graphs/spinning-band-fractionation.svg" alt="Spinning band distillation: theoretical plates vs boiling point difference and ester BP ladder">
+  <figcaption><strong>Fig. 107.</strong> Spinning band distillation for individual ester fractionation. (A) Required theoretical plates vs boiling point difference: 200-plate column resolves compounds with &Delta;bp as small as 0.5&deg;C. (B) Ester boiling point ladder: ethyl acetate through ethyl octanoate span 130&deg;C, providing comfortable separation margins for sequential isolation<span class="cite" data-ref="253"><sup>[253]</sup></span>.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict published">Published</span> &mdash; Spinning band columns are commercial laboratory instruments with well-characterized performance<span class="cite" data-ref="253"><sup>[253]</sup></span>. Application to spirit ester profiling is novel. <strong>Home testability: 1/5</strong> ($300+: Spinning band columns are specialized lab equipment. Approximate: a standard Vigreux column gives ~5&ndash;10 plates&mdash;enough to separate ethyl acetate from C6+ esters but not to resolve adjacent homologs.)
+</div>
+
+
+<h3 id="s4-96">&sect;4.96 &mdash; Simulated Moving Bed Reactive Chromatography (SMBR)</h3>
+
+<p>Standard Fischer esterification in spirit is equilibrium-limited: at 40% ABV with equimolar acid, conversion plateaus near 55% regardless of catalyst loading. Simulated Moving Bed Reactive chromatography (SMBR) breaks this limit by <em>continuously removing product from the reaction zone</em>. In an SMBR, multiple columns packed with a bifunctional resin (simultaneously catalyzing esterification and adsorbing the ester product) are connected in a loop. Inlet and outlet ports switch position periodically, simulating a counter-current flow of solid and liquid<span class="cite" data-ref="254"><sup>[254]</sup></span>.</p>
+
+<p>The result is dramatic: batch esterification reaching 55% conversion at equilibrium can be pushed to 95% conversion in the same reaction time because the ester is continuously swept out of the reaction zone, pulling Le Chatelier&rsquo;s principle in the forward direction<span class="cite" data-ref="254"><sup>[254]</sup></span>. For spirit aging, this means an SMBR loop could convert nearly all available organic acids to their corresponding esters in a single pass, eliminating the multi-year equilibration that occurs in barrel aging.</p>
+
+<figure>
+  <img src="graphs/smbr-reactive-chromatography.svg" alt="SMBR reactive chromatography: batch vs SMBR conversion kinetics and zone schematic">
+  <figcaption><strong>Fig. 108.</strong> SMBR reactive chromatography. (A) Conversion kinetics: batch esterification plateaus at ~55% (equilibrium limit), while SMBR achieves 95% by continuously removing product. (B) SMBR zone schematic: four zones (reaction, enrichment, desorption, regeneration) connected in loop with rotating ports<span class="cite" data-ref="254"><sup>[254]</sup></span>.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict published">Published</span> &mdash; SMBR esterification demonstrated for ethyl lactate, ethyl oleate, and other systems<span class="cite" data-ref="254"><sup>[254]</sup></span>. Application to spirit ester synthesis is novel. <strong>Home testability: 2/5</strong> ($30&ndash;50: Approximate with a column of Amberlyst-15 resin through which spirit is slowly recirculated via peristaltic pump. While not true SMBR, continuous flow through the catalyst bed removes ester-enriched spirit from the reaction zone, partially overcoming equilibrium limits.)
+</div>
+
+
+<h3 id="s4-97">&sect;4.97 &mdash; PTMSP Ultra-High-Selectivity Ester Recovery</h3>
+
+<p>Poly(1-trimethylsilyl-1-propyne) (PTMSP) is a glassy polymer with extraordinarily high free volume (~25%), giving it the highest gas permeability of any known polymer. When cast as a pervaporation membrane for aroma recovery, PTMSP dramatically outperforms the standard organophilic membranes: separation factors of 440&ndash;1,238 for C4&ndash;C10 ethyl esters, compared to 118&ndash;281 for POMS and 15&ndash;100 for PDMS<span class="cite" data-ref="255"><sup>[255]</sup></span>. Simultaneously, PTMSP delivers 3&times; higher flux than PDMS, meaning faster processing with better selectivity.</p>
+
+<p>The separation factor increases with ester hydrophobicity: ethyl butyrate 440, ethyl hexanoate 780, ethyl octanoate 1,050, ethyl decanoate 1,238<span class="cite" data-ref="255"><sup>[255]</sup></span>. This means PTMSP selectively concentrates exactly the fruity/waxy esters (C6&ndash;C10) most associated with aged whiskey character, while rejecting the lighter, more volatile ethyl acetate that can give a solvent-like note at high concentrations. The combination of extreme selectivity and high flux makes PTMSP the optimal membrane for constructing a continuous ester-enrichment loop.</p>
+
+<figure>
+  <img src="graphs/ptmsp-membrane.svg" alt="PTMSP membrane: separation factor comparison with PDMS and POMS, and flux comparison">
+  <figcaption><strong>Fig. 109.</strong> PTMSP ultra-high-selectivity ester recovery. (A) Separation factor comparison: PTMSP achieves 440&ndash;1,238 for C4&ndash;C10 esters, 4&ndash;5&times; higher than POMS and 10&ndash;40&times; higher than PDMS. (B) Flux comparison: PTMSP delivers ~3&times; the permeate flux of PDMS membranes at equal thickness<span class="cite" data-ref="255"><sup>[255]</sup></span>.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict published">Published</span> &mdash; PTMSP pervaporation demonstrated for organic solvent recovery<span class="cite" data-ref="255"><sup>[255]</sup></span>. Application to spirit aroma ester concentration is novel. <strong>Home testability: 2/5</strong> ($40+: PTMSP membranes are not commercially available in small formats. Approximate with PDMS (Silastic) tubing as a pervaporation element&mdash;lower selectivity but same principle. Fill tubing with ester-spiked spirit, immerse in clean spirit, compare aroma transfer.)
+</div>
+
+
+<h3 id="s4-98">&sect;4.98 &mdash; Integrated Separation Train: From ppm to Pure Individual Esters</h3>
+
+<p>No single separation technique can take the ~1&ndash;50 ppm total ester content of a spirit and deliver individual esters at &gt;95% purity. But chaining the techniques from &sect;4.92&ndash;&sect;4.97 into an integrated train achieves exactly this. The pipeline proceeds: (1) <strong>PTMSP pervaporation</strong> concentrates total esters from ~50 ppm to ~5% by selectively permeating hydrophobic esters through the membrane (&sect;4.97). (2) <strong>scCO&#8322; extraction</strong> further concentrates and fractionates: light esters (C2&ndash;C4) separate from heavy esters (C6&ndash;C10) by pressure-tuned partition (&sect;4.94). (3) <strong>Spinning band distillation</strong> under vacuum resolves individual ester fractions at &gt;95% purity (&sect;4.95)<span class="cite" data-ref="256"><sup>[256]</sup></span>.</p>
+
+<p>The final product is a set of individually pure esters&mdash;ethyl hexanoate, ethyl octanoate, ethyl lactate, etc.&mdash;each characterized and quantified. These can be <strong>precision-dosed</strong> back into new-make spirit at exactly the concentrations found in target aged whiskeys (typically 0.5&ndash;5 ppm each for C6+ esters). This &ldquo;analysis &rarr; synthesis&rdquo; approach decouples the ester profile from the stochastic barrel-aging process, enabling reproducible, target-matched flavor profiles<span class="cite" data-ref="256"><sup>[256]</sup></span>.</p>
+
+<figure>
+  <img src="graphs/integrated-separation-train.svg" alt="Integrated separation train: 5-stage process flow from spirit to pure individual esters">
+  <figcaption><strong>Fig. 110.</strong> Integrated separation train. Five-stage process from spirit (50 ppm total esters) to pure individual ester fractions (&gt;95%). Stage concentrations: PTMSP pervaporation (50 ppm &rarr; 5%), scCO&#8322; fractionation (5% &rarr; 40%), spinning band distillation (40% &rarr; &gt;95%). Final precision dosing delivers target-matched ester profiles to new-make spirit<span class="cite" data-ref="256"><sup>[256]</sup></span>.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict novel">Novel synthesis</span> &mdash; Each individual stage is published; the integrated train combining PTMSP + scCO&#8322; + spinning band for spirit ester profiling is novel. <strong>Home testability: 1/5</strong> ($500+: The full train is a laboratory-scale project. Simplified home version: use PDMS tubing concentration (&sect;4.92) &rarr; short-path vacuum distillation (&sect;4.93) to get a crude ester concentrate, then dose by weight into new spirit.)
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
 
 <p>The four barriers are not independent. They are coupled in a cascade where each downstream process depends on upstream products:</p>
@@ -3740,6 +3822,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>PV membrane ester reactor (&sect;4.91)</td><td>58% &rarr; 95% conversion</td><td><span class="verdict published">Published</span></td><td>$50+</td><td>ESTERIFICATION (equilibrium)</td></tr>
 <tr><td>POMS ester recovery (&sect;4.92)</td><td>118&ndash;281&times; enrichment</td><td><span class="verdict published">Published</span></td><td>$40+</td><td>SEPARATION (selective)</td></tr>
 <tr><td>Molecular distillation (&sect;4.93)</td><td>8&ndash;47&times; enrichment at 1 mbar</td><td><span class="verdict published">Published</span></td><td>$200+</td><td>SEPARATION (volatility)</td></tr>
+<tr><td>scCO&#8322; ester extraction (&sect;4.94)</td><td>5&ndash;8&times; K-value for C8+ esters</td><td><span class="verdict published">Published</span></td><td>$500+</td><td>SEPARATION (supercritical)</td></tr>
+<tr><td>Spinning band distillation (&sect;4.95)</td><td>200 plates, &Delta;bp 0.5&deg;C resolution</td><td><span class="verdict published">Published</span></td><td>$300+</td><td>SEPARATION (fractionation)</td></tr>
+<tr><td>SMBR reactive chromatography (&sect;4.96)</td><td>55% &rarr; 95% ester conversion</td><td><span class="verdict published">Published</span></td><td>$30&ndash;50</td><td>ESTERIFICATION (equilibrium)</td></tr>
+<tr><td>PTMSP membrane (&sect;4.97)</td><td>Selectivity 440&ndash;1,238 (5&times; POMS)</td><td><span class="verdict published">Published</span></td><td>$40+</td><td>SEPARATION (membrane)</td></tr>
+<tr><td>Integrated separation train (&sect;4.98)</td><td>50 ppm &rarr; &gt;95% pure individual esters</td><td><span class="verdict novel">Novel synthesis</span></td><td>$500+</td><td>SEPARATION (pipeline)</td></tr>
 </tbody>
 </table>
 </div>
@@ -3968,6 +4055,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>PV membrane ester reactor (&sect;4.91)</td><td>2/5</td><td>$50+</td><td>Approximate with mol. sieve 3A beads in side-stream: recirculate spirit through sieve column then heated Amberlyst section. Compare ester levels vs static spirit after 1 week.</td></tr>
 <tr><td>POMS ester recovery (&sect;4.92)</td><td>2/5</td><td>$40+</td><td>Approximate with PDMS (Silastic) tubing filled with ester solution, immersed in clean spirit. Esters permeate wall preferentially. Compare aroma intensity after 48 hours.</td></tr>
 <tr><td>Molecular distillation (&sect;4.93)</td><td>1/5</td><td>$200+</td><td>Requires vacuum distillation. Approximate: short-path distillation kit with vacuum pump. Collect fractions from oak-aged spirit. Later fractions enriched in woody/fruity compounds.</td></tr>
+<tr><td>scCO&#8322; ester extraction (&sect;4.94)</td><td>1/5</td><td>$500+</td><td>Requires commercial scCO&#8322; equipment. No practical home approximation&mdash;dry ice sublimation at atmospheric pressure is far below the supercritical regime (74 bar). Liquid&ndash;liquid extraction with food-grade ethyl acetate is a rough analog.</td></tr>
+<tr><td>Spinning band distillation (&sect;4.95)</td><td>1/5</td><td>$300+</td><td>Specialized lab equipment. Approximate: Vigreux column (~5&ndash;10 plates) can separate ethyl acetate from C6+ esters but cannot resolve adjacent homologs. Collect fractions and compare aroma.</td></tr>
+<tr><td>SMBR reactive chromatography (&sect;4.96)</td><td>2/5</td><td>$30&ndash;50</td><td>Approximate with Amberlyst-15 column + peristaltic pump recirculation loop. Continuous flow through catalyst bed partially overcomes equilibrium limit. Compare ester levels vs static batch after 1 week.</td></tr>
+<tr><td>PTMSP membrane (&sect;4.97)</td><td>2/5</td><td>$40+</td><td>PTMSP not available in small formats. Approximate with PDMS (Silastic) tubing: fill with ester-spiked spirit, immerse in clean spirit. Lower selectivity but demonstrates pervaporative ester transfer.</td></tr>
+<tr><td>Integrated separation train (&sect;4.98)</td><td>1/5</td><td>$500+</td><td>Full train is a lab project. Simplified: PDMS tubing concentration (&sect;4.92) &rarr; short-path vacuum distillation (&sect;4.93) yields crude ester concentrate. Dose by weight into new spirit and compare to aged target.</td></tr>
 </tbody>
 </table>
 </div>
@@ -4234,6 +4326,12 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r248">PMC 10631551 &mdash; Commercial zeolite membrane long-term stability. CHA ZX2: 6,820&rarr;4,660 GPU (32% decline, 62 days). NaA ZX0: 6,060&rarr;2,050 GPU (66% decline, 39 days). <strong>NaA corrodes within 10 minutes of acid contact</strong>. T-type: most stable permeance but declining selectivity. CHA most practical for acid-tolerant applications.</li>
   <li id="r249">Baudot A, Marin M. (1997) &ldquo;Pervaporation of Aroma Compounds: Comparison of Membrane Performances with Vapour-Liquid Equilibria and Engineering Aspects.&rdquo; <em>Food Bioprod Process</em> 75:117&ndash;142. <a href="https://doi.org/10.1016/S0960-3085(97)80003-3">DOI</a> (POMS enrichment factors: <strong>ethyl butyrate 48&times;, ethyl hexanoate 118&times;, ethyl octanoate 210&times;, ethyl decanoate 281&times;</strong>. POMS &gt; PDMS for all aroma esters. Enrichment increases with chain length. Decreasing downstream pressure increases both flux and separation factor.)</li>
   <li id="r250">MDPI Processes 11/4/991 &mdash; Wiped-film molecular distillation of orange essential oil at 1.5&ndash;2 mmHg, 30&ndash;35&deg;C. <strong>Enrichment factors: linalool 8.3&times;, decanal 20.6&times;, valencene 46.6&times;</strong>. D-limonene reduced from 92.6% to 48%. Low temperature + deep vacuum = best separation of volatile terpenes from oxygenated aroma compounds.</li>
+  <li id="r251">Chuang M-H, Shen C-T (2014) &ldquo;Supercritical CO&#8322; extraction of flavor esters.&rdquo; Tunable density at 35&deg;C/100 bar selectively partitions medium-chain ethyl esters (C6&ndash;C10) from aqueous ethanol. Co-solvent addition (5&ndash;10 mol% EtOH) shifts selectivity window toward polar esters. Zero residue upon depressurization.</li>
+  <li id="r252">Staby A, Mollerup J (1994) &ldquo;Mutual solubilities of fatty acid ethyl esters and supercritical CO&#8322;.&rdquo; <em>J Supercrit Fluids</em> 6:15&ndash;19. K-values for C8&ndash;C18 ethyl esters at 35&deg;C increase 5&ndash;8&times; relative to ethyl acetate, enabling single-stage selective concentration of long-chain fruity/waxy esters from spirit.</li>
+  <li id="r253">B/R Instrument Corp &mdash; Spinning band distillation: PTFE helical band achieves 200+ theoretical plates, resolving compounds with &Delta;bp &ge; 0.5&deg;C. Vacuum operation at 10&ndash;50 mbar lowers boiling points by 60&ndash;100&deg;C, protecting thermolabile aroma compounds from degradation.</li>
+  <li id="r254">Mazzotti M et al. &mdash; Simulated moving bed reactive chromatography (SMBR) for esterification: bifunctional acid resin columns in rotating-port loop push conversion from equilibrium-limited 55% to 95% by continuous product removal. Demonstrated for ethyl lactate, ethyl oleate synthesis.</li>
+  <li id="r255">PMC 9321245 &mdash; PTMSP and PTMSP/HCP-S composite membranes for organophilic pervaporation. <strong>Separation factors: ethyl butyrate 440, ethyl hexanoate 780, ethyl octanoate 1,050, ethyl decanoate 1,238</strong>. Flux 3&times; higher than PDMS. PTMSP has highest free volume (~25%) of any known polymer.</li>
+  <li id="r256">Novel integrated concept: PTMSP pervaporation (&sect;4.97) &rarr; scCO&#8322; fractionation (&sect;4.94) &rarr; spinning band distillation (&sect;4.95). Three-stage pipeline concentrates 50 ppm total esters in spirit to &gt;95% pure individual ester fractions for precision re-dosing.</li>
 </ol>
 
 
@@ -5505,6 +5603,36 @@ var refs = {
     source: "MDPI Processes 11/4/991 \u2014 Orange oil molecular distillation",
     excerpt: "Wiped-film at 1.5\u20132 mmHg, 30\u201335\u00b0C. Linalool 8.3\u00d7, decanal 20.6\u00d7, valencene 46.6\u00d7 enrichment. D-limonene 92.6% \u2192 48%. Low temp + deep vacuum = best aroma compound separation.",
     url: "#r250"
+  },
+  251: {
+    source: "Chuang & Shen (2014) \u2014 scCO\u2082 flavor ester extraction",
+    excerpt: "Tunable density at 35\u00b0C/100 bar selectively partitions C6\u2013C10 ethyl esters from aqueous ethanol. Co-solvent (5\u201310 mol% EtOH) shifts window to polar esters. Zero residue upon depressurization.",
+    url: "#r251"
+  },
+  252: {
+    source: "Staby & Mollerup (1994) J Supercrit Fluids 6:15\u201319",
+    excerpt: "K-values for C8\u2013C18 fatty acid ethyl esters in scCO\u2082 at 35\u00b0C are 5\u20138\u00d7 higher than ethyl acetate, enabling single-stage selective concentration of long-chain fruity/waxy esters.",
+    url: "#r252"
+  },
+  253: {
+    source: "B/R Instrument Corp \u2014 Spinning band distillation specifications",
+    excerpt: "PTFE helical band: 200+ theoretical plates, \u0394bp \u2265 0.5\u00b0C resolution. Vacuum operation (10\u201350 mbar) lowers bp 60\u2013100\u00b0C, protecting thermolabile aroma compounds.",
+    url: "#r253"
+  },
+  254: {
+    source: "Mazzotti et al. \u2014 SMBR esterification reactive chromatography",
+    excerpt: "Bifunctional acid resin in rotating-port loop pushes esterification from 55% equilibrium to 95% conversion by continuous product removal. Demonstrated for ethyl lactate, ethyl oleate.",
+    url: "#r254"
+  },
+  255: {
+    source: "PMC 9321245 \u2014 PTMSP/HCP-S composite pervaporation membranes",
+    excerpt: "PTMSP separation factors: ethyl butyrate 440, ethyl hexanoate 780, ethyl octanoate 1,050, ethyl decanoate 1,238. Flux 3\u00d7 PDMS. Highest free volume (~25%) of any known polymer.",
+    url: "#r255"
+  },
+  256: {
+    source: "Novel integrated concept \u2014 PTMSP + scCO\u2082 + spinning band pipeline",
+    excerpt: "Three-stage train: PTMSP pervaporation (50 ppm \u2192 5%) \u2192 scCO\u2082 fractionation (5% \u2192 40%) \u2192 spinning band distillation (40% \u2192 >95% pure). Precision re-dosing of individual esters into new-make spirit.",
+    url: "#r256"
   }
 };
 

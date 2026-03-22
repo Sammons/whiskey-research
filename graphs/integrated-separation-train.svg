@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 110 — Integrated Separation Train: Reactor → Membrane → Distillation</text>
+<text x="350" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Process Flow with Concentration at Each Stage</text>
+<rect x="70" y="65" width="560" height="250" fill="none" stroke="#8b949e" stroke-width="1"/>
+<rect x="80" y="85" width="95" height="60" rx="4" fill="#30363d" stroke="#8b949e" stroke-width="1.5"/>
+<text x="127.5" y="103" fill="#8b949e" font-size="7" text-anchor="middle">Spirit</text>
+<text x="127.5" y="116" fill="#8b949e" font-size="7" text-anchor="middle">40% ABV</text>
+<rect x="80" y="155" width="95" height="50" rx="3" fill="#8b949e" opacity="0.10"/>
+<text x="127.5" y="169" fill="#8b949e" font-size="7" text-anchor="middle">Esters:</text>
+<text x="127.5" y="181" fill="#8b949e" font-size="7" text-anchor="middle">~1 ppm</text>
+<line x1="177" y1="115" x2="188" y2="115" stroke="#e8a665" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="190" y="85" width="95" height="60" rx="4" fill="#30363d" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="237.5" y="103" fill="#58a6ff" font-size="7" text-anchor="middle">Ester Reactor</text>
+<text x="237.5" y="116" fill="#58a6ff" font-size="7" text-anchor="middle">(Amberlyst, 70°C)</text>
+<rect x="190" y="155" width="95" height="50" rx="3" fill="#58a6ff" opacity="0.10"/>
+<text x="237.5" y="169" fill="#58a6ff" font-size="7" text-anchor="middle">Esters:</text>
+<text x="237.5" y="181" fill="#58a6ff" font-size="7" text-anchor="middle">~100 ppm</text>
+<line x1="287" y1="115" x2="298" y2="115" stroke="#e8a665" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="300" y="85" width="95" height="60" rx="4" fill="#30363d" stroke="#3fb950" stroke-width="1.5"/>
+<text x="347.5" y="103" fill="#3fb950" font-size="7" text-anchor="middle">PTMSP/POMS</text>
+<text x="347.5" y="116" fill="#3fb950" font-size="7" text-anchor="middle">Pervaporation</text>
+<rect x="300" y="155" width="95" height="50" rx="3" fill="#3fb950" opacity="0.10"/>
+<text x="347.5" y="169" fill="#3fb950" font-size="7" text-anchor="middle">Esters:</text>
+<text x="347.5" y="181" fill="#3fb950" font-size="7" text-anchor="middle">~20,000 ppm</text>
+<text x="347.5" y="193" fill="#3fb950" font-size="7" text-anchor="middle">(2%)</text>
+<line x1="397" y1="115" x2="408" y2="115" stroke="#e8a665" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="410" y="85" width="95" height="60" rx="4" fill="#30363d" stroke="#e8a665" stroke-width="1.5"/>
+<text x="457.5" y="103" fill="#e8a665" font-size="7" text-anchor="middle">Molecular</text>
+<text x="457.5" y="116" fill="#e8a665" font-size="7" text-anchor="middle">Distillation</text>
+<rect x="410" y="155" width="95" height="50" rx="3" fill="#e8a665" opacity="0.10"/>
+<text x="457.5" y="169" fill="#e8a665" font-size="7" text-anchor="middle">C6-C10 esters:</text>
+<text x="457.5" y="181" fill="#e8a665" font-size="7" text-anchor="middle">~50,000 ppm</text>
+<text x="457.5" y="193" fill="#e8a665" font-size="7" text-anchor="middle">(5%)</text>
+<line x1="507" y1="115" x2="518" y2="115" stroke="#e8a665" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="520" y="85" width="95" height="60" rx="4" fill="#30363d" stroke="#f85149" stroke-width="1.5"/>
+<text x="567.5" y="103" fill="#f85149" font-size="7" text-anchor="middle">Spinning Band</text>
+<text x="567.5" y="116" fill="#f85149" font-size="7" text-anchor="middle">Fractionation</text>
+<rect x="520" y="155" width="95" height="50" rx="3" fill="#f85149" opacity="0.10"/>
+<text x="567.5" y="169" fill="#f85149" font-size="7" text-anchor="middle">Individual</text>
+<text x="567.5" y="181" fill="#f85149" font-size="7" text-anchor="middle">esters:</text>
+<text x="567.5" y="193" fill="#f85149" font-size="7" text-anchor="middle">>95% pure</text>
+<text x="182.5" y="255" fill="#e8a665" font-size="7" text-anchor="middle">100×</text>
+<text x="292.5" y="255" fill="#e8a665" font-size="7" text-anchor="middle">200×</text>
+<text x="402.5" y="255" fill="#e8a665" font-size="7" text-anchor="middle">2.5×</text>
+<text x="512.5" y="255" fill="#e8a665" font-size="7" text-anchor="middle">→ pure</text>
+<text x="350" y="345" fill="#e6edf3" font-size="10" text-anchor="middle">B: Precision Dosing to Target Profile</text>
+<rect x="100" y="353" width="17.92" height="14" fill="#3fb950" opacity="0.7" rx="2"/>
+<text x="95" y="363" fill="#3fb950" font-size="7" text-anchor="end">EtHex (apple)</text>
+<text x="122.92" y="363" fill="#3fb950" font-size="7" text-anchor="start">0.056 mg/L</text>
+<rect x="100" y="375" width="32.63999999999999" height="14" fill="#e8a665" opacity="0.7" rx="2"/>
+<text x="95" y="385" fill="#e8a665" font-size="7" text-anchor="end">EtOct (apricot)</text>
+<text x="137.64" y="385" fill="#e8a665" font-size="7" text-anchor="start">0.102 mg/L</text>
+<rect x="100" y="397" width="19.84" height="14" fill="#f85149" opacity="0.7" rx="2"/>
+<text x="95" y="407" fill="#f85149" font-size="7" text-anchor="end">EtDec (grape)</text>
+<text x="124.84" y="407" fill="#f85149" font-size="7" text-anchor="start">0.062 mg/L</text>
+<rect x="100" y="419" width="293.76" height="14" fill="#58a6ff" opacity="0.7" rx="2"/>
+<text x="95" y="429" fill="#58a6ff" font-size="7" text-anchor="end">IsoAmAc (banana)</text>
+<text x="398.76" y="429" fill="#58a6ff" font-size="7" text-anchor="start">0.918 mg/L</text>
+<rect x="100" y="441" width="383.99999999999994" height="14" fill="#bc8cff" opacity="0.7" rx="2"/>
+<text x="95" y="451" fill="#bc8cff" font-size="7" text-anchor="end">EtLact (buttery)</text>
+<text x="488.99999999999994" y="451" fill="#bc8cff" font-size="7" text-anchor="start">1.200 mg/L</text>
+<text x="340" y="480" fill="#8b949e" font-size="7" text-anchor="middle">Target concentration in finished spirit (mg/L)</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Complete pipeline: 1 ppm → 100 ppm → 20,000 ppm → 50,000 ppm → >95% pure individual esters</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Dose back at sub-mg/L levels to match natural barrel-aged whiskey ester profiles</text>
+</svg>
