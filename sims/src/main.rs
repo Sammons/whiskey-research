@@ -117,6 +117,9 @@ fn main() {
 
     fs::write("../graphs/tannin-sono-polymerization.svg", sim_tannin_sono_polymerization()).unwrap();
     println!("Wrote tannin-sono-polymerization.svg");
+
+    fs::write("../graphs/ionic-strength-clustering.svg", sim_ionic_strength_clustering()).unwrap();
+    println!("Wrote ionic-strength-clustering.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -5742,6 +5745,168 @@ fn sim_tannin_sono_polymerization() -> String {
         "+35% polymerization at 6 months", GREEN, 9, "start");
     svg += &label(ml2 + pw - 245.0, mt + ph - 16.0,
         "Panelists prefer sonicated samples", CYAN, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 34: Ionic Strength Engineering for Nanocluster Assembly
+// ═══════════════════════════════════════════════════════════════
+fn sim_ionic_strength_clustering() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Ionic Strength Engineering: Hofmeister-Directed Nanocluster Assembly");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // Panel A: Tannin aggregate size vs ionic strength (Zanchi-inspired)
+    svg += &label(ml + pw / 2.0, mt - 5.0, "A. Tannin Aggregate Size vs Ionic Strength", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let is_max = 200.0; // mM
+    let r_max_a = 500.0; // nm hydrodynamic radius
+    let sx_a = |is: f64| -> f64 { ml + is / is_max * pw };
+    let sy_a = |r: f64| -> f64 { mt + ph - r / r_max_a * ph };
+
+    for i in 0..=4 {
+        let is = is_max * i as f64 / 4.0;
+        svg += &vline(sx_a(is), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(is), mt + ph + 13.0, &format!("{:.0} mM", is), MUTED, 8, "middle");
+    }
+    for i in 1..=5 {
+        let r = r_max_a * i as f64 / 5.0;
+        svg += &hline(ml, ml + pw, sy_a(r), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(r) + 3.5, &format!("{:.0}", r), MUTED, 8, "end");
+    }
+
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Ionic Strength (mM)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "Mean Aggregate Radius (nm)");
+
+    // Three ethanol concentrations showing different aggregation behavior
+    // At 12% (wine): strong aggregation at low IS
+    // At 40% (whiskey): moderate aggregation
+    // At 60% (overproof): minimal aggregation (ethanol disrupts)
+    let scenarios: [(&str, f64, &str, f64, f64); 3] = [
+        ("12% EtOH (wine)", 12.0, BLUE, 8.0, 50.0),
+        ("40% EtOH (whiskey)", 40.0, ACCENT, 15.0, 100.0),
+        ("60% EtOH (overproof)", 60.0, PURPLE, 50.0, 180.0),
+    ];
+
+    let mut ly = mt + 12.0;
+    for &(lbl, _etoh, color, r0, is_crit) in &scenarios {
+        let mut pts: Vec<(f64, f64)> = Vec::new();
+        for i in 0..=200 {
+            let is = is_max * i as f64 / 200.0;
+            // Salting-out: aggregate size increases sigmoidally above critical IS
+            // R = R0 + R_max * sigmoid((IS - IS_crit) / width)
+            let r = r0 + (r_max_a - r0) / (1.0 + E.powf(-(is - is_crit) / (is_crit * 0.3)));
+            pts.push((is, r.min(r_max_a)));
+        }
+        svg += &polyline_svg(&pts, color, "2", &sx_a, &sy_a);
+        svg += &hline(ml + 10.0, ml + 32.0, ly, color, "2.5");
+        svg += &label(ml + 36.0, ly + 4.0, lbl, TEXT, 8, "start");
+        ly += 14.0;
+    }
+
+    // Annotate whiskey mineral range
+    // Typical whiskey: 5-50 mM minerals (K, Ca, Na, Cu, Fe from barrel + water)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"{ACCENT}\" opacity=\"0.12\"/>\n",
+        sx_a(5.0), mt, sx_a(50.0) - sx_a(5.0), ph);
+    svg += &label((sx_a(5.0) + sx_a(50.0)) / 2.0, mt + 15.0, "Whiskey", ACCENT, 8, "middle");
+    svg += &label((sx_a(5.0) + sx_a(50.0)) / 2.0, mt + 27.0, "mineral range", ACCENT, 7, "middle");
+
+    // Dashed line for "barrel-aged" mineral enrichment
+    svg += &vline(sx_a(30.0), mt + ph * 0.3, mt + ph, YELLOW, "1.5");
+    svg += &label(sx_a(30.0) + 4.0, mt + ph * 0.35, "Aged", YELLOW, 7, "start");
+    svg += &vline(sx_a(10.0), mt + ph * 0.3, mt + ph, MUTED, "1.5");
+    svg += &label(sx_a(10.0) - 4.0, mt + ph * 0.35, "New", MUTED, 7, "end");
+
+    // Panel B: Pre-Ouzo phase diagram (simplified ternary projection)
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0, "B. Pre-Ouzo Phase Boundary Shift", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    // x = hydrophobic extractive concentration, y = ethanol concentration
+    let ext_max = 10.0; // g/L oak extractives
+    let etoh_max = 60.0; // % v/v
+    let sx_b = |e: f64| -> f64 { ml2 + e / ext_max * pw };
+    let sy_b = |a: f64| -> f64 { mt + ph - a / etoh_max * ph };
+
+    for i in 0..=5 {
+        let e = ext_max * i as f64 / 5.0;
+        svg += &vline(sx_b(e), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(e), mt + ph + 13.0, &format!("{:.0}", e), MUTED, 8, "middle");
+    }
+    for i in 1..=6 {
+        let a = etoh_max * i as f64 / 6.0;
+        svg += &hline(ml2, ml2 + pw, sy_b(a), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(a) + 3.5, &format!("{:.0}%", a), MUTED, 8, "end");
+    }
+
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Oak Extractives (g/L)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 42.0, mt + ph / 2.0, ml2 - 42.0, mt + ph / 2.0, "Ethanol (% v/v)");
+
+    // Phase boundary: below the curve = pre-Ouzo structured; above = molecular solution
+    // Low IS: boundary lower (harder to form pre-Ouzo)
+    // High IS: boundary shifts up (easier to form, salting-out effect)
+    let mut low_is_boundary: Vec<(f64, f64)> = Vec::new();
+    let mut high_is_boundary: Vec<(f64, f64)> = Vec::new();
+
+    for i in 0..=100 {
+        let ext = ext_max * i as f64 / 100.0;
+        // Phase boundary: ethanol % at which pre-Ouzo structure forms
+        // More extractives → need less ethanol (more hydrophobic driving force)
+        let etoh_low_is = 50.0 * E.powf(-0.15 * ext) + 10.0;
+        let etoh_high_is = 50.0 * E.powf(-0.25 * ext) + 5.0; // salt shifts boundary down
+
+        low_is_boundary.push((ext, etoh_low_is.min(etoh_max)));
+        high_is_boundary.push((ext, etoh_high_is.min(etoh_max)));
+    }
+
+    svg += &polyline_svg(&low_is_boundary, BLUE, "2", &sx_b, &sy_b);
+    svg += &polyline_svg(&high_is_boundary, GREEN, "2.5", &sx_b, &sy_b);
+
+    // Fill the region between boundaries
+    // Label zones
+    svg += &label(ml2 + pw * 0.7, sy_b(20.0), "Pre-Ouzo", GREEN, 10, "middle");
+    svg += &label(ml2 + pw * 0.7, sy_b(20.0) + 13.0, "(structured)", GREEN, 8, "middle");
+    svg += &label(ml2 + pw * 0.3, sy_b(50.0), "Molecular", BLUE, 10, "middle");
+    svg += &label(ml2 + pw * 0.3, sy_b(50.0) + 13.0, "solution", BLUE, 8, "middle");
+
+    // Whiskey operating point
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"6\" fill=\"{ACCENT}\" opacity=\"0.9\"/>\n",
+        sx_b(3.0), sy_b(40.0));
+    svg += &label(sx_b(3.0) + 8.0, sy_b(40.0) + 4.0, "Whiskey", ACCENT, 9, "start");
+    svg += &label(sx_b(3.0) + 8.0, sy_b(40.0) + 16.0, "(40%, 3 g/L)", ACCENT, 8, "start");
+
+    // Arrow showing salt addition shifts boundary
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" stroke=\"{YELLOW}\" stroke-width=\"2\" marker-end=\"url(#arrowY)\"/>\n",
+        sx_b(5.0), sy_b(38.0), sx_b(5.0), sy_b(28.0));
+    svg += &format!("<defs><marker id=\"arrowY\" markerWidth=\"6\" markerHeight=\"4\" refX=\"5\" refY=\"2\" orient=\"auto\"><path d=\"M0,0 L6,2 L0,4\" fill=\"{YELLOW}\"/></marker></defs>\n");
+    svg += &label(sx_b(5.0) + 5.0, sy_b(33.0), "Salt shifts", YELLOW, 8, "start");
+    svg += &label(sx_b(5.0) + 5.0, sy_b(33.0) + 11.0, "boundary", YELLOW, 8, "start");
+
+    // Legend
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, mt + 12.0, BLUE, "2.5");
+    svg += &label(ml2 + 36.0, mt + 16.0, "Low IS (new make)", TEXT, 8, "start");
+    svg += &hline(ml2 + 10.0, ml2 + 32.0, mt + 26.0, GREEN, "2.5");
+    svg += &label(ml2 + 36.0, mt + 30.0, "High IS (mineral-enriched)", TEXT, 8, "start");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"240\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 250.0, mt + ph - 60.0, GRID);
+    svg += &label(ml2 + pw - 245.0, mt + ph - 44.0,
+        "Barrel minerals shift pre-Ouzo boundary", ACCENT, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + ph - 30.0,
+        "Salting-out: bigger, faster clusters", GREEN, 9, "start");
+    svg += &label(ml2 + pw - 245.0, mt + ph - 16.0,
+        "Cost: $5 (food-grade mineral salts)", YELLOW, 9, "start");
 
     svg.push_str("</svg>");
     svg
