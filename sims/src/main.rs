@@ -179,6 +179,11 @@ fn main() {
     fs::write("../graphs/hhp-ester-selectivity.svg", sim_hhp_ester_selectivity()).unwrap();
     fs::write("../graphs/mechanochem-dosimetry.svg", sim_mechanochem_dosimetry()).unwrap();
     fs::write("../graphs/progressive-freeze-fractionation.svg", sim_progressive_freeze_fractionation()).unwrap();
+    fs::write("../graphs/koji-glucosidase.svg", sim_koji_glucosidase()).unwrap();
+    fs::write("../graphs/reverse-esterase-thermo.svg", sim_reverse_esterase_thermo()).unwrap();
+    fs::write("../graphs/biocycle-ethyl-lactate.svg", sim_biocycle_ethyl_lactate()).unwrap();
+    fs::write("../graphs/syncom-pyrazine.svg", sim_syncom_pyrazine()).unwrap();
+    fs::write("../graphs/oeni-biofilm-oak.svg", sim_oeni_biofilm_oak()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -14487,6 +14492,613 @@ fn sim_progressive_freeze_fractionation() -> String {
         ACCENT, 8, "middle");
     svg += &label(350.0, 462.0,
         "Concentrate \u{2192} esterify \u{2192} dilute back. Each pass multiplies [EtOH]\u{00d7}[Acid]/[H\u{2082}O].",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 91: Koji β-Glucosidase — Enzymatic Oak Glycoside Liberation
+// ═══════════════════════════════════════════════════════════════
+fn sim_koji_glucosidase() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 91 \u{2014} Koji \u{03b2}-Glucosidase: Enzymatic Oak Glycoside Liberation");
+
+    // Panel A: Michaelis-Menten kinetics at different ethanol concentrations
+    svg += &label(195.0, 57.0, "A: \u{03b2}-Glucosidase Activity vs [Substrate]", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let s_max = 5.0;
+    for i in 0..=5 {
+        let val = i as f64;
+        let px = ax + val / s_max * aw;
+        svg += &vline(px, ay + ah, ay + ah + 4.0, MUTED, "0.5");
+        svg += &label(px, ay + ah + 14.0, &format!("{:.0}", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 26.0, "[Vanillin-\u{03b2}-D-glucoside] (mM)", MUTED, 8, "middle");
+
+    for i in 0..=5 {
+        let val = i as f64 * 0.2;
+        let py = ay + ah - val * ah;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:.1}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "v / Vmax");
+
+    // Michaelis-Menten with competitive ethanol inhibition
+    // v = Vmax * [S] / (Km*(1 + [EtOH]/Ki) + [S])
+    let km = 0.5_f64;
+    let ki = 200.0_f64; // mM
+    let etoh_concs: Vec<(f64, &str, &str)> = vec![
+        (0.0, "0% EtOH", GREEN),
+        (1710.0, "10% v/v", BLUE),
+        (3420.0, "20% v/v", YELLOW),
+        (6850.0, "40% v/v", RED),
+    ];
+
+    for (etoh_mm, lbl, color) in &etoh_concs {
+        let km_app = km * (1.0 + etoh_mm / ki);
+        let pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+            let s = i as f64 * s_max / 100.0;
+            let v = s / (km_app + s);
+            (s, v)
+        }).collect();
+        let sx = |x: f64| ax + x / s_max * aw;
+        let sy = |y: f64| ay + ah - y * ah;
+        svg += &polyline_svg(&pts, color, "2", &sx, &sy);
+        let v_end = s_max / (km_app + s_max);
+        svg += &label(ax + aw + 3.0, sy(v_end) + 3.0, lbl, color, 7, "start");
+    }
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"125\" height=\"50\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        ax + 10.0, ay + 10.0);
+    svg += &label(ax + 15.0, ay + 25.0, "Km = 0.5 mM (native)", GREEN, 7, "start");
+    svg += &label(ax + 15.0, ay + 37.0, "Km,app = 5.3 mM (10%)", BLUE, 7, "start");
+    svg += &label(ax + 15.0, ay + 49.0, "Km,app = 34.8 mM (40%)", RED, 7, "start");
+
+    // Panel B: Time to 50% glycoside conversion (bar chart)
+    svg += &label(525.0, 57.0, "B: Time to 50% Vanillin Glucoside Hydrolysis", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Log-scale y-axis: 0.1h to 100,000h
+    let log_min_b = -1.0_f64;
+    let log_max_b = 5.0_f64;
+    let tick_labels = ["0.1h", "1h", "10h", "100h", "1000h", "10kh", "100kh"];
+    for i in 0..=6 {
+        let exp = log_min_b + i as f64;
+        let py = by + bh - (exp - log_min_b) / (log_max_b - log_min_b) * bh;
+        svg += &hline(bx - 3.0, bx, py, MUTED, "0.5");
+        svg += &label(bx - 5.0, py + 3.0, tick_labels[i], MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        bx - 35.0, by + bh / 2.0, bx - 35.0, by + bh / 2.0, "t1/2 hydrolysis (log)");
+
+    let methods: Vec<(&str, f64, &str)> = vec![
+        ("Barrel\n(acid)", 26280.0, MUTED),
+        ("Enz\n0%", 0.5, GREEN),
+        ("Enz\n10%", 4.0, BLUE),
+        ("Enz\n20%", 24.0, YELLOW),
+        ("Enz\n40%", 168.0, RED),
+    ];
+
+    let bar_w_b = 40.0;
+    let gap_b = (bw - methods.len() as f64 * bar_w_b) / (methods.len() as f64 + 1.0);
+    for (i, (lbl, t_half, color)) in methods.iter().enumerate() {
+        let bar_x = bx + gap_b + i as f64 * (bar_w_b + gap_b);
+        let log_val = t_half.log10();
+        let bar_h_px = (log_val - log_min_b) / (log_max_b - log_min_b) * bh;
+        let bar_y = by + bh - bar_h_px;
+        svg += &format!("<rect x=\"{bar_x}\" y=\"{bar_y}\" width=\"{bar_w_b}\" height=\"{bar_h_px}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n");
+
+        let display = if *t_half > 1000.0 {
+            format!("{:.1}y", t_half / 8760.0)
+        } else {
+            format!("{:.1}h", t_half)
+        };
+        svg += &label(bar_x + bar_w_b / 2.0, bar_y - 5.0, &display, *color, 7, "middle");
+        let parts: Vec<&str> = lbl.split('\n').collect();
+        for (j, part) in parts.iter().enumerate() {
+            svg += &label(bar_x + bar_w_b / 2.0, by + bh + 14.0 + j as f64 * 11.0, part, TEXT, 7, "middle");
+        }
+    }
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"28\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        bx + 5.0, by + 10.0, bw - 10.0);
+    svg += &label(bx + bw / 2.0, by + 24.0, "At 10% EtOH: 6,570\u{00d7} faster than barrel", GREEN, 8, "middle");
+    svg += &label(bx + bw / 2.0, by + 36.0, "At 40% EtOH: still 157\u{00d7} faster", YELLOW, 7, "middle");
+
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "Koji \u{03b2}-glucosidase liberates vanillin from oak glycosides in hours, not years.",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "Even at 40% EtOH (severe inhibition), enzymatic hydrolysis is >100\u{00d7} faster than barrel acid catalysis.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 92: Reverse Esterase Thermodynamics at High Ethanol
+// ═══════════════════════════════════════════════════════════════
+fn sim_reverse_esterase_thermo() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 92 \u{2014} Reverse Esterase Thermodynamics: LAB Enzymes in High-Ethanol Spirit");
+
+    // Panel A: [EtOH]/[H2O] molar ratio — esterification driving force
+    svg += &label(195.0, 57.0, "A: Esterification Driving Force vs Ethanol %", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    for i in 0..=6 {
+        let val = i as f64 * 10.0;
+        let px = ax + val / 60.0 * aw;
+        svg += &vline(px, ay + ah, ay + ah + 4.0, MUTED, "0.5");
+        svg += &label(px, ay + ah + 14.0, &format!("{:.0}%", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 26.0, "Ethanol (% v/v)", MUTED, 8, "middle");
+
+    let ratio_max = 10.0;
+    for i in 0..=5 {
+        let val = i as f64 * 2.0;
+        let py = ay + ah - val / ratio_max * ah;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:.0}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "[EtOH]/[H2O] molar ratio");
+
+    let sx_a = |x: f64| ax + x / 60.0 * aw;
+    let sy_a = |y: f64| ay + ah - y / ratio_max * ah;
+
+    let pts: Vec<(f64, f64)> = (1..=120).map(|i| {
+        let abv = i as f64 * 0.5;
+        let etoh_mol = (abv / 100.0) * 789.0 / 46.07;
+        let h2o_mol = ((100.0 - abv) / 100.0) * 1000.0 / 18.015;
+        (abv, etoh_mol / h2o_mol)
+    }).collect();
+    svg += &polyline_svg(&pts, ACCENT, "2.5", &sx_a, &sy_a);
+
+    // Whiskey range
+    let x_40 = sx_a(40.0);
+    let x_60 = sx_a(60.0);
+    svg += &format!("<rect x=\"{x_40}\" y=\"{ay}\" width=\"{}\" height=\"{ah}\" fill=\"{GREEN}\" opacity=\"0.08\"/>\n", x_60 - x_40);
+    svg += &label((x_40 + x_60) / 2.0, ay + 15.0, "Whiskey", GREEN, 8, "middle");
+
+    // Wine range
+    let x_8 = sx_a(8.0);
+    let x_15 = sx_a(15.0);
+    svg += &format!("<rect x=\"{x_8}\" y=\"{ay}\" width=\"{}\" height=\"{ah}\" fill=\"{PURPLE}\" opacity=\"0.08\"/>\n", x_15 - x_8);
+    svg += &label((x_8 + x_15) / 2.0, ay + 15.0, "Wine", PURPLE, 7, "middle");
+
+    // Key data points
+    for (abv, lbl, color) in [(12.0, "Wine MLF", PURPLE), (40.0, "Whiskey", GREEN), (60.0, "Cask str.", CYAN)] {
+        let etoh_mol = (abv / 100.0) * 789.0 / 46.07;
+        let h2o_mol = ((100.0 - abv) / 100.0) * 1000.0 / 18.015;
+        let ratio = etoh_mol / h2o_mol;
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{color}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+            sx_a(abv), sy_a(ratio));
+        svg += &label(sx_a(abv), sy_a(ratio) - 8.0, &format!("{} ({:.1}\u{00d7})", lbl, ratio), color, 7, "middle");
+    }
+
+    // Panel B: Predicted ethyl lactate from reverse esterase
+    svg += &label(525.0, 57.0, "B: Predicted Ethyl Lactate from Reverse Esterase", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    for i in 0..=6 {
+        let val = i as f64 * 12.0;
+        let px = bx + val / 72.0 * bw;
+        svg += &vline(px, by + bh, by + bh + 4.0, MUTED, "0.5");
+        svg += &label(px, by + bh + 14.0, &format!("{:.0}h", val), MUTED, 7, "middle");
+    }
+    svg += &label(bx + bw / 2.0, by + bh + 26.0, "Incubation time", MUTED, 8, "middle");
+
+    let el_max = 500.0;
+    for i in 0..=5 {
+        let val = i as f64 * 100.0;
+        let py = by + bh - val / el_max * bh;
+        svg += &hline(bx - 3.0, bx, py, MUTED, "0.5");
+        svg += &label(bx - 5.0, py + 3.0, &format!("{:.0}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        bx - 32.0, by + bh / 2.0, bx - 32.0, by + bh / 2.0, "Ethyl lactate (mg/L)");
+
+    let sx_b = |x: f64| bx + x / 72.0 * bw;
+    let sy_b = |y: f64| by + bh - y / el_max * bh;
+
+    let conditions: Vec<(&str, f64, f64, &str)> = vec![
+        ("10% EtOH, full activity", 0.10, 1.0, BLUE),
+        ("20% EtOH, 40% activity", 0.20, 0.40, YELLOW),
+        ("40% EtOH, 5% activity", 0.40, 0.05, RED),
+        ("40% EtOH, no enzyme", 0.40, 0.0, MUTED),
+    ];
+
+    for (lbl, etoh_frac, enz_activity, color) in &conditions {
+        let etoh_m = etoh_frac * 789.0 / 46.07;
+        let lactic_m = 5.6e-3;
+        let k_enz = 0.15 * enz_activity;
+        let k_fischer = 1.0e-5;
+        let mut el = 0.0_f64;
+        let dt = 0.1;
+        let pts: Vec<(f64, f64)> = (0..=720).filter_map(|i| {
+            let t = i as f64 * dt;
+            let remaining = (lactic_m - el).max(0.0);
+            let rate = (k_enz * remaining * etoh_m + k_fischer * remaining * etoh_m) * dt;
+            el = (el + rate).min(lactic_m);
+            if i % 10 == 0 { Some((t, el * 118130.0)) } else { None }
+        }).collect();
+        svg += &polyline_svg(&pts, color, "2", &sx_b, &sy_b);
+        if let Some(last) = pts.last() {
+            svg += &label(sx_b(last.0) + 3.0, sy_b(last.1) + 3.0, lbl, color, 6, "start");
+        }
+    }
+
+    let aged_ref = 200.0;
+    svg += &format!("<line x1=\"{bx}\" y1=\"{:.1}\" x2=\"{}\" y2=\"{:.1}\" \
+        stroke=\"{GREEN}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n",
+        sy_b(aged_ref), bx + bw, sy_b(aged_ref));
+    svg += &label(bx + bw - 5.0, sy_b(aged_ref) - 5.0, "10-yr bourbon ref.", GREEN, 7, "end");
+
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "High ethanol shifts esterification equilibrium 5\u{2013}10\u{00d7} vs wine. Even 5% residual enzyme",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "activity at 40% EtOH produces measurable ethyl lactate in 72h via Le Chatelier driving force.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 93: Biocycle LAB-Yeast Fermentation for Ethyl Lactate
+// ═══════════════════════════════════════════════════════════════
+fn sim_biocycle_ethyl_lactate() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 93 \u{2014} Biocycle Fermentation: Sequential LAB-Yeast for Ethyl Lactate Loading");
+
+    // Panel A: Ethyl lactate yield by fermentation strategy
+    svg += &label(195.0, 57.0, "A: Ethyl Lactate Yield by Strategy", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let log_min_a = -3.0_f64;
+    let log_max_a = 1.0_f64;
+    let tick_lbls = ["0.001", "0.01", "0.1", "1.0", "10.0"];
+    for i in 0..=4 {
+        let exp = log_min_a + i as f64;
+        let py = ay + ah - (exp - log_min_a) / (log_max_a - log_min_a) * ah;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, tick_lbls[i], MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 32.0, ay + ah / 2.0, ax - 32.0, ay + ah / 2.0, "Ethyl lactate (g/L, log)");
+
+    let methods_a: Vec<(&str, f64, &str)> = vec![
+        ("Eng. E. coli\n(Lee 2019)", 0.00224, PURPLE),
+        ("Mixed\n(simult.)", 1.32, YELLOW),
+        ("Biocycle\n(sequent.)", 3.05, GREEN),
+        ("Natural\nbaijiu", 0.8, MUTED),
+    ];
+
+    let bar_w_a = 48.0;
+    let gap_a = (aw - methods_a.len() as f64 * bar_w_a) / (methods_a.len() as f64 + 1.0);
+    for (i, (lbl, yield_gl, color)) in methods_a.iter().enumerate() {
+        let bar_x = ax + gap_a + i as f64 * (bar_w_a + gap_a);
+        let log_val = yield_gl.log10();
+        let bar_h_px = (log_val - log_min_a) / (log_max_a - log_min_a) * ah;
+        let bar_y = ay + ah - bar_h_px;
+        svg += &format!("<rect x=\"{bar_x}\" y=\"{bar_y}\" width=\"{bar_w_a}\" height=\"{bar_h_px}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n");
+        svg += &label(bar_x + bar_w_a / 2.0, bar_y - 5.0, &format!("{:.3}", yield_gl), *color, 7, "middle");
+        let parts: Vec<&str> = lbl.split('\n').collect();
+        for (j, part) in parts.iter().enumerate() {
+            svg += &label(bar_x + bar_w_a / 2.0, ay + ah + 14.0 + j as f64 * 11.0, part, TEXT, 7, "middle");
+        }
+    }
+
+    // 2.3× annotation
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"80\" height=\"20\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        ax + aw / 2.0 - 10.0, ay + 10.0);
+    svg += &label(ax + aw / 2.0 + 30.0, ay + 24.0, "2.3\u{00d7} gain", ACCENT, 9, "middle");
+
+    // Panel B: Distillation carry-over (flow diagram)
+    svg += &label(525.0, 57.0, "B: Ethyl Lactate Fate Through Distillation", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Flow boxes: wash → still → hearts
+    let wash_y = by + 30.0;
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"120\" height=\"40\" rx=\"4\" fill=\"{BLUE}\" opacity=\"0.3\" stroke=\"{BLUE}\"/>\n",
+        bx + 70.0, wash_y);
+    svg += &label(bx + 130.0, wash_y + 18.0, "Biocycle wash", TEXT, 9, "middle");
+    svg += &label(bx + 130.0, wash_y + 32.0, "3.05 g/L EtLac", GREEN, 8, "middle");
+
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{ACCENT}\" stroke-width=\"2\"/>\n",
+        bx + 130.0, wash_y + 40.0, bx + 130.0, wash_y + 70.0);
+
+    let still_y = wash_y + 70.0;
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"120\" height=\"35\" rx=\"4\" fill=\"{ACCENT}\" opacity=\"0.3\" stroke=\"{ACCENT}\"/>\n",
+        bx + 70.0, still_y);
+    svg += &label(bx + 130.0, still_y + 20.0, "Pot distillation (2 runs)", TEXT, 8, "middle");
+
+    // Hearts output
+    let hearts_y = still_y + 55.0;
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"2\"/>\n",
+        bx + 130.0, still_y + 35.0, bx + 130.0, hearts_y);
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"160\" height=\"40\" rx=\"4\" fill=\"{GREEN}\" opacity=\"0.2\" stroke=\"{GREEN}\"/>\n",
+        bx + 50.0, hearts_y);
+    svg += &label(bx + 130.0, hearts_y + 16.0, "Hearts: ~1.07 g/L EtLac", GREEN, 9, "middle");
+    svg += &label(bx + 130.0, hearts_y + 30.0, "(~35% carry-over)", MUTED, 7, "middle");
+
+    // Comparison box
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"60\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        bx + 5.0, by + bh - 68.0, bw - 10.0);
+    svg += &label(bx + bw / 2.0, by + bh - 52.0, "Standard wash: 0.3 g/L \u{2192} 0.11 g/L hearts", MUTED, 7, "middle");
+    svg += &label(bx + bw / 2.0, by + bh - 39.0, "Biocycle wash: 3.05 g/L \u{2192} 1.07 g/L hearts", GREEN, 8, "middle");
+    svg += &label(bx + bw / 2.0, by + bh - 26.0, "= 9.7\u{00d7} more ethyl lactate in new-make", ACCENT, 9, "middle");
+    svg += &label(bx + bw / 2.0, by + bh - 14.0, "Ethyl lactate = #1 ester marker of aged spirits", YELLOW, 7, "middle");
+
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "Sequential LAB\u{2192}yeast biocycle: 2.3\u{00d7} more ethyl lactate than simultaneous (Chen 2019).",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "~35% carries through distillation \u{2192} 9.7\u{00d7} more ethyl lactate in new-make vs standard wash.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 94: SynCom Pyrazine Fortification
+// ═══════════════════════════════════════════════════════════════
+fn sim_syncom_pyrazine() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 94 \u{2014} SynCom Pyrazine Fortification: Engineering Starter Culture Precursors");
+
+    // Panel A: Pyrazine content vs B. licheniformis ratio
+    svg += &label(195.0, 57.0, "A: Pyrazine vs B. licheniformis Fortification", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    for i in 0..=6 {
+        let val = i as f64 * 5.0;
+        let px = ax + val / 30.0 * aw;
+        svg += &vline(px, ay + ah, ay + ah + 4.0, MUTED, "0.5");
+        svg += &label(px, ay + ah + 14.0, &format!("{:.0}%", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 26.0, "B. licheniformis in daqu (%)", MUTED, 8, "middle");
+
+    let pyr_max = 60.0;
+    for i in 0..=6 {
+        let val = i as f64 * 10.0;
+        let py = ay + ah - val / pyr_max * ah;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("{:.0}\u{00d7}", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 28.0, ay + ah / 2.0, ax - 28.0, ay + ah / 2.0, "Pyrazine (relative)");
+
+    let sx_a = |x: f64| ax + x / 30.0 * aw;
+    let sy_a = |y: f64| ay + ah - y / pyr_max * ah;
+
+    // Hill equation: Wang 2023 data point at ~20% = 51.74×
+    let r_max = 51.74_f64;
+    let ec50 = 12.0_f64;
+    let hill_n = 2.5_f64;
+    let pts: Vec<(f64, f64)> = (0..=300).map(|i| {
+        let x = i as f64 * 0.1;
+        let resp = 1.0 + (r_max - 1.0) * x.powf(hill_n) / (ec50.powf(hill_n) + x.powf(hill_n));
+        (x, resp)
+    }).collect();
+    svg += &polyline_svg(&pts, ACCENT, "2.5", &sx_a, &sy_a);
+
+    let wang_x = 20.0_f64;
+    let wang_y = 1.0 + (r_max - 1.0) * wang_x.powf(hill_n) / (ec50.powf(hill_n) + wang_x.powf(hill_n));
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"6\" fill=\"{GREEN}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+        sx_a(wang_x), sy_a(wang_y));
+    svg += &label(sx_a(wang_x) + 10.0, sy_a(wang_y) - 3.0, "+5,074%", GREEN, 9, "start");
+    svg += &label(sx_a(wang_x) + 10.0, sy_a(wang_y) + 9.0, "Wang 2023", MUTED, 7, "start");
+
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{MUTED}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+        sx_a(0.0), sy_a(1.0));
+    svg += &label(sx_a(0.0) + 8.0, sy_a(1.0) + 3.0, "Control", MUTED, 7, "start");
+
+    // Panel B: Pyrazine boiling points vs spirit recovery
+    svg += &label(525.0, 57.0, "B: Pyrazine Recovery Through Distillation", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let bp_min = 100.0_f64;
+    let bp_max = 200.0_f64;
+    for i in 0..=5 {
+        let val = bp_min + i as f64 * 20.0;
+        let px = bx + (val - bp_min) / (bp_max - bp_min) * bw;
+        svg += &vline(px, by + bh, by + bh + 4.0, MUTED, "0.5");
+        svg += &label(px, by + bh + 14.0, &format!("{:.0}\u{00b0}C", val), MUTED, 7, "middle");
+    }
+    svg += &label(bx + bw / 2.0, by + bh + 26.0, "Boiling point", MUTED, 8, "middle");
+
+    let rec_max = 100.0;
+    for i in 0..=5 {
+        let val = i as f64 * 20.0;
+        let py = by + bh - val / rec_max * bh;
+        svg += &hline(bx - 3.0, bx, py, MUTED, "0.5");
+        svg += &label(bx - 5.0, py + 3.0, &format!("{:.0}%", val), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        bx - 28.0, by + bh / 2.0, bx - 28.0, by + bh / 2.0, "Est. recovery in hearts (%)");
+
+    let sx_b = |x: f64| bx + (x - bp_min) / (bp_max - bp_min) * bw;
+    let sy_b = |y: f64| by + bh - y / rec_max * bh;
+
+    let pyrazines: Vec<(&str, f64, f64, &str)> = vec![
+        ("2-Methylpyrazine", 135.0, 75.0, GREEN),
+        ("2,3-Dimethyl-", 156.0, 55.0, BLUE),
+        ("2,5-Dimethyl-", 155.0, 57.0, BLUE),
+        ("Trimethyl-", 171.0, 40.0, YELLOW),
+        ("Tetramethyl-", 190.0, 25.0, RED),
+        ("2-Acetyl-", 192.0, 20.0, RED),
+    ];
+
+    for (name, bp, recovery, color) in &pyrazines {
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{color}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+            sx_b(*bp), sy_b(*recovery));
+        svg += &label(sx_b(*bp) + 8.0, sy_b(*recovery) + 3.0, name, *color, 6, "start");
+    }
+
+    // Trend line (linear regression approximation)
+    let trend_pts: Vec<(f64, f64)> = (100..=200).map(|bp| {
+        let rec = 140.0 - 0.6 * bp as f64; // rough linear fit
+        (bp as f64, rec.max(0.0).min(100.0))
+    }).collect();
+    svg += &polyline_svg(&trend_pts, MUTED, "1", &sx_b, &sy_b);
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"28\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        bx + 5.0, by + bh - 35.0, bw - 10.0);
+    svg += &label(bx + bw / 2.0, by + bh - 20.0, "Lower-MW pyrazines: 40\u{2013}75% recovery (nutty, roasty)", GREEN, 7, "middle");
+
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "B. licheniformis fortification: +5,074% pyrazines (Wang 2023). Lower-MW pyrazines",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "survive distillation at 40\u{2013}75% \u{2192} pre-distillation SynCom loading is viable for whiskey.",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 95: O. oeni Biofilm Pre-Treatment of Oak
+// ═══════════════════════════════════════════════════════════════
+fn sim_oeni_biofilm_oak() -> String {
+    let (w, h) = (700.0, 480.0);
+    let mut svg = svg_header(w, h,
+        "Fig 95 \u{2014} O. oeni Biofilm: Biological Oak Extraction Modulation");
+
+    // Panel A: Biofilm density on oak vs steel
+    svg += &label(195.0, 57.0, "A: O. oeni Biofilm Density on Surfaces", TEXT, 10, "middle");
+    let (ax, ay, aw, ah) = (70.0, 65.0, 250.0, 310.0);
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    for i in 0..=7 {
+        let val = i as f64 * 2.0;
+        let px = ax + val / 14.0 * aw;
+        svg += &vline(px, ay + ah, ay + ah + 4.0, MUTED, "0.5");
+        svg += &label(px, ay + ah + 14.0, &format!("{:.0}d", val), MUTED, 7, "middle");
+    }
+    svg += &label(ax + aw / 2.0, ay + ah + 26.0, "Incubation (days)", MUTED, 8, "middle");
+
+    let log_min_a = 4.0_f64;
+    let log_max_a = 9.0_f64;
+    let superscripts = ["\u{2074}", "\u{2075}", "\u{2076}", "\u{2077}", "\u{2078}", "\u{2079}"];
+    for i in 0..=5 {
+        let exp = log_min_a + i as f64;
+        let py = ay + ah - (exp - log_min_a) / (log_max_a - log_min_a) * ah;
+        svg += &hline(ax - 3.0, ax, py, MUTED, "0.5");
+        svg += &label(ax - 5.0, py + 3.0, &format!("10{}", superscripts[i]), MUTED, 7, "end");
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ax - 30.0, ay + ah / 2.0, ax - 30.0, ay + ah / 2.0, "CFU/cm\u{00b2}");
+
+    let sx_a = |x: f64| ax + x / 14.0 * aw;
+    let sy_a = |y: f64| ay + ah - (y - log_min_a) / (log_max_a - log_min_a) * ah;
+
+    // Oak: logistic growth in log space
+    let oak_pts: Vec<(f64, f64)> = (0..=140).map(|i| {
+        let t = i as f64 * 0.1;
+        let n = 5.0 + 3.0 * (1.0 - E.powf(-0.3 * t));
+        (t, n)
+    }).collect();
+    svg += &polyline_svg(&oak_pts, ACCENT, "2.5", &sx_a, &sy_a);
+    svg += &label(sx_a(14.0) + 3.0, sy_a(8.0) + 3.0, "Oak", ACCENT, 8, "start");
+
+    // Steel: lower plateau
+    let steel_pts: Vec<(f64, f64)> = (0..=140).map(|i| {
+        let t = i as f64 * 0.1;
+        let n = 4.5 + 1.8 * (1.0 - E.powf(-0.25 * t));
+        (t, n)
+    }).collect();
+    svg += &polyline_svg(&steel_pts, MUTED, "2", &sx_a, &sy_a);
+    svg += &label(sx_a(14.0) + 3.0, sy_a(6.3) + 3.0, "Steel", MUTED, 8, "start");
+
+    // Bastard 2016 data points
+    for (t, log_cfu, color) in [(3.0, 7.3_f64, ACCENT), (14.0, 8.0, ACCENT), (3.0, 5.5, MUTED), (14.0, 6.3, MUTED)] {
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{color}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n",
+            sx_a(t), sy_a(log_cfu));
+    }
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"100\" height=\"20\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n",
+        ax + 10.0, ay + 10.0);
+    svg += &label(ax + 60.0, ay + 24.0, "Oak: 60\u{00d7} vs steel", GREEN, 8, "middle");
+
+    // Panel B: Compound transfer modification (horizontal bars)
+    svg += &label(525.0, 57.0, "B: Biofilm Effect on Oak Compound Transfer", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (400.0, 65.0, 260.0, 310.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let compounds: Vec<(&str, f64, &str, &str)> = vec![
+        ("Vanillin", 35.0, GREEN, "Glycosidase"),
+        ("Syringaldehyde", 20.0, GREEN, "Glycosidase"),
+        ("Esters", 15.0, GREEN, "Esterase"),
+        ("Furfural", -45.0, BLUE, "Barrier/sink"),
+        ("Guaiacol", -30.0, BLUE, "Barrier"),
+        ("Eugenol", -25.0, BLUE, "Barrier"),
+    ];
+
+    let bar_h_each = 38.0;
+    let gap_c = (bh - compounds.len() as f64 * bar_h_each) / (compounds.len() as f64 + 1.0);
+    let zero_x = bx + bw / 2.0;
+    svg += &vline(zero_x, by, by + bh, MUTED, "1");
+    svg += &label(bx + 15.0, by + bh + 14.0, "-50%", MUTED, 7, "start");
+    svg += &label(zero_x, by + bh + 14.0, "0%", MUTED, 7, "middle");
+    svg += &label(bx + bw - 15.0, by + bh + 14.0, "+50%", MUTED, 7, "end");
+
+    for (i, (compound, pct, color, mech)) in compounds.iter().enumerate() {
+        let bar_y = by + gap_c + i as f64 * (bar_h_each + gap_c);
+        let bar_width = (pct / 50.0 * (bw / 2.0)).abs();
+        if *pct >= 0.0 {
+            svg += &format!("<rect x=\"{zero_x}\" y=\"{bar_y}\" width=\"{bar_width}\" height=\"{bar_h_each}\" fill=\"{color}\" opacity=\"0.5\" rx=\"2\"/>\n");
+            svg += &label(zero_x + bar_width + 3.0, bar_y + bar_h_each / 2.0 + 3.0,
+                &format!("+{:.0}%", pct), *color, 8, "start");
+        } else {
+            svg += &format!("<rect x=\"{}\" y=\"{bar_y}\" width=\"{bar_width}\" height=\"{bar_h_each}\" fill=\"{color}\" opacity=\"0.5\" rx=\"2\"/>\n",
+                zero_x - bar_width);
+            svg += &label(zero_x - bar_width - 3.0, bar_y + bar_h_each / 2.0 + 3.0,
+                &format!("{:.0}%", pct), *color, 8, "end");
+        }
+        svg += &label(bx + 5.0, bar_y + 14.0, compound, TEXT, 8, "start");
+        svg += &label(bx + 5.0, bar_y + 26.0, mech, MUTED, 6, "start");
+    }
+
+    svg += &format!("<rect x=\"60\" y=\"430\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(350.0, 448.0,
+        "O. oeni biofilm on oak: 60\u{00d7} density vs steel (Bastard 2016). Acts as selective filter:",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, 462.0,
+        "enhances vanillin/esters (glycosidase/esterase), blocks furfural/guaiacol (barrier). Pre-treat oak before spirit.",
         GREEN, 8, "middle");
 
     svg.push_str("</svg>");

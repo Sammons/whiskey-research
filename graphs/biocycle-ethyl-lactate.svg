@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 93 — Biocycle Fermentation: Sequential LAB-Yeast for Ethyl Lactate Loading</text>
+<text x="195" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Ethyl Lactate Yield by Strategy</text>
+<rect x="70" y="65" width="250" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="67" y1="375" x2="70" y2="375" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0.001</text>
+<line x1="67" y1="297.5" x2="70" y2="297.5" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="300.5" fill="#8b949e" font-size="7" text-anchor="end">0.01</text>
+<line x1="67" y1="220" x2="70" y2="220" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="223" fill="#8b949e" font-size="7" text-anchor="end">0.1</text>
+<line x1="67" y1="142.5" x2="70" y2="142.5" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="145.5" fill="#8b949e" font-size="7" text-anchor="end">1.0</text>
+<line x1="67" y1="65" x2="70" y2="65" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">10.0</text>
+<text x="38" y="220" fill="#8b949e" font-size="7" text-anchor="middle" transform="rotate(-90,38,220)">Ethyl lactate (g/L, log)</text>
+<rect x="81.6" y="347.8557785791024" width="48" height="27.144221420897612" fill="#bc8cff" opacity="0.7" rx="2"/>
+<text x="105.6" y="342.8557785791024" fill="#bc8cff" font-size="7" text-anchor="middle">0.002</text>
+<text x="105.6" y="389" fill="#e6edf3" font-size="7" text-anchor="middle">Eng. E. coli</text>
+<text x="105.6" y="400" fill="#e6edf3" font-size="7" text-anchor="middle">(Lee 2019)</text>
+<rect x="141.2" y="133.15552033154663" width="48" height="241.84447966845337" fill="#d29922" opacity="0.7" rx="2"/>
+<text x="165.2" y="128.15552033154663" fill="#d29922" font-size="7" text-anchor="middle">1.320</text>
+<text x="165.2" y="389" fill="#e6edf3" font-size="7" text-anchor="middle">Mixed</text>
+<text x="165.2" y="400" fill="#e6edf3" font-size="7" text-anchor="middle">(simult.)</text>
+<rect x="200.8" y="104.96676245062412" width="48" height="270.0332375493759" fill="#3fb950" opacity="0.7" rx="2"/>
+<text x="224.8" y="99.96676245062412" fill="#3fb950" font-size="7" text-anchor="middle">3.050</text>
+<text x="224.8" y="389" fill="#e6edf3" font-size="7" text-anchor="middle">Biocycle</text>
+<text x="224.8" y="400" fill="#e6edf3" font-size="7" text-anchor="middle">(sequent.)</text>
+<rect x="260.4" y="150.01052600812437" width="48" height="224.98947399187563" fill="#8b949e" opacity="0.7" rx="2"/>
+<text x="284.4" y="145.01052600812437" fill="#8b949e" font-size="7" text-anchor="middle">0.800</text>
+<text x="284.4" y="389" fill="#e6edf3" font-size="7" text-anchor="middle">Natural</text>
+<text x="284.4" y="400" fill="#e6edf3" font-size="7" text-anchor="middle">baijiu</text>
+<rect x="185" y="75" width="80" height="20" rx="3" fill="#30363d" opacity="0.8"/>
+<text x="225" y="89" fill="#e8a665" font-size="9" text-anchor="middle">2.3× gain</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Ethyl Lactate Fate Through Distillation</text>
+<rect x="400" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<rect x="470" y="95" width="120" height="40" rx="4" fill="#58a6ff" opacity="0.3" stroke="#58a6ff"/>
+<text x="530" y="113" fill="#e6edf3" font-size="9" text-anchor="middle">Biocycle wash</text>
+<text x="530" y="127" fill="#3fb950" font-size="8" text-anchor="middle">3.05 g/L EtLac</text>
+<line x1="530" y1="135" x2="530" y2="165" stroke="#e8a665" stroke-width="2"/>
+<rect x="470" y="165" width="120" height="35" rx="4" fill="#e8a665" opacity="0.3" stroke="#e8a665"/>
+<text x="530" y="185" fill="#e6edf3" font-size="8" text-anchor="middle">Pot distillation (2 runs)</text>
+<line x1="530" y1="200" x2="530" y2="220" stroke="#3fb950" stroke-width="2"/>
+<rect x="450" y="220" width="160" height="40" rx="4" fill="#3fb950" opacity="0.2" stroke="#3fb950"/>
+<text x="530" y="236" fill="#3fb950" font-size="9" text-anchor="middle">Hearts: ~1.07 g/L EtLac</text>
+<text x="530" y="250" fill="#8b949e" font-size="7" text-anchor="middle">(~35% carry-over)</text>
+<rect x="405" y="307" width="250" height="60" rx="4" fill="#30363d" opacity="0.8"/>
+<text x="530" y="323" fill="#8b949e" font-size="7" text-anchor="middle">Standard wash: 0.3 g/L → 0.11 g/L hearts</text>
+<text x="530" y="336" fill="#3fb950" font-size="8" text-anchor="middle">Biocycle wash: 3.05 g/L → 1.07 g/L hearts</text>
+<text x="530" y="349" fill="#e8a665" font-size="9" text-anchor="middle">= 9.7× more ethyl lactate in new-make</text>
+<text x="530" y="361" fill="#d29922" font-size="7" text-anchor="middle">Ethyl lactate = #1 ester marker of aged spirits</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Sequential LAB→yeast biocycle: 2.3× more ethyl lactate than simultaneous (Chen 2019).</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">~35% carries through distillation → 9.7× more ethyl lactate in new-make vs standard wash.</text>
+</svg>
