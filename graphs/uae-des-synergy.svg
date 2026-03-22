@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 67 — UAE-DES Synergy: Ultrasound + Deep Eutectic Solvent = Multiplicative Oak Extraction</text>
+<text x="190" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Polyphenol Extraction Yield by Method</text>
+<rect x="140" y="70" width="190" height="290" fill="none" stroke="#8b949e" stroke-width="1"/>
+<line x1="140" y1="70" x2="140" y2="360" stroke="#30363d" stroke-width="0.5"/>
+<text x="140" y="372" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="167.14285714285714" y1="70" x2="167.14285714285714" y2="360" stroke="#30363d" stroke-width="0.5"/>
+<text x="167.14285714285714" y="372" fill="#8b949e" font-size="7" text-anchor="middle">50</text>
+<line x1="194.28571428571428" y1="70" x2="194.28571428571428" y2="360" stroke="#30363d" stroke-width="0.5"/>
+<text x="194.28571428571428" y="372" fill="#8b949e" font-size="7" text-anchor="middle">100</text>
+<line x1="221.42857142857144" y1="70" x2="221.42857142857144" y2="360" stroke="#30363d" stroke-width="0.5"/>
+<text x="221.42857142857144" y="372" fill="#8b949e" font-size="7" text-anchor="middle">150</text>
+<line x1="248.57142857142856" y1="70" x2="248.57142857142856" y2="360" stroke="#30363d" stroke-width="0.5"/>
+<text x="248.57142857142856" y="372" fill="#8b949e" font-size="7" text-anchor="middle">200</text>
+<line x1="275.7142857142857" y1="70" x2="275.7142857142857" y2="360" stroke="#30363d" stroke-width="0.5"/>
+<text x="275.7142857142857" y="372" fill="#8b949e" font-size="7" text-anchor="middle">250</text>
+<line x1="302.8571428571429" y1="70" x2="302.8571428571429" y2="360" stroke="#30363d" stroke-width="0.5"/>
+<text x="302.8571428571429" y="372" fill="#8b949e" font-size="7" text-anchor="middle">300</text>
+<line x1="330" y1="70" x2="330" y2="360" stroke="#30363d" stroke-width="0.5"/>
+<text x="330" y="372" fill="#8b949e" font-size="7" text-anchor="middle">350</text>
+<text x="235" y="386" fill="#8b949e" font-size="8" text-anchor="middle">Total polyphenols (mg/g DW)</text>
+<rect x="140" y="101.1" width="6.9" height="20.7" fill="#8b949e" opacity="0.7" rx="2"/>
+<text x="150.8942857142857" y="114.42857142857143" fill="#8b949e" font-size="7" text-anchor="start">13 (baseline)</text>
+<text x="136" y="114.42857142857143" fill="#8b949e" font-size="7" text-anchor="end">EtOH/H₂O (conv.)</text>
+<rect x="140" y="142.5" width="24.4" height="20.7" fill="#58a6ff" opacity="0.7" rx="2"/>
+<text x="168.42857142857142" y="155.85714285714286" fill="#58a6ff" font-size="7" text-anchor="start">45 (3.5×)</text>
+<text x="136" y="155.85714285714286" fill="#8b949e" font-size="7" text-anchor="end">DES alone (ChCl:LA)</text>
+<rect x="140" y="183.9" width="15.2" height="20.7" fill="#bc8cff" opacity="0.7" rx="2"/>
+<text x="159.2" y="197.28571428571428" fill="#bc8cff" font-size="7" text-anchor="start">28 (2.2×)</text>
+<text x="136" y="197.28571428571428" fill="#8b949e" font-size="7" text-anchor="end">UAE alone (37 kHz)</text>
+<rect x="140" y="225.4" width="170.8" height="20.7" fill="#3fb950" opacity="0.7" rx="2"/>
+<text x="314.78285714285715" y="238.71428571428572" fill="#3fb950" font-size="7" text-anchor="start">315 (25×)</text>
+<text x="136" y="238.71428571428572" fill="#8b949e" font-size="7" text-anchor="end">UAE + DES</text>
+<rect x="140" y="266.8" width="40.7" height="20.7" fill="#d29922" opacity="0.7" rx="2"/>
+<text x="184.71428571428572" y="280.14285714285717" fill="#d29922" font-size="7" text-anchor="start">75 (5.9×)</text>
+<text x="136" y="280.14285714285717" fill="#8b949e" font-size="7" text-anchor="end">DES + heat (120°C)</text>
+<rect x="140" y="308.2" width="124.6" height="20.7" fill="#e8a665" opacity="0.7" rx="2"/>
+<text x="268.64" y="321.57142857142856" fill="#e8a665" font-size="7" text-anchor="start">230 (18×)</text>
+<text x="136" y="321.57142857142856" fill="#8b949e" font-size="7" text-anchor="end">MAE + DES (60 min)</text>
+<rect x="138.0" y="221.2" width="240.0" height="29.0" fill="none" stroke="#3fb950" stroke-width="2" stroke-dasharray="3,2" rx="3"/>
+<rect x="150.0" y="75.0" width="180" height="30" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="240" y="88" fill="#3fb950" font-size="8" text-anchor="middle">Synergy: 25× &gt; 3.5× + 2.2×</text>
+<text x="240" y="100" fill="#3fb950" font-size="7" text-anchor="middle">(multiplicative, not additive)</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Synergistic Mechanism</text>
+<circle cx="470" cy="160" r="55" fill="#bc8cff" opacity="0.12" stroke="#bc8cff" stroke-width="1.5"/>
+<text x="470" y="148" fill="#bc8cff" font-size="9" text-anchor="middle">Ultrasound</text>
+<text x="470" y="162" fill="#bc8cff" font-size="7" text-anchor="middle">Cell wall</text>
+<text x="470" y="174" fill="#bc8cff" font-size="7" text-anchor="middle">disruption</text>
+<text x="470" y="190" fill="#bc8cff" font-size="7" text-anchor="middle">+OH• radicals</text>
+<circle cx="580" cy="160" r="55" fill="#58a6ff" opacity="0.12" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="580" y="148" fill="#58a6ff" font-size="9" text-anchor="middle">DES</text>
+<text x="580" y="162" fill="#58a6ff" font-size="7" text-anchor="middle">H-bond</text>
+<text x="580" y="174" fill="#58a6ff" font-size="7" text-anchor="middle">solubilization</text>
+<text x="580" y="190" fill="#58a6ff" font-size="7" text-anchor="middle">+β-O-4 cleavage</text>
+<line x1="470" y1="220.0" x2="525" y2="255" stroke="#3fb950" stroke-width="2" marker-end="url(#arr)"/>
+<line x1="580" y1="220.0" x2="525" y2="255" stroke="#3fb950" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="430" y="260" width="190" height="80" rx="6" fill="#3fb950" opacity="0.12" stroke="#3fb950" stroke-width="2"/>
+<text x="525" y="280" fill="#3fb950" font-size="10" text-anchor="middle">COMBINED</text>
+<text x="525" y="296" fill="#3fb950" font-size="8" text-anchor="middle">Cavitation opens pores</text>
+<text x="525" y="310" fill="#3fb950" font-size="7" text-anchor="middle">DES dissolves fragments</text>
+<text x="525" y="324" fill="#e8a665" font-size="8" text-anchor="middle">= 25× extraction</text>
+<rect x="410" y="355" width="230" height="42" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="525" y="370" fill="#8b949e" font-size="7" text-anchor="middle">Tested on pine (Duarte 2022), chestnut (Molnar 2024)</text>
+<text x="525" y="384" fill="#f85149" font-size="8" text-anchor="middle">NOT YET TESTED on oak — clear research gap</text>
+<rect x="60" y="410.0" width="580" height="52" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="428" fill="#e8a665" font-size="8" text-anchor="middle">UAE (§3.14) + DES (§3.10) combined = 25× polyphenol extraction</text>
+<text x="350" y="442" fill="#3fb950" font-size="8" text-anchor="middle">Cavitation exposes fresh surfaces; DES H-bonding captures freed phenolics</text>
+<text x="350" y="456" fill="#58a6ff" font-size="8" text-anchor="middle">Translation to oak is straightforward but unvalidated — first-mover research opportunity</text>
+</svg>

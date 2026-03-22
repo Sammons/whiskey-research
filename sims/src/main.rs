@@ -155,6 +155,8 @@ fn main() {
     fs::write("../graphs/cavitation-maillard.svg", sim_cavitation_maillard()).unwrap();
     fs::write("../graphs/pem-electrochemical-acetal.svg", sim_pem_electrochemical_acetal()).unwrap();
     fs::write("../graphs/plasma-activated-water.svg", sim_plasma_activated_water()).unwrap();
+    fs::write("../graphs/uae-des-synergy.svg", sim_uae_des_synergy()).unwrap();
+    fs::write("../graphs/pef-fenton-cascade.svg", sim_pef_fenton_cascade()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -11480,6 +11482,231 @@ fn sim_plasma_activated_water() -> String {
         ACCENT, 8, "middle");
     svg += &label(350.0, h - 18.0,
         "No direct plasma contact with spirit \u{2014} treat the OAK, not the spirit (\u{2260} \u{00a7}4.27)",
+        BLUE, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 67: UAE-DES Synergistic Oak Extraction
+// Duarte 2022: 25× polyphenols from UAE+DES vs conventional
+// ═══════════════════════════════════════════════════════════════
+fn sim_uae_des_synergy() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 67 \u{2014} UAE-DES Synergy: Ultrasound + Deep Eutectic Solvent = Multiplicative Oak Extraction");
+
+    // ── Panel A: Extraction yield comparison (horizontal bars) ──
+    svg += &label(190.0, 57.0, "A: Polyphenol Extraction Yield by Method", TEXT, 10, "middle");
+
+    let pl = 140.0; let pr = 330.0; let pt = 70.0; let pb = 360.0;
+    let pw = pr - pl; let ph = pb - pt;
+    svg += &format!("<rect x=\"{pl}\" y=\"{pt}\" width=\"{pw}\" height=\"{ph}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Methods: [label, yield mg/g, color, note]
+    let methods: [(&str, f64, &str, &str); 6] = [
+        ("EtOH/H\u{2082}O (conv.)", 12.7, MUTED, "baseline"),
+        ("DES alone (ChCl:LA)", 45.0, BLUE, "3.5\u{00d7}"),
+        ("UAE alone (37 kHz)", 28.0, PURPLE, "2.2\u{00d7}"),
+        ("UAE + DES", 314.6, GREEN, "25\u{00d7}"),
+        ("DES + heat (120\u{00b0}C)", 75.0, YELLOW, "5.9\u{00d7}"),
+        ("MAE + DES (60 min)", 229.6, ACCENT, "18\u{00d7}"),
+    ];
+    let n = methods.len() as f64;
+    let row_h = ph / (n + 1.0);
+    let max_yield = 350.0;
+
+    // X axis
+    for &val in &[0.0_f64, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0] {
+        let x = pl + (val / max_yield) * pw;
+        svg += &vline(x, pt, pb, GRID, "0.5");
+        svg += &label(x, pb + 12.0, &format!("{:.0}", val), MUTED, 7, "middle");
+    }
+    svg += &label((pl + pr) / 2.0, pb + 26.0, "Total polyphenols (mg/g DW)", MUTED, 8, "middle");
+
+    for (i, (name, yield_val, color, note)) in methods.iter().enumerate() {
+        let cy = pt + (i as f64 + 1.0) * row_h;
+        let bar_len = (yield_val / max_yield) * pw;
+        let bar_h = row_h * 0.5;
+
+        svg += &format!("<rect x=\"{pl}\" y=\"{:.1}\" width=\"{bar_len:.1}\" height=\"{bar_h:.1}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n",
+            cy - bar_h / 2.0);
+        svg += &label(pl + bar_len + 4.0, cy + 3.0, &format!("{:.0} ({})", yield_val, note), *color, 7, "start");
+        svg += &label(pl - 4.0, cy + 3.0, name, MUTED, 7, "end");
+    }
+
+    // Highlight UAE+DES bar
+    let cy_highlight = pt + 4.0 * row_h;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" fill=\"none\" stroke=\"{GREEN}\" stroke-width=\"2\" stroke-dasharray=\"3,2\" rx=\"3\"/>\n",
+        pl - 2.0, cy_highlight - row_h * 0.35, pw + 50.0, row_h * 0.7);
+
+    // Synergy callout
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"180\" height=\"30\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n",
+        pl + 10.0, pt + 5.0);
+    svg += &label(pl + 100.0, pt + 18.0, "Synergy: 25\u{00d7} &gt; 3.5\u{00d7} + 2.2\u{00d7}", GREEN, 8, "middle");
+    svg += &label(pl + 100.0, pt + 30.0, "(multiplicative, not additive)", GREEN, 7, "middle");
+
+    // ── Panel B: Mechanism diagram ──
+    svg += &label(525.0, 57.0, "B: Synergistic Mechanism", TEXT, 10, "middle");
+
+    // Two mechanism circles
+    let cx_us = 470.0; let cx_des = 580.0; let cy_circ = 160.0; let r = 55.0;
+
+    // Ultrasound circle
+    svg += &format!("<circle cx=\"{cx_us}\" cy=\"{cy_circ}\" r=\"{r}\" fill=\"{PURPLE}\" opacity=\"0.12\" stroke=\"{PURPLE}\" stroke-width=\"1.5\"/>\n");
+    svg += &label(cx_us, cy_circ - 12.0, "Ultrasound", PURPLE, 9, "middle");
+    svg += &label(cx_us, cy_circ + 2.0, "Cell wall", PURPLE, 7, "middle");
+    svg += &label(cx_us, cy_circ + 14.0, "disruption", PURPLE, 7, "middle");
+    svg += &label(cx_us, cy_circ + 30.0, "+OH\u{2022} radicals", PURPLE, 7, "middle");
+
+    // DES circle
+    svg += &format!("<circle cx=\"{cx_des}\" cy=\"{cy_circ}\" r=\"{r}\" fill=\"{BLUE}\" opacity=\"0.12\" stroke=\"{BLUE}\" stroke-width=\"1.5\"/>\n");
+    svg += &label(cx_des, cy_circ - 12.0, "DES", BLUE, 9, "middle");
+    svg += &label(cx_des, cy_circ + 2.0, "H-bond", BLUE, 7, "middle");
+    svg += &label(cx_des, cy_circ + 14.0, "solubilization", BLUE, 7, "middle");
+    svg += &label(cx_des, cy_circ + 30.0, "+\u{03b2}-O-4 cleavage", BLUE, 7, "middle");
+
+    // Overlap / synergy arrow
+    svg += &format!("<line x1=\"{cx_us}\" y1=\"{:.1}\" x2=\"525\" y2=\"255\" stroke=\"{GREEN}\" stroke-width=\"2\" marker-end=\"url(#arr)\"/>\n", cy_circ + r + 5.0);
+    svg += &format!("<line x1=\"{cx_des}\" y1=\"{:.1}\" x2=\"525\" y2=\"255\" stroke=\"{GREEN}\" stroke-width=\"2\" marker-end=\"url(#arr)\"/>\n", cy_circ + r + 5.0);
+
+    // Combined result box
+    svg += &format!("<rect x=\"430\" y=\"260\" width=\"190\" height=\"80\" rx=\"6\" fill=\"{GREEN}\" opacity=\"0.12\" stroke=\"{GREEN}\" stroke-width=\"2\"/>\n");
+    svg += &label(525.0, 280.0, "COMBINED", GREEN, 10, "middle");
+    svg += &label(525.0, 296.0, "Cavitation opens pores", GREEN, 8, "middle");
+    svg += &label(525.0, 310.0, "DES dissolves fragments", GREEN, 7, "middle");
+    svg += &label(525.0, 324.0, "= 25\u{00d7} extraction", ACCENT, 8, "middle");
+
+    // Oak species tested
+    svg += &format!("<rect x=\"410\" y=\"355\" width=\"230\" height=\"42\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(525.0, 370.0, "Tested on pine (Duarte 2022), chestnut (Molnar 2024)", MUTED, 7, "middle");
+    svg += &label(525.0, 384.0, "NOT YET TESTED on oak \u{2014} clear research gap", RED, 8, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"52\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 70.0);
+    svg += &label(350.0, h - 52.0,
+        "UAE (\u{00a7}3.14) + DES (\u{00a7}3.10) combined = 25\u{00d7} polyphenol extraction",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 38.0,
+        "Cavitation exposes fresh surfaces; DES H-bonding captures freed phenolics",
+        GREEN, 8, "middle");
+    svg += &label(350.0, h - 24.0,
+        "Translation to oak is straightforward but unvalidated \u{2014} first-mover research opportunity",
+        BLUE, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 68: PEF-Fenton Radical Cascade
+// Lu 2025: PEF + O₂ generates OH• (EPR confirmed) + Fe²⁺ from oak
+// ═══════════════════════════════════════════════════════════════
+fn sim_pef_fenton_cascade() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig 68 \u{2014} PEF-Fenton Radical Cascade: Electric Pulses + Dissolved O\u{2082} + Oak Fe\u{00b2}\u{207a}");
+
+    // ── Panel A: Flavor compound enhancement ──
+    svg += &label(190.0, 57.0, "A: Flavor Compound Changes Under PEF + O\u{2082}", TEXT, 10, "middle");
+
+    let pl = 70.0; let pr = 320.0; let pt = 75.0; let pb = 340.0;
+    let pw = pr - pl; let ph = pb - pt;
+    svg += &format!("<rect x=\"{pl}\" y=\"{pt}\" width=\"{pw}\" height=\"{ph}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Compounds and % change from Lu 2025 S2 treatment
+    let compounds: [(&str, f64, &str); 8] = [
+        ("Octanoic acid", 173.1, RED),
+        ("Hexanol", 86.4, ACCENT),
+        ("Hexanoic acid", 54.5, YELLOW),
+        ("Total esters", 7.2, GREEN),
+        ("Ethyl hexanoate", 6.9, BLUE),
+        ("Total acids", 37.7, PURPLE),
+        ("Acetaldehyde", -7.1, CYAN),
+        ("Higher alcohols", -10.5, MUTED),
+    ];
+    let n = compounds.len() as f64;
+    let row_h = ph / (n + 1.0);
+
+    // X axis: -50% to +200%
+    let x_zero = pl + (50.0 / 250.0) * pw;
+    svg += &vline(x_zero, pt, pb, TEXT, "1");
+    for &val in &[-50.0_f64, 0.0, 50.0, 100.0, 150.0, 200.0] {
+        let x = pl + ((val + 50.0) / 250.0) * pw;
+        svg += &format!("<line x1=\"{x:.1}\" y1=\"{pb}\" x2=\"{x:.1}\" y2=\"{:.1}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", pb + 3.0);
+        let lbl = if val > 0.0 { format!("+{:.0}%", val) } else { format!("{:.0}%", val) };
+        svg += &label(x, pb + 13.0, &lbl, MUTED, 7, "middle");
+    }
+    svg += &label((pl + pr) / 2.0, pb + 26.0, "Change vs untreated control", MUTED, 8, "middle");
+
+    for (i, (name, pct, color)) in compounds.iter().enumerate() {
+        let cy = pt + (i as f64 + 1.0) * row_h;
+        let bar_h = row_h * 0.45;
+        let bar_start = x_zero;
+        let bar_len = (pct / 250.0) * pw;
+
+        if *pct >= 0.0 {
+            svg += &format!("<rect x=\"{bar_start:.1}\" y=\"{:.1}\" width=\"{bar_len:.1}\" height=\"{bar_h:.1}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n",
+                cy - bar_h / 2.0);
+            svg += &label(bar_start + bar_len + 3.0, cy + 3.0, &format!("+{:.0}%", pct), *color, 7, "start");
+        } else {
+            let neg_len = (-pct / 250.0) * pw;
+            svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{neg_len:.1}\" height=\"{bar_h:.1}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>\n",
+                bar_start - neg_len, cy - bar_h / 2.0);
+            svg += &label(bar_start - neg_len - 3.0, cy + 3.0, &format!("{:.0}%", pct), *color, 7, "end");
+        }
+
+        svg += &label(pl - 4.0, cy + 3.0, name, MUTED, 7, "end");
+    }
+
+    // Favorable direction labels
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{}\" fill=\"{GREEN}\" opacity=\"0.05\"/>\n",
+        x_zero, pt, pr - x_zero, ph);
+    svg += &format!("<rect x=\"{pl}\" y=\"{pt}\" width=\"{:.1}\" height=\"{ph}\" fill=\"{RED}\" opacity=\"0.03\"/>\n",
+        x_zero - pl);
+
+    // ── Panel B: Cascade mechanism ──
+    svg += &label(525.0, 57.0, "B: PEF-Fenton-Oak Radical Cascade", TEXT, 10, "middle");
+
+    // Three-node cascade
+    let nodes: [(&str, &str, f64, &str); 3] = [
+        ("PEF", "25 kV/cm, 350 Hz", 100.0, PURPLE),
+        ("Dissolved O\u{2082}", "8.19 mg/L", 200.0, BLUE),
+        ("Oak Fe\u{00b2}\u{207a}", "5\u{2013}30 ppm", 300.0, ACCENT),
+    ];
+
+    for (label_txt, sub, y, color) in &nodes {
+        svg += &format!("<rect x=\"430\" y=\"{:.1}\" width=\"190\" height=\"50\" rx=\"6\" fill=\"{color}\" opacity=\"0.12\" stroke=\"{color}\" stroke-width=\"1.5\"/>\n", y);
+        svg += &label(525.0, y + 20.0, label_txt, *color, 10, "middle");
+        svg += &label(525.0, y + 36.0, sub, MUTED, 7, "middle");
+    }
+
+    // Arrows + labels between nodes
+    svg += &format!("<line x1=\"525\" y1=\"150\" x2=\"525\" y2=\"200\" stroke=\"{GREEN}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n");
+    svg += &label(545.0, 175.0, "e\u{207b} + O\u{2082} \u{2192} O\u{2082}\u{207b}\u{2022}", GREEN, 7, "start");
+
+    svg += &format!("<line x1=\"525\" y1=\"250\" x2=\"525\" y2=\"300\" stroke=\"{GREEN}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>\n");
+    svg += &label(545.0, 275.0, "Fe\u{00b2}\u{207a} + H\u{2082}O\u{2082} \u{2192} OH\u{2022}", GREEN, 7, "start");
+
+    // EPR confirmation callout
+    svg += &format!("<rect x=\"410\" y=\"360\" width=\"230\" height=\"48\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n");
+    svg += &label(525.0, 375.0, "OH\u{2022} confirmed by EPR (Lu et al. 2025)", RED, 8, "middle");
+    svg += &label(525.0, 391.0, "+24.7% total flavor compounds at 500 Hz", GREEN, 8, "middle");
+    svg += &label(525.0, 403.0, "Hidden Fenton: oak supplies the Fe\u{00b2}\u{207a} (\u{00a7}4.45)", ACCENT, 7, "middle");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"52\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", h - 70.0);
+    svg += &label(350.0, h - 52.0,
+        "PEF (\u{00a7}4.15) + dissolved O\u{2082} generates OH\u{2022} radicals (EPR-confirmed)",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 38.0,
+        "Oak-derived Fe\u{00b2}\u{207a} (\u{00a7}4.45) catalyzes the Fenton step \u{2014} no added reagents",
+        GREEN, 8, "middle");
+    svg += &label(350.0, h - 24.0,
+        "Novel: PEF is the radical generator, oak is the Fenton catalyst, O\u{2082} is the terminal oxidant",
         BLUE, 8, "middle");
 
     svg.push_str("</svg>");
