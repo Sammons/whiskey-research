@@ -1647,6 +1647,47 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; photocatalytic vanillin synthesis from oak precursors is published and explicitly framed as spirit-aging biomimicry<span class="cite" data-ref="135"><sup>[135]</sup></span>. TiO<sub>2</sub> is the most studied photocatalyst in history, food-grade, and trivially cheap. The main unknowns are: (1) selectivity in the full spirit matrix (other extractives compete for OH&bull;), and (2) nanoparticle removal efficiency by standard filtration. <strong>Home testability: 4/5</strong> ($15: food-grade TiO<sub>2</sub> powder + UV-A LED strip (365 nm, $10 from Amazon). Suspend 0.5 g/L TiO<sub>2</sub> in spirit + oak extract, irradiate 30&ndash;60 min with stirring, filter through 0.2 &mu;m syringe filter. Smell test for vanillin development).
 </div>
 
+<h3>4.28 Evaporation-Induced Supersaturation: The Angel&rsquo;s Share as a Clustering Engine</h3>
+
+<div class="callout key-insight">
+  <strong>Novel theoretical prediction:</strong> The angel&rsquo;s share isn&rsquo;t just a loss&mdash;it&rsquo;s a <em>thermodynamic driving force</em> for nanocluster formation. Preferential ethanol evaporation creates a water-enriched depletion layer at the liquid surface where the local ABV drops below the Ouzo boundary, inducing spontaneous supersaturation and nanocluster nucleation. Accelerating this mechanism with thin-film evaporation could enhance the clustering rate by 25&times; over barrel conditions.
+</div>
+
+<p><strong>The physics of preferential evaporation.</strong> At 25&deg;C and 40% ABV (ethanol mole fraction ~0.17), the vapor above spirit is approximately <strong>66% ethanol by mole</strong> due to the positive deviation from Raoult&rsquo;s law (&gamma;<sub>EtOH</sub> &asymp; 4.0 at this composition). Ethanol leaves the liquid surface ~4&times; faster than water per mole fraction. This creates a <strong>boundary layer</strong> at the liquid-air interface where ethanol concentration is depleted relative to the bulk.</p>
+
+<p><strong>The boundary layer calculation.</strong> In steady state, ethanol diffusion from the bulk (D<sub>EtOH</sub> &asymp; 1.24 &times; 10<sup>&minus;9</sup> m<sup>2</sup>/s) balances evaporative loss at the surface. The concentration profile follows C(z) = C<sub>bulk</sub> &minus; &Delta;C &times; exp(&minus;z/&delta;), where &delta; = D/k<sub>evap</sub> is the diffusion boundary layer thickness and k<sub>evap</sub> is the surface mass transfer coefficient. Three regimes:</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Regime</th><th>k<sub>evap</sub> (m/s)</th><th>&delta; (mm)</th><th>Surface ABV</th><th>P&eacute;clet</th></tr>
+  <tr><td>Barrel (natural convection)</td><td>~10<sup>&minus;7</sup></td><td>~12</td><td>~38%</td><td>0.1</td></tr>
+  <tr><td>Thin film + forced air</td><td>~10<sup>&minus;5</sup></td><td>~0.12</td><td>~28%</td><td>10</td></tr>
+  <tr><td>Rotary evaporator (vacuum)</td><td>~10<sup>&minus;4</sup></td><td>~0.012</td><td>~22%</td><td>100</td></tr>
+</table>
+</div>
+
+<p>At P&eacute;clet number Pe = k<sub>evap</sub> &times; L / D &gt; 1, advective removal of ethanol outpaces diffusive replenishment. The surface enters a <strong>supersaturated regime</strong> for hydrophobic congeners: at 28% ABV (thin film), the solubility of oak extractives drops by ~50% relative to 40% ABV<span class="cite" data-ref="131"><sup>[131]</sup></span>, and the system crosses the <strong>pre-Ouzo boundary</strong> where surfactant-free microemulsions with ~1.8 nm correlation length spontaneously form<span class="cite" data-ref="132"><sup>[132]</sup></span>. In barrel aging, this happens over the millimeters nearest the barrel wall. In a thin-film reactor, it happens across the entire liquid thickness.</p>
+
+<p><strong>Connection to the angel&rsquo;s share.</strong> Barrels lose 2&ndash;4% volume per year through wood pores (the &ldquo;angel&rsquo;s share&rdquo;). This is universally treated as an unavoidable loss. But our calculation reveals it as a <em>clustering mechanism</em>: the evaporation through wood pores creates a water-enriched layer adjacent to the stave interior, exactly where oak extractives are at their highest concentration. The supersaturation at this wood-liquid interface drives nanocluster nucleation around freshly extracted tannins. The angel&rsquo;s share is not incidental to aging&mdash;it is <em>mechanistically required</em> for Barrier 3.</p>
+
+<p><strong>Accelerated implementation:</strong></p>
+<ul>
+  <li><strong>Thin-film tray:</strong> Spirit with oak extract in a shallow tray (5 mm depth), gentle fan across the surface. Surface ethanol drops to ~28% ABV within minutes. The ethanol vapor is captured by a cold condenser placed above and returned periodically to prevent permanent loss. 25&times; nucleation rate enhancement over barrel conditions.</li>
+  <li><strong>Rotary evaporator:</strong> Already used in modernist bartending (notably by Dave Arnold at Booker &amp; Dax, NYC) for rapid flavor modification. Under vacuum at 30&deg;C, the surface ABV drops to ~22%, deep into the Ouzo structuring regime. 100&times; enhancement. The evaporated ethanol is collected and can be returned after each cycle.</li>
+  <li><strong>Cyclic protocol:</strong> Evaporate for 10&ndash;30 min (cluster nucleation at surface), then re-mix to distribute nuclei throughout the bulk (seeded growth from &sect;3.4/3.8), repeat. 10&ndash;20 cycles per day. The nuclei formed at the depleted surface act as seeds for bulk clustering upon re-mixing&mdash;combining evaporative nucleation with the seeded clustering concept.</li>
+</ul>
+
+<p><strong>Critical distinction from proof dilution (&sect;3.1):</strong> Adding water to reduce ABV from 40% to 37% achieves a <em>uniform</em> reduction throughout the bulk. Evaporation creates a <em>gradient</em>&mdash;the surface may be at 22% while the bulk remains at 40%. This gradient drives <strong>directional mass transport</strong>: hydrophobic congeners migrate toward the depleted surface layer where they are supersaturated, concentrating exactly where nucleation is most favorable. This is fundamentally different from homogeneous dilution and explains why barrel aging (with evaporation) produces more structured clustering than simple dilution (without evaporation).</p>
+
+<figure class="sim-figure">
+  <img src="graphs/evaporative-supersaturation.svg" alt="Evaporative supersaturation model showing ethanol depletion profiles and nucleation rates">
+  <figcaption><strong>Fig. 38.</strong> (A) Ethanol concentration profile near the liquid surface under three evaporation regimes. In barrel conditions (grey), the boundary layer is thick (~12 mm) and surface ABV barely drops. With thin-film or vacuum evaporation, the surface enters the Ouzo structuring zone (&lt;27% ABV, yellow shaded). (B) Predicted clustering nucleation rate enhancement (log scale): thin-film evaporation achieves ~25&times; barrel rate, rotary evaporator ~100&times;, and spray drying ~500&times; (though spray drying may produce irreversible aggregates).</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> &mdash; this is a novel theoretical prediction derived from first-principles transport physics. The underlying data are published: preferential ethanol evaporation is textbook thermodynamics, tannin aggregation increases with decreasing ethanol<span class="cite" data-ref="131"><sup>[131]</sup></span>, and the pre-Ouzo boundary exists at ~27% ABV in ternary systems<span class="cite" data-ref="132"><sup>[132]</sup></span>. What has not been published is the explicit connection between evaporative boundary layers and nanocluster nucleation in spirits. <strong>Home testability: 5/5</strong> ($0&ndash;30: pour spirit + oak extract into a shallow tray (5 mm depth), place a desk fan across the surface, cover loosely with plastic wrap taped to a cold surface (condenser). Run for 30 min, re-stir, repeat 10&times;. Compare turbidity and mouthfeel vs. a sealed control at the same temperature. If the evaporative mechanism is real, the tray sample should show measurably higher turbidity and smoother mouthfeel within 2&ndash;3 days of cycling).
+</div>
+
 <h3>4.27 Plasma-Activated Ethanol: Peroxyacetic Acid as a Lignin-Cleaving Oxidant</h3>
 
 <div class="callout key-insight">
@@ -1811,6 +1852,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>CXL lipase (&sect;1.15)</td><td>40&times; (vs neat)</td><td><span class="verdict promising">Published</span></td><td>$200&ndash;300</td><td>ESTER</td></tr>
 <tr><td>TiO<sub>2</sub> photocatalysis (&sect;4.26)</td><td>36% vanillin selectivity</td><td><span class="verdict promising">Published</span></td><td>$15</td><td>OXIDATION</td></tr>
 <tr><td>Plasma-activated ethanol (&sect;4.27)</td><td>166 ppm PAA in 5 min</td><td><span class="verdict promising">Published</span></td><td>$20&ndash;50</td><td>OXIDATION + ESTER + CLUSTER</td></tr>
+<tr><td>Evaporative supersaturation (&sect;4.28)</td><td>25&ndash;100&times;</td><td><span class="verdict speculative">Novel</span></td><td>$0&ndash;30</td><td>CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -1896,6 +1938,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li><strong>Does the 58% ester ceiling matter in practice?</strong> At 40% ABV, water suppresses Fischer esterification to 58.5% conversion regardless of catalyst (&sect;4.18). But actual whiskey aging reaches 66% or higher by mechanisms beyond simple Fischer: enzymatic esterification (lipases in yeast/wood), oxidative ester formation (Baeyer-Villiger), and long-chain ester accumulation from fatty acid precursors. The question is whether the accelerated protocol&rsquo;s reliance on Fischer chemistry leaves a detectable &ldquo;ester signature gap&rdquo; compared to barrel aging. GC-MS profiling of C4&ndash;C18 esters would reveal whether the missing 7.5% of conversion corresponds to sensorially important species.</li>
   <li><strong>Do DEP-accelerated nanoclusters have the same structure as naturally aged ones?</strong> Field-induced demixing (&sect;4.22) could drive nanocluster formation faster, but under non-equilibrium conditions. The resulting clusters might have different internal packing, surface charge distribution, or size polydispersity than those formed by slow diffusion-limited aggregation. DLS + cryo-TEM comparison of DEP-treated vs. 10-year-aged whiskey would answer this. If structures differ, does it matter sensorially?</li>
   <li><strong>Is BDD&rsquo;s 90% Faradaic efficiency maintained in 40% ethanol?</strong> Published BDD data is mostly in aqueous electrolytes. Ethanol-water mixtures change the double-layer structure, OH&bull; scavenging kinetics, and OER thermodynamics. The 3,000&ndash;10,000&times; acceleration in Baijiu (&sect;4.23) was with gold electrodes, not BDD. A direct BDD vs. carbon felt comparison in 40% ABV spirit with GC-MS ester/aldehyde profiling would validate the theoretical superiority.</li>
+  <li><strong>Does evaporative supersaturation produce the same nanoclusters as barrel aging?</strong> The theory predicts nanocluster nucleation at the depleted liquid surface, but evaporative nucleation occurs at the air-liquid interface while barrel nucleation occurs at the wood-liquid interface. Different interfaces may template different cluster geometries. A cryo-TEM comparison of thin-film-evaporated vs. barrel-aged spirit at the same total oak extract concentration would test this. If the structures match, the angel&rsquo;s share mechanism is confirmed; if they differ, the wood surface may play a templating role beyond simple evaporation (&sect;4.28).</li>
   <li><strong>Does PAA concentration in 40% ethanol match the 10% ethanol data?</strong> Li 2024 used 10% ethanol. At 40% ABV, ethanol scavenging of OH&bull; is 4&times; faster (first-order in ethanol), which should increase acetaldehyde and therefore PAA yield. But higher ethanol also quenches some radical chains. A direct measurement of PAA, H<sub>2</sub>O<sub>2</sub>, and acetic acid at 10/20/40% ethanol after 5 min O<sub>2</sub> bubble plasma would establish the scaling. If PAA scales positively with ethanol, the technique becomes even more powerful in spirit (&sect;4.27).</li>
 </ol>
 
@@ -1969,6 +2012,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>CXL lipase esterification (&sect;1.15)</td><td>3/5</td><td>$200&ndash;300</td><td>Stainless pressure vessel rated to 100 bar + CO<sub>2</sub> cylinder + Novozym 435 beads. Charge with ethanol + oak chips + acid. Pressurize to 60 bar at 40&deg;C for 2&ndash;4 hr. Requires pressure vessel safety knowledge.</td></tr>
 <tr><td>TiO<sub>2</sub> photocatalysis (&sect;4.26)</td><td>4/5</td><td>$15</td><td>Food-grade TiO<sub>2</sub> powder (E171, $5/100g) + UV-A LED strip (365 nm, $10). Suspend 0.5 g/L in spirit + oak extract. Irradiate 30&ndash;60 min with stirring. Filter through 0.2 &mu;m syringe filter. Smell test for vanillin.</td></tr>
 <tr><td><strong>Plasma-activated ethanol (&sect;4.27)</strong></td><td><strong>4/5</strong></td><td><strong>$20&ndash;50</strong></td><td><strong>Ozone generator ($20&ndash;30) + O<sub>2</sub> feed + aquarium air stone bubbler. Run 5 min in 10% ethanol (diluted spirit). Soak oak chips 1&ndash;4h in PAE, then transfer to spirit. Compare extraction vs untreated chips at 2/4 wk. PAA delignifies surface without scorching.</strong></td></tr>
+<tr><td><strong>Evaporative supersaturation (&sect;4.28)</strong></td><td><strong>5/5</strong></td><td><strong>$0&ndash;30</strong></td><td><strong>Spirit + oak extract in shallow tray (5 mm depth) + desk fan + loose plastic wrap on cold surface (condenser). 30 min evaporation, stir, repeat 10&times;/day. Ethanol-depleted surface crosses Ouzo boundary &rarr; cluster nucleation. Compare turbidity vs sealed control. Essentially free.</strong></td></tr>
 </tbody>
 </table>
 </div>

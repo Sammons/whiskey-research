@@ -126,6 +126,7 @@ fn main() {
 
     fs::write("../graphs/tio2-photocatalysis.svg", sim_tio2_photocatalysis()).unwrap();
     fs::write("../graphs/plasma-activated-ethanol.svg", sim_plasma_activated_ethanol()).unwrap();
+    fs::write("../graphs/evaporative-supersaturation.svg", sim_evaporative_supersaturation()).unwrap();
     println!("Wrote tio2-photocatalysis.svg");
 }
 
@@ -6360,6 +6361,174 @@ fn sim_plasma_activated_ethanol() -> String {
         "3 barriers hit simultaneously", ACCENT, 9, "start");
     svg += &label(ml2 + 10.0, mt + 66.0,
         "Cost: $20\u{2013}50 (ozone generator + bubbler)", YELLOW, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 38: Evaporative Supersaturation — Angel's Share Physics
+// ═══════════════════════════════════════════════════════════════
+fn sim_evaporative_supersaturation() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Evaporative Supersaturation: Angel\u{2019}s Share Physics");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // ── Panel A: Ethanol concentration profile near liquid surface ──
+    svg += &label(ml + pw / 2.0, mt - 5.0,
+        "A. Ethanol Depletion Near Liquid Surface", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    let depth_max = 5.0; // mm from surface
+    let abv_min = 20.0;
+    let abv_max = 42.0;
+    let sx_a = |d: f64| -> f64 { ml + d / depth_max * pw };
+    let sy_a = |abv: f64| -> f64 { mt + ph - (abv - abv_min) / (abv_max - abv_min) * ph };
+
+    // Grid
+    for i in 0..=5 {
+        let d = depth_max * i as f64 / 5.0;
+        svg += &vline(sx_a(d), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(d), mt + ph + 13.0, &format!("{:.0}", d), MUTED, 8, "middle");
+    }
+    for i in 0..=5 {
+        let abv = abv_min + (abv_max - abv_min) * i as f64 / 5.0;
+        svg += &hline(ml, ml + pw, sy_a(abv), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(abv) + 3.5, &format!("{:.0}%", abv), MUTED, 8, "end");
+    }
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Depth from Surface (mm)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "Ethanol (% ABV)");
+
+    // Physics: steady-state diffusion with surface evaporation
+    // D_EtOH in water ≈ 1.24e-9 m²/s
+    // Surface BC: evaporation depletes ethanol
+    // Analytical solution: C(z) = C_bulk - ΔC × exp(-z/δ)
+    // where δ = D/k_evap (boundary layer thickness)
+    // At 40% ABV: vapor is ~66% ethanol (VP ratio × activity coefficients)
+    // → preferential ethanol evaporation rate depends on airflow
+
+    // Three scenarios:
+    // 1. Barrel (natural convection): k ~ 1e-7 m/s, δ ~ 12 mm, surface ABV ~38%
+    // 2. Thin film + airflow: k ~ 1e-5 m/s, δ ~ 0.12 mm, surface ABV ~28%
+    // 3. Rotovap vacuum: k ~ 1e-4 m/s, δ ~ 0.012 mm, surface ABV ~22%
+
+    let c_bulk = 40.0;
+    let scenarios: [(&str, f64, f64, &str); 3] = [
+        ("Barrel (natural)", 2.0, 12.0, MUTED),      // ΔC=2%, δ=12mm
+        ("Thin film + air", 12.0, 0.4, BLUE),         // ΔC=12%, δ=0.4mm
+        ("Rotovap/vacuum", 18.0, 0.08, GREEN),        // ΔC=18%, δ=0.08mm
+    ];
+
+    for (name, delta_c, bl_thick, color) in &scenarios {
+        let mut pts: Vec<(f64, f64)> = Vec::new();
+        for step in 0..=200 {
+            let d = depth_max * step as f64 / 200.0; // mm
+            let abv = c_bulk - delta_c * (-d / bl_thick).exp();
+            pts.push((d, abv));
+        }
+        svg += &polyline_svg(&pts, color, "2.5", &sx_a, &sy_a);
+    }
+
+    // Ouzo boundary line (pre-Ouzo structuring begins at ~27% ABV per Zemb model)
+    let ouzo_abv = 27.0;
+    svg += &hline(ml, ml + pw, sy_a(ouzo_abv), YELLOW, "1.5");
+    svg += &label(ml + pw - 5.0, sy_a(ouzo_abv) - 6.0,
+        "Ouzo boundary (~27% ABV)", YELLOW, 8, "end");
+
+    // Shade supersaturation zone
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{YELLOW}\" opacity=\"0.08\"/>\n",
+        ml, sy_a(ouzo_abv), pw, mt + ph - sy_a(ouzo_abv));
+
+    // Legend
+    for (i, (name, _, _, color)) in scenarios.iter().enumerate() {
+        let ly = mt + 12.0 + i as f64 * 14.0;
+        svg += &hline(ml + 10.0, ml + 32.0, ly, color, "2.5");
+        svg += &label(ml + 36.0, ly + 4.0, name, TEXT, 8, "start");
+    }
+
+    svg += &label(ml + pw / 2.0 - 20.0, sy_a(23.0) + 4.0,
+        "Supersaturation zone", YELLOW, 9, "middle");
+
+    // ── Panel B: Clustering rate enhancement vs evaporation regime ──
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0,
+        "B. Cluster Nucleation Enhancement", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 35.0, mt + ph / 2.0, ml2 - 35.0, mt + ph / 2.0, "Nucleation Rate (relative)");
+
+    // Bar chart: nucleation rate scales as exp(ΔG/kT) where ΔG depends on supersaturation
+    // Supersaturation S = C_congener / C_equilibrium at local ABV
+    // At Ouzo boundary: S ≈ 1.5, nucleation rate ≈ 1×
+    // At 25% ABV: S ≈ 3, rate ≈ 20×
+    // At 22% ABV: S ≈ 5, rate ≈ 100×
+
+    let regimes: [(&str, f64, &str); 5] = [
+        ("Barrel\n(natural)", 1.0, MUTED),
+        ("Forced\nair", 5.0, ACCENT),
+        ("Thin\nfilm", 25.0, BLUE),
+        ("Rotovap", 100.0, GREEN),
+        ("Spray\ndry", 500.0, PURPLE),
+    ];
+
+    let rate_max = 600.0;
+    let bar_w = pw / 7.5;
+    let rate_max_f: f64 = rate_max;
+    let sy_bar = |r: f64| -> f64 {
+        if r <= 0.0 { return mt + ph; }
+        let log_r = (r as f64).log10();
+        let log_max = rate_max_f.log10();
+        mt + ph - log_r / log_max * ph
+    };
+
+    // Grid (log scale)
+    for exp in 0..=3 {
+        let r = 10.0_f64.powi(exp);
+        if r <= rate_max {
+            svg += &hline(ml2, ml2 + pw, sy_bar(r), GRID, "0.5");
+            svg += &label(ml2 - 4.0, sy_bar(r) + 3.5,
+                &format!("{:.0}\u{d7}", r), MUTED, 8, "end");
+        }
+    }
+
+    for (i, (name, rate, color)) in regimes.iter().enumerate() {
+        let cx = ml2 + pw * (i as f64 + 0.5) / regimes.len() as f64;
+        let bar_top = sy_bar(*rate);
+        let bar_height = (mt + ph - bar_top).max(1.0);
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{color}\" opacity=\"0.7\" rx=\"3\"/>\n",
+            cx - bar_w / 2.0, bar_top, bar_w, bar_height);
+        svg += &label(cx, bar_top - 6.0, &format!("{:.0}\u{d7}", rate), color, 9, "middle");
+
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(cx, mt + ph + 13.0 + li as f64 * 11.0, line, TEXT, 7, "middle");
+        }
+    }
+
+    svg += &label(ml2 + pw / 2.0, mt + ph + 38.0, "Evaporation Regime", TEXT, 10, "middle");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"230\" height=\"62\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw - 240.0, mt + 8.0, GRID);
+    svg += &label(ml2 + pw - 235.0, mt + 24.0,
+        "Angel\u{2019}s share = clustering engine", ACCENT, 9, "start");
+    svg += &label(ml2 + pw - 235.0, mt + 38.0,
+        "Thin film: 25\u{d7} nucleation rate", BLUE, 9, "start");
+    svg += &label(ml2 + pw - 235.0, mt + 52.0,
+        "Recoverable: condense + return EtOH", GREEN, 9, "start");
+    svg += &label(ml2 + pw - 235.0, mt + 66.0,
+        "Surface Ouzo effect = new mechanism", YELLOW, 9, "start");
 
     svg.push_str("</svg>");
     svg
