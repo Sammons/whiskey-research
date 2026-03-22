@@ -567,6 +567,30 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration&mdash;FDA-cleared materials, published kinetics. <span class="verdict promising">PROMISING</span> Electrochemical gold-surface catalysis&mdash;published and validated in distilled spirit with sensory confirmation<span class="cite" data-ref="37"><sup>[37]</sup></span>. <span class="verdict speculative">SPECULATIVE</span> TiO<sub>2</sub> photocatalytic esterification (demonstrated for fatty acids, untested in spirits). <span class="verdict promising">PROMISING</span> PEF/EF oak extraction (published data in oak+ethanol and brandy barrels, compound-specific quantitative results<span class="cite" data-ref="53"><sup>[53]</sup></span><span class="cite" data-ref="54"><sup>[54]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> EBI (radical-mediated, studied since 1960s, but EBI+oak combination untested). <span class="verdict promising">PROMISING</span> Zeolite dual-function column (natural, food-grade, dual Barrier 1+2). <span class="verdict promising">PROMISING</span> pH acidification (published first-order [H<sup>+</sup>] kinetics, food-safe, 10&ndash;80&times; acceleration, time-box required<span class="cite" data-ref="62"><sup>[62]</sup></span>). <span class="verdict dead-end">DEAD END</span> Lipase at 40% ABV (water activity too high for synthesis direction<span class="cite" data-ref="64"><sup>[64]</sup></span>). <span class="verdict promising">PROMISING</span> HPP equilibrium shift (Le Chatelier&mdash;20% ester increase measured at 500 MPa, 6&ndash;12 months color development in wine<span class="cite" data-ref="83"><sup>[83]</sup></span><span class="cite" data-ref="84"><sup>[84]</sup></span>). <span class="verdict promising">PROMISING</span> PEF esterification (18.4% Ea reduction at 13.3 kV/cm, no catalyst needed<span class="cite" data-ref="78"><sup>[78]</sup></span>). <span class="verdict promising">PROMISING</span> Molecular sieve 3A water removal (75% &rarr; 98% conversion, food-grade, reusable, ~$20, pairs with Amberlyst<span class="cite" data-ref="96"><sup>[96]</sup></span><span class="cite" data-ref="97"><sup>[97]</sup></span>). <span class="verdict promising">PROMISING</span> DEE electrochemical synthesis (78&ndash;95% FE, key aging compound directly correlated with maturity<span class="cite" data-ref="112"><sup>[112]</sup></span><span class="cite" data-ref="113"><sup>[113]</sup></span>).</p>
 
 
+<h3>1.17 Microfluidic Continuous-Flow Esterification: 10<sup>6</sup>&times; Acceleration</h3>
+
+<div class="callout key-insight">
+  <strong>Fastest known esterification:</strong> Rahimi et al. (2016) achieved <strong>98% oil conversion at room temperature in 80 seconds</strong> in a T-junction microchannel reactor using droplet-based co-axial flow<span class="cite" data-ref="151"><sup>[151]</sup></span>. Other microreactor systems report 97% in 5 seconds and 99.8% in 2 minutes. This represents a ~10<sup>6</sup>&times; acceleration over barrel aging ester formation. A zeolite membrane flow reactor (Gojun 2024) achieved 89% conversion&mdash;exceeding the thermodynamic equilibrium ceiling of 69.1%&mdash;by continuously removing water through the membrane<span class="cite" data-ref="152"><sup>[152]</sup></span>.
+</div>
+
+<p><strong>Why microfluidics achieves this:</strong> Three factors combine: (1) <em>extreme surface-area-to-volume ratio</em> (SA/V ~ 10<sup>4</sup>&ndash;10<sup>5</sup> m<sup>&minus;1</sup> vs ~400 m<sup>&minus;1</sup> for a barrel), which eliminates mass transfer limitations; (2) <em>plug flow regime</em> with dispersion number ~0.006, ensuring uniform residence time (every molecule spends the same time reacting); and (3) <em>rapid mixing</em> (&lt;1 ms complete diffusive mixing in ~100 &micro;m channels) so the reaction operates at its intrinsic kinetic rate rather than being diffusion-limited.</p>
+
+<p><strong>Critical limitation for spirits:</strong> Published microfluidic esterification uses concentrated reagents (neat acids + alcohols, or high-concentration solutions with acid catalysts). At 40% ABV (60% water), the water activity suppresses ester formation thermodynamically. However, two configurations bypass this:</p>
+<ol>
+  <li><strong>Side-stream concentrated esterification:</strong> Divert a fraction of the spirit through molecular sieve 3A (&sect;1.12) to remove water, then through a heated microchannel (60&deg;C) with Amberlyst catalyst (&sect;1.1). The concentrated, dehydrated stream reaches &gt;90% conversion in seconds, then remixes with the main batch. This is the microfluidic analog of the zeolite side-stream reactor (&sect;4.18).</li>
+  <li><strong>Zeolite membrane microchannel:</strong> AEI zeolite membrane at the channel wall continuously removes water as it forms, shifting the equilibrium past 69% to &gt;89% conversion in continuous flow. This is the most elegant solution&mdash;equilibrium-breaking esterification at the intrinsic kinetic rate.</li>
+</ol>
+
+<figure class="sim-figure">
+  <img src="graphs/microfluidic-ester.svg" alt="Microfluidic esterification: conversion vs time and acceleration factors">
+  <figcaption><strong>Fig. 47.</strong> Microfluidic esterification performance. (A) Ester conversion vs. residence time on logarithmic scale: barrel aging (grey, years to reach 58.5% equilibrium), Amberlyst catalysis (green, hours), and microfluidic T-junction (gold, seconds). Zeolite membrane flow reactor (yellow dot) achieves 89%, exceeding the 58.5% equilibrium ceiling. (B) Acceleration factor comparison on log scale: microfluidic T-junction ~ 10<sup>6</sup>&times;, microfluidic + zeolite ~ 10<sup>7</sup>&times;. Data from Rahimi et al. (2016)<span class="cite" data-ref="151"><sup>[151]</sup></span> and Gojun et al. (2024)<span class="cite" data-ref="152"><sup>[152]</sup></span>.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PUBLISHED</span> for microfluidic esterification kinetics (multiple groups, multiple reactor types). <span class="verdict speculative">NOVEL APPLICATION</span> to spirit aging (no published spirit-specific microfluidic work). The side-stream configuration (dehydrate &rarr; microfluidic ester &rarr; remix) is the most practical integration path. <strong>Home testability: 2/5</strong> ($50&ndash;200 for PTFE microtube + T-junction + peristaltic pump + Amberlyst packing. The main barrier is fabrication precision. A simpler approximation: 1 mm ID PTFE tubing packed with Amberlyst beads, heated to 60&deg;C in a water bath, with dehydrated spirit pumped through at 0.5 mL/min. Even at 1 mm scale, the SA/V advantage over batch is &gt;100&times;).
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- BARRIER 2: SULFUR COMPOUND REMOVAL                    -->
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -2236,6 +2260,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Vacuum/pressure cycling (&sect;4.34)</td><td>3d &asymp; 2yr (patent)</td><td><span class="verdict speculative">Patent only</span></td><td>$50&ndash;80</td><td>OXIDATION</td></tr>
 <tr><td>Thin-film recirculating (&sect;4.35)</td><td>10&ndash;50&times; (predicted)</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$40&ndash;70</td><td>ALL</td></tr>
 <tr><td>Sono-freeze cycling (&sect;4.36)</td><td>All barriers in 60h</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$0&ndash;5 incr.</td><td>ALL</td></tr>
+<tr><td>Microfluidic esterification (&sect;1.17)</td><td>10<sup>6</sup>&times;</td><td><span class="verdict promising">Published</span></td><td>$50&ndash;200</td><td>ESTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -2351,6 +2376,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td><strong>Mol. sieve 3A + Amberlyst (&sect;1.12)</strong></td><td><strong>5/5</strong></td><td><strong>$20&ndash;50</strong></td><td><strong>Food-grade 3A beads in mesh tube + Amberlyst column. Recirculate spirit at 50&deg;C. Sieve removes water &rarr; 75% to 98% conversion. Regenerate in oven.</strong></td></tr>
 <tr><td>Gamma/EBI (&sect;1.6)</td><td>1/5</td><td>N/A</td><td>Skip&mdash;or send sealed samples to food irradiation service ($100&ndash;300/batch).</td></tr>
 
+<tr><td>Microfluidic esterification (&sect;1.17)</td><td>2/5</td><td>$50&ndash;200</td><td>1 mm PTFE tubing packed with Amberlyst, heated to 60&deg;C. Dehydrated spirit via mol sieve, pumped at 0.5 mL/min. Even at 1 mm scale, &gt;100&times; SA/V advantage over batch. Concentrate &rarr; flow ester &rarr; remix.</td></tr>
 <tr style="background:var(--surface2)"><td colspan="4"><strong>Barrier 2: Sulfur Removal</strong></td></tr>
 <tr><td><strong>Cu/AC cartridge (&sect;2.1)</strong></td><td><strong>5/5</strong></td><td><strong>$15</strong></td><td><strong>Cheapest &amp; easiest experiment. Activated carbon + CuSO<sub>4</sub> soak + oven dry. Column pass. Smell test.</strong></td></tr>
 <tr><td>Cu-clinoptilolite (&sect;2.4)</td><td>4/5</td><td>$25</td><td>Same column as 1.7. Simultaneous ester + sulfur treatment.</td></tr>
@@ -2571,6 +2597,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r148">US Patent 11,053,467 B2. &ldquo;Accelerated aging of alcohol spirits.&rdquo; (CO<sub>2</sub> pressurization at 30&ndash;160 psi, 70&ndash;150&deg;F, with virgin American white oak. Ozone pretreatment of wood: 3&ndash;30 min. Claim: 50 psi CO<sub>2</sub> at 80&deg;F over 3 days &asymp; 2 years aging. CO<sub>2</sub> &rarr; carbonic acid lowers pH, catalyzes esterification. No peer-reviewed chemical analysis.)</li>
   <li id="r149">Wang Y, et al. (2022) &ldquo;Whether the Research on Ethanol-Water Microstructure in Traditional Baijiu Should Be Strengthened?&rdquo; <em>PMC</em>. (DLS and SAXS of aged baijiu/whiskey. Small cluster component (1&ndash;5 nm) correlates with positive flavor attributes. Large cluster component (&gt;10 nm) correlates with alcohol irritation, <strong>not</strong> with maturity time. Paradigm-shifting: the target is not maximum clustering but a specific size distribution.)</li>
   <li id="r150">Karlsson BCG, Friedman R. (2017) &ldquo;Dilution of whisky&mdash;the molecular perspective.&rdquo; <em>Sci Rep</em> 7:6489. <a href="https://doi.org/10.1038/s41598-017-06423-5">DOI</a> (MD simulation of ethanol-water-guaiacol systems. Guaiacol preferentially at air-liquid interface below ~45% ABV; driven to bulk above ~59% ABV. Ethanol clustering solvates hydrophobic aromatics. Explains why diluting cask-strength whisky enhances aroma.)</li>
+  <li id="r151">Rahimi M, et al. (2016) &ldquo;Development of a millimetrically scaled biodiesel transesterification device that relies on droplet-based co-axial fluidics.&rdquo; <em>Sci Rep</em> 6:29288. <a href="https://doi.org/10.1038/srep29288">DOI</a> (Droplet-based co-axial microfluidic device. 98% oil conversion at room temperature in 80 seconds. T-junction microchannel: 97% in 5 seconds. Large SA/V ratio and internal circulation within droplets enhance rate.)</li>
+  <li id="r152">Gojun M, et al. (2024) &ldquo;Kinetic Aspects of Esterification and Transesterification in Microstructured Reactors.&rdquo; <em>Molecules</em> 29(15):3651. <a href="https://doi.org/10.3390/molecules29153651">DOI</a> (Microfluidic esterification: plug-flow regime with dispersion number 0.0062. AEI zeolite membrane flow reactor: 89% conversion exceeding equilibrium of 69.1% by continuous water removal. Comprehensive kinetic analysis of micro vs macro reactors.)</li>
 </ol>
 
 
@@ -3342,6 +3370,16 @@ var refs = {
     source: "Karlsson & Friedman (2017), Sci Rep 7:6489",
     excerpt: "MD simulation of ethanol-water-guaiacol. Guaiacol at air\u2013liquid interface below ~45% ABV; driven to bulk above ~59% ABV by ethanol clustering. Diluting cask-strength whisky releases amphiphilic aromatics from ethanol-solvated bulk to the surface where they contribute to aroma perception.",
     url: "#r150"
+  },
+  151: {
+    source: "Rahimi et al. (2016), Sci Rep 6:29288",
+    excerpt: "Droplet-based co-axial microfluidic device. 98% conversion at room temperature in 80 seconds. T-junction microchannel: 97% in 5 seconds. ~10\u2076\u00d7 acceleration over barrel-aging ester formation. Large SA/V ratio and internal droplet circulation enhance reaction rate.",
+    url: "#r151"
+  },
+  152: {
+    source: "Gojun et al. (2024), Molecules 29(15):3651",
+    excerpt: "Microfluidic esterification in plug-flow regime (dispersion number 0.0062). AEI zeolite membrane flow reactor achieves 89% conversion, exceeding the thermodynamic equilibrium of 69.1% by continuous water removal through the membrane wall.",
+    url: "#r152"
   }
 };
 

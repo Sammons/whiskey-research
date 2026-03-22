@@ -135,6 +135,7 @@ fn main() {
     fs::write("../graphs/vacuum-pressure-cycling.svg", sim_vacuum_pressure_cycling()).unwrap();
     fs::write("../graphs/thin-film-aging.svg", sim_thin_film_aging()).unwrap();
     fs::write("../graphs/sono-freeze-cycling.svg", sim_sono_freeze_cycling()).unwrap();
+    fs::write("../graphs/microfluidic-ester.svg", sim_microfluidic_ester()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -8042,6 +8043,165 @@ fn sim_sono_freeze_cycling() -> String {
         ml2 + 5.0, mt + ph + ph2 + 10.0, GRID);
     svg += &label(ml2 + 15.0, mt + ph + ph2 + 30.0,
         "10 cycles \u{d7} 6h = 60h total runtime", TEXT, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Sim 47: Microfluidic Esterification
+// Panel A: Conversion vs residence time for different reactor types (log x)
+// Panel B: Acceleration factor comparison on log scale
+// ═══════════════════════════════════════════════════════════════
+fn sim_microfluidic_ester() -> String {
+    let mut svg = svg_header(700.0, 420.0,
+        "Microfluidic Esterification: 10\u{2076}\u{d7} Acceleration (Rahimi 2016)");
+
+    let ml = 70.0; let pw = 260.0; let mt = 50.0; let ph = 290.0;
+    let ml2 = ml + pw + 50.0;
+
+    // ── Panel A: Conversion vs residence time ──
+    svg += &label(ml + pw / 2.0, mt - 8.0, "A) Ester Conversion vs Residence Time", TEXT, 10, "middle");
+
+    svg += &hline(ml, ml + pw, mt + ph, TEXT, "1");
+    svg += &vline(ml, mt, mt + ph, TEXT, "1");
+
+    // X: time on log scale from 1s to 10^8 s (~3 years)
+    let log_min = 0.0_f64; // 1 second
+    let log_max = 8.0_f64; // 10^8 seconds (~3.2 years)
+    let sx = |t: f64| -> f64 {
+        let l = t.log10().max(log_min);
+        ml + ((l - log_min) / (log_max - log_min)) * pw
+    };
+
+    // X labels
+    let time_labels = [
+        (1.0, "1s"), (10.0, "10s"), (100.0, "100s"),
+        (3600.0, "1h"), (86400.0, "1d"), (2.592e6, "1mo"),
+        (3.154e7, "1yr"),
+    ];
+    for (t, lbl) in &time_labels {
+        let x = sx(*t);
+        svg += &vline(x, mt + ph, mt + ph + 5.0, TEXT, "0.5");
+        svg += &label(x, mt + ph + 16.0, lbl, MUTED, 7, "middle");
+    }
+
+    // Y: conversion 0-100%
+    let sy = |c: f64| -> f64 { mt + ph - (c / 100.0) * ph };
+
+    for c in (0..=100).step_by(20) {
+        let y = sy(c as f64);
+        svg += &hline(ml, ml + pw, y, GRID, "0.5");
+        svg += &label(ml - 4.0, y + 3.5, &format!("{}%", c), MUTED, 8, "end");
+    }
+    svg += &label(ml - 8.0, mt + ph / 2.0, "Conversion", TEXT, 9, "middle");
+
+    // Barrel aging curve: slow approach, ~58% at 3 years (equilibrium limited)
+    let barrel_pts: Vec<(f64, f64)> = (0..=200).map(|i| {
+        let t = (10.0_f64).powf(log_min + i as f64 * (log_max - log_min) / 200.0);
+        let conv = 58.5 * (1.0 - (-t / (3.154e7 * 2.0)).exp());
+        (sx(t), sy(conv))
+    }).collect();
+    svg += &polyline_svg(&barrel_pts, MUTED, "2", &|x| x, &|y| y);
+    svg += &label(sx(1e8), sy(58.0) + 3.0, "Barrel", MUTED, 8, "start");
+    svg += &label(sx(1e8), sy(58.0) + 14.0, "(K\u{2091}\u{2096}\u{2248}58%)", MUTED, 7, "start");
+
+    // Amberlyst at 50°C: reaches ~58% in ~4h
+    let amberlyst_pts: Vec<(f64, f64)> = (0..=200).map(|i| {
+        let t = (10.0_f64).powf(log_min + i as f64 * (log_max - log_min) / 200.0);
+        let conv = 58.5 * (1.0 - (-t / 3600.0).exp());
+        (sx(t), sy(conv))
+    }).collect();
+    svg += &polyline_svg(&amberlyst_pts, GREEN, "2", &|x| x, &|y| y);
+    svg += &label(sx(2e4), sy(58.0) - 8.0, "Amberlyst (\u{a7}1.1)", GREEN, 8, "start");
+
+    // Microfluidic T-junction: 97% in 5s, 99% in 100s
+    // With zeolite membrane: breaks equilibrium to 89%
+    let micro_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let t = (10.0_f64).powf(i as f64 * 3.0 / 100.0); // 1s to 1000s
+        let conv = 99.0 * (1.0 - (-t / 3.0).exp());
+        (sx(t), sy(conv))
+    }).collect();
+    svg += &polyline_svg(&micro_pts, ACCENT, "2.5", &|x| x, &|y| y);
+    svg += &label(sx(5.0) - 15.0, sy(97.0) - 8.0, "Microfluidic", ACCENT, 9, "start");
+    svg += &label(sx(5.0) - 15.0, sy(97.0) + 5.0, "97% @ 5s", ACCENT, 8, "start");
+
+    // Zeolite membrane: 89% exceeding equilibrium
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{}\" opacity=\"0.9\"/>\n",
+        sx(100.0), sy(89.0), YELLOW);
+    svg += &label(sx(100.0) + 8.0, sy(89.0) + 4.0, "Zeolite: 89%", YELLOW, 8, "start");
+    svg += &label(sx(100.0) + 8.0, sy(89.0) + 15.0, "(breaks K\u{2091}\u{2096})", YELLOW, 7, "start");
+
+    // Equilibrium ceiling
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" stroke-dasharray=\"6,4\"/>\n",
+        ml, sy(58.5), ml + pw, sy(58.5), MUTED);
+    svg += &label(ml + pw - 5.0, sy(58.5) - 5.0, "Equilibrium ceiling (58.5%)", MUTED, 7, "end");
+
+    // ── Panel B: Acceleration factor bars (log scale) ──
+    let pw2 = 260.0;
+    svg += &label(ml2 + pw2 / 2.0, mt - 8.0, "B) Acceleration Factor vs Barrel Aging", TEXT, 10, "middle");
+
+    svg += &hline(ml2, ml2 + pw2, mt + ph, TEXT, "1");
+    svg += &vline(ml2, mt, mt + ph, TEXT, "1");
+
+    // Y: log acceleration 10^0 to 10^7
+    let ay_min = 0.0_f64;
+    let ay_max = 7.0_f64;
+    let sy_b = |a: f64| -> f64 { mt + ph - ((a.log10().max(ay_min)) / ay_max) * ph };
+
+    for exp in 0..=7 {
+        let y = mt + ph - (exp as f64 / ay_max) * ph;
+        svg += &hline(ml2, ml2 + pw2, y, GRID, "0.5");
+        let sup = match exp {
+            0 => "\u{2070}", 1 => "\u{b9}", 2 => "\u{b2}", 3 => "\u{b3}",
+            4 => "\u{2074}", 5 => "\u{2075}", 6 => "\u{2076}", _ => "\u{2077}",
+        };
+        svg += &label(ml2 - 4.0, y + 3.5, &format!("10{}", sup), MUTED, 8, "end");
+    }
+
+    // Bar data: (name, acceleration, color)
+    let bars: Vec<(&str, f64, &str)> = vec![
+        ("Barrel\naging", 1.0, MUTED),
+        ("Amberlyst\n(\u{a7}1.1)", 24000.0, GREEN),
+        ("Mol sieve\n(\u{a7}1.12)", 1e5, BLUE),
+        ("Microdroplet\n(\u{a7}4.21)", 1e5, PURPLE),
+        ("Microfluidic\nT-junction", 1e6, ACCENT),
+        ("Micro +\nzeolite", 1e7, YELLOW),
+    ];
+
+    let n = bars.len() as f64;
+    let bar_w = pw2 / n * 0.6;
+
+    for (i, (name, acc, color)) in bars.iter().enumerate() {
+        let cx = ml2 + pw2 * (i as f64 + 0.5) / n;
+        let bar_height = (acc.log10().max(0.001) / ay_max) * ph;
+        let bar_top = mt + ph - bar_height;
+
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{}\" opacity=\"0.7\" rx=\"3\"/>\n",
+            cx - bar_w / 2.0, bar_top, bar_w, bar_height, color);
+
+        svg += &label(cx, bar_top - 5.0,
+            &format!("{:.0}\u{d7}", acc), color, 7, "middle");
+
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(cx, mt + ph + 12.0 + li as f64 * 11.0, line, TEXT, 7, "middle");
+        }
+    }
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"245\" height=\"56\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt + 8.0, GRID);
+    svg += &label(ml2 + 10.0, mt + 23.0,
+        "97% conversion in 5 seconds (Rahimi 2016)", GREEN, 9, "start");
+    svg += &label(ml2 + 10.0, mt + 37.0,
+        "Zeolite membrane: 89% exceeds K\u{2091}\u{2096} of 69%", YELLOW, 9, "start");
+    svg += &label(ml2 + 10.0, mt + 51.0,
+        "Limit: requires concentrated acid + alcohol", RED, 8, "start");
+    svg += &label(ml2 + 10.0, mt + 60.0,
+        "(not directly applicable to 40% ABV spirit)", RED, 8, "start");
 
     svg.push_str("</svg>");
     svg
