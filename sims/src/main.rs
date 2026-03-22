@@ -133,6 +133,7 @@ fn main() {
     fs::write("../graphs/hydrodynamic-cavitation.svg", sim_hydrodynamic_cavitation()).unwrap();
     fs::write("../graphs/pef-spirit-aging.svg", sim_pef_spirit_aging()).unwrap();
     fs::write("../graphs/vacuum-pressure-cycling.svg", sim_vacuum_pressure_cycling()).unwrap();
+    fs::write("../graphs/thin-film-aging.svg", sim_thin_film_aging()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -7640,6 +7641,197 @@ fn sim_vacuum_pressure_cycling() -> String {
         "Patent claim: 3d cycling \u{2248} 2yr natural", PURPLE, 9, "start");
     svg += &label(ml2 + 10.0, mt + ph - 38.0,
         "Unvalidated \u{2014} no published chem analysis", RED, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Sim 45: Thin-Film Recirculating Aging
+// Panel A: Film thickness vs surface-area-to-volume ratio + barrier attack rate
+// Panel B: Schematic of apparatus showing 4 simultaneous mechanisms
+// ═══════════════════════════════════════════════════════════════
+fn sim_thin_film_aging() -> String {
+    let mut svg = svg_header(700.0, 480.0,
+        "Thin-Film Recirculating Aging: 4-Barrier Simultaneous Attack");
+
+    let ml = 70.0; let pw = 260.0; let mt = 50.0; let ph = 340.0;
+    let ml2 = ml + pw + 50.0;
+
+    // ── Panel A: Film thickness effects ──
+    svg += &label(ml + pw / 2.0, mt - 8.0, "A) Film Thickness vs Rate Enhancement", TEXT, 10, "middle");
+
+    svg += &hline(ml, ml + pw, mt + ph, TEXT, "1");
+    svg += &vline(ml, mt, mt + ph, TEXT, "1");
+
+    // X: film thickness (mm) on log scale: 0.01 to 10
+    let log_min = -2.0_f64; // 0.01 mm
+    let log_max = 1.0_f64;  // 10 mm
+    let sx = |t_mm: f64| -> f64 {
+        ml + ((t_mm.log10() - log_min) / (log_max - log_min)) * pw
+    };
+
+    for &t in &[0.01, 0.1, 1.0, 10.0] {
+        let x = sx(t);
+        svg += &vline(x, mt + ph, mt + ph + 5.0, TEXT, "0.5");
+        let lbl = if t < 1.0 { format!("{:.2}mm", t) } else { format!("{:.0}mm", t) };
+        svg += &label(x, mt + ph + 16.0, &lbl, MUTED, 8, "middle");
+    }
+
+    // Y: normalized enhancement (log scale) 1x to 1000x
+    let ye_min = 0.0_f64; // log10(1)
+    let ye_max = 3.0_f64;  // log10(1000)
+    let sy = |enh: f64| -> f64 {
+        mt + ph - ((enh.log10().max(ye_min) - ye_min) / (ye_max - ye_min)) * ph
+    };
+
+    for &e in &[1.0, 10.0, 100.0, 1000.0] {
+        let y = sy(e);
+        svg += &hline(ml, ml + pw, y, GRID, "0.5");
+        svg += &label(ml - 4.0, y + 3.5,
+            &format!("{}\u{d7}", e as i64), MUTED, 8, "end");
+    }
+    svg += &label(ml - 8.0, mt + ph / 2.0, "Enhancement", TEXT, 9, "middle");
+
+    // Extraction rate ∝ SA/V ∝ 1/thickness
+    // Barrel stave contact: ~5mm effective layer → 1× baseline
+    // Thin film at 0.1mm → 50×
+    let extraction_pts: Vec<(f64, f64)> = (1..=300).map(|i| {
+        let t_mm = 0.01 * (10.0_f64).powf(i as f64 * 3.0 / 300.0);
+        let enh = (5.0 / t_mm).max(1.0); // normalized to barrel = 1× at 5mm
+        (sx(t_mm), sy(enh))
+    }).collect();
+    svg += &polyline_svg(&extraction_pts, GREEN, "2.5", &|x| x, &|y| y);
+    svg += &label(sx(0.015), sy(300.0) - 10.0, "Extraction", GREEN, 8, "start");
+    svg += &label(sx(0.015), sy(300.0) + 3.0, "(\u{221d} 1/d)", GREEN, 7, "start");
+
+    // O₂ delivery: PDMS at 0.1mm film → kLa scales as D/d² for film
+    // At 5mm: kLa ~ 10⁻⁶ (barrel). At 0.1mm: kLa ~ 10⁻⁶ × (5/0.1)² = 2500×
+    // But capped by PDMS flux ~ 100× barrel max
+    let o2_pts: Vec<(f64, f64)> = (1..=300).map(|i| {
+        let t_mm = 0.01 * (10.0_f64).powf(i as f64 * 3.0 / 300.0);
+        let enh = ((5.0 / t_mm).powi(2)).min(100.0).max(1.0);
+        (sx(t_mm), sy(enh))
+    }).collect();
+    svg += &polyline_svg(&o2_pts, BLUE, "2.5", &|x| x, &|y| y);
+    svg += &label(sx(0.1), sy(100.0) - 10.0, "O\u{2082} delivery", BLUE, 8, "start");
+    svg += &label(sx(0.1), sy(100.0) + 3.0, "(\u{221d} 1/d\u{b2})", BLUE, 7, "start");
+
+    // Evaporative clustering: crosses Ouzo boundary when surface ABV < 27%
+    // At 5mm thick, Pe ~ 0.1, surface ~ 38% (no crossing)
+    // At 0.1mm, Pe ~ 10, surface ~ 28% (marginal)
+    // At 0.01mm, Pe ~ 100, surface ~ 22% (deep Ouzo)
+    // Enhancement: zero below 0.15mm (surface > 27%), then rapid onset
+    let cluster_pts: Vec<(f64, f64)> = (1..=300).map(|i| {
+        let t_mm = 0.01 * (10.0_f64).powf(i as f64 * 3.0 / 300.0);
+        let surface_abv = 40.0 - 12.0 * (0.1 / t_mm).min(1.5); // crude model
+        let enh = if surface_abv < 27.0 {
+            ((27.0 - surface_abv) / 5.0).powi(2) * 50.0 // rapid onset in Ouzo zone
+        } else {
+            1.0
+        };
+        (sx(t_mm), sy(enh.max(1.0)))
+    }).collect();
+    svg += &polyline_svg(&cluster_pts, ACCENT, "2.5", &|x| x, &|y| y);
+    svg += &label(sx(0.015), sy(50.0) - 10.0, "Clustering", ACCENT, 8, "start");
+    svg += &label(sx(0.015), sy(50.0) + 3.0, "(Ouzo crossing)", ACCENT, 7, "start");
+
+    // Ester rate: proportional to extraction (more acids) × O₂ (more aldehydes)
+    // But also depends on temperature and catalyst
+    let ester_pts: Vec<(f64, f64)> = (1..=300).map(|i| {
+        let t_mm = 0.01 * (10.0_f64).powf(i as f64 * 3.0 / 300.0);
+        let ext = (5.0 / t_mm).max(1.0);
+        let o2 = ((5.0 / t_mm).powi(2)).min(100.0).max(1.0);
+        let enh = (ext * o2).sqrt().min(1000.0); // geometric mean of extraction × O₂
+        (sx(t_mm), sy(enh.max(1.0)))
+    }).collect();
+    svg += &polyline_svg(&ester_pts, YELLOW, "2", &|x| x, &|y| y);
+    svg += &label(sx(0.5), sy(10.0) + 3.0, "Ester rate", YELLOW, 8, "start");
+    svg += &label(sx(0.5), sy(10.0) + 14.0, "(\u{221a}ext\u{d7}O\u{2082})", YELLOW, 7, "start");
+
+    // Optimal zone annotation at ~0.1-0.5mm
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.08\" rx=\"2\"/>\n",
+        sx(0.05), mt, sx(0.5) - sx(0.05), ph, GREEN);
+    svg += &label((sx(0.05) + sx(0.5)) / 2.0, mt + 15.0, "Optimal zone", GREEN, 8, "middle");
+    svg += &label((sx(0.05) + sx(0.5)) / 2.0, mt + 26.0, "0.05\u{2013}0.5 mm", GREEN, 7, "middle");
+
+    // Barrel reference line
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" stroke-dasharray=\"6,4\"/>\n",
+        sx(5.0), mt, sx(5.0), mt + ph, MUTED);
+    svg += &label(sx(5.0) + 3.0, mt + 15.0, "Barrel", MUTED, 7, "start");
+    svg += &label(sx(5.0) + 3.0, mt + 26.0, "~5mm", MUTED, 7, "start");
+
+    // ── Panel B: Schematic apparatus diagram ──
+    let pw2 = 260.0;
+    svg += &label(ml2 + pw2 / 2.0, mt - 8.0, "B) Apparatus: 4-Barrier Simultaneous Attack", TEXT, 10, "middle");
+
+    // Draw a simplified cross-section of the apparatus
+    let cx = ml2 + pw2 / 2.0;
+    let top_y = mt + 30.0;
+    let bot_y = mt + ph - 30.0;
+    let plate_w = 160.0;
+
+    // Oak plate (brown rectangle)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"30\" \
+        fill=\"#8B4513\" opacity=\"0.7\" rx=\"3\" stroke=\"{}\" stroke-width=\"1\"/>\n",
+        cx - plate_w / 2.0, top_y, plate_w, ACCENT);
+    svg += &label(cx, top_y + 18.0, "Charred Oak Surface", TEXT, 9, "middle");
+
+    // Thin film gap
+    let film_top = top_y + 32.0;
+    let film_bot = film_top + 20.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"20\" \
+        fill=\"{}\" opacity=\"0.2\" rx=\"0\"/>\n",
+        cx - plate_w / 2.0, film_top, plate_w, ACCENT);
+    svg += &label(cx, film_top + 13.0, "Spirit Film (0.1\u{2013}0.5 mm)", ACCENT, 8, "middle");
+
+    // Flow arrow
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" marker-end=\"url(#arr2)\"/>\n",
+        cx - plate_w / 2.0 - 5.0, film_top + 10.0, cx - plate_w / 2.0 + 15.0, film_top + 10.0, BLUE);
+    svg += &label(cx - plate_w / 2.0 - 35.0, film_top + 13.0, "Flow", BLUE, 7, "end");
+
+    // PDMS membrane (below film)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"15\" \
+        fill=\"{}\" opacity=\"0.3\" rx=\"2\" stroke=\"{}\" stroke-width=\"1\"/>\n",
+        cx - plate_w / 2.0, film_bot + 2.0, plate_w, BLUE, BLUE);
+    svg += &label(cx, film_bot + 12.0, "PDMS Membrane (O\u{2082} delivery)", BLUE, 8, "middle");
+
+    // Arrow marker for flow
+    svg += "<defs><marker id=\"arr2\" markerWidth=\"8\" markerHeight=\"6\" refX=\"8\" refY=\"3\" orient=\"auto\">\
+        <path d=\"M0,0 L8,3 L0,6\" fill=\"none\" stroke=\"#58a6ff\" stroke-width=\"1\"/></marker></defs>\n";
+
+    // 4 mechanism labels with arrows pointing to the film
+    let mechanisms = [
+        ("EXTRACTION", "SA/V = 2000\u{2013}20000 m\u{207b}\u{b9}", GREEN, 0),
+        ("OXIDATION", "kLa \u{2248} 25\u{2013}100\u{d7} barrel", BLUE, 1),
+        ("CLUSTERING", "Evap. Ouzo crossing", ACCENT, 2),
+        ("ESTER", "\u{221a}(ext \u{d7} O\u{2082}) acceleration", YELLOW, 3),
+    ];
+
+    let label_start_y = film_bot + 40.0;
+    for (i, (name, desc, color, _)) in mechanisms.iter().enumerate() {
+        let y = label_start_y + i as f64 * 50.0;
+        let lx = ml2 + 10.0;
+
+        // Colored dot
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"6\" fill=\"{}\" opacity=\"0.8\"/>\n",
+            lx, y, color);
+
+        // Label
+        svg += &label(lx + 12.0, y + 4.0, name, color, 10, "start");
+        svg += &label(lx + 12.0, y + 16.0, desc, MUTED, 8, "start");
+    }
+
+    // Recirculation loop annotation
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"245\" height=\"40\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt + ph - 48.0, GRID);
+    svg += &label(ml2 + 10.0, mt + ph - 32.0,
+        "Recirculate: pump \u{2192} oak plate \u{2192} reservoir", GREEN, 9, "start");
+    svg += &label(ml2 + 10.0, mt + ph - 18.0,
+        "Novel: 4 barriers attacked in single geometry", ACCENT, 9, "start");
 
     svg.push_str("</svg>");
     svg

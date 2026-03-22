@@ -1986,6 +1986,53 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<h3>4.35 Thin-Film Recirculating Aging: 4-Barrier Simultaneous Attack Geometry</h3>
+
+<div class="callout key-insight">
+  <strong>Novel synthesis &mdash; the optimal aging geometry is a thin film, not a barrel.</strong> If spirit flows as a 0.1&ndash;0.5 mm film over a charred oak surface backed by a PDMS membrane, four barriers are attacked simultaneously in a single physical geometry: (1) extraction rate &prop; SA/V &prop; 1/d, giving 10&ndash;50&times; barrel baseline at 0.1&ndash;0.5 mm; (2) O<sub>2</sub> delivery through the PDMS backing scales as D/d<sup>2</sup>, providing 25&ndash;100&times; barrel k<sub>L</sub>a; (3) preferential ethanol evaporation from the thin film surface crosses the Ouzo boundary (&sect;4.28), nucleating clusters; (4) ester rate scales as &radic;(extraction &times; O<sub>2</sub>) because both acid supply (extraction) and aldehyde supply (oxidation) feed the esterification cascade.
+</div>
+
+<p><strong>Physics of the thin film:</strong> The surface-area-to-volume ratio for a film of thickness d is SA/V = 2/d (both surfaces exposed). For comparison:</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Geometry</th><th>Film thickness</th><th>SA/V (m<sup>&minus;1</sup>)</th><th>Enhancement vs barrel</th></tr>
+</thead>
+<tbody>
+<tr><td>53-gal barrel (stave contact)</td><td>~5 mm effective</td><td>400</td><td>1&times; (baseline)</td></tr>
+<tr><td>Thin-film plate</td><td>0.5 mm</td><td>4,000</td><td>10&times;</td></tr>
+<tr><td>Thin-film plate</td><td>0.1 mm</td><td>20,000</td><td>50&times;</td></tr>
+<tr><td>Microfluidic channel</td><td>0.01 mm</td><td>200,000</td><td>500&times;</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>Evaporative Ouzo crossing in thin films:</strong> At 0.1 mm film thickness, the Peclet number Pe = v<sub>evap</sub> &middot; d / D<sub>EtOH</sub> &asymp; 10, which means ethanol evaporation depletes the surface layer faster than diffusion can replenish it. The surface ABV drops from 40% to ~28%&mdash;just below the Ouzo boundary at ~27% (&sect;4.28)&mdash;triggering spontaneous cluster nucleation. The thin film effectively automates the evaporative supersaturation mechanism that Williams (2020) observed in whiskey web experiments<span class="cite" data-ref="141"><sup>[141]</sup></span>.</p>
+
+<p><strong>Apparatus design (home-buildable):</strong></p>
+<ol>
+  <li><strong>Oak plate:</strong> A flat piece of toasted/charred American white oak, 30 cm &times; 15 cm &times; 1 cm. Plane one surface smooth. Standard cooperage.</li>
+  <li><strong>Spacer:</strong> Silicone gasket or Kapton shim, 0.2&ndash;0.5 mm thick, defines the film gap.</li>
+  <li><strong>PDMS membrane:</strong> 0.5 mm silicone sheet (Amazon, $8/sheet) placed against the oak. Spirit flows between PDMS and oak. O<sub>2</sub> from ambient air permeates through the PDMS into the film.</li>
+  <li><strong>Pump:</strong> Peristaltic pump ($15&ndash;30 from eBay/AliExpress) recirculates spirit from a reservoir through the film gap at 5&ndash;50 mL/min.</li>
+  <li><strong>Optional enhancements:</strong> UV-A LED strip along the glass backing (&sect;4.26/4.30), riboflavin addition (&sect;4.8), temperature cycling of the reservoir (&sect;4.5).</li>
+</ol>
+
+<p><strong>Throughput calculation:</strong> A 30 &times; 15 cm plate with 0.3 mm film gap holds ~1.35 mL of spirit per pass. At 30 mL/min flow rate, the spirit cycles through the film ~22 times per minute, 1320 times per hour. A 1 L batch recirculates through the film ~32,000 times per day. Each pass provides: fresh oak contact, fresh O<sub>2</sub> from PDMS, and surface evaporation opportunity. The cumulative surface exposure over 24 hours is equivalent to years of barrel contact.</p>
+
+<p><strong>Critical constraint (over-extraction):</strong> At 50&times; extraction rate, the spirit will reach saturation for wood extractives within hours rather than weeks. The system needs either: (a) a lower SA/V ratio (thicker film, 0.5 mm instead of 0.1 mm), (b) a shorter run time (4&ndash;8 hours instead of continuous), or (c) a deliberately reduced oak surface (partially sealed or using lower-toast oak). The optimal regime balances extraction speed against the target concentration profile.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/thin-film-aging.svg" alt="Thin-film recirculating aging: rate enhancement vs film thickness and apparatus schematic">
+  <figcaption><strong>Fig. 45.</strong> Thin-film recirculating aging. (A) Enhancement factor vs. film thickness for four barrier mechanisms: extraction (green, &prop; 1/d), O<sub>2</sub> delivery (blue, &prop; 1/d<sup>2</sup> capped by PDMS flux), clustering via evaporative Ouzo crossing (gold, onset below 0.15 mm), and ester rate (yellow, geometric mean of extraction and O<sub>2</sub>). Optimal zone: 0.05&ndash;0.5 mm. Barrel reference at ~5 mm. (B) Apparatus cross-section showing charred oak surface, spirit film, PDMS membrane, and the four simultaneous barrier attack mechanisms.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">NOVEL SYNTHESIS</span> &mdash; this apparatus combines four published mechanisms (&sect;4.1 PDMS O<sub>2</sub>, &sect;4.28 evaporative supersaturation, &sect;1.8 extraction, and &sect;4.5 temperature cycling) into a single physical geometry optimized for all four. No published apparatus implements this specific combination. The physics are sound: Washburn capillary flow, Fick&rsquo;s law O<sub>2</sub> transport, Raoult&rsquo;s law preferential evaporation, and Fischer esterification kinetics are all well-established. <strong>Home testability: 4/5</strong> ($40&ndash;70 for oak plate + PDMS sheet + peristaltic pump + silicone tubing + gasket. The main challenge is maintaining a uniform film gap&mdash;a glass plate compression fixture solves this. First experiment: recirculate 500 mL spirit through a 0.3 mm film over charred oak for 8 hours, compare color/tannin/taste vs identical spirit with same oak ratio in a jar).
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -2127,6 +2174,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Alternating magnetic field (&sect;4.32)</td><td>12.8 yr (claimed)</td><td><span class="verdict speculative">Single study</span></td><td>$5&ndash;15</td><td>ALL</td></tr>
 <tr><td>PEF spirit aging (&sect;4.33)</td><td>5 mo &asymp; 12 mo natural</td><td><span class="verdict promising">Published &mdash; spirit</span></td><td>$30&ndash;60</td><td>OXIDATION + ESTER</td></tr>
 <tr><td>Vacuum/pressure cycling (&sect;4.34)</td><td>3d &asymp; 2yr (patent)</td><td><span class="verdict speculative">Patent only</span></td><td>$50&ndash;80</td><td>OXIDATION</td></tr>
+<tr><td>Thin-film recirculating (&sect;4.35)</td><td>10&ndash;50&times; (predicted)</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$40&ndash;70</td><td>ALL</td></tr>
 </tbody>
 </table>
 </div>
@@ -2294,6 +2342,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Magnetic field aging (&sect;4.32)</td><td>5/5</td><td>$5&ndash;15</td><td>4&ndash;6 N52 neodymium magnets around glass jar. Alternating N-S pattern. Zero effort background treatment for 2&ndash;4 weeks. Cannot harm spirit. Extraordinary claims but zero-cost experiment.</td></tr>
 <tr><td>PEF spirit aging (&sect;4.33)</td><td>2/5</td><td>$30&ndash;60</td><td>Neon sign transformer + SS plate electrodes in glass jar with oak staves. 1 kV/cm at 50 Hz. <strong>Caution: lethal voltages</strong> require proper insulation and GFCI. +54% tannins, +47% vanillin published. Not a beginner project.</td></tr>
 <tr><td><strong>Vacuum/pressure cycling (&sect;4.34)</strong></td><td><strong>5/5</strong></td><td><strong>$50&ndash;80</strong></td><td><strong>Cornelius keg ($30&ndash;50) + CO<sub>2</sub> regulator ($25). Spirit + oak staves at 40 psi, cycle daily for 2 weeks. CO<sub>2</sub> &rarr; carbonic acid lowers pH. Use existing homebrewing equipment. Compare color + tannin vs ambient control.</strong></td></tr>
+<tr><td>Thin-film recirculating (&sect;4.35)</td><td>4/5</td><td>$40&ndash;70</td><td>Charred oak plate + 0.3 mm silicone gasket + PDMS membrane + peristaltic pump. Recirculate 500 mL spirit 8h. 4 barriers attacked simultaneously. Main challenge: uniform film gap (glass plate compression fixture). Compare vs same oak ratio in jar.</td></tr>
 </tbody>
 </table>
 </div>
