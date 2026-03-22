@@ -434,7 +434,7 @@
 
 <p>Welter et al. demonstrated that TiO<sub>2</sub> (anatase) under UVA light drives Fischer esterification at ambient temperature&mdash;bypassing the ~60&ndash;75 kJ/mol activation energy by generating reactive surface intermediates via photon-induced electron-hole pairs. They achieved 98% conversion of oleic acid to methyl oleate at 55&deg;C, and 96% at 35&deg;C with optimized conditions (3 hours UV, 4 wt% catalyst). The catalyst retained &gt;87% activity after 5 cycles<span class="cite" data-ref="36"><sup>[36]</sup></span>.</p>
 
-<p>TiO<sub>2</sub> is GRAS (used in food coloring as E171, though EU-restricted since 2022). A flow-through reactor with UV-transparent tubing and immobilized TiO<sub>2</sub> could drive esterification of the ~500 mg/L organic acids in new-make spirit without bulk heating&mdash;preserving volatile aroma compounds that would be lost at reflux temperatures.</p>
+<p><strong>Critical caveat:</strong> The Welter results used <em>neat</em> oleic acid + methanol (no water). In dilute aqueous-ethanol systems like spirits (40% ABV), TiO<sub>2</sub> photocatalysis predominantly produces <strong>acetaldehyde</strong> from ethanol oxidation (k(&bull;OH + ethanol) = 1.9&times;10<sup>9</sup> M<sup>&minus;1</sup>s<sup>&minus;1</sup>, Buxton et al. 1988) and <strong>decarboxylates</strong> organic acids via the photo-Kolbe pathway (Kraeutler &amp; Bard, JACS 1978). Typical yields: 50&ndash;200 &mu;mol/h acetaldehyde per gram TiO<sub>2</sub> under UVA, with negligible ester formation. TiO<sub>2</sub> (E171) is GRAS (though EU-restricted since 2022), but its primary role in spirits would be as an <em>oxidation</em> accelerator, not an ester catalyst&mdash;more relevant to Barrier 4 than Barrier 1.</p>
 
 <div class="callout hypothesis">
   <strong>Hypothesis 1:</strong> Recirculating new-make spirit at 65% ABV through a packed bed of Amberlyst-15 (FDA 21&nbsp;CFR&nbsp;173.25) at 50&deg;C for 4&ndash;8 hours, with a downstream molecular sieve 3A water trap, will produce an ester profile (by GC-MS) matching 2&ndash;3 year barrel-aged whiskey for the C2&ndash;C10 ethyl esters. <em>Alternatively</em>, 20 minutes of electrochemical treatment at a gold electrode (0.8V) may achieve comparable results with no consumable catalyst<span class="cite" data-ref="37"><sup>[37]</sup></span><span class="cite" data-ref="38"><sup>[38]</sup></span>.<br><br>
@@ -771,7 +771,19 @@
   <strong>Home testability:</strong> A $30&ndash;50 ultrasonic jewelry cleaner (40 kHz, 35&ndash;60W) achieves 20&ndash;45 W/L&mdash;at the low end but measurable. Place spirit + oak chips in sealed glass jar inside the bath (not directly in metal tank). Run 20&ndash;30 min sessions, 3&ndash;5 per week, rest between. Monitor temperature (keep &lt;40&deg;C). After 2 weeks, compare vs. unstirred maceration control. A $100&ndash;200 probe sonicator (20 kHz) is dramatically more effective but requires pulsed mode and ice bath. <strong>Cost: $30&ndash;50 (bath) or $100&ndash;200 (probe). Feasibility: 4/5.</strong>
 </div>
 
-<p><span class="verdict promising">PROMISING</span> Proof optimization (straightforward physics, no novel equipment). <span class="verdict speculative">SPECULATIVE</span> Flash nanoprecipitation and freeze-thaw (sound first-principles, untested in spirits). <span class="verdict moonshot">MOONSHOT</span> Seeded supramolecular polymerization (strongly reinforced by concrete C-S-H seeding data). <span class="verdict promising">PROMISING</span> DES oak extraction (food-safe, 2&ndash;10&times; more efficient than ethanol, entirely novel in spirits<span class="cite" data-ref="56"><sup>[56]</sup></span>). <span class="verdict promising">PROMISING</span> Enzymatic pretreatment (patented, food-grade enzymes, releases glycoside-bound aromas<span class="cite" data-ref="58"><sup>[58]</sup></span>). <span class="verdict promising">PROMISING</span> Multi-toast blending (compound-specific optimization, immediately actionable<span class="cite" data-ref="59"><sup>[59]</sup></span>). <span class="verdict promising">PROMISING</span> Ultrasonic cavitation (5&ndash;10&times; extraction, 85&ndash;90% of 3-year barrel analytically, synergistic with laccase<span class="cite" data-ref="70"><sup>[70]</sup></span>).</p>
+<h3>3.14 Microwave-Assisted Oak Extraction</h3>
+
+<p>Microwave-assisted extraction (MAE) exploits preferential heating of bound water within oak cell walls at 2.45 GHz, generating localized superheating that ruptures cellular structure and drives extractives outward at 3&ndash;10&times; the rate of conventional maceration<span class="cite" data-ref="80"><sup>[80]</sup></span>. The selectivity arises from dielectric properties: water (&epsilon;&Prime; &asymp; 10&ndash;12 at 2.45 GHz) absorbs microwave energy more efficiently than ethanol (&epsilon;&Prime; &asymp; 6&ndash;7), with bound water in wood cell walls being the primary target.</p>
+
+<p>Chang et al. (2004) demonstrated that <strong>2&ndash;5 minutes</strong> of microwave treatment of rice spirit with wood chips produced chemical profiles (fusel alcohol ratios, ester content, aldehyde reduction) resembling <strong>6&ndash;12 months of conventional aging</strong><span class="cite" data-ref="81"><sup>[81]</sup></span>. The key mechanism is not ester formation but <em>extraction acceleration</em>: microwave energy ruptures wood cell walls and drives mass transfer of vanillin, oak lactones, and tannins into the spirit.</p>
+
+<p><strong>Practical parameters:</strong> Power 100&ndash;600 W, temperature must stay below 78&deg;C (ethanol boiling point), treatment 1&ndash;10 minutes (longer risks thermal degradation of delicate esters). A sealed Pyrex vessel (to prevent ethanol loss) in a consumer microwave oven is sufficient for proof-of-concept. Oak chips (2&ndash;5 mm) are preferred over staves for surface area. A 40% ABV spirit at 2.45 GHz has an estimated dielectric loss factor &epsilon;&Prime; &asymp; 8&ndash;9, providing efficient bulk heating, but the differential heating of bound water within wood cells is the mechanism of interest.</p>
+
+<div class="callout hypothesis">
+  <strong>Home testability:</strong> Place oak chips + spirit in a microwave-safe sealed glass jar (leave lid slightly loose for pressure release). Microwave at 50% power (300W effective) for 2&ndash;3 minutes. Let cool. Repeat 3&ndash;5 cycles. Compare color, aroma, and taste vs. unirradiated control. The sealed vessel prevents ethanol loss but <strong>caution:</strong> ethanol vapors are flammable; ensure adequate ventilation and never overheat. <strong>Cost: $0 (existing microwave). Feasibility: 3/5</strong> (requires care with sealed containers and temperature monitoring).
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Proof optimization (straightforward physics, no novel equipment). <span class="verdict speculative">SPECULATIVE</span> Flash nanoprecipitation and freeze-thaw (sound first-principles, untested in spirits). <span class="verdict moonshot">MOONSHOT</span> Seeded supramolecular polymerization (strongly reinforced by concrete C-S-H seeding data). <span class="verdict promising">PROMISING</span> DES oak extraction (food-safe, 2&ndash;10&times; more efficient than ethanol, entirely novel in spirits<span class="cite" data-ref="56"><sup>[56]</sup></span>). <span class="verdict promising">PROMISING</span> Enzymatic pretreatment (patented, food-grade enzymes, releases glycoside-bound aromas<span class="cite" data-ref="58"><sup>[58]</sup></span>). <span class="verdict promising">PROMISING</span> Multi-toast blending (compound-specific optimization, immediately actionable<span class="cite" data-ref="59"><sup>[59]</sup></span>). <span class="verdict promising">PROMISING</span> Ultrasonic cavitation (5&ndash;10&times; extraction, 85&ndash;90% of 3-year barrel analytically, synergistic with laccase<span class="cite" data-ref="70"><sup>[70]</sup></span>). <span class="verdict promising">PROMISING</span> Microwave-assisted extraction (2&ndash;5 min &asymp; 6&ndash;12 months conventional aging, zero additional cost<span class="cite" data-ref="81"><sup>[81]</sup></span>).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -1357,6 +1369,7 @@
 <tr><td>Maillard supplementation (&sect;4.6)</td><td>4/5</td><td>$20</td><td>Add xylose (0.3 g/L) + glycine (0.08 g/L) to spirit with oak. Temperature cycle. Accelerates furfural.</td></tr>
 <tr><td><strong>Riboflavin photosensitization (&sect;4.8)</strong></td><td><strong>5/5</strong></td><td><strong>$5</strong></td><td><strong>B<sub>2</sub> vitamin tab (8 mg/L) + blue LED strip (450 nm). &sup1;O&sub2; has &gt;10<sup>6</sup>&times; phenol selectivity. Self-limiting. Use during oak extraction phase.</strong></td></tr>
 <tr><td>Fenton chemistry (&sect;4.2)</td><td>2/5</td><td>$30</td><td>Very thin margin for error. Overshoot &rarr; vinegar. Only for experienced hands.</td></tr>
+<tr><td><strong>Microwave extraction (&sect;3.14)</strong></td><td><strong>3/5</strong></td><td><strong>$0</strong></td><td><strong>Oak chips in spirit, sealed jar, 50% power 2&ndash;3 min &times; 3&ndash;5 cycles. 6&ndash;12 months equivalent extraction. Caution: ethanol vapors.</strong></td></tr>
 <tr><td>Carbon dot amplification (&sect;4.9)</td><td>3/5</td><td>$50</td><td>Extract charred oak in spirit, ultrafilter (&lt;10 kDa), concentrate filtrate, add to spirit + UV-A lamp. Verify by fluorescence.</td></tr>
 </tbody>
 </table>
@@ -1453,6 +1466,8 @@
   <li id="r77">Fotakis C, Christodouleas D, Zervou M, et al. (2013) &ldquo;Classification of wines based on fluorescence spectroscopy and multivariate analysis.&rdquo; <em>J Food Compos Anal</em> 31:10&ndash;16.</li>
   <li id="r78">Lin ZR, Zeng XA, Yu SJ, Sun DW. (2012) &ldquo;Enhancement of ethanol-acetic acid esterification under room temperature and non-catalytic condition via pulsed electric field application.&rdquo; <em>Food Bioprocess Technol</em> 5:2637&ndash;2645. <a href="https://doi.org/10.1007/s11947-011-0678-4">DOI</a></li>
   <li id="r79">Zeng XA, Liu Y. (2011) &ldquo;Effect of pulsed electric field on esterification of lactic acid and ethanol.&rdquo; <em>J South China Univ Technol (Nat Sci Ed)</em> 39(12):127&ndash;131.</li>
+  <li id="r80">Asp&eacute; E, Fern&aacute;ndez K. (2011) &ldquo;The effect of different extraction techniques on the recovery of antioxidant phenolics from Pinus radiata bark.&rdquo; <em>Ind Crops Prod</em> 34:838&ndash;844.</li>
+  <li id="r81">Chang AC, Chen FC, Tsai CF, et al. (2004) &ldquo;Microwave-assisted aging of rice spirits.&rdquo; <em>J Inst Brew</em> 110(4):283&ndash;287.</li>
 </ol>
 
 
@@ -1869,6 +1884,16 @@ var refs = {
     source: "Zeng & Liu (2011), J South China Univ Technol",
     excerpt: "PEF-enhanced lactic acid-ethanol esterification. At 20 kV/cm: Ea drops from 43.43 to 25.05 kJ/mol (42.3% reduction). Zero-order reaction under PEF. 25 kV/cm for 10h: ethyl lactate yield 2.1\u00d7 control. Field strengths 15\u201325 kV/cm.",
     url: "#r79"
+  },
+  80: {
+    source: "Asp\u00e9 & Fern\u00e1ndez (2011), Ind Crops Prod",
+    excerpt: "Microwave-assisted extraction of phenolics from bark matrices. 3\u201310\u00d7 faster than conventional maceration. Dielectric heating of bound water ruptures cell walls, driving mass transfer. 90% of conventional yield in 1/5\u20131/10 the time.",
+    url: "#r80"
+  },
+  81: {
+    source: "Chang et al. (2004), J Inst Brew",
+    excerpt: "Microwave aging of rice spirits. 2\u20135 minutes at 600W produced chemical profiles (fusel alcohol ratios, ester content, aldehyde reduction) resembling 6\u201312 months conventional aging. Mechanism: rapid extraction + thermal acceleration of oxidation.",
+    url: "#r81"
   }
 };
 
