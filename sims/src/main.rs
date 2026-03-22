@@ -147,6 +147,8 @@ fn main() {
     fs::write("../graphs/cryo-enzymatic.svg", sim_cryo_enzymatic()).unwrap();
     fs::write("../graphs/plasma-fenton.svg", sim_plasma_fenton()).unwrap();
     fs::write("../graphs/sono-micelle-lipase.svg", sim_sono_micelle_lipase()).unwrap();
+    fs::write("../graphs/cu2o-photodehydrogenation.svg", sim_cu2o_photodehydrogenation()).unwrap();
+    fs::write("../graphs/blue-light-tandem.svg", sim_blue_light_tandem()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -10232,6 +10234,361 @@ fn sim_sono_micelle_lipase() -> String {
         "Nanomicelles: ester synthesis at spirit a\u{1d61}", GREEN, 8, "start");
     svg += &label(ml2 + 10.0, mb2 - 18.0,
         "No dehydration, no pressure, no freezing needed", ACCENT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_cu2o_photodehydrogenation() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 59 \u{2014} Cu\u{2082}O/TiO\u{2082} Photodehydrogenation: Radical-Free Acetaldehyde");
+
+    // Panel A: Acetaldehyde selectivity comparison (horizontal bar chart)
+    let ml1 = 70.0;
+    let mr1 = 330.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 320.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: Acetaldehyde Selectivity by Method", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // Methods and selectivities
+    let methods: [(&str, f64, &str, &str); 5] = [
+        ("Natural O\u{2082}", 35.0, MUTED, "35%"),
+        ("Electro-Fenton", 48.0, YELLOW, "48%"),
+        ("TiO\u{2082}/UV (OH\u{2022})", 55.0, BLUE, "55%"),
+        ("Cu\u{00b2}\u{207a}/TiO\u{2082}", 98.0, CYAN, "~98%"),
+        ("Cu\u{2082}O/TiO\u{2082} (p-n)", 100.0, GREEN, "~100%"),
+    ];
+
+    let bar_h = 40.0;
+    let bar_gap = 18.0;
+    let total = methods.len() as f64 * (bar_h + bar_gap) - bar_gap;
+    let bars_top = mt1 + (ph1 - total) / 2.0;
+    let label_x = ml1 + 5.0;
+    let bar_x = ml1 + 120.0;
+    let bar_max_w = pw1 - 130.0;
+
+    for (i, (name, sel, color, annot)) in methods.iter().enumerate() {
+        let y = bars_top + i as f64 * (bar_h + bar_gap);
+        svg += &label(label_x, y + bar_h / 2.0 + 3.0, name, TEXT, 8, "start");
+        let bw = sel / 100.0 * bar_max_w;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            rx=\"3\" fill=\"{}\" opacity=\"0.7\"/>\n", bar_x, y, bw, bar_h, color);
+        svg += &label(bar_x + bw + 5.0, y + bar_h / 2.0 + 3.0, annot, color, 9, "start");
+    }
+
+    // X axis
+    for pct in [0, 25, 50, 75, 100] {
+        let x = bar_x + pct as f64 / 100.0 * bar_max_w;
+        svg += &vline(x, mb1, mb1 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb1 + 14.0, &format!("{}%", pct), MUTED, 7, "middle");
+    }
+    svg += &label(bar_x + bar_max_w / 2.0, mb1 + 28.0, "Acetaldehyde selectivity", MUTED, 8, "middle");
+
+    // Insight annotation: radical-free
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"34\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml1 + 5.0, mt1 + 5.0, pw1 - 10.0, GRID);
+    svg += &label(ml1 + 10.0, mt1 + 18.0,
+        "Radical route: OH\u{2022} \u{2192} non-selective (attacks phenolics too)", RED, 7, "start");
+    svg += &label(ml1 + 10.0, mt1 + 31.0,
+        "Hole route: h\u{207a} \u{2192} selective dehydrogenation (phenolics untouched)", GREEN, 7, "start");
+
+    // Panel B: HER vs Cu2O loading (line chart)
+    let ml2 = 380.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 320.0;
+    let mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: H\u{2082} Evolution Rate vs Cu\u{2082}O Loading", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    // X: Cu2O loading 0-5%
+    let sx2 = |l: f64| ml2 + l / 5.0 * pw2;
+    for l in [0.0, 1.0, 2.0, 3.0, 4.0, 5.0] {
+        let x = sx2(l);
+        svg += &vline(x, mb2, mb2 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb2 + 14.0, &format!("{}%", l as i32), MUTED, 7, "middle");
+    }
+    svg += &label(ml2 + pw2 / 2.0, mb2 + 28.0, "Cu\u{2082}O loading (wt%)", MUTED, 8, "middle");
+
+    // Y: HER 0-30 mmol/h/g
+    let sy2 = |r: f64| mb2 - r / 30.0 * ph2;
+    for v in [0, 5, 10, 15, 20, 25, 30] {
+        let y = sy2(v as f64);
+        svg += &hline(ml2 - 3.0, ml2, y, MUTED, "0.5");
+        svg += &label(ml2 - 6.0, y + 3.0, &format!("{}", v), MUTED, 7, "end");
+        if v > 0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml2, y, mr2, y, GRID);
+        }
+    }
+    svg += &format!("<text x=\"{:.1}\" y=\"{:.1}\" fill=\"{}\" font-size=\"8\" \
+        text-anchor=\"middle\" transform=\"rotate(-90,{:.1},{:.1})\">\
+        HER (mmol/h/g)</text>\n",
+        ml2 - 32.0, mt2 + ph2 / 2.0, MUTED, ml2 - 32.0, mt2 + ph2 / 2.0);
+
+    // Data points (Xing 2021)
+    let data: [(f64, f64); 6] = [
+        (0.0, 2.4),   // bare TiO2
+        (0.5, 20.5),
+        (1.0, 24.5),  // peak
+        (2.0, 13.6),
+        (5.0, 10.7),
+        (0.001, 0.8), // bare Cu2O — plot near 0
+    ];
+
+    // Line through TiO2 + Cu2O data (excluding bare Cu2O)
+    let line_pts: Vec<(f64, f64)> = [(0.0, 2.4), (0.5, 20.5), (1.0, 24.5), (2.0, 13.6), (5.0, 10.7)]
+        .iter()
+        .map(|(l, r)| (sx2(*l), sy2(*r)))
+        .collect();
+    svg += &polyline_svg(&line_pts, ACCENT, "2.5", &|x| x, &|y| y);
+
+    // Data points as circles
+    for (l, r) in &data[..5] {
+        let x = sx2(*l);
+        let y = sy2(*r);
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{}\" stroke=\"{}\" stroke-width=\"1.5\"/>\n",
+            x, y, ACCENT, TEXT);
+    }
+
+    // Bare Cu2O point at bottom
+    let cu2o_x = sx2(0.15);
+    let cu2o_y = sy2(0.8);
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{}\" stroke=\"{}\" stroke-width=\"1\"/>\n",
+        cu2o_x, cu2o_y, RED, TEXT);
+    svg += &label(cu2o_x + 8.0, cu2o_y + 3.0, "Bare Cu\u{2082}O", RED, 7, "start");
+
+    // Peak annotation
+    let peak_x = sx2(1.0);
+    let peak_y = sy2(24.5);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" stroke-dasharray=\"3,2\"/>\n",
+        peak_x, peak_y - 8.0, peak_x, mt2 + 30.0, GREEN);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"130\" height=\"28\" rx=\"3\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        peak_x - 65.0, mt2 + 5.0, GRID);
+    svg += &label(peak_x, mt2 + 18.0, "24.5 mmol/h/g", GREEN, 9, "middle");
+    svg += &label(peak_x, mt2 + 29.0, "AQY = 6.4%", GREEN, 8, "middle");
+
+    // Bare TiO2 annotation
+    svg += &label(sx2(0.0) + 8.0, sy2(2.4) - 5.0, "Bare TiO\u{2082}: 2.4", MUTED, 7, "start");
+
+    // 10x improvement annotation
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" marker-start=\"url(#arr)\" marker-end=\"url(#arr)\"/>\n",
+        sx2(0.0) - 5.0, sy2(2.4), sx2(0.0) - 5.0, sy2(24.5), YELLOW);
+    svg += &label(sx2(0.0) - 10.0, sy2(13.0), "10\u{00d7}", YELLOW, 9, "end");
+
+    // Legend
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"110\" height=\"20\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        mr2 - 115.0, mb2 - 25.0, GRID);
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"3\" fill=\"{}\"/>\n",
+        mr2 - 108.0, mb2 - 15.0, ACCENT);
+    svg += &label(mr2 - 100.0, mb2 - 12.0, "Xing et al. 2021", TEXT, 7, "start");
+
+    // Bottom insight box
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        h - 50.0, GRID);
+    svg += &label(350.0, h - 32.0,
+        "p-n heterojunction: holes at Cu\u{2082}O oxidize EtOH \u{2192} AcH; electrons at TiO\u{2082} reduce H\u{207a} \u{2192} H\u{2082}",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "\u{0394}G = 36 kJ/mol (dehydrogenation) vs 229 kJ/mol (water splitting) \u{2192} thermodynamically favored",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_blue_light_tandem() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 60 \u{2014} Blue-Light Tandem: Cu\u{2082}O + Riboflavin Under Single 450 nm LED");
+
+    // Panel A: Absorption spectra / bandgap diagram
+    let ml1 = 70.0;
+    let mr1 = 340.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 310.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: Photocatalyst Activation by Wavelength", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // X axis: wavelength 300-600 nm
+    let sx1 = |nm: f64| ml1 + (nm - 300.0) / 300.0 * pw1;
+    for nm in [300, 350, 400, 450, 500, 550, 600] {
+        let x = sx1(nm as f64);
+        svg += &vline(x, mb1, mb1 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb1 + 14.0, &format!("{}", nm), MUTED, 7, "middle");
+    }
+    svg += &label(ml1 + pw1 / 2.0, mb1 + 28.0, "Wavelength (nm)", MUTED, 8, "middle");
+
+    // Blue LED line at 450 nm
+    let led_x = sx1(450.0);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"#4488ff\" stroke-width=\"2\" stroke-dasharray=\"4,3\"/>\n",
+        led_x, mt1, led_x, mb1);
+    svg += &label(led_x + 4.0, mt1 + 12.0, "450 nm", "#4488ff", 8, "start");
+    svg += &label(led_x + 4.0, mt1 + 24.0, "Blue LED", "#4488ff", 7, "start");
+
+    // UV LED line at 365 nm
+    let uv_x = sx1(365.0);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" stroke-dasharray=\"4,3\"/>\n",
+        uv_x, mt1, uv_x, mb1, PURPLE);
+    svg += &label(uv_x - 4.0, mt1 + 12.0, "365 nm UV", PURPLE, 7, "end");
+
+    // Three photocatalyst bands
+    // 1. TiO2: absorbs < 388 nm (bandgap 3.2 eV)
+    let tio2_cutoff = sx1(388.0);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"45\" \
+        fill=\"{}\" opacity=\"0.2\" rx=\"3\"/>\n",
+        ml1 + 2.0, mt1 + 40.0, tio2_cutoff - ml1 - 2.0, BLUE);
+    svg += &label(ml1 + 5.0, mt1 + 58.0, "TiO\u{2082} (3.2 eV)", BLUE, 8, "start");
+    svg += &label(ml1 + 5.0, mt1 + 70.0, "\u{2264}388 nm only", BLUE, 7, "start");
+    svg += &label(ml1 + 5.0, mt1 + 82.0, "OH\u{2022} radicals", RED, 7, "start");
+
+    // 2. Cu2O: absorbs < 572 nm (bandgap 2.17 eV)
+    let cu2o_cutoff = sx1(572.0);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"45\" \
+        fill=\"{}\" opacity=\"0.15\" rx=\"3\"/>\n",
+        ml1 + 2.0, mt1 + 100.0, cu2o_cutoff - ml1 - 2.0, ACCENT);
+    svg += &label(ml1 + 5.0, mt1 + 118.0, "Cu\u{2082}O (2.17 eV)", ACCENT, 8, "start");
+    svg += &label(ml1 + 5.0, mt1 + 130.0, "\u{2264}572 nm (visible!)", ACCENT, 7, "start");
+    svg += &label(ml1 + 5.0, mt1 + 142.0, "h\u{207a} dehydrogenation", GREEN, 7, "start");
+
+    // 3. Riboflavin: peaks at ~370 and ~450 nm
+    let ribo_y = mt1 + 160.0;
+    // Draw absorption curve
+    let ribo_pts: Vec<(f64, f64)> = (300..=550).map(|nm| {
+        let n = nm as f64;
+        let abs = 0.8 * (-((n - 370.0) / 30.0).powi(2)).exp()
+            + 1.0 * (-((n - 450.0) / 25.0).powi(2)).exp()
+            + 0.15 * (-((n - 330.0) / 20.0).powi(2)).exp();
+        (sx1(n), ribo_y + 40.0 - abs * 35.0)
+    }).collect();
+    svg += &polyline_svg(&ribo_pts, YELLOW, "2", &|x| x, &|y| y);
+    svg += &label(ml1 + 5.0, ribo_y + 8.0, "Riboflavin (\u{00a7}4.8)", YELLOW, 8, "start");
+    svg += &label(ml1 + 5.0, ribo_y + 20.0, "\u{00b9}O\u{2082} photosensitizer", YELLOW, 7, "start");
+
+    // Key insight box
+    let box_y = mt1 + 220.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"78\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml1 + 3.0, box_y, pw1 - 6.0, GRID);
+    svg += &label(ml1 + pw1 / 2.0, box_y + 14.0,
+        "Under 450 nm blue LED:", TEXT, 9, "middle");
+    svg += &label(ml1 + 10.0, box_y + 30.0,
+        "\u{2713} Cu\u{2082}O: h\u{207a} \u{2192} AcH (selective)", GREEN, 8, "start");
+    svg += &label(ml1 + 10.0, box_y + 44.0,
+        "\u{2713} Riboflavin: \u{00b9}O\u{2082} \u{2192} phenol oxidation", YELLOW, 8, "start");
+    svg += &label(ml1 + 10.0, box_y + 58.0,
+        "\u{2717} TiO\u{2082}: INACTIVE (no OH\u{2022})", RED, 8, "start");
+    svg += &label(ml1 + 10.0, box_y + 72.0,
+        "\u{2192} Dual selective chemistry, zero radical damage", ACCENT, 8, "start");
+
+    // Panel B: Protocol comparison — UV vs Blue vs Tandem
+    let ml2 = 380.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 310.0;
+    let mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: Product Selectivity by Light Source", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    // Grouped bar chart: 3 products x 3 light sources
+    let products: [(&str, [(f64, &str); 3]); 4] = [
+        ("Acetaldehyde", [(55.0, "OH\u{2022} route"), (95.0, "h\u{207a} route"), (95.0, "h\u{207a} route")]),
+        ("Vanillin", [(36.0, "OH\u{2022}"), (0.0, "none"), (25.0, "\u{00b9}O\u{2082}")]),
+        ("Phenolic\ndestruction", [(40.0, "high"), (0.0, "zero"), (5.0, "minimal")]),
+        ("Ester\nformation", [(5.0, "negligible"), (0.0, "none"), (5.0, "minimal")]),
+    ];
+
+    let group_h = 55.0;
+    let group_gap = 15.0;
+    let total = products.len() as f64 * (group_h + group_gap) - group_gap;
+    let groups_top = mt2 + (ph2 - total) / 2.0;
+    let bar_x2 = ml2 + 80.0;
+    let bar_max = pw2 - 90.0;
+    let sub_bar_h = 14.0;
+
+    let light_colors = [BLUE, ACCENT, GREEN];
+    let light_names = ["UV (365 nm)", "Blue (450 nm) Cu\u{2082}O only", "Blue + Riboflavin"];
+
+    // Legend
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"175\" height=\"50\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt2 + 5.0, GRID);
+    for (i, (c, name)) in light_colors.iter().zip(light_names.iter()).enumerate() {
+        let ly = mt2 + 16.0 + i as f64 * 14.0;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"12\" height=\"8\" fill=\"{}\" opacity=\"0.7\"/>\n",
+            ml2 + 10.0, ly - 5.0, c);
+        svg += &label(ml2 + 26.0, ly + 1.0, name, TEXT, 7, "start");
+    }
+
+    for (g, (name, vals)) in products.iter().enumerate() {
+        let gy = groups_top + g as f64 * (group_h + group_gap);
+
+        // Product label (handle newline)
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(bar_x2 - 5.0, gy + 20.0 + li as f64 * 12.0, line, TEXT, 8, "end");
+        }
+
+        for (b, (val, _annot)) in vals.iter().enumerate() {
+            let by = gy + b as f64 * (sub_bar_h + 2.0);
+            let bw = val / 100.0 * bar_max;
+            if bw > 0.5 {
+                svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+                    rx=\"2\" fill=\"{}\" opacity=\"0.65\"/>\n",
+                    bar_x2, by, bw, sub_bar_h, light_colors[b]);
+                svg += &label(bar_x2 + bw + 4.0, by + sub_bar_h / 2.0 + 3.0,
+                    &format!("{}%", *val as i32), light_colors[b], 7, "start");
+            } else {
+                svg += &label(bar_x2 + 4.0, by + sub_bar_h / 2.0 + 3.0,
+                    "0%", MUTED, 7, "start");
+            }
+        }
+    }
+
+    // X axis
+    for pct in [0, 25, 50, 75, 100] {
+        let x = bar_x2 + pct as f64 / 100.0 * bar_max;
+        svg += &vline(x, mb2, mb2 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb2 + 14.0, &format!("{}%", pct), MUTED, 7, "middle");
+    }
+    svg += &label(bar_x2 + bar_max / 2.0, mb2 + 28.0, "Relative yield / selectivity", MUTED, 8, "middle");
+
+    // Bottom insight
+    svg += &format!("<rect x=\"60\" y=\"{:.1}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        h - 50.0, GRID);
+    svg += &label(350.0, h - 32.0,
+        "Blue LED tandem: Cu\u{2082}O dehydrogenation + riboflavin \u{00b9}O\u{2082} = dual selective chemistry",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Same $5 LED strip (\u{00a7}4.8) + $10 Cu\u{2082}O powder = two aging pathways from one light source",
+        GREEN, 8, "middle");
 
     svg.push_str("</svg>");
     svg

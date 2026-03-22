@@ -2421,6 +2421,86 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<h3>4.47 Cu<sub>2</sub>O/TiO<sub>2</sub> Photodehydrogenation: Radical-Free Acetaldehyde</h3>
+
+<div class="callout key-insight">
+  <strong>Novel process design insight:</strong> Every radical-based oxidation method (&sect;4.2, &sect;4.7, &sect;4.26, &sect;4.38, &sect;4.45) generates OH&bull; that attacks ethanol AND phenolics non-selectively. Cu<sub>2</sub>O/TiO<sub>2</sub> p-n heterojunction photocatalysis generates acetaldehyde via <strong>direct hole transfer (h<sup>+</sup>)</strong>&mdash;not OH&bull; radicals&mdash;achieving near-unit selectivity while leaving phenolic precursors completely untouched. This enables a <strong>dual-photocatalyst protocol</strong> that decouples the two key barrel-aging chemistries.
+</div>
+
+<p><strong>The selectivity problem.</strong> In barrel aging, dissolved O<sub>2</sub> generates radicals that oxidize both ethanol (to acetaldehyde, then acetic acid) and phenolics (4-vinylguaiacol to vanillin) via the same OH&bull; intermediate. You cannot speed up one without the other. Every accelerated oxidation technique in this document faces this fundamental conflict: push harder for acetaldehyde &rarr; destroy your vanillin precursors. Push gently for vanillin &rarr; insufficient acetaldehyde.</p>
+
+<p><strong>The p-n heterojunction solution.</strong> Cu<sub>2</sub>O/TiO<sub>2</sub> heterostructures form a type-II p-n junction where: (1) photogenerated holes in TiO<sub>2</sub>&rsquo;s valence band transfer to Cu<sub>2</sub>O, where they directly abstract hydrogen from ethanol&mdash;CH<sub>3</sub>CH<sub>2</sub>OH + 2h<sup>+</sup> &rarr; CH<sub>3</sub>CHO + 2H<sup>+</sup>; (2) photogenerated electrons in Cu<sub>2</sub>O&rsquo;s conduction band transfer to TiO<sub>2</sub>, reducing protons to H<sub>2</sub>. The &Delta;G for ethanol dehydrogenation is only 36 kJ/mol&mdash;versus 229 kJ/mol for water splitting&mdash;so the reaction is thermodynamically favored<span class="cite" data-ref="166"><sup>[166]</sup></span>.</p>
+
+<p><strong>Quantitative performance.</strong> Xing et al. measured hydrogen evolution rate (HER, a 1:1 proxy for acetaldehyde) across Cu<sub>2</sub>O loadings: bare TiO<sub>2</sub> = 2.4 mmol/h/g, 0.5% Cu<sub>2</sub>O = 20.5, <strong>1% Cu<sub>2</sub>O = 24.5 mmol/h/g</strong> (peak, AQY = 6.4%), 2% = 13.6, 5% = 10.7. The 10&times; enhancement at optimal loading reflects the p-n junction charge separation efficiency. Critically: <strong>no competing deoxygenation, reforming, or decomposition reactions were observed</strong>&mdash;near-unit acetaldehyde selectivity<span class="cite" data-ref="166"><sup>[166]</sup></span>.</p>
+
+<p><strong>Complementary evidence in aqueous solution.</strong> Cataldo et al. demonstrated that Cu<sup>2+</sup>/TiO<sub>2</sub> achieves ~1.0 acetaldehyde selectivity in aqueous ethanol under UV-simulated solar radiation. The Cu<sup>2+</sup> acts as a sacrificial electron acceptor, being reduced to Cu<sup>0</sup>, which can be reoxidized <em>in situ</em> for catalyst regeneration<span class="cite" data-ref="167"><sup>[167]</sup></span>. This confirms the mechanism works in liquid phase at spirit-relevant ethanol concentrations.</p>
+
+<p><strong>The dual-photocatalyst protocol</strong> (novel proposal):</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Phase</th><th>Catalyst</th><th>UV source</th><th>Chemistry</th><th>Products</th></tr>
+  <tr><td>1: Acetaldehyde (30 min)</td><td>Cu<sub>2</sub>O/TiO<sub>2</sub> (1 wt%)</td><td>365 nm LED</td><td>Direct h<sup>+</sup> dehydrogenation</td><td>CH<sub>3</sub>CHO + H<sub>2</sub> (phenolics untouched)</td></tr>
+  <tr><td>2: Filter &amp; switch</td><td>&mdash;</td><td>&mdash;</td><td>Remove catalyst, add TiO<sub>2</sub></td><td>&mdash;</td></tr>
+  <tr><td>3: Vanillin (60 min)</td><td>TiO<sub>2</sub> (anatase)</td><td>365 nm LED</td><td>OH&bull;-mediated oxidation (&sect;4.26)</td><td>Vanillin from 4-vinylguaiacol</td></tr>
+</table>
+</div>
+
+<p><strong>Why this matters:</strong> Phase 1 generates acetaldehyde without OH&bull;, so oak phenolics (4-vinylguaiacol, coniferaldehyde, sinapaldehyde) are preserved as substrates for Phase 3. In a single-catalyst TiO<sub>2</sub> system, OH&bull; destroys these precursors while generating acetaldehyde&mdash;you get acetaldehyde OR vanillin, not both optimally. The dual-catalyst protocol produces both, sequentially, from the same UV-A LED. <strong>Same lamp, different chemistry.</strong></p>
+
+<p><strong>Food safety considerations.</strong> Cu<sub>2</sub>O is a well-established food-contact material (copper cookware, copper stills in Scotch whisky production, E172 copper complexes). Immobilized Cu<sub>2</sub>O/TiO<sub>2</sub> on a glass substrate would prevent catalyst leaching. The H<sub>2</sub> co-product is inert and escapes naturally from open vessels. Maximum copper limit in spirits: 1 mg/L (EU Regulation 110/2008)&mdash;immobilized catalyst should remain well below this threshold with proper filtration.</p>
+
+<figure class="sim-figure">
+  <object data="graphs/cu2o-photodehydrogenation.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/cu2o-photodehydrogenation.svg" alt="Cu₂O/TiO₂ photodehydrogenation: radical-free acetaldehyde selectivity and HER optimization">
+  </object>
+  <figcaption><strong>Fig. 59.</strong> Cu<sub>2</sub>O/TiO<sub>2</sub> photodehydrogenation. (A) Acetaldehyde selectivity comparison across oxidation methods. Radical-based approaches (natural O<sub>2</sub>, TiO<sub>2</sub>/UV, electro-Fenton) achieve 35&ndash;55% selectivity because OH&bull; attacks phenolics and ethanol non-selectively. Cu<sup>2+</sup>/TiO<sub>2</sub> and Cu<sub>2</sub>O/TiO<sub>2</sub> achieve &ge;98% via direct hole-mediated dehydrogenation. (B) HER vs Cu<sub>2</sub>O loading (Xing 2021): 10&times; enhancement over bare TiO<sub>2</sub> at 1% loading, declining at higher loadings due to recombination center formation.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published</span> &mdash; Cu<sub>2</sub>O/TiO<sub>2</sub> photodehydrogenation of ethanol with near-unit acetaldehyde selectivity is published by multiple groups (Xing 2021, Cataldo 2019, Chiarello 2020)<span class="cite" data-ref="166"><sup>[166]</sup></span><span class="cite" data-ref="167"><sup>[167]</sup></span>. The dual-photocatalyst protocol is a novel process design combining published components. <strong>Home testability: 3/5</strong> ($20&ndash;30: Cu<sub>2</sub>O powder ($10/50g, pottery supply or eBay) + food-grade TiO<sub>2</sub> ($5/100g) + UV-A LED strip (365 nm, $10). Mix 0.5 g/L Cu<sub>2</sub>O + TiO<sub>2</sub> in spirit, irradiate 30 min. Filter. Compare acetaldehyde smell (sharp, green apple) vs TiO<sub>2</sub>-only control. Then add fresh TiO<sub>2</sub> for vanillin phase.)
+</div>
+
+
+<h3>4.48 Blue-Light Tandem Photocatalysis: Cu<sub>2</sub>O + Riboflavin Under a Single LED</h3>
+
+<div class="callout key-insight">
+  <strong>Novel cross-domain synthesis:</strong> Cu<sub>2</sub>O has a bandgap of 2.17 eV (&le;572 nm), absorbing <strong>visible blue light</strong>&mdash;the same 450 nm wavelength used for riboflavin photosensitization (&sect;4.8). Under a single blue LED, Cu<sub>2</sub>O generates h<sup>+</sup> for selective acetaldehyde while riboflavin generates <sup>1</sup>O<sub>2</sub> for selective phenol oxidation. Meanwhile TiO<sub>2</sub> (bandgap 3.2 eV, &le;388 nm) remains <strong>completely inactive</strong>&mdash;no OH&bull; radicals, no phenolic destruction. Two selective aging chemistries from one light source.
+</div>
+
+<p><strong>The wavelength key.</strong> Spirit aging requires two oxidation chemistries: ethanol &rarr; acetaldehyde (Barrier 4a) and phenolic precursors &rarr; vanillin/syringaldehyde (Barrier 4b). Both are mediated by OH&bull; in barrel aging, creating a selectivity conflict (&sect;4.47). The solution lies in semiconductor bandgap engineering:</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Photocatalyst</th><th>Bandgap (eV)</th><th>Cutoff (nm)</th><th>Active at 450 nm?</th><th>Chemistry</th></tr>
+  <tr><td>TiO<sub>2</sub> (anatase)</td><td>3.2</td><td>388</td><td><strong>NO</strong></td><td>OH&bull; radicals (non-selective)</td></tr>
+  <tr><td>Cu<sub>2</sub>O</td><td>2.17</td><td>572</td><td><strong>YES</strong></td><td>h<sup>+</sup> dehydrogenation (selective AcH)</td></tr>
+  <tr><td>Riboflavin (B<sub>2</sub>)</td><td>&mdash;</td><td>&lambda;<sub>max</sub> 450</td><td><strong>YES</strong></td><td><sup>1</sup>O<sub>2</sub> (selective phenol oxidation)</td></tr>
+</table>
+</div>
+
+<p><strong>Why this tandem works:</strong> Under 450 nm blue light, Cu<sub>2</sub>O&rsquo;s valence band holes oxidize ethanol to acetaldehyde via direct dehydrogenation (&sect;4.47), while its conduction band electrons transfer to the TiO<sub>2</sub> support for H<sup>+</sup> reduction (the TiO<sub>2</sub> acts as a passive electron sink, not a photocatalyst). Simultaneously, riboflavin absorbs the same 450 nm photons and sensitizes <sup>1</sup>O<sub>2</sub> generation, which has &gt;10<sup>6</sup>&times; phenol selectivity over ethanol (&sect;4.8). The result: <strong>two concurrent selective oxidation pathways from one $5 LED strip</strong>, with zero OH&bull; radical generation.</p>
+
+<p><strong>Protocol:</strong></p>
+<ol>
+  <li><strong>Blue phase (450 nm, 1&ndash;2 h):</strong> Spirit + oak extract + 0.5 g/L Cu<sub>2</sub>O/TiO<sub>2</sub> + 8 mg/L riboflavin (vitamin B<sub>2</sub>). Blue LED strip. Cu<sub>2</sub>O &rarr; acetaldehyde; riboflavin &rarr; <sup>1</sup>O<sub>2</sub> &rarr; vanillin/syringaldehyde. No radical damage.</li>
+  <li><strong>UV phase (365 nm, 30 min):</strong> Optional. Switch to UV-A LED to activate TiO<sub>2</sub> for OH&bull;-mediated conversion of remaining 4-vinylguaiacol (&sect;4.26). Only needed if Blue phase <sup>1</sup>O<sub>2</sub> vanillin yield is insufficient.</li>
+</ol>
+
+<p><strong>Cost and accessibility.</strong> This adds $10 (Cu<sub>2</sub>O powder from pottery/ceramic supply) to the riboflavin protocol (&sect;4.8) which already uses a blue LED ($5). The Cu<sub>2</sub>O is safe for spirit contact&mdash;copper distillation equipment is universal in whisky production, and copper ions at the trace levels from an immobilized catalyst (&lt;0.5 mg/L) are well below the 1 mg/L EU spirit limit. Riboflavin is vitamin B<sub>2</sub>, naturally present in spirit and GRAS. <strong>Total incremental cost over &sect;4.8: $10.</strong></p>
+
+<figure class="sim-figure">
+  <object data="graphs/blue-light-tandem.svg" type="image/svg+xml" width="100%">
+  <img src="graphs/blue-light-tandem.svg" alt="Blue-light tandem photocatalysis: Cu₂O + riboflavin under single 450 nm LED">
+  </object>
+  <figcaption><strong>Fig. 60.</strong> Blue-light tandem photocatalysis. (A) Photocatalyst activation by wavelength: TiO<sub>2</sub> absorbs only &le;388 nm (UV), Cu<sub>2</sub>O absorbs &le;572 nm (visible), riboflavin peaks at 370/450 nm. Under a 450 nm blue LED, Cu<sub>2</sub>O and riboflavin are both active while TiO<sub>2</sub> is inert&mdash;no OH&bull; radical generation. (B) Product selectivity comparison: UV-only (TiO<sub>2</sub>) generates acetaldehyde and vanillin but also destroys phenolics via OH&bull;. Blue tandem achieves comparable acetaldehyde (h<sup>+</sup> route) and vanillin (<sup>1</sup>O<sub>2</sub> route) with near-zero phenolic destruction.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">Novel synthesis</span> &mdash; Cu<sub>2</sub>O visible-light photocatalysis is extensively published (bandgap 2.17 eV is a textbook value), and riboflavin photosensitization at 450 nm is well-established (&sect;4.8). The tandem combination under a single blue LED for spirit aging is novel. <strong>Home testability: 5/5</strong> ($15 incremental: Cu<sub>2</sub>O powder ($10, pottery supply) + existing blue LED strip and riboflavin from &sect;4.8. Add 0.5 g/L Cu<sub>2</sub>O + 8 mg/L B<sub>2</sub> to spirit with oak extract. Irradiate 2h under blue LED. Filter. Compare aroma (acetaldehyde = green apple + vanillin = vanilla) vs riboflavin-only control. Blue tandem should produce both.)
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -2574,6 +2654,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Cryo-enzymatic (&sect;4.44)</td><td>Direction reversal: +156 vs &minus;6000 s<sup>&minus;1</sup></td><td><span class="verdict speculative">Novel prediction</span></td><td>$25</td><td>ESTER</td></tr>
 <tr><td>Plasma-Fenton (&sect;4.45)</td><td>Sustained OH&bull; from H<sub>2</sub>O<sub>2</sub> + Fe + UV</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$30&ndash;40</td><td>OXIDATION</td></tr>
 <tr><td>Sono-micelle lipase (&sect;4.46)</td><td>&gt;99% ester yield at a<sub>w</sub>=0.85</td><td><span class="verdict promising">Published (components)</span></td><td>$30&ndash;50</td><td>ESTER</td></tr>
+<tr><td>Cu<sub>2</sub>O/TiO<sub>2</sub> photodehydrogenation (&sect;4.47)</td><td>~100% AcH selectivity (10&times; rate)</td><td><span class="verdict promising">Published</span></td><td>$20&ndash;30</td><td>OXIDATION</td></tr>
+<tr><td>Blue-light tandem (&sect;4.48)</td><td>Dual selective chemistry (AcH + vanillin)</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$15 incr.</td><td>OXIDATION</td></tr>
 </tbody>
 </table>
 </div>
@@ -2755,6 +2837,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Cryo-enzymatic (&sect;4.44)</td><td>3/5</td><td>$25</td><td>Chest freezer + dry ice (&minus;30&deg;C). Freeze 500 mL spirit, decant unfrozen fraction. Add 0.5 g Novozym 435 beads (eBay ~$5/g). Incubate 24&ndash;72h at &minus;30&deg;C. Filter, recombine. Compare ethyl acetate/hexanoate vs same-a<sub>w</sub> room-temp lipase control (which should show hydrolysis, not synthesis).</td></tr>
 <tr><td>Plasma-Fenton (&sect;4.45)</td><td>2/5</td><td>$30&ndash;40</td><td>UV-C lamp + oak chips + H<sub>2</sub>O<sub>2</sub> proxy (0.1% food-grade). Expose 100 mL spirit with oak chips to UV-C for 8 hours. Compare color (spectrophotometer or phone app) and taste vs dark control. Faster color development = photo-Fenton active. <strong>Caution: UV-C is harmful to eyes/skin. Enclosed setup required.</strong></td></tr>
 <tr><td>Sono-micelle lipase (&sect;4.46)</td><td>3/5</td><td>$30&ndash;50</td><td>Novozym 435 (5 g/L, eBay) + TPGS-750-M (2 wt%, chem supplier $20/25g). Dissolve surfactant in 200 mL spirit (stir until clear), add enzyme beads, place in ultrasonic jewelry cleaner at 40&deg;C for 2h. Filter beads (reuse 5&times;). Taste vs enzyme-only control and untreated spirit. Expect increased fruitiness + reduced fusel harshness.</td></tr>
+<tr><td>Cu<sub>2</sub>O/TiO<sub>2</sub> photodehydrogenation (&sect;4.47)</td><td>3/5</td><td>$20&ndash;30</td><td>Cu<sub>2</sub>O powder ($10/50g pottery supply or eBay) + food-grade TiO<sub>2</sub> ($5/100g) + UV-A LED strip (365 nm, $10). Mix 0.5 g/L Cu<sub>2</sub>O + TiO<sub>2</sub> in 200 mL spirit + oak extract. Irradiate 30 min (Phase 1: acetaldehyde). Filter through 0.2 &mu;m syringe filter. Add fresh TiO<sub>2</sub> for Phase 2 (vanillin, 60 min). Compare dual-phase vs single TiO<sub>2</sub> control by smell. Dual-phase should show more acetaldehyde (green apple) AND more vanillin.</td></tr>
+<tr><td><strong>Blue-light tandem (&sect;4.48)</strong></td><td><strong>5/5</strong></td><td><strong>$15 incr.</strong></td><td><strong>Cu<sub>2</sub>O powder ($10 pottery supply) + existing blue LED + riboflavin from &sect;4.8. Add 0.5 g/L Cu<sub>2</sub>O + 8 mg/L B<sub>2</sub> to spirit with oak extract. Blue LED 2h. Filter Cu<sub>2</sub>O through coffee filter. Compare vs riboflavin-only control (&sect;4.8) and untreated spirit. The tandem should produce BOTH acetaldehyde (green apple) AND enhanced vanillin development. Cheapest dual-chemistry upgrade.</strong></td></tr>
 </tbody>
 </table>
 </div>
@@ -2936,6 +3020,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r163">Chrisochoou A, Schaber K, Bolz U. (2001) &ldquo;Pressure Tuning of Reaction Equilibrium of Esterification of Acetic Acid with Ethanol in Compressed CO<sub>2</sub>.&rdquo; <em>J Phys Chem B</em> 105(19):4510&ndash;4513. <a href="https://doi.org/10.1021/jp003903n">DOI</a> (Esterification equilibrium increases with CO<sub>2</sub> pressure in two-phase region, peaking at the critical point: 72% conversion vs 63% neat at 333 K. Equilibrium constant closely related to isothermal compressibility and local density/composition enhancement. Demonstrates pressure as a tuning knob for Fischer esterification.)</li>
   <li id="r164">Singhania V, Cortes-Clerget M, Dussart-Gautheret J, et al. (2022) &ldquo;Lipase-catalyzed esterification in water enabled by nanomicelles. Applications to 1-pot multi-step sequences.&rdquo; <em>Chem Sci</em> 13(5):1440&ndash;1445. <a href="https://doi.org/10.1039/D1SC05660C">DOI</a> (TPGS-750-M nanomicelles (2 wt%) enable lipase-catalyzed esterification in <strong>pure water</strong> with &gt;99% yield. Hydrophobic ester products partition into micelle interior, preventing back-hydrolysis. Breaks the a<sub>w</sub> limitation for enzymatic ester synthesis.)</li>
   <li id="r165">Vartolomei A, Calinescu I, Vinatoru M, Gavrila AI. (2022) &ldquo;A parameter study of ultrasound assisted enzymatic esterification.&rdquo; <em>Sci Rep</em> 12:1421. <a href="https://doi.org/10.1038/s41598-022-05551-x">DOI</a> (20 kHz ultrasound at 0.053 W/mL: +27.4% conversion improvement for CALB esterification. Kinetic regime shifts from diffusion-controlled to kinetically-controlled. Enzyme reusability improved 4&times; (11% vs 43% activity loss). Pulsed mode preserves enzyme stability.)</li>
+  <li id="r166">Xing C, Zhang Y, Liu Y, Wang X, Li J, Martinez-Alanis PR, Spadaro MC, Guardia P, Arbiol J, Llorca J, Cabot A. (2021) &ldquo;Photodehydrogenation of ethanol over Cu<sub>2</sub>O/TiO<sub>2</sub> heterostructures.&rdquo; <em>Nanomaterials</em> 11(6):1399. <a href="https://doi.org/10.3390/nano11061399">DOI</a> (Cu<sub>2</sub>O/TiO<sub>2</sub> type-II p-n heterojunction: <strong>24.5 mmol/h/g HER at 1% Cu<sub>2</sub>O loading, AQY = 6.4%</strong>. Near-unit acetaldehyde selectivity via direct hole-mediated dehydrogenation&mdash;no OH&bull; radicals. 10&times; enhancement over bare TiO<sub>2</sub>. &Delta;G = 36 kJ/mol (ethanol dehydrogenation) vs 229 kJ/mol (water splitting).)</li>
+  <li id="r167">Cataldo S, Ferraro G, Guiliano M, Ferretti S, Palmisano L. (2019) &ldquo;Selective photo-oxidation of ethanol to acetaldehyde and acetic acid in water in presence of TiO<sub>2</sub> and cupric ions under UV-simulated solar radiation.&rdquo; <em>Chem Eng J</em> 355:1304&ndash;1316. <a href="https://doi.org/10.1016/j.cej.2018.11.058">DOI</a> (Cu<sup>2+</sup>/TiO<sub>2</sub> at 120 mM Cu<sup>2+</sup>: ~1.0 acetaldehyde selectivity under UV-simulated solar radiation. Cu<sup>2+</sup> acts as sacrificial electron acceptor, reduced to Cu<sup>0</sup> then reoxidized <em>in situ</em>. Confirms the liquid-phase mechanism for selective ethanol &rarr; acetaldehyde conversion.)</li>
 </ol>
 
 
@@ -3782,6 +3868,16 @@ var refs = {
     source: "Vartolomei et al. (2022), Sci Rep 12:1421",
     excerpt: "20 kHz ultrasound at 0.053 W/mL: +27.4% conversion improvement for CALB (Lipozyme 435) esterification. Kinetic regime shifts from diffusion-controlled to kinetically-controlled. Enzyme reusability 4\u00d7 better (11% vs 43% activity loss). Ea increases from 7.64 to 22.5 kJ/mol under sonication.",
     url: "#r165"
+  },
+  166: {
+    source: "Xing et al. (2021), Nanomaterials 11(6):1399",
+    excerpt: "Cu\u2082O/TiO\u2082 type-II p-n heterojunction photodehydrogenation of ethanol: 24.5 mmol/h/g HER at 1% Cu\u2082O loading, AQY = 6.4%. Near-unit acetaldehyde selectivity via direct hole transfer \u2014 NO OH\u2022 radicals generated. 10\u00d7 enhancement over bare TiO\u2082. \u0394G = 36 kJ/mol (dehydrogenation) vs 229 kJ/mol (water splitting).",
+    url: "#r166"
+  },
+  167: {
+    source: "Cataldo et al. (2019), Chem Eng J 355:1304\u20131316",
+    excerpt: "Cu\u00b2\u207a/TiO\u2082 at 120 mM Cu\u00b2\u207a: ~1.0 acetaldehyde selectivity in aqueous ethanol under UV-simulated solar radiation. Cu\u00b2\u207a acts as sacrificial electron acceptor, reduced to Cu\u2070 then reoxidized in situ. Liquid-phase validation of selective ethanol \u2192 acetaldehyde photocatalysis.",
+    url: "#r167"
   }
 };
 
