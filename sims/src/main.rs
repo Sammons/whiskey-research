@@ -36,6 +36,12 @@ fn main() {
 
     fs::write("../graphs/salt-vle-shift.svg", sim_salt_vle_shift()).unwrap();
     println!("Wrote salt-vle-shift.svg");
+
+    fs::write("../graphs/tannin-condensation.svg", sim_tannin_condensation()).unwrap();
+    println!("Wrote tannin-condensation.svg");
+
+    fs::write("../graphs/pef-extraction.svg", sim_pef_extraction()).unwrap();
+    println!("Wrote pef-extraction.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -693,4 +699,174 @@ fn sim_salt_vle_shift() -> String {
 
     s += "</svg>";
     s
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 7: Tannin-Acetaldehyde Condensation Kinetics
+// ═══════════════════════════════════════════════════════════════
+// Acetaldehyde-mediated condensation of ellagitannins is the key
+// color/astringency maturation reaction. First-order kinetics,
+// Ea ≈ 60 kJ/mol (He et al. 2019, Food Chemistry 282:48-57).
+fn sim_tannin_condensation() -> String {
+    let ea = 60_000.0; // J/mol
+    let k_ref = 1.8e-8; // 1/s at 298.15 K — calibrated: ~50% conversion at 2yr barrel
+    let t_ref = 298.15;
+
+    let arrhenius = |t_c: f64| -> f64 {
+        let t_k = t_c + 273.15;
+        k_ref * E.powf((ea / R) * (1.0 / t_ref - 1.0 / t_k))
+    };
+
+    println!("\n=== Tannin-Acetaldehyde Condensation ===");
+    for t in [4, 20, 35, 50] {
+        let k = arrhenius(t as f64);
+        let half = 0.693 / k / 86400.0;
+        println!("  {}°C: k = {:.2e} /s, t½ = {:.0} days", t, k, half);
+    }
+
+    let total_s = 730.0 * 86400.0;
+    let dt = 3600.0;
+    let n = (total_s / dt) as usize;
+
+    let k20 = arrhenius(20.0);
+    let k50 = arrhenius(50.0);
+    let k4 = arrhenius(4.0);
+    let mut tannin_20: Vec<(f64, f64)> = Vec::new();
+    let mut tannin_50: Vec<(f64, f64)> = Vec::new();
+    let mut tannin_cyc: Vec<(f64, f64)> = Vec::new();
+    let (mut c20, mut c50, mut c_cyc) = (1.0_f64, 1.0_f64, 1.0_f64);
+
+    for i in 0..=n {
+        let t_s = i as f64 * dt;
+        let days = t_s / 86400.0;
+        if i % 24 == 0 {
+            tannin_20.push((days, (1.0 - c20) * 100.0));
+            tannin_50.push((days, (1.0 - c50) * 100.0));
+            tannin_cyc.push((days, (1.0 - c_cyc) * 100.0));
+        }
+        if i < n {
+            c20 *= 1.0 - k20 * dt;
+            c50 *= 1.0 - k50 * dt;
+            let hour = ((t_s / 3600.0) % 24.0) as u32;
+            let k_cyc = if hour < 4 { k50 } else { k4 };
+            c_cyc *= 1.0 - k_cyc * dt;
+        }
+    }
+
+    for (lbl, data) in [("20°C barrel", &tannin_20), ("50°C heated", &tannin_50), ("Cycling", &tannin_cyc)] {
+        if let Some((_,c)) = data.iter().find(|(d,_)| (*d - 365.0).abs() < 1.0) {
+            println!("  {} at 1yr: {:.1}% condensed", lbl, c);
+        }
+        if let Some((_,c)) = data.iter().find(|(d,_)| (*d - 30.0).abs() < 1.0) {
+            println!("  {} at 30d: {:.1}% condensed", lbl, c);
+        }
+    }
+
+    let (w, h, mp) = (700.0, 400.0, 70.0);
+    let (pw, ph) = (w - 2.0*mp, h - 2.0*mp);
+    let sx = |d: f64| mp + (d / 730.0) * pw;
+    let sy = |p: f64| mp + ph - (p / 100.0) * ph;
+
+    let mut svg = svg_header(w, h, "Tannin-Acetaldehyde Condensation: % Polymerized vs. Time (Ea = 60 kJ/mol)");
+    for pct in (0..=100).step_by(20) {
+        svg += &hline(mp, mp+pw, sy(pct as f64), GRID, "0.5");
+        svg += &label(mp-5.0, sy(pct as f64)+3.0, &format!("{pct}%"), MUTED, 10, "end");
+    }
+    for yr in [0, 1, 2] {
+        let d = yr as f64 * 365.0;
+        svg += &vline(sx(d), mp, mp+ph, GRID, "0.5");
+        svg += &label(sx(d), mp+ph+15.0, &format!("{yr} yr"), MUTED, 10, "middle");
+    }
+    svg += &vline(mp, mp, mp+ph, MUTED, "1.5");
+    svg += &hline(mp, mp+pw, mp+ph, MUTED, "1.5");
+    svg += &label((2.0*mp+pw)/2.0, mp+ph+35.0, "Time", MUTED, 11, "middle");
+
+    svg += &polyline_svg(&tannin_20, RED, "2.5", &sx, &sy);
+    svg += &polyline_svg(&tannin_50, GREEN, "2.5", &sx, &sy);
+    svg += &polyline_svg(&tannin_cyc, CYAN, "2.5", &sx, &sy);
+
+    let legend = [
+        (RED, "Barrel (constant 20\u{b0}C)"),
+        (GREEN, "Heated vessel (constant 50\u{b0}C)"),
+        (CYAN, "Cycling (4h@50\u{b0}C + 20h@4\u{b0}C)"),
+    ];
+    for (i, (c, l)) in legend.iter().enumerate() {
+        let ly = 55.0 + i as f64 * 18.0;
+        svg.push_str(&format!("<line x1=\"{}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" stroke=\"{c}\" stroke-width=\"2.5\"/>\n", mp+10.0, mp+30.0));
+        svg += &label(mp+35.0, ly+4.0, l, TEXT, 10, "start");
+    }
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 8: PEF Oak Extraction Enhancement
+// ═══════════════════════════════════════════════════════════════
+// Ntourtoglou et al. (2021) J Food Process Preserv 45:e15577
+// Zhang et al. (2013) Innovative Food Sci Emerg Technol 20:42-49
+fn sim_pef_extraction() -> String {
+    let compounds = [
+        "Vanillin", "Syringaldehyde", "Furfural",
+        "cis-Oak lactone", "trans-Oak lactone", "Total tannins",
+    ];
+    let pef   = [1.75, 4.71, 1.50, 1.13, 1.13, 1.30];
+    let ultra = [1.40, 1.60, 1.80, 1.25, 1.20, 1.35];
+    let ef    = [1.35, 1.40, 1.20, 1.15, 1.10, 1.54];
+
+    println!("\n=== PEF/EF Oak Extraction Enhancement ===");
+    for (i, c) in compounds.iter().enumerate() {
+        println!("  {}: PEF={:.2}x, US={:.2}x, EF={:.2}x", c, pef[i], ultra[i], ef[i]);
+    }
+
+    let (w, h) = (700.0, 420.0);
+    let ml = 130.0;
+    let pw = w - ml - 40.0;
+    let ph = h - 100.0;
+    let mt = 50.0;
+    let n = compounds.len();
+    let bar_group_h = ph / n as f64;
+    let bar_h = bar_group_h * 0.22;
+    let gap = bar_group_h * 0.12;
+    let xmax = 5.0_f64;
+
+    let sx = |v: f64| ml + (v / xmax) * pw;
+    let sy_bar = |i: usize, bar: usize| -> f64 {
+        mt + i as f64 * bar_group_h + bar as f64 * (bar_h + 2.0) + gap
+    };
+
+    let mut svg = svg_header(w, h, "Oak Compound Extraction Enhancement vs. Untreated Control");
+    for v in [1.0, 2.0, 3.0, 4.0, 5.0] {
+        svg += &vline(sx(v), mt, mt+ph, GRID, "0.5");
+        svg += &label(sx(v), mt+ph+15.0, &format!("{v:.0}\u{d7}"), MUTED, 10, "middle");
+    }
+    svg.push_str(&format!("<line x1=\"{}\" y1=\"{mt}\" x2=\"{}\" y2=\"{}\" stroke=\"{YELLOW}\" \
+        stroke-width=\"1.5\" stroke-dasharray=\"6,4\"/>\n", sx(1.0), sx(1.0), mt+ph));
+
+    let methods: [(&str, &[f64; 6], &str); 3] = [
+        ("PEF 1.2 kV/cm", &pef, CYAN),
+        ("Ultrasound 40 kHz", &ultra, PURPLE),
+        ("EF 1 kV/cm (barrel)", &ef, GREEN),
+    ];
+
+    for (i, compound) in compounds.iter().enumerate() {
+        let label_y = sy_bar(i, 1) + bar_h * 0.5;
+        svg += &label(ml-5.0, label_y, compound, TEXT, 10, "end");
+        for (j, (_, vals, color)) in methods.iter().enumerate() {
+            let y = sy_bar(i, j);
+            let bw = (vals[i] / xmax) * pw;
+            svg.push_str(&format!("<rect x=\"{ml}\" y=\"{y:.1}\" width=\"{bw:.1}\" height=\"{bar_h:.1}\" \
+                fill=\"{color}\" opacity=\"0.8\" rx=\"2\"/>\n"));
+            svg += &label(ml + bw + 4.0, y + bar_h - 2.0, &format!("{:.2}\u{d7}", vals[i]),
+                color, 9, "start");
+        }
+    }
+
+    for (i, (lbl, _, color)) in methods.iter().enumerate() {
+        let lx = ml + 10.0 + i as f64 * 170.0;
+        let ly = mt + ph + 35.0;
+        svg.push_str(&format!("<rect x=\"{lx}\" y=\"{}\" width=\"14\" height=\"10\" fill=\"{color}\" opacity=\"0.8\" rx=\"2\"/>\n", ly - 8.0));
+        svg += &label(lx + 18.0, ly, lbl, TEXT, 10, "start");
+    }
+    svg.push_str("</svg>");
+    svg
 }

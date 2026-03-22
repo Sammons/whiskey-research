@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 420" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="420" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Oak Compound Extraction Enhancement vs. Untreated Control</text>
+<line x1="236" y1="50" x2="236" y2="370" stroke="#30363d" stroke-width="0.5"/>
+<text x="236" y="385" fill="#8b949e" font-size="10" text-anchor="middle">1×</text>
+<line x1="342" y1="50" x2="342" y2="370" stroke="#30363d" stroke-width="0.5"/>
+<text x="342" y="385" fill="#8b949e" font-size="10" text-anchor="middle">2×</text>
+<line x1="448" y1="50" x2="448" y2="370" stroke="#30363d" stroke-width="0.5"/>
+<text x="448" y="385" fill="#8b949e" font-size="10" text-anchor="middle">3×</text>
+<line x1="554" y1="50" x2="554" y2="370" stroke="#30363d" stroke-width="0.5"/>
+<text x="554" y="385" fill="#8b949e" font-size="10" text-anchor="middle">4×</text>
+<line x1="660" y1="50" x2="660" y2="370" stroke="#30363d" stroke-width="0.5"/>
+<text x="660" y="385" fill="#8b949e" font-size="10" text-anchor="middle">5×</text>
+<line x1="236" y1="50" x2="236" y2="370" stroke="#d29922" stroke-width="1.5" stroke-dasharray="6,4"/>
+<text x="125" y="76" fill="#e6edf3" font-size="10" text-anchor="end">Vanillin</text>
+<rect x="130" y="56.4" width="185.5" height="11.7" fill="#39d2c0" opacity="0.8" rx="2"/>
+<text x="319.5" y="66.13333333333333" fill="#39d2c0" font-size="9" text-anchor="start">1.75×</text>
+<rect x="130" y="70.1" width="148.4" height="11.7" fill="#bc8cff" opacity="0.8" rx="2"/>
+<text x="282.4" y="79.86666666666667" fill="#bc8cff" font-size="9" text-anchor="start">1.40×</text>
+<rect x="130" y="83.9" width="143.1" height="11.7" fill="#3fb950" opacity="0.8" rx="2"/>
+<text x="277.1" y="93.60000000000001" fill="#3fb950" font-size="9" text-anchor="start">1.35×</text>
+<text x="125" y="129.33333333333334" fill="#e6edf3" font-size="10" text-anchor="end">Syringaldehyde</text>
+<rect x="130" y="109.7" width="499.3" height="11.7" fill="#39d2c0" opacity="0.8" rx="2"/>
+<text x="633.26" y="119.46666666666668" fill="#39d2c0" font-size="9" text-anchor="start">4.71×</text>
+<rect x="130" y="123.5" width="169.6" height="11.7" fill="#bc8cff" opacity="0.8" rx="2"/>
+<text x="303.6" y="133.20000000000002" fill="#bc8cff" font-size="9" text-anchor="start">1.60×</text>
+<rect x="130" y="137.2" width="148.4" height="11.7" fill="#3fb950" opacity="0.8" rx="2"/>
+<text x="282.4" y="146.93333333333334" fill="#3fb950" font-size="9" text-anchor="start">1.40×</text>
+<text x="125" y="182.6666666666667" fill="#e6edf3" font-size="10" text-anchor="end">Furfural</text>
+<rect x="130" y="163.1" width="159.0" height="11.7" fill="#39d2c0" opacity="0.8" rx="2"/>
+<text x="293" y="172.8" fill="#39d2c0" font-size="9" text-anchor="start">1.50×</text>
+<rect x="130" y="176.8" width="190.8" height="11.7" fill="#bc8cff" opacity="0.8" rx="2"/>
+<text x="324.79999999999995" y="186.53333333333336" fill="#bc8cff" font-size="9" text-anchor="start">1.80×</text>
+<rect x="130" y="190.5" width="127.2" height="11.7" fill="#3fb950" opacity="0.8" rx="2"/>
+<text x="261.2" y="200.2666666666667" fill="#3fb950" font-size="9" text-anchor="start">1.20×</text>
+<text x="125" y="236.00000000000003" fill="#e6edf3" font-size="10" text-anchor="end">cis-Oak lactone</text>
+<rect x="130" y="216.4" width="119.8" height="11.7" fill="#39d2c0" opacity="0.8" rx="2"/>
+<text x="253.77999999999997" y="226.13333333333333" fill="#39d2c0" font-size="9" text-anchor="start">1.13×</text>
+<rect x="130" y="230.1" width="132.5" height="11.7" fill="#bc8cff" opacity="0.8" rx="2"/>
+<text x="266.5" y="239.86666666666667" fill="#bc8cff" font-size="9" text-anchor="start">1.25×</text>
+<rect x="130" y="243.9" width="121.9" height="11.7" fill="#3fb950" opacity="0.8" rx="2"/>
+<text x="255.89999999999998" y="253.60000000000002" fill="#3fb950" font-size="9" text-anchor="start">1.15×</text>
+<text x="125" y="289.33333333333337" fill="#e6edf3" font-size="10" text-anchor="end">trans-Oak lactone</text>
+<rect x="130" y="269.7" width="119.8" height="11.7" fill="#39d2c0" opacity="0.8" rx="2"/>
+<text x="253.77999999999997" y="279.4666666666667" fill="#39d2c0" font-size="9" text-anchor="start">1.13×</text>
+<rect x="130" y="283.5" width="127.2" height="11.7" fill="#bc8cff" opacity="0.8" rx="2"/>
+<text x="261.2" y="293.20000000000005" fill="#bc8cff" font-size="9" text-anchor="start">1.20×</text>
+<rect x="130" y="297.2" width="116.6" height="11.7" fill="#3fb950" opacity="0.8" rx="2"/>
+<text x="250.60000000000002" y="306.9333333333334" fill="#3fb950" font-size="9" text-anchor="start">1.10×</text>
+<text x="125" y="342.6666666666667" fill="#e6edf3" font-size="10" text-anchor="end">Total tannins</text>
+<rect x="130" y="323.1" width="137.8" height="11.7" fill="#39d2c0" opacity="0.8" rx="2"/>
+<text x="271.8" y="332.8" fill="#39d2c0" font-size="9" text-anchor="start">1.30×</text>
+<rect x="130" y="336.8" width="143.1" height="11.7" fill="#bc8cff" opacity="0.8" rx="2"/>
+<text x="277.1" y="346.53333333333336" fill="#bc8cff" font-size="9" text-anchor="start">1.35×</text>
+<rect x="130" y="350.5" width="163.2" height="11.7" fill="#3fb950" opacity="0.8" rx="2"/>
+<text x="297.24" y="360.26666666666665" fill="#3fb950" font-size="9" text-anchor="start">1.54×</text>
+<rect x="140" y="397" width="14" height="10" fill="#39d2c0" opacity="0.8" rx="2"/>
+<text x="158" y="405" fill="#e6edf3" font-size="10" text-anchor="start">PEF 1.2 kV/cm</text>
+<rect x="310" y="397" width="14" height="10" fill="#bc8cff" opacity="0.8" rx="2"/>
+<text x="328" y="405" fill="#e6edf3" font-size="10" text-anchor="start">Ultrasound 40 kHz</text>
+<rect x="480" y="397" width="14" height="10" fill="#3fb950" opacity="0.8" rx="2"/>
+<text x="498" y="405" fill="#e6edf3" font-size="10" text-anchor="start">EF 1 kV/cm (barrel)</text>
+</svg>

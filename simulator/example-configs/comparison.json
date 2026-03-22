@@ -1,0 +1,49 @@
+{
+  "name": "Barrel vs Accelerated Comparison",
+  "runs": [
+    {
+      "label": "Traditional Barrel (2yr)",
+      "temperature": {
+        "mode": "constant",
+        "value_c": 20.0
+      },
+      "o2_delivery": "barrel",
+      "catalyst": {
+        "amberlyst": false,
+        "cu_ac": false
+      },
+      "initial_abv": 0.63,
+      "duration_days": 730,
+      "wood_surface_area_cm2_per_l": 6.0,
+      "initial_species": {
+        "acetic_acid_mol_l": 0.0083,
+        "dms_mol_l": 0.000015,
+        "monomeric_tannin_mol_l": 0.0,
+        "vanillin_mol_l": 0.0
+      }
+    },
+    {
+      "label": "Accelerated (60d)",
+      "temperature": {
+        "mode": "cycling",
+        "base_c": 50.0,
+        "amplitude_c": 10.0,
+        "period_days": 1.0
+      },
+      "o2_delivery": "pdms_membrane",
+      "catalyst": {
+        "amberlyst": true,
+        "cu_ac": true
+      },
+      "initial_abv": 0.40,
+      "duration_days": 60,
+      "wood_surface_area_cm2_per_l": 30.0,
+      "initial_species": {
+        "acetic_acid_mol_l": 0.0083,
+        "dms_mol_l": 0.000015,
+        "monomeric_tannin_mol_l": 0.0,
+        "vanillin_mol_l": 0.0
+      }
+    }
+  ]
+}

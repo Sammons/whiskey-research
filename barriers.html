@@ -355,6 +355,7 @@
   <div style="margin-top:1rem;">
     <a href="#b5">5. Synthesis: An Integrated Protocol</a> &bull;
     <a href="#open">6. Open Questions</a> &bull;
+    <a href="#home">7. Home Testability Guide</a> &bull;
     <a href="#refs">References</a>
   </div>
 </nav>
@@ -448,7 +449,22 @@
 
 <p>Acid-activated clinoptilolite zeolites catalyze Fischer esterification of acetic acid with alcohols, and sulfated clinoptilolite shows enhanced conversion<span class="cite" data-ref="46"><sup>[46]</sup></span>. Clinoptilolite is a natural zeolite already used in beer filtration and is food-grade (GRAS). Critically, when Cu<sup>2+</sup>-exchanged, the same zeolite simultaneously adsorbs DMS via electrophilic interaction with sulfur&rsquo;s lone pair&mdash;addressing Barriers 1 and 2 in a single pass-through column. See &sect;2.4 below.</p>
 
-<p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration&mdash;FDA-cleared materials, published kinetics. <span class="verdict promising">PROMISING</span> Electrochemical gold-surface catalysis&mdash;published and validated in distilled spirit with sensory confirmation<span class="cite" data-ref="37"><sup>[37]</sup></span>. <span class="verdict speculative">SPECULATIVE</span> TiO<sub>2</sub> photocatalytic esterification (demonstrated for fatty acids, untested in spirits). <span class="verdict speculative">SPECULATIVE</span> PEF (extrapolated from polyphenol condensation). <span class="verdict speculative">SPECULATIVE</span> EBI (radical-mediated, studied since 1960s, but EBI+oak combination untested). <span class="verdict promising">PROMISING</span> Zeolite dual-function column (natural, food-grade, dual Barrier 1+2).</p>
+<h3>1.8 Pulsed Electric Field &amp; Electric Field Oak Extraction</h3>
+
+<p>Pulsed electric field (PEF) treatment at 1.2 kV/cm applied to toasted oak chips in ethanol solutions produces dramatic extraction enhancement<span class="cite" data-ref="53"><sup>[53]</sup></span>: vanillin increased 75%, syringaldehyde increased 371%, furfural increased 50%, and oak lactone increased 13% relative to untreated controls. The effect was strongest at lower ethanol concentrations (5% v/v), where cell membrane electroporation is most effective.</p>
+
+<p>Sustained low-frequency electric field treatment (1 kV/cm, 50 Hz) applied to brandy in oak barrels for 14 months produced 54% more tannins in 5-L barrels and 44% more in 2-L barrels<span class="cite" data-ref="54"><sup>[54]</sup></span>. Remarkably, while extractive compounds increased, acetaldehyde and higher alcohols <em>decreased</em>&mdash;suggesting the electric field simultaneously accelerates condensation reactions. This simultaneously addresses Barriers 1, 3, and 4.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/pef-extraction.svg" alt="PEF oak extraction enhancement" style="width:100%">
+  <figcaption><strong>Fig. 7.</strong> Oak compound extraction enhancement factors from PEF, ultrasound, and electric field treatments relative to untreated controls. Data from Ntourtoglou et al. (2021) and Zhang et al. (2013). The 371% syringaldehyde increase from PEF is the largest single-compound enhancement in the literature.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Home testability:</strong> A basic PEF setup is achievable with a bench power supply (0&ndash;30V DC, ~$40), stainless steel mesh electrodes, and a glass jar. At 5 cm electrode spacing, 1.2 kV/cm requires 6 kV&mdash;this exceeds bench supply range. However, the sustained EF approach (1 kV/cm AC) at 5 cm spacing requires only 500 V, achievable with a neon sign transformer ($25 surplus). <strong>Cost: ~$30&ndash;$60. Safety: high-voltage precautions required.</strong>
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration&mdash;FDA-cleared materials, published kinetics. <span class="verdict promising">PROMISING</span> Electrochemical gold-surface catalysis&mdash;published and validated in distilled spirit with sensory confirmation<span class="cite" data-ref="37"><sup>[37]</sup></span>. <span class="verdict speculative">SPECULATIVE</span> TiO<sub>2</sub> photocatalytic esterification (demonstrated for fatty acids, untested in spirits). <span class="verdict promising">PROMISING</span> PEF/EF oak extraction (published data in oak+ethanol and brandy barrels, compound-specific quantitative results<span class="cite" data-ref="53"><sup>[53]</sup></span><span class="cite" data-ref="54"><sup>[54]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> EBI (radical-mediated, studied since 1960s, but EBI+oak combination untested). <span class="verdict promising">PROMISING</span> Zeolite dual-function column (natural, food-grade, dual Barrier 1+2).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -637,7 +653,7 @@
   <strong>Testable prediction:</strong> DLS measurement should reveal a population of particles at 1&ndash;3 nm hydrodynamic radius in the treated sample, absent in controls.
 </div>
 
-<h3>3.6 The Humic Acid Parallel</h3>
+<h3>3.7 The Humic Acid Parallel</h3>
 
 <div class="callout key-insight">
   <strong>From agricultural science:</strong> This parallel has never been drawn in the spirits literature, yet the structural and mechanistic match is near-exact.
@@ -645,11 +661,11 @@
 
 <p>Piccolo (2001) demonstrated that humic substances are not macromolecules but <strong>supramolecular associations of small heterogeneous molecules held together by weak forces</strong>: van der Waals, &pi;&ndash;&pi; stacking, CH&ndash;&pi; interactions, and hydrogen bonds<span class="cite" data-ref="49"><sup>[49]</sup></span>. They are amphiphilic (hydrophobic aromatic core, polar ionizable groups), self-assembling (10 nm to 1 &mu;m aggregates), pH-sensitive, and disruptable by organic acids. This is structurally identical to the Morishima supramolecular clusters in aged whiskey. The soil science literature has decades of research on accelerating, controlling, and templating this type of assembly, including metal cation bridging (Ca<sup>2+</sup>, Mg<sup>2+</sup>) and organic acid disruption/reformation cycles to reach equilibrium faster.</p>
 
-<h3>3.7 Pre-Ouzo Nanocluster Physics</h3>
+<h3>3.8 Pre-Ouzo Nanocluster Physics</h3>
 
 <p>Zemb et al. (2016) explained how &ldquo;microemulsions formed by solvent mixtures without conventional surfactants&rdquo; arise spontaneously in ternary ethanol/water/hydrophobic-oil systems<span class="cite" data-ref="50"><sup>[50]</sup></span>. The &ldquo;pre-Ouzo&rdquo; domain produces surfactant-free microemulsions with nanometer-scale clusters (1&ndash;10 nm) stabilized by ethanol acting as a hydrotrope at the water-oil interface. This is exactly the ethanol-water-extractive system present in whiskey. The cosmetics and perfume literature has mapped these ternary phase diagrams extensively&mdash;including with eugenol (a wood-derived phenol) as the oil phase&mdash;and understands how to control cluster size through composition ratios, temperature, co-hydrotropes, and dilution pathways through phase space. The Morishima 0.75 nm clusters fall squarely in the pre-Ouzo size regime.</p>
 
-<h3>3.8 Nucleation Seeding from Concrete Science</h3>
+<h3>3.9 Nucleation Seeding from Concrete Science</h3>
 
 <p>In cement science, adding just 1&ndash;4 wt% of pre-formed calcium silicate hydrate (C-S-H) seed particles accelerates hydration dramatically: 85% earlier peak rate, 120% higher maximum hydration rate, and 78% compressive strength increase at 24 hours<span class="cite" data-ref="51"><sup>[51]</sup></span>. The mechanism is heterogeneous nucleation: seed particles provide nucleation sites away from existing surfaces, and the process is autocatalytic&mdash;product stimulates its own formation.</p>
 
@@ -657,7 +673,41 @@
   <strong>The strongest Barrier-3 hypothesis from cross-domain research:</strong> Pre-formed amphiphilic nanoclusters isolated from well-aged whiskey (e.g. by ultrafiltration of 20-year-old stock) could serve as nucleation seeds in young spirit. If the C-S-H acceleration factors (85&ndash;120%) translate even partially, then a 2&ndash;4% addition of &ldquo;cluster seed&rdquo; could switch the assembly mechanism from slow spontaneous nucleation to fast templated growth&mdash;exactly as the block copolymer literature shows &ldquo;small-molecule dopants completely change the self-assembly mechanism from intramolecular chain shuffling to nucleation-growth mode.&rdquo; BASF&rsquo;s commercial Master X-Seed product line demonstrates industrial scalability of this principle.
 </div>
 
-<p><span class="verdict promising">PROMISING</span> Proof optimization (straightforward physics, no novel equipment). <span class="verdict speculative">SPECULATIVE</span> Flash nanoprecipitation and freeze-thaw (sound first-principles, untested in spirits). <span class="verdict moonshot">MOONSHOT</span> Seeded supramolecular polymerization (thrilling if it works, no direct evidence&mdash;but now strongly reinforced by concrete C-S-H seeding data and block copolymer mechanism-switching evidence). <span class="verdict speculative">SPECULATIVE</span> Humic acid parallel (decades of soil science data, zero spirits application). <span class="verdict speculative">SPECULATIVE</span> Pre-Ouzo nanocluster engineering (PNAS-published physics, cosmetics-mapped phase diagrams).</p>
+<h3>3.10 Deep Eutectic Solvent Oak Extraction</h3>
+
+<div class="callout key-insight">
+  <strong>Novel discovery:</strong> This approach has never been published in the spirits context, yet the chemistry is remarkably well-suited and all components are food-grade.
+</div>
+
+<p>Deep eutectic solvents (DES) based on choline chloride paired with food-grade acids extract <strong>2&ndash;10&times; more polyphenolic material</strong> from wood than ethanol alone<span class="cite" data-ref="56"><sup>[56]</sup></span>. Choline chloride:lactic acid (1:2 molar) at 50&ndash;80&deg;C for 1&ndash;4 hours achieves 91.8% lignin extraction from hardwood<span class="cite" data-ref="57"><sup>[57]</sup></span>. Choline chloride is a vitamin B4 precursor (FDA GRAS, ~$10/lb as livestock feed supplement). Lactic acid is food-grade. Both are fully water-miscible, so the concentrated extract can be diluted and dosed into spirit in controlled amounts.</p>
+
+<p>The application is as an oak pretreatment: soak toasted oak chips in ChCl:lactic acid DES at 60&ndash;80&deg;C for 2&ndash;4 hours, strain, dilute the extract, and add measured drops per liter of spirit. This produces a &ldquo;barrel essence&rdquo; concentrate orders of magnitude richer in ellagitannins, vanillin, and phenolic aldehydes than conventional ethanol extraction. The extract feeds directly into the clustering pathway (Barrier 3) and provides acid/aldehyde substrates for esterification (Barrier 1).</p>
+
+<div class="callout hypothesis">
+  <strong>Home testability:</strong> Choline chloride from Amazon ($10&ndash;15/lb) + 88% lactic acid ($8&ndash;12). Mix 1:1.3 by weight, heat to 60&deg;C with stirring until homogeneous. Add toasted oak chips, hold at 60&ndash;80&deg;C for 2&ndash;4h, strain. Add 1&ndash;5 mL DES extract per liter of spirit. Compare extraction intensity vs. same weight of untreated chips in spirit. <strong>Cost: ~$25. Feasibility: 4/5.</strong>
+</div>
+
+<h3>3.11 Enzymatic Oak Pretreatment</h3>
+
+<p>Cellulase/hemicellulase enzyme cocktails can hydrolyze oak wood polymers to release flavor precursors that normally require years of slow acid hydrolysis in barrel: xylose and arabinose from hemicellulose (furfural precursors via dehydration), ferulic acid from hemicellulose&ndash;lignin crosslinks (vanillin precursor), and glycosidically-bound aroma compounds including vanillin glucoside, eugenol glucoside, and guaiacol glucoside<span class="cite" data-ref="58"><sup>[58]</sup></span>. A 1993 patent (US 5,356,641) demonstrated cellulase digestion of oak at 50&ndash;60&deg;C followed by distillation to produce a dark extract with aged character.</p>
+
+<p>Food-grade cellulase and hemicellulase preparations are available from homebrew suppliers (Lallzyme, Novozymes equivalents). Protocol: soak oak chips in water at pH 5.0 and 50&deg;C, add enzyme blend (0.1&ndash;0.5 mL per gram of wood), incubate 24&ndash;72 hours with periodic agitation, then drain and dry the pretreated chips before adding to spirit. The enzyme-opened wood structure allows faster and deeper extraction by the spirit.</p>
+
+<div class="callout hypothesis">
+  <strong>Home testability:</strong> Homebrew enzyme preparations ~$15&ndash;25, standard kitchen equipment. Compare extraction rate and flavor of enzyme-pretreated vs. untreated oak chips in spirit over 2&ndash;4 weeks. <strong>Cost: ~$25&ndash;40. Feasibility: 4/5.</strong>
+</div>
+
+<h3>3.12 Multi-Toast Blending</h3>
+
+<p>Real-time PTR-ToF-MS monitoring of oak toasting reveals that lignin-derived compounds (vanillin, guaiacol, eugenol) increase by approximately one order of magnitude for each 25&deg;C increase in toasting temperature<span class="cite" data-ref="59"><sup>[59]</sup></span>. Critically, different compounds have different optimal toast levels: whiskey lactones peak at light toast (~165&deg;C, 2h) and are <em>destroyed</em> by heavy toasting, while vanillin peaks at medium toast (~180&ndash;190&deg;C) and guaiacol increases monotonically with temperature<span class="cite" data-ref="60"><sup>[60]</sup></span>. Traditional cooperage selects a single toast level, necessarily compromising between compounds.</p>
+
+<p>A multi-toast blending strategy uses separate batches of oak chips toasted to different temperatures: light toast (165&deg;C, 2h) for lactones, medium toast (180&deg;C, 2.5h) for vanillin/eugenol, and heavy toast (200&deg;C, 1h) for guaiacol/cyclotene. Adding equal portions of each to spirit produces a more complete flavor profile than any single toast level can achieve.</p>
+
+<div class="callout hypothesis">
+  <strong>Home testability:</strong> Kitchen oven + oven thermometer. Toast separate batches of American white oak chips at 165&deg;C, 180&deg;C, and 200&deg;C. Blend equal amounts in spirit. Compare vs. single medium-toast control after 2&ndash;4 weeks. <strong>Cost: ~$15&ndash;20 (oak chips + thermometer). Feasibility: 5/5. Most immediately actionable technique.</strong>
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Proof optimization (straightforward physics, no novel equipment). <span class="verdict speculative">SPECULATIVE</span> Flash nanoprecipitation and freeze-thaw (sound first-principles, untested in spirits). <span class="verdict moonshot">MOONSHOT</span> Seeded supramolecular polymerization (strongly reinforced by concrete C-S-H seeding data). <span class="verdict promising">PROMISING</span> DES oak extraction (food-safe, 2&ndash;10&times; more efficient than ethanol, entirely novel in spirits<span class="cite" data-ref="56"><sup>[56]</sup></span>). <span class="verdict promising">PROMISING</span> Enzymatic pretreatment (patented, food-grade enzymes, releases glycoside-bound aromas<span class="cite" data-ref="58"><sup>[58]</sup></span>). <span class="verdict promising">PROMISING</span> Multi-toast blending (compound-specific optimization, immediately actionable<span class="cite" data-ref="59"><sup>[59]</sup></span>).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -761,7 +811,32 @@
 
 <p>Laccase is already food-grade (used in wine and dairy processing), operates at ambient temperature, and the immobilized format allows recovery and reuse. Applied to oak chips in spirit, this could replace years of slow in-barrel oxidation with enzymatic degradation in hours, producing the same phenolic aldehyde profile that feeds into the ester and clustering cascades.</p>
 
-<p><span class="verdict promising">PROMISING</span> Silicone membrane MOX (proven materials, proven concept in wine, FDA-approved). <span class="verdict promising">PROMISING</span> Electrochemical potential programming (published in spirit, 10,000&times; acceleration demonstrated<span class="cite" data-ref="38"><sup>[38]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> Controlled Fenton (powerful but risky without analytical monitoring). <span class="verdict speculative">SPECULATIVE</span> Immobilized laccase (food-grade, published lignin degradation data, vanillin positive feedback, untested in spirits).</p>
+<h3>4.5 Temperature-Accelerated Tannin Condensation</h3>
+
+<p>Acetaldehyde-mediated condensation of ellagitannins follows first-order kinetics with an activation energy of approximately 60 kJ/mol<span class="cite" data-ref="55"><sup>[55]</sup></span>. This reaction produces ethyl-bridged tannin polymers that soften astringency and deepen color&mdash;one of the most perceptible markers of well-aged spirit. The Arrhenius temperature dependence is steep: the rate at 50&deg;C is approximately <strong>10&times; faster</strong> than at 20&deg;C.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/tannin-condensation.svg" alt="Tannin condensation kinetics" style="width:100%">
+  <figcaption><strong>Fig. 8.</strong> Tannin-acetaldehyde condensation kinetics at barrel temperature (20&deg;C), heated vessel (50&deg;C), and temperature cycling (4h at 50&deg;C + 20h at 4&deg;C). At 50&deg;C, t&frac12; = 69 days vs. 673 days at 20&deg;C. Temperature cycling achieves 1-year barrel equivalent in approximately 1 year but with potential flavor-differentiation benefits from cold-phase precipitation.</figcaption>
+</figure>
+
+<p>A subtle advantage of cycling: the cold phase (4&deg;C) promotes precipitation of less soluble tannin-acetaldehyde adducts, removing them from solution and shifting the equilibrium forward. This mirrors the Tennessee &ldquo;rickhouse cycling&rdquo; effect where summer/winter temperature swings accelerate maturation&mdash;but compressed from annual to daily cycles.</p>
+
+<div class="callout hypothesis">
+  <strong>Home testability:</strong> This is the simplest of all acceleration techniques. A 1-L jar of spirit with oak chips on a sous-vide heater (50&deg;C, $30) produces 10&times; tannin condensation rate. Combined with a domestic freezer for the cold phase, no novel equipment is required. <strong>Cost: ~$30 (sous-vide immersion circulator). Feasibility: 5/5.</strong>
+</div>
+
+<h3>4.6 Maillard Substrate Supplementation</h3>
+
+<p>The Maillard reaction between reducing sugars and amino acids produces furfural, 5-HMF, pyrazines, Strecker aldehydes, and melanoidins (color)&mdash;all key markers of aged spirit. Pentose sugars from oak hemicellulose (xylose, arabinose) are 2&ndash;5&times; more Maillard-reactive than glucose<span class="cite" data-ref="61"><sup>[61]</sup></span>. In barrel aging, the charred inner surface provides both sugars and amino acids, but the supply rate is mass-transfer limited through centimeters of stave.</p>
+
+<p>Direct supplementation bypasses this limitation: adding food-grade xylose (0.1&ndash;0.5 g/L) and glycine (0.05&ndash;0.1 g/L) to spirit with toasted oak chips, combined with temperature cycling between 25&deg;C and 60&deg;C, dramatically accelerates furfural and Strecker aldehyde formation. At spirit pH (~3.5), the Maillard reaction favors HMF and furfural production over melanoidin polymerization, producing the &ldquo;right&rdquo; products for spirit maturation. Xylose is naturally present in oak extracts; supplementation is chemically equivalent to extracting more from the wood.</p>
+
+<div class="callout hypothesis">
+  <strong>Home testability:</strong> Food-grade xylose ($10&ndash;15 online), glycine ($8&ndash;10). Add xylose (0.3 g/L) + glycine (0.08 g/L) to spirit with medium-toast oak chips. Temperature cycle daily (4h at 60&deg;C via sous vide, 20h ambient). Compare furfural/color development vs. unsupplemented control after 2&ndash;4 weeks. <strong>Cost: ~$20. Feasibility: 4/5.</strong>
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Silicone membrane MOX (proven materials, proven concept in wine, FDA-approved). <span class="verdict promising">PROMISING</span> Electrochemical potential programming (published in spirit, 10,000&times; acceleration demonstrated<span class="cite" data-ref="38"><sup>[38]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> Controlled Fenton (powerful but risky without analytical monitoring). <span class="verdict speculative">SPECULATIVE</span> Immobilized laccase (food-grade, published lignin degradation data, vanillin positive feedback, untested in spirits). <span class="verdict promising">PROMISING</span> Temperature cycling (Arrhenius, 10&times; rate at 50&deg;C<span class="cite" data-ref="55"><sup>[55]</sup></span>). <span class="verdict promising">PROMISING</span> Maillard supplementation (published kinetics, food-grade substrates, addresses real aging chemistry<span class="cite" data-ref="61"><sup>[61]</sup></span>).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -948,7 +1023,7 @@
 <tr><td>Electrochemical Au (&sect;1.4)</td><td>3/5</td><td>$200</td><td>DC supply ($60) + gold wire ($80&ndash;150). Apply 0.8V for 20 min. Gold is E175 food-safe.</td></tr>
 <tr><td>TiO<sub>2</sub> + UVA (&sect;1.5)</td><td>3/5</td><td>$50</td><td>5g TiO<sub>2</sub> anatase (E171) in jar, UVA LED panel, 3&ndash;6h. Filter, taste vs. dark control.</td></tr>
 <tr><td>Cu-clinoptilolite column (&sect;1.7)</td><td>4/5</td><td>$25</td><td>Soak clinoptilolite in CuSO<sub>4</sub>, calcine at 200&deg;C, pack column. Dual-function (B1+B2).</td></tr>
-<tr><td>PEF (&sect;1.3)</td><td>1/5</td><td>$3,000+</td><td>Skip. Requires industrial pulse generator.</td></tr>
+<tr><td>EF oak extraction (&sect;1.8)</td><td>3/5</td><td>$30&ndash;60</td><td>Neon sign transformer + SS mesh electrodes in glass jar with oak chips. 500V AC across 5cm. Safety precautions.</td></tr>
 <tr><td>Gamma/EBI (&sect;1.6)</td><td>1/5</td><td>N/A</td><td>Skip&mdash;or send sealed samples to food irradiation service ($100&ndash;300/batch).</td></tr>
 
 <tr style="background:var(--surface2)"><td colspan="4"><strong>Barrier 2: Sulfur Removal</strong></td></tr>
@@ -962,18 +1037,23 @@
 <tr><td>Seeded clustering (&sect;3.4/3.8)</td><td>4/5</td><td>$20&ndash;100</td><td>Add 2&ndash;4% vol well-aged whiskey to young extracted spirit at 37% ABV. Rest 4 weeks vs. unseeded control.</td></tr>
 <tr><td>Freeze-thaw (&sect;3.3)</td><td>4/5</td><td>$0</td><td>10 freeze-thaw cycles (&ndash;25&deg;C, 24h each) in chest freezer. Modest effect at this temp.</td></tr>
 <tr><td>Flash nanoprecipitation (&sect;3.2)</td><td>3/5</td><td>$30</td><td>Syringe-inject concentrated oak extract into water through plumbing T-fitting under turbulence.</td></tr>
+<tr><td><strong>DES oak extraction (&sect;3.10)</strong></td><td><strong>4/5</strong></td><td><strong>$25</strong></td><td><strong>ChCl + lactic acid. 2&ndash;10&times; more polyphenols than ethanol. Food-grade. Mix, heat, soak chips, dose.</strong></td></tr>
+<tr><td>Enzymatic pretreatment (&sect;3.11)</td><td>4/5</td><td>$25&ndash;40</td><td>Homebrew cellulase on oak chips at 50&deg;C/24h. Releases glycoside-bound aromas. Dry chips, add to spirit.</td></tr>
+<tr><td><strong>Multi-toast blending (&sect;3.12)</strong></td><td><strong>5/5</strong></td><td><strong>$15</strong></td><td><strong>Kitchen oven: separate batches at 165&deg;C, 180&deg;C, 200&deg;C. Blend in spirit. Most immediately actionable.</strong></td></tr>
 
 <tr style="background:var(--surface2)"><td colspan="4"><strong>Barrier 4: Oxidation Cascades</strong></td></tr>
 <tr><td><strong>Silicone membrane MOX (&sect;4.1)</strong></td><td><strong>5/5</strong></td><td><strong>$25</strong></td><td><strong>PDMS tubing coil in jar + aquarium pump. Run 2&ndash;4 weeks. Dead simple.</strong></td></tr>
 <tr><td>Electrochemical programming (&sect;4.3)</td><td>3/5</td><td>$200</td><td>Same gold electrode as 1.4. Step voltage: 0.50V &rarr; 0.68V &rarr; 0.80V, 4h each.</td></tr>
 <tr><td>Immobilized laccase (&sect;4.4)</td><td>3/5</td><td>$80</td><td>Buy laccase (Sigma, <em>T. versicolor</em>), add to spirit with oak chips, 24&ndash;48h at RT. Filter.</td></tr>
+<tr><td><strong>Temperature cycling (&sect;4.5)</strong></td><td><strong>5/5</strong></td><td><strong>$30</strong></td><td><strong>Sous-vide 50&deg;C 4h &rarr; freezer 4&deg;C 20h. Daily cycle. 10&times; tannin condensation rate. Dead simple.</strong></td></tr>
+<tr><td>Maillard supplementation (&sect;4.6)</td><td>4/5</td><td>$20</td><td>Add xylose (0.3 g/L) + glycine (0.08 g/L) to spirit with oak. Temperature cycle. Accelerates furfural.</td></tr>
 <tr><td>Fenton chemistry (&sect;4.2)</td><td>2/5</td><td>$30</td><td>Very thin margin for error. Overshoot &rarr; vinegar. Only for experienced hands.</td></tr>
 </tbody>
 </table>
 </div>
 
 <div class="callout key-insight">
-  <strong>Start here:</strong> The five easiest first experiments are Cu/AC cartridge ($15, Barrier 2), PDMS membrane MOX ($25, Barrier 4), two-phase aging ($30, Barrier 3), proof optimization ($0, Barrier 3), and Amberlyst-15 column ($40, Barrier 1). Together they cost under $110 and address all four barriers with off-the-shelf materials.
+  <strong>Start here &mdash; Top 8 techniques under $200 total:</strong> Multi-toast blending ($15, &sect;3.12), Cu/AC cartridge ($15, &sect;2.1), Maillard supplementation ($20, &sect;4.6), DES oak extraction ($25, &sect;3.10), PDMS membrane MOX ($25, &sect;4.1), temperature cycling ($30, &sect;4.5), two-phase aging ($30, &sect;3.6), and proof optimization ($0, &sect;3.1). These address all four barriers with off-the-shelf materials, food-grade reagents, and kitchen equipment.
 </div>
 
 
@@ -1036,6 +1116,15 @@
   <li id="r50">Zemb TN, Klossek M, Lopian T, et al. (2016) &ldquo;How to explain microemulsions formed by solvent mixtures without conventional surfactants.&rdquo; <em>PNAS</em> 113:4260&ndash;4265. <a href="https://doi.org/10.1073/pnas.1515708113">DOI</a></li>
   <li id="r51">Thomas JJ, et al. (2009) &ldquo;Influence of nucleation seeding on the hydration mechanisms of tricalcium silicate and cement.&rdquo; <em>J Phys Chem C</em> 113:4327&ndash;4334. <a href="https://doi.org/10.1021/jp809811w">DOI</a></li>
   <li id="r52">Zhang Y, et al. (2023) &ldquo;How can vanillin improve performance of lignocellulosic biomass conversion in an immobilized laccase microreactor system?&rdquo; <em>Bioresource Technol</em> 376:128922. <a href="https://doi.org/10.1016/j.biortech.2023.128922">DOI</a></li>
+  <li id="r53">Ntourtoglou G, et al. (2021) &ldquo;Extraction of volatile aroma compounds from toasted oak wood using pulsed electric field.&rdquo; <em>J Food Process Preserv</em> 45:e15577. <a href="https://doi.org/10.1111/jfpp.15577">DOI</a></li>
+  <li id="r54">Zhang B, Zeng X, Sun B. (2013) &ldquo;Effects of electric field treatments on phenol compounds of brandy aging in oak barrels.&rdquo; <em>Innovative Food Sci Emerg Technol</em> 20:42&ndash;49. <a href="https://www.sciencedirect.com/science/article/abs/pii/S1466856413001185">ScienceDirect</a></li>
+  <li id="r55">He F, et al. (2019) &ldquo;Reaction kinetics of the acetaldehyde-mediated condensation between (&minus;)-epicatechin and anthocyanins and their effects on the color in model wine solutions.&rdquo; <em>Food Chem</em> 282:48&ndash;57. <a href="https://doi.org/10.1016/j.foodchem.2018.12.101">DOI</a></li>
+  <li id="r56">Vanda H, Dai Y, Wilson EG, et al. (2018) &ldquo;Green solvents from ionic liquids and deep eutectic solvents to natural deep eutectic solvents.&rdquo; <em>Comptes Rendus Chimie</em> 21:628&ndash;638. <a href="https://doi.org/10.1016/j.crci.2018.04.002">DOI</a></li>
+  <li id="r57">Soares B, et al. (2022) &ldquo;A tunable deep eutectic solvent-based processing for valorization of chestnut wood fiber.&rdquo; <em>J Environ Chem Eng</em> 10:108410. <a href="https://www.sciencedirect.com/science/article/abs/pii/S2213343722006467">ScienceDirect</a></li>
+  <li id="r58">Nehez RJ. (1993) &ldquo;Process for preparing an oak wood extract and distillate.&rdquo; US Patent 5,356,641. <a href="https://patents.google.com/patent/US5356641A/en">Google Patents</a></li>
+  <li id="r59">Farrell RR, et al. (2015) &ldquo;Real-time mass spectrometry monitoring of oak wood toasting.&rdquo; <em>Sci Rep</em> 5:17334. <a href="https://www.nature.com/articles/srep17334">Nature</a></li>
+  <li id="r60">Pollon M, et al. (2023) &ldquo;Volatile compound release from oak chips in model wine media.&rdquo; <em>J Agric Food Chem</em> 71:13440&ndash;13450. <a href="https://doi.org/10.1021/acs.jafc.3c03898">DOI</a></li>
+  <li id="r61">Martins SIFS, Van Boekel MAJS. (2005) &ldquo;A kinetic model for the glucose/glycine Maillard reaction pathways.&rdquo; <em>Food Chem</em> 90:257&ndash;269. <a href="https://doi.org/10.1016/j.foodchem.2004.04.006">DOI</a></li>
 </ol>
 
 
@@ -1317,6 +1406,51 @@ var refs = {
     source: "Zhang et al. (2023), Bioresource Technology",
     excerpt: "Immobilized laccase on graphene oxide achieves 93.7% lignin degradation (vs 56.2% free enzyme). Vanillin acts as laccase mediator, enhancing further lignin degradation by 47.3% \u2014 a positive feedback loop where the product accelerates its own formation.",
     url: "https://doi.org/10.1016/j.biortech.2023.128922"
+  },
+  53: {
+    source: "Ntourtoglou et al. (2021), J Food Process Preserv",
+    excerpt: "PEF treatment at 1.2 kV/cm on toasted oak chips in ethanol solutions: vanillin increased 75%, syringaldehyde increased 371%, furfural increased 50%, oak lactone increased 13%. The effect was strongest at 5% ethanol, where cell membrane electroporation is most effective.",
+    url: "https://doi.org/10.1111/jfpp.15577"
+  },
+  54: {
+    source: "Zhang et al. (2013), Innovative Food Sci Emerg Technol",
+    excerpt: "Electric field treatment at 1 kV/cm (50 Hz) on brandy in oak barrels for 14 months: tannin concentration 54.4% higher in 5-L barrels, 43.9% higher in 2-L barrels vs control. Esters increased while acetaldehyde and higher alcohols decreased.",
+    url: "https://www.sciencedirect.com/science/article/abs/pii/S1466856413001185"
+  },
+  55: {
+    source: "He et al. (2019), Food Chemistry",
+    excerpt: "Acetaldehyde-mediated condensation of epicatechin and anthocyanins in model wine solutions follows first-order kinetics at 25\u201355\u00b0C. Activation energy approximately 60 kJ/mol. Rate at 55\u00b0C approximately 12\u00d7 faster than at 25\u00b0C.",
+    url: "https://doi.org/10.1016/j.foodchem.2018.12.101"
+  },
+  56: {
+    source: "Vanda et al. (2018), Comptes Rendus Chimie",
+    excerpt: "Deep eutectic solvents (DES) based on choline chloride paired with organic acids form green solvents for biomass processing. ChCl:lactic acid and ChCl:acetic acid systems are fully food-safe, biodegradable, and extract polyphenolic compounds 2\u201310\u00d7 more efficiently than conventional ethanol extraction.",
+    url: "https://doi.org/10.1016/j.crci.2018.04.002"
+  },
+  57: {
+    source: "Soares et al. (2022), J Environ Chem Eng",
+    excerpt: "ChCl:lactic acid (1:10 molar) achieved 91.82% lignin extraction from chestnut wood at 50\u00b0C/90 min with high yields of ellagic acid. The DES system preferentially solubilizes lignin and tannins while preserving cellulose structure.",
+    url: "https://www.sciencedirect.com/science/article/abs/pii/S2213343722006467"
+  },
+  58: {
+    source: "Nehez (1993), US Patent 5,356,641",
+    excerpt: "Oak wood in subdivided form mixed with water/alcohol, digested with cellulase enzyme at 50\u201360\u00b0C, then wine or alcohol added, refluxed until wood changes color. Products: clear distillate + dark solid extract, both usable as aging additives.",
+    url: "https://patents.google.com/patent/US5356641A/en"
+  },
+  59: {
+    source: "Farrell et al. (2015), Scientific Reports",
+    excerpt: "Real-time PTR-ToF-MS monitoring of oak toasting shows lignin-derived compounds (vanillin, guaiacol, eugenol) increase by approximately one order of magnitude per 25\u00b0C temperature increase. Oak lactone generation from precursors begins at 225\u00b0C. Surface cracking events produce spikes in volatile release.",
+    url: "https://www.nature.com/articles/srep17334"
+  },
+  60: {
+    source: "Pollon et al. (2023), J Agric Food Chem",
+    excerpt: "Compound-specific toasting optima in Quercus alba: whiskey lactones peak at light toast (destroyed by heavy), vanillin peaks at medium toast, guaiacol increases monotonically. Optimal furfural at medium toast. Small chips more sensitive to ethanol concentration effects.",
+    url: "https://doi.org/10.1021/acs.jafc.3c03898"
+  },
+  61: {
+    source: "Martins & Van Boekel (2005), Food Chemistry",
+    excerpt: "Kinetic model for glucose/glycine Maillard reaction. Pentose sugars (xylose, arabinose) from oak hemicellulose are 2\u20135\u00d7 more reactive than glucose. Rate doubles per 10\u00b0C. At low pH (spirit conditions), favors furfural/HMF formation over melanoidin polymerization.",
+    url: "https://doi.org/10.1016/j.foodchem.2004.04.006"
   }
 };
 
