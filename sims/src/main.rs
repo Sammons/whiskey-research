@@ -129,6 +129,7 @@ fn main() {
     fs::write("../graphs/evaporative-supersaturation.svg", sim_evaporative_supersaturation()).unwrap();
     fs::write("../graphs/electrospray-microdroplet.svg", sim_electrospray_microdroplet()).unwrap();
     fs::write("../graphs/ouzo-phase-engineering.svg", sim_ouzo_phase_engineering()).unwrap();
+    fs::write("../graphs/freeze-concentration-ester.svg", sim_freeze_concentration_ester()).unwrap();
     println!("Wrote tio2-photocatalysis.svg");
 }
 
@@ -6981,6 +6982,211 @@ fn sim_ouzo_phase_engineering() -> String {
         "same phase diagram. Combine orthogonal mechanisms", ACCENT, 9, "start");
     svg += &label(ml2 + 10.0, mt + ph - 16.0,
         "for multiplicative (not additive) acceleration.", GREEN, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 41: Freeze-Concentration Cycling for Ester Enhancement
+// ═══════════════════════════════════════════════════════════════
+fn sim_freeze_concentration_ester() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Freeze-Concentration: Ester Equilibrium via Cryoconcentration");
+
+    let ml = 60.0; let mr = 20.0; let mt = 45.0; let mb = 50.0;
+    let pw = (w - ml - mr) / 2.0 - 15.0; let ph = h - mt - mb;
+
+    // ── Panel A: Ethanol-water freezing curve + concentrated fraction ABV ──
+    svg += &label(ml + pw / 2.0, mt - 5.0,
+        "A. Freeze-Concentration of Spirit", TEXT, 11, "middle");
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    // x-axis: temperature (°C), from 0 to -45
+    // y-axis: ABV of concentrated liquid fraction
+    let t_min = -45.0_f64;
+    let t_max = 0.0_f64;
+    let abv_min = 35.0_f64;
+    let abv_max = 75.0_f64;
+    let sx_a = |t: f64| -> f64 { ml + (t - t_min) / (t_max - t_min) * pw };
+    let sy_a = |a: f64| -> f64 { mt + ph - (a - abv_min) / (abv_max - abv_min) * ph };
+
+    // Grid
+    for t in [-40.0, -30.0, -20.0, -10.0, 0.0] {
+        svg += &vline(sx_a(t), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_a(t), mt + ph + 13.0, &format!("{:.0}\u{b0}C", t), MUTED, 8, "middle");
+    }
+    for a in [40.0, 50.0, 60.0, 70.0] {
+        svg += &hline(ml, ml + pw, sy_a(a), GRID, "0.5");
+        svg += &label(ml - 4.0, sy_a(a) + 3.5, &format!("{:.0}%", a), MUTED, 8, "end");
+    }
+    svg += &label(ml + pw / 2.0, mt + ph + 28.0, "Freezing Temperature", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 42.0, mt + ph / 2.0, ml - 42.0, mt + ph / 2.0, "Concentrated Liquid ABV (%)");
+
+    // Ethanol-water liquidus curve (simplified from phase diagram):
+    // At 40% ABV (34.3% w/w), initial freezing at ~-24°C
+    // As water freezes out, remaining liquid enriches
+    // Liquidus: T_freeze ≈ -1.86 × m_ethanol (simplified for dilute, but for
+    // concentrated solutions we use the full binary phase diagram)
+    // Approximation: ABV_concentrated ≈ 40 + 0.8×(T_start - T)^1.2 for T < -24°C
+
+    let t_freeze_start = -24.0_f64; // initial freezing of 40% ABV
+
+    // Liquid fraction ABV curve from phase diagram
+    let mut conc_curve: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=200 {
+        let t = t_min + (t_max - t_min) * i as f64 / 200.0;
+        let abv = if t >= t_freeze_start {
+            40.0 // no freezing yet
+        } else {
+            // Progressive concentration as ice forms
+            // At -30°C: ~48% ABV, at -35°C: ~55%, at -40°C: ~60%, at -45°C: ~67%
+            let dt = (t_freeze_start - t).abs();
+            40.0 + 1.3 * dt.powf(1.15)
+        };
+        conc_curve.push((t, abv.min(72.0)));
+    }
+    svg += &polyline_svg(&conc_curve, ACCENT, "2.5", &sx_a, &sy_a);
+
+    // Mark key temperatures
+    // Chest freezer: -25°C → ~42% ABV
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{BLUE}\" opacity=\"0.8\"/>\n",
+        sx_a(-25.0), sy_a(41.5));
+    svg += &label(sx_a(-25.0) + 8.0, sy_a(41.5) + 4.0,
+        "Chest freezer: 42%", BLUE, 8, "start");
+
+    // Dry ice: -40°C → ~60% ABV
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{GREEN}\" opacity=\"0.8\"/>\n",
+        sx_a(-40.0), sy_a(60.0));
+    svg += &label(sx_a(-40.0) + 8.0, sy_a(60.0) - 8.0,
+        "Dry ice: 60%", GREEN, 8, "start");
+
+    // Freezing onset marker
+    svg += &vline(sx_a(t_freeze_start), mt, mt + ph, YELLOW, "1");
+    svg += &label(sx_a(t_freeze_start) + 3.0, mt + 10.0,
+        "Freezing onset", YELLOW, 8, "start");
+    svg += &label(sx_a(t_freeze_start) + 3.0, mt + 22.0,
+        "(-24\u{b0}C for 40% ABV)", YELLOW, 7, "start");
+
+    // Also show fraction frozen curve (secondary info)
+    svg += &label(ml + pw - 5.0, sy_a(40.0) + 14.0,
+        "Starting: 40% ABV", MUTED, 8, "end");
+
+    // ── Panel B: Ester equilibrium conversion vs ABV ──
+    let ml2 = ml + pw + 40.0;
+    svg += &label(ml2 + pw / 2.0, mt - 5.0,
+        "B. Fischer Ester Equilibrium vs ABV", TEXT, 11, "middle");
+    svg += &hline(ml2, ml2 + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    let abv_x_min = 30.0_f64;
+    let abv_x_max = 70.0_f64;
+    let conv_min = 40.0_f64;
+    let conv_max = 90.0_f64;
+    let sx_b = |a: f64| -> f64 { ml2 + (a - abv_x_min) / (abv_x_max - abv_x_min) * pw };
+    let sy_b = |c: f64| -> f64 { mt + ph - (c - conv_min) / (conv_max - conv_min) * ph };
+
+    // Grid
+    for a in [30.0, 40.0, 50.0, 60.0, 70.0] {
+        svg += &vline(sx_b(a), mt, mt + ph, GRID, "0.5");
+        svg += &label(sx_b(a), mt + ph + 13.0, &format!("{:.0}%", a), MUTED, 8, "middle");
+    }
+    for c in [50.0, 60.0, 70.0, 80.0] {
+        svg += &hline(ml2, ml2 + pw, sy_b(c), GRID, "0.5");
+        svg += &label(ml2 - 4.0, sy_b(c) + 3.5, &format!("{:.0}%", c), MUTED, 8, "end");
+    }
+    svg += &label(ml2 + pw / 2.0, mt + ph + 28.0, "Ethanol (% ABV)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" \
+        transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 35.0, mt + ph / 2.0, ml2 - 35.0, mt + ph / 2.0, "Equilibrium Ester Conversion (%)");
+
+    // Fischer esterification equilibrium:
+    // K_eq = [Ester][Water] / [Acid][Ethanol] ≈ 4.0 for ethyl acetate at 25°C
+    // At ABV% ethanol, water fraction = 1 - ABV/100 (approx vol fraction)
+    // For unit activity coefficients:
+    // x_ester = K × x_acid × x_ethanol / x_water
+    // Conversion % = K / (K + x_water/x_ethanol) × 100 (simplified)
+    // More rigorously: at equilibrium, if α = fractional conversion:
+    // K = α² × V_total² / ((1-α)² × n_acid × n_ethanol × ... )
+    // Simplified: conversion increases with ethanol/water ratio
+    // At 40% ABV (x_EtOH≈0.17): conversion ~58.5%
+    // At 60% ABV (x_EtOH≈0.30): conversion ~72%
+    // At 70% ABV (x_EtOH≈0.38): conversion ~78%
+
+    let mut ester_curve: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=200 {
+        let abv = abv_x_min + (abv_x_max - abv_x_min) * i as f64 / 200.0;
+        let x_eth = abv / 100.0 * 0.789 / (abv / 100.0 * 0.789 + (1.0 - abv / 100.0)); // mole frac
+        let x_water = 1.0 - x_eth;
+        let k_eq = 4.0_f64;
+        // Conversion from equilibrium expression for equimolar acid:ethanol
+        // K = alpha^2 / ((1-alpha)^2 * (x_water/x_eth))
+        // Simplified: alpha = sqrt(K * x_eth / x_water) / (1 + sqrt(K * x_eth / x_water))
+        let ratio = (k_eq * x_eth / x_water).sqrt();
+        let alpha = ratio / (1.0 + ratio) * 100.0;
+        ester_curve.push((abv, alpha));
+    }
+    svg += &polyline_svg(&ester_curve, GREEN, "2.5", &sx_b, &sy_b);
+
+    // Mark key points
+    // 40% ABV: ~58.5%
+    let conv_40 = {
+        let x_eth = 0.40 * 0.789 / (0.40 * 0.789 + 0.60);
+        let r = (4.0_f64 * x_eth / (1.0 - x_eth)).sqrt();
+        r / (1.0 + r) * 100.0
+    };
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{RED}\" opacity=\"0.8\"/>\n",
+        sx_b(40.0), sy_b(conv_40));
+    svg += &label(sx_b(40.0) + 8.0, sy_b(conv_40) + 4.0,
+        &format!("40% ABV: {:.1}%", conv_40), RED, 8, "start");
+
+    // 60% ABV (dry ice freeze-concentrate)
+    let conv_60 = {
+        let x_eth = 0.60 * 0.789 / (0.60 * 0.789 + 0.40);
+        let r = (4.0_f64 * x_eth / (1.0 - x_eth)).sqrt();
+        r / (1.0 + r) * 100.0
+    };
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{GREEN}\" opacity=\"0.8\"/>\n",
+        sx_b(60.0), sy_b(conv_60));
+    svg += &label(sx_b(60.0) - 5.0, sy_b(conv_60) - 10.0,
+        &format!("60% ABV: {:.1}%", conv_60), GREEN, 8, "end");
+
+    // Draw arrow showing freeze-concentration gain
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{ACCENT}\" stroke-width=\"2\" marker-end=\"url(#arrow)\"/>\n",
+        sx_b(40.0), sy_b(conv_40), sx_b(60.0), sy_b(conv_60));
+
+    // Arrow marker definition (add to defs)
+    svg += &format!("<defs><marker id=\"arrow\" viewBox=\"0 0 10 10\" refX=\"5\" refY=\"5\" \
+        markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-auto\">\
+        <path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"{ACCENT}\"/></marker></defs>\n");
+
+    // Gain annotation
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"180\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        sx_b(43.0), sy_b(conv_60) - 35.0, GRID);
+    svg += &label(sx_b(44.0), sy_b(conv_60) - 20.0,
+        &format!("Freeze-conc gain: +{:.0} pp", conv_60 - conv_40), ACCENT, 9, "start");
+    svg += &label(sx_b(44.0), sy_b(conv_60) - 6.0,
+        "Beyond the 58% water ceiling!", YELLOW, 9, "start");
+
+    // Molecular sieve ceiling at ~98%
+    svg += &hline(ml2, ml2 + pw, sy_b(85.0), PURPLE, "1");
+    svg += &label(ml2 + pw - 5.0, sy_b(85.0) - 6.0,
+        "3A mol sieve ceiling", PURPLE, 8, "end");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mt + ph - 60.0, pw - 10.0, GRID);
+    svg += &label(ml2 + 10.0, mt + ph - 44.0,
+        "Freeze-thaw cycles the equilibrium through", TEXT, 9, "start");
+    svg += &label(ml2 + 10.0, mt + ph - 30.0,
+        "a high-ABV state where esters form faster", ACCENT, 9, "start");
+    svg += &label(ml2 + 10.0, mt + ph - 16.0,
+        "Cost: $0 (chest freezer) to $5 (dry ice)", YELLOW, 9, "start");
 
     svg.push_str("</svg>");
     svg

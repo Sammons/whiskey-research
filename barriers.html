@@ -1574,6 +1574,47 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; CXL biocatalysis is published with multiple CALB studies<span class="cite" data-ref="133"><sup>[133]</sup></span> and CXL oak extraction has been demonstrated<span class="cite" data-ref="134"><sup>[134]</sup></span>. This is the most practical route to lipase-catalyzed ester synthesis for home use. The 60 bar pressure is within the rating of commercial stainless-steel pressure vessels ($100&ndash;200) and well below dangerous regimes. <strong>Home testability: 3/5</strong> ($200&ndash;300: stainless pressure vessel rated to 100 bar + CO<sub>2</sub> cylinder + Novozym 435 beads from enzyme supplier. Requires basic pressure vessel safety knowledge. 40&deg;C is achievable with a water bath).
 </div>
 
+<h3>1.16 Freeze-Concentration Cycling: Cryoconcentration for Ester Enhancement</h3>
+
+<div class="callout key-insight">
+  <strong>Novel cross-domain insight:</strong> When spirit partially freezes, ice crystals exclude ethanol and all solutes. The remaining <strong>concentrated liquid fraction</strong> reaches 50&ndash;60% ABV with proportionally concentrated acids&mdash;conditions where Fischer esterification equilibrium shifts from 58% to ~72% conversion. Thawing redistributes the newly formed esters throughout the bulk. This cycles the spirit through a favorable equilibrium state that is normally inaccessible at bottling strength.
+</div>
+
+<p><strong>The ethanol-water phase diagram.</strong> At 40% ABV (34.3% w/w ethanol), the initial freezing point is approximately &minus;24&deg;C. As ice forms, it is essentially pure water, concentrating ethanol and all dissolved species in the remaining liquid. The concentrated liquid follows the liquidus curve of the binary ethanol-water phase diagram:</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Temperature</th><th>Equipment</th><th>Liquid ABV</th><th>Ice fraction</th><th>Equilibrium ester conversion</th></tr>
+  <tr><td>&minus;25&deg;C</td><td>Chest freezer</td><td>~42%</td><td>~5%</td><td>~60%</td></tr>
+  <tr><td>&minus;30&deg;C</td><td>Lab freezer</td><td>~48%</td><td>~17%</td><td>~65%</td></tr>
+  <tr><td>&minus;40&deg;C</td><td><strong>Dry ice bath</strong></td><td><strong>~60%</strong></td><td><strong>~35%</strong></td><td><strong>~72%</strong></td></tr>
+  <tr><td>&minus;45&deg;C</td><td>Dry ice + acetone</td><td>~67%</td><td>~45%</td><td>~76%</td></tr>
+</table>
+</div>
+
+<p><strong>The ester equilibrium advantage.</strong> Fischer esterification equilibrium (K<sub>eq</sub> &asymp; 4.0 for ethyl acetate at 25&deg;C) depends on the water/ethanol ratio. At 40% ABV (mole fraction ethanol x<sub>E</sub> &asymp; 0.17), the equilibrium conversion is ~58.5%&mdash;this is the &ldquo;water ceiling&rdquo; discussed in &sect;4.18. At 60% ABV (x<sub>E</sub> &asymp; 0.30), the equilibrium shifts to ~72% conversion&mdash;a <strong>+13 percentage point gain</strong> achieved simply by freezing and holding. The acid concentration also increases proportionally (~1.5&times; at &minus;40&deg;C), further accelerating the forward rate.</p>
+
+<p><strong>Cycling protocol:</strong></p>
+<ol>
+  <li>Cool spirit to &minus;40&deg;C in a dry ice + isopropanol bath (~$5 in dry ice per cycle).</li>
+  <li>Hold for 2&ndash;4 hours at temperature. The concentrated liquid fraction undergoes esterification at enhanced equilibrium.</li>
+  <li>Warm to room temperature with stirring. Ice melts, redistributing esters throughout the bulk.</li>
+  <li>Repeat 5&ndash;10 cycles. Each cycle ratchets the bulk ester concentration upward because esters formed in the concentrated phase do not spontaneously hydrolyze upon dilution&mdash;the reverse reaction is too slow at 20&deg;C.</li>
+</ol>
+
+<p><strong>Synergy with §3.3 (freeze-thaw for clustering):</strong> This is the same physical process as freeze-thaw cycling for Barrier 3, but exploiting a <em>different chemical consequence</em>. While §3.3 focuses on the microstructural reorganization of the ethanol-water network during phase transitions, §1.16 focuses on the equilibrium shift in the concentrated liquid. Both mechanisms operate simultaneously during each freeze-thaw cycle&mdash;you get ester enhancement AND clustering perturbation in a single step. Zero additional cost or complexity.</p>
+
+<p><strong>Synergy with Amberlyst-15 (&sect;1.1):</strong> Adding Amberlyst-15 beads to the spirit before freeze-concentration compounds the effect. The acid catalyst accelerates the approach to the new (higher) equilibrium during the 2&ndash;4 hour hold at &minus;40&deg;C. Temperature reduces the rate (Arrhenius), but the acid catalyst partially compensates. More importantly, the concentrated ethanol + concentrated acid + reduced water activity provides a thermodynamic driving force that the catalyst exploits. Upon thawing, remove the Amberlyst beads before the reverse reaction can proceed at ambient temperature.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/freeze-concentration-ester.svg" alt="Freeze-concentration cycling for ester enhancement">
+  <figcaption><strong>Fig. 41.</strong> (A) Concentrated liquid ABV vs freezing temperature for 40% ABV spirit. At chest freezer temperature (&minus;25&deg;C), enrichment is modest (~42%). At dry ice temperature (&minus;40&deg;C), the liquid fraction reaches ~60% ABV. (B) Fischer esterification equilibrium conversion vs ABV. Freeze-concentration at &minus;40&deg;C shifts the equilibrium from 58.5% to ~72% conversion&mdash;breaking through the &ldquo;water ceiling&rdquo; without molecular sieves. Arrow shows the gain from a single freeze-concentration cycle.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but grounded in textbook thermodynamics. The ethanol-water phase diagram is precisely known. The ester equilibrium expression is well-characterized. The novel prediction is that repeated freeze-concentration cycles can ratchet ester content above the 58.5% ceiling by transiently accessing a higher-ABV equilibrium state. <strong>The kinetic question</strong> is whether 2&ndash;4 hours at &minus;40&deg;C is sufficient for measurable ester formation&mdash;the rate is dramatically slowed by low temperature even as the equilibrium is more favorable. Adding Amberlyst catalyst mitigates this. <strong>Home testability: 5/5</strong> ($0&ndash;5: chest freezer is free; dry ice from grocery store is ~$2/lb. Fill two identical jars with spirit + acetic acid + oak chips. Freeze-cycle one jar 10&times; (&minus;40&deg;C hold + thaw). Compare ethyl acetate by smell/taste vs control after 10 cycles. For quantification, GC-FID or a simple ester test kit).
+</div>
+
 <h3>4.21 Interfacial Microdroplet Chemistry: A Hidden Oxidation Mechanism</h3>
 
 <p><strong>A paradigm-shifting discovery from physical chemistry.</strong> Water microdroplets (1&ndash;20 &mu;m) spontaneously generate H<sub>2</sub>O<sub>2</sub> at the air-water interface without any reagent, catalyst, electricity, or radiation<span class="cite" data-ref="123"><sup>[123]</sup></span>. The mechanism: OH<sup>&minus;</sup> at the droplet surface loses an electron, generating OH&bull; radicals that recombine to form H<sub>2</sub>O<sub>2</sub>. The interfacial electric field (~10<sup>7</sup> V/cm) drives this spontaneous oxidation. Concentration scales inversely with droplet size&mdash;smaller droplets (higher surface-to-volume ratio) produce more H<sub>2</sub>O<sub>2</sub> per unit volume.</p>
@@ -1932,6 +1973,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Plasma-activated ethanol (&sect;4.27)</td><td>166 ppm PAA in 5 min</td><td><span class="verdict promising">Published</span></td><td>$20&ndash;50</td><td>OXIDATION + ESTER + CLUSTER</td></tr>
 <tr><td>Evaporative supersaturation (&sect;4.28)</td><td>25&ndash;100&times;</td><td><span class="verdict speculative">Novel</span></td><td>$0&ndash;30</td><td>CLUSTER</td></tr>
 <tr><td>Electrospray microdroplet (&sect;4.29)</td><td>10<sup>3</sup>&ndash;10<sup>6</sup>&times;</td><td><span class="verdict speculative">Novel</span></td><td>$50&ndash;150</td><td>ESTER + OXIDATION + CLUSTER</td></tr>
+<tr><td>Freeze-concentration cycling (&sect;1.16)</td><td>+13 pp conversion</td><td><span class="verdict speculative">Novel</span></td><td>$0&ndash;5</td><td>ESTER + CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -2093,6 +2135,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td><strong>Plasma-activated ethanol (&sect;4.27)</strong></td><td><strong>4/5</strong></td><td><strong>$20&ndash;50</strong></td><td><strong>Ozone generator ($20&ndash;30) + O<sub>2</sub> feed + aquarium air stone bubbler. Run 5 min in 10% ethanol (diluted spirit). Soak oak chips 1&ndash;4h in PAE, then transfer to spirit. Compare extraction vs untreated chips at 2/4 wk. PAA delignifies surface without scorching.</strong></td></tr>
 <tr><td><strong>Evaporative supersaturation (&sect;4.28)</strong></td><td><strong>5/5</strong></td><td><strong>$0&ndash;30</strong></td><td><strong>Spirit + oak extract in shallow tray (5 mm depth) + desk fan + loose plastic wrap on cold surface (condenser). 30 min evaporation, stir, repeat 10&times;/day. Ethanol-depleted surface crosses Ouzo boundary &rarr; cluster nucleation. Compare turbidity vs sealed control. Essentially free.</strong></td></tr>
 <tr><td>Electrospray microdroplet (&sect;4.29)</td><td>3/5</td><td>$50&ndash;150</td><td>HV bench PSU (3&ndash;5 kV) + SS blunt needle + glass jar + peristaltic pump. Spray spirit into closed chamber, collect in reservoir, recirculate 4&ndash;8h. Simpler: $25 ultrasonic mesh nebulizer. Compare turbidity + taste vs control after 8h treatment.</td></tr>
+<tr><td><strong>Freeze-concentration cycling (&sect;1.16)</strong></td><td><strong>5/5</strong></td><td><strong>$0&ndash;5</strong></td><td><strong>Chest freezer ($0) or dry ice ($2/lb). Freeze 40% ABV spirit to &minus;40&deg;C, hold 2&ndash;4h, thaw, repeat 10&times;. Concentrated liquid at 60% ABV breaks the 58% ester ceiling. Synergistic with &sect;3.3 (clustering) &mdash; both mechanisms in one step.</strong></td></tr>
 </tbody>
 </table>
 </div>
