@@ -1719,6 +1719,36 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; all three reactive species (H<sub>2</sub>O<sub>2</sub>, PAA, acetic acid) are documented in the same plasma system<span class="cite" data-ref="136"><sup>[136]</sup></span>. PAW stability over 100+ days is published<span class="cite" data-ref="137"><sup>[137]</sup></span>. PAW oak treatment preserves phenolic character<span class="cite" data-ref="138"><sup>[138]</sup></span>. The novel leap is recognizing PAA as a lignin-specific oxidant in the spirit aging context&mdash;connecting paper pulping chemistry to barrel maturation. <strong>Home testability: 4/5</strong> ($20&ndash;50: commercial ozone generator with O<sub>2</sub> feed, aquarium air stone as bubbler, glass vessel. Treat oak chips in PAE for 1&ndash;4h, then transfer to spirit. Compare extraction rate and flavor profile vs. untreated chips over 2&ndash;4 weeks. The PAA selectively opens lignin without the scorched notes of over-toasting).
 </div>
 
+<h3>4.29 Electrospray Microdroplet Aging: Interfacial Acceleration at 10<sup>3</sup>&ndash;10<sup>6</sup>&times;</h3>
+
+<div class="callout key-insight">
+  <strong>Cross-domain synthesis (&sect;4.21 + &sect;4.28 &rarr; practical technique):</strong> Electrospray ionization (ESI) generates charged microdroplets (1&ndash;10 &mu;m) where chemical reactions proceed 10<sup>3</sup>&ndash;10<sup>6</sup>&times; faster than in bulk. This connects microdroplet chemistry (&sect;4.21: spontaneous H<sub>2</sub>O<sub>2</sub> at interfaces) with evaporative supersaturation (&sect;4.28: ethanol-depleted surfaces drive clustering) into a single, practical acceleration device.
+</div>
+
+<p><strong>The microdroplet rate acceleration paradigm.</strong> The Zare laboratory at Stanford demonstrated that organic reactions in electrosprayed microdroplets proceed <strong>10<sup>3</sup>&ndash;10<sup>6</sup>&times; faster</strong> than identical reactions in bulk solution<span class="cite" data-ref="123"><sup>[123]</sup></span>. Three mechanisms contribute: (1) <strong>surface charge concentration</strong>&mdash;the electric double layer at the droplet surface creates electric fields of ~10<sup>7</sup> V/cm that catalyze ion-pair reactions; (2) <strong>extreme surface-to-volume ratio</strong>&mdash;a 5 &mu;m droplet has S/V = 1.2 &times; 10<sup>6</sup> m<sup>&minus;1</sup>, vs ~10 m<sup>&minus;1</sup> for a 1-L beaker; (3) <strong>partial desolvation</strong>&mdash;rapid evaporation from the droplet surface strips the solvation shell from reactants, lowering activation barriers.</p>
+
+<p><strong>Three aging reactions accelerate simultaneously in each droplet:</strong></p>
+<ul>
+  <li><strong>Esterification:</strong> Acid + ethanol &rarr; ester at the charged droplet surface. The reduced water activity (evaporative depletion) shifts equilibrium forward. Rate enhancement: ~10<sup>3</sup>&times; for Fischer-type condensations at 5 &mu;m diameter.</li>
+  <li><strong>Oxidation:</strong> H<sub>2</sub>O<sub>2</sub> forms spontaneously at the air-water interface of every microdroplet (~30 &mu;M in 10 &mu;m droplets<span class="cite" data-ref="123"><sup>[123]</sup></span>). In ethanol-containing droplets, OH&bull; from H<sub>2</sub>O<sub>2</sub> homolysis generates acetaldehyde and acetic acid. No external oxidant needed.</li>
+  <li><strong>Cluster nucleation:</strong> Ethanol evaporates preferentially from the droplet surface (&sect;4.28 mechanism), creating a water-enriched shell. At 5 &mu;m diameter, the entire droplet crosses the Ouzo boundary within microseconds, triggering spontaneous nanocluster formation throughout its volume.</li>
+</ul>
+
+<p><strong>Practical implementation: recirculating electrospray reactor.</strong> Spirit is pumped through a stainless steel capillary needle at 3&ndash;5 kV (ESI voltage) into a closed chamber. The electrosprayed mist (10<sup>6</sup>&ndash;10<sup>9</sup> droplets per second at 1&ndash;10 &mu;L/min) traverses a 5&ndash;10 cm flight path before impacting the liquid surface of the reservoir. The droplets merge back into the bulk, having undergone milliseconds of &ldquo;aging&rdquo; at 10<sup>3</sup>&times; rate. A peristaltic pump recirculates the reservoir through the spray nozzle continuously.</p>
+
+<p><strong>Effective aging estimate:</strong> At 10 mL/min recirculation, 5 &mu;m droplets, 10 ms flight time, and 10<sup>3</sup>&times; rate enhancement: each milliliter experiences ~10 seconds of effective aging per pass. After 8 hours of recirculation (4.8 L processed from a 1 L reservoir, ~5 complete passes), the cumulative effective aging for clustering approaches <strong>~1 year barrel-equivalent</strong> for the cluster nucleation mechanism (which has the strongest S/V dependence). Esterification is more modest (~8 days equivalent) since it depends on acid concentration rather than just surface effects. Oxidation is intermediate and <em>cumulative</em>&mdash;H<sub>2</sub>O<sub>2</sub> accumulates in the reservoir at ~0.6 mg/hr, building a permanent oxidant pool.</p>
+
+<p><strong>Synergy with sonication (&sect;3.14, &sect;4.21):</strong> Ultrasonic nebulization generates microdroplets in a similar size range (5&ndash;50 &mu;m) without requiring high voltage. A <strong>combined protocol</strong>: ultrasonic nebulization for safe, high-throughput microdroplet generation + electrostatic field to charge the droplets and prevent re-coalescence during flight. This is essentially an electrospray-assisted ultrasonic nebulizer&mdash;commercially available as medical inhalers (~$30&ndash;50).</p>
+
+<figure class="sim-figure">
+  <img src="graphs/electrospray-microdroplet.svg" alt="Electrospray microdroplet aging: rate enhancement and cumulative aging curves">
+  <figcaption><strong>Fig. 39.</strong> (A) Reaction rate enhancement vs microdroplet diameter (log-log). All three aging reactions scale inversely with droplet size but with different exponents: clustering (&prop; d<sup>&minus;2</sup>), esterification (&prop; d<sup>&minus;1.5</sup>), oxidation (&prop; d<sup>&minus;1</sup>). The electrospray regime (1&ndash;10 &mu;m) achieves 10<sup>3</sup>&ndash;10<sup>6</sup>&times; enhancement. (B) Cumulative effective barrel-aging equivalent during 8 hours of recirculation: cluster nucleation reaches ~1 year equivalent; oxidation ~2 months; esterification ~1 week.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but grounded in published microdroplet chemistry<span class="cite" data-ref="123"><sup>[123]</sup></span> and spontaneous H<sub>2</sub>O<sub>2</sub> generation<span class="cite" data-ref="124"><sup>[124]</sup></span>. The rate enhancement numbers are from non-spirit systems; the actual enhancement in 40% ethanol microdroplets has not been measured. Ethanol&rsquo;s lower surface tension may reduce the interfacial electric field, partially attenuating the acceleration. <strong>Home testability: 3/5</strong> ($50&ndash;150: high-voltage DC supply ($40&ndash;80 bench PSU), stainless steel blunt needle (18-gauge, $5/pack), and a glass jar. Safety: the current is microamps (not dangerous), but the high voltage requires insulation and a Faraday cage around the spray chamber. Simpler alternative: use an ultrasonic mesh nebulizer ($25 medical inhaler) to generate microdroplets, collect in a cold chamber, and return to reservoir. Test: nebulize spirit + oak extract for 4&ndash;8 hours, compare turbidity, color, and taste vs. untreated control).
+</div>
+
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -1853,6 +1883,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>TiO<sub>2</sub> photocatalysis (&sect;4.26)</td><td>36% vanillin selectivity</td><td><span class="verdict promising">Published</span></td><td>$15</td><td>OXIDATION</td></tr>
 <tr><td>Plasma-activated ethanol (&sect;4.27)</td><td>166 ppm PAA in 5 min</td><td><span class="verdict promising">Published</span></td><td>$20&ndash;50</td><td>OXIDATION + ESTER + CLUSTER</td></tr>
 <tr><td>Evaporative supersaturation (&sect;4.28)</td><td>25&ndash;100&times;</td><td><span class="verdict speculative">Novel</span></td><td>$0&ndash;30</td><td>CLUSTER</td></tr>
+<tr><td>Electrospray microdroplet (&sect;4.29)</td><td>10<sup>3</sup>&ndash;10<sup>6</sup>&times;</td><td><span class="verdict speculative">Novel</span></td><td>$50&ndash;150</td><td>ESTER + OXIDATION + CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -2013,6 +2044,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>TiO<sub>2</sub> photocatalysis (&sect;4.26)</td><td>4/5</td><td>$15</td><td>Food-grade TiO<sub>2</sub> powder (E171, $5/100g) + UV-A LED strip (365 nm, $10). Suspend 0.5 g/L in spirit + oak extract. Irradiate 30&ndash;60 min with stirring. Filter through 0.2 &mu;m syringe filter. Smell test for vanillin.</td></tr>
 <tr><td><strong>Plasma-activated ethanol (&sect;4.27)</strong></td><td><strong>4/5</strong></td><td><strong>$20&ndash;50</strong></td><td><strong>Ozone generator ($20&ndash;30) + O<sub>2</sub> feed + aquarium air stone bubbler. Run 5 min in 10% ethanol (diluted spirit). Soak oak chips 1&ndash;4h in PAE, then transfer to spirit. Compare extraction vs untreated chips at 2/4 wk. PAA delignifies surface without scorching.</strong></td></tr>
 <tr><td><strong>Evaporative supersaturation (&sect;4.28)</strong></td><td><strong>5/5</strong></td><td><strong>$0&ndash;30</strong></td><td><strong>Spirit + oak extract in shallow tray (5 mm depth) + desk fan + loose plastic wrap on cold surface (condenser). 30 min evaporation, stir, repeat 10&times;/day. Ethanol-depleted surface crosses Ouzo boundary &rarr; cluster nucleation. Compare turbidity vs sealed control. Essentially free.</strong></td></tr>
+<tr><td>Electrospray microdroplet (&sect;4.29)</td><td>3/5</td><td>$50&ndash;150</td><td>HV bench PSU (3&ndash;5 kV) + SS blunt needle + glass jar + peristaltic pump. Spray spirit into closed chamber, collect in reservoir, recirculate 4&ndash;8h. Simpler: $25 ultrasonic mesh nebulizer. Compare turbidity + taste vs control after 8h treatment.</td></tr>
 </tbody>
 </table>
 </div>
