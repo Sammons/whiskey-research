@@ -892,7 +892,7 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <p><span class="verdict promising">PROMISING</span> Proof optimization (straightforward physics, no novel equipment). <span class="verdict speculative">SPECULATIVE</span> Flash nanoprecipitation and freeze-thaw (sound first-principles, untested in spirits). <span class="verdict moonshot">MOONSHOT</span> Seeded supramolecular polymerization (strongly reinforced by concrete C-S-H seeding data). <span class="verdict promising">PROMISING</span> DES oak extraction (food-safe, 2&ndash;10&times; more efficient than ethanol, entirely novel in spirits<span class="cite" data-ref="56"><sup>[56]</sup></span>). <span class="verdict promising">PROMISING</span> Enzymatic pretreatment (patented, food-grade enzymes, releases glycoside-bound aromas<span class="cite" data-ref="58"><sup>[58]</sup></span>). <span class="verdict promising">PROMISING</span> Multi-toast blending (compound-specific optimization, immediately actionable<span class="cite" data-ref="59"><sup>[59]</sup></span>). <span class="verdict promising">PROMISING</span> Ultrasonic cavitation (5&ndash;10&times; extraction, 85&ndash;90% of 3-year barrel analytically, synergistic with laccase<span class="cite" data-ref="70"><sup>[70]</sup></span>). <span class="verdict promising">PROMISING</span> Microwave-assisted extraction (2&ndash;5 min &asymp; 6&ndash;12 months conventional aging, zero additional cost<span class="cite" data-ref="81"><sup>[81]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> scCO<sub>2</sub> selective extraction (ideal selectivity profile but high capital cost<span class="cite" data-ref="82"><sup>[82]</sup></span>).</p>
 
 
-<h3>3.16 Ouzo Phase Engineering: A Unified Framework for Clustering</h3>
+<h3>3.17 Ouzo Phase Engineering: A Unified Framework for Clustering</h3>
 
 <div class="callout key-insight">
   <strong>Unifying framework:</strong> Every clustering technique in this document&mdash;proof dilution (&sect;3.1), flash nanoprecipitation (&sect;3.2), freeze-thaw (&sect;3.3), seeding (&sect;3.4), ionic strength (&sect;4.25), DEP (&sect;4.22), evaporative supersaturation (&sect;4.28), and electrospray (&sect;4.29)&mdash;is a <em>different path through the same phase diagram</em>. They are not independent techniques; they are orthogonal movements in thermodynamic phase space. Combining techniques from different mechanism classes yields <strong>multiplicative</strong>, not additive, acceleration.
@@ -939,6 +939,28 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <div class="callout hypothesis">
   <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> as an integrated framework, but grounded in published phase equilibria<span class="cite" data-ref="132"><sup>[132]</sup></span> and polyphenol aggregation data<span class="cite" data-ref="131"><sup>[131]</sup></span>. The multiplicative prediction has not been tested experimentally. The 3,000&times; theoretical acceleration assumes independent mechanisms&mdash;real systems may show sub-multiplicative coupling. <strong>The framework&rsquo;s primary value is strategic:</strong> it identifies which technique combinations are redundant (same mechanism class) versus synergistic (different classes), enabling rational protocol design.
 </div>
+
+<h3>3.18 Cluster Size&ndash;Quality Paradigm: Small Clusters Carry Flavor, Large Clusters Carry Harshness</h3>
+
+<div class="callout key-insight">
+  <strong>Paradigm-shifting finding:</strong> Wang et al. (2022) using DLS and SAXS on aged baijiu showed that the <strong>small cluster component</strong> (1&ndash;5 nm R<sub>h</sub>) correlates with positive flavor attributes, while the <strong>large cluster component</strong> (&gt;10 nm) correlates with alcohol irritation and harshness&mdash;not with maturity time<span class="cite" data-ref="149"><sup>[149]</sup></span>. This inverts the naive assumption that &ldquo;more clusters = more aged.&rdquo; The target is not maximum clustering but a specific size distribution: abundant small clusters with minimal large aggregates.
+</div>
+
+<p><strong>Complementary molecular evidence:</strong> Karlsson &amp; Friedman (2017) demonstrated via MD simulation that guaiacol (a key smoky flavor compound) preferentially partitions to the liquid&ndash;air interface below ~45% ABV but is driven into the bulk above ~59% ABV<span class="cite" data-ref="150"><sup>[150]</sup></span>. The transition is driven by ethanol clustering: at high ABV, ethanol forms clusters that solvate guaiacol&rsquo;s hydrophobic ring, trapping it in the bulk. At low ABV, ethanol clusters disperse, releasing guaiacol to the surface where it contributes to aroma perception.</p>
+
+<p><strong>Implications for the protocol:</strong></p>
+<ol>
+  <li><strong>Dilution proof point:</strong> The 37% ABV target for clustering (&sect;3.1) is well below the ~45% threshold where guaiacol and similar amphiphilic aromatics reach maximum surface partitioning. This is correct&mdash;but the protocol should not age at this ABV, because ester equilibrium is unfavorable below 50%. The two-phase approach (extract/esterify at 65% ABV, then dilute to 37% for clustering) is validated by these findings.</li>
+  <li><strong>Small cluster promotion:</strong> Techniques that promote small cluster formation while suppressing large aggregates are preferred. Ultrasonication (&sect;3.14) breaks up large aggregates; flash nanoprecipitation (&sect;3.2) and evaporative supersaturation (&sect;4.28) nucleate small clusters from supersaturated conditions; ionic strength tuning (&sect;4.25) controls the thermodynamic endpoint. These are complementary because they operate on different timescales.</li>
+  <li><strong>DLS validation metric:</strong> The cluster size distribution measured by DLS (5&ndash;50 nm range) is now the primary analytical target for Barrier 3, not just the presence/absence of SAXS signal. A good result is: strong 1&ndash;5 nm peak, weak or absent &gt;10 nm peak, matching the distribution of a well-aged reference spirit.</li>
+</ol>
+
+<p><strong>Connection to the Ouzo framework (&sect;3.17):</strong> The pre-Ouzo zone (just above the Ouzo boundary) produces structured microemulsions with ~1.8 nm correlation length<span class="cite" data-ref="132"><sup>[132]</sup></span>&mdash;precisely the small cluster size that Wang et al. associate with positive flavor. The Ouzo zone proper (below the boundary) produces larger droplets (&gt;10 nm) that correspond to harshness. This means the <strong>optimal clustering target is the pre-Ouzo zone, not the Ouzo zone</strong>&mdash;a subtle but critical distinction for protocol design. Overshoot (too much dilution, too fast) produces large clusters that degrade quality.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PUBLISHED &mdash; PARADIGM-DEFINING</span> &mdash; the Wang et al. (2022) small-vs-large cluster finding and the Karlsson &amp; Friedman (2017) surface partitioning data together define the analytical target for Barrier 3. The practical implication is clear: the clustering step must be controlled to promote small (1&ndash;5 nm) clusters while avoiding large (&gt;10 nm) aggregates. <strong>Home testability: 3/5</strong> (DLS requires ~$200 for a DIY laser + photodiode setup or access to a university instrument. But the qualitative test is simpler: add drops of aged spirit to cold water on a glass plate. Aged spirit with good small-cluster structure produces fine, stable opalescence; young spirit with large aggregates produces visible droplets that coalesce quickly. Compare protocol output vs. commercial aged reference).
+</div>
+
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- BARRIER 4: SEQUENTIAL OXIDATION CASCADES              -->
@@ -1856,7 +1878,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li><strong>Simplicity:</strong> A brass venturi ($5&ndash;10 plumbing fitting) + a small pump ($10&ndash;20 aquarium/garden pump) = complete HC reactor.</li>
 </ul>
 
-<p><strong>The dual mechanism:</strong> HC generates: (1) <strong>radical oxidation</strong> from cavitation collapse (OH&bull;, same chemistry as ultrasound &sect;3.14 + &sect;4.24), and (2) <strong>mechanical disruption</strong> from microjets impacting oak chip surfaces (enhanced extraction, same mechanism as ultrasonic extraction). The 55% particle size reduction indicates extensive restructuring of colloidal tannin aggregates&mdash;directly relevant to the clustering barrier (&sect;3.16).</p>
+<p><strong>The dual mechanism:</strong> HC generates: (1) <strong>radical oxidation</strong> from cavitation collapse (OH&bull;, same chemistry as ultrasound &sect;3.14 + &sect;4.24), and (2) <strong>mechanical disruption</strong> from microjets impacting oak chip surfaces (enhanced extraction, same mechanism as ultrasonic extraction). The 55% particle size reduction indicates extensive restructuring of colloidal tannin aggregates&mdash;directly relevant to the clustering barrier (&sect;3.17).</p>
 
 <p><strong>Protocol integration:</strong> Replace the ultrasonic bath (&sect;3.14) with a recirculating HC loop: spirit + oak chips in a reservoir, pumped through a venturi constriction at 3&ndash;5 bar, returning to the reservoir. Run continuously for 15&ndash;60 min per treatment session. The same radical chemistry, extraction enhancement, and tannin modification&mdash;at 6&ndash;44&times; lower energy cost and dramatically simpler equipment.</p>
 
@@ -2547,6 +2569,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r146">Toulaki AK, et al. (2024) &ldquo;Investigation of Xinomavro Red Wine Aging with Various Wood Chips Using Pulsed Electric Field.&rdquo; <em>Beverages</em> 10(1):13. <a href="https://doi.org/10.3390/beverages10010013">DOI</a> (PEF with oak, acacia, apricot, cherry, apple, and peach wood chips. European oak chips: +23 mg GAE/L polyphenol enrichment. Acacia in Goumenissa wine: +10.84% TPC increase to 2334.74 mg GAE/L. Confirms PEF works with chips in stainless steel, not just barrels.)</li>
   <li id="r147">Patent Application US 2025/0034494. &ldquo;Method and system for accelerated aging of alcoholic spirits using controlled pressure differences.&rdquo; (Gentle vacuum cycling: 0.5&ndash;5 mbar &Delta;P, 1&ndash;60 min per cycle, 50&ndash;500 cycles. 5-gallon and 53-gallon barrels. Mimics diurnal barometric pumping at accelerated rate. No quantitative extraction or flavor equivalence data provided.)</li>
   <li id="r148">US Patent 11,053,467 B2. &ldquo;Accelerated aging of alcohol spirits.&rdquo; (CO<sub>2</sub> pressurization at 30&ndash;160 psi, 70&ndash;150&deg;F, with virgin American white oak. Ozone pretreatment of wood: 3&ndash;30 min. Claim: 50 psi CO<sub>2</sub> at 80&deg;F over 3 days &asymp; 2 years aging. CO<sub>2</sub> &rarr; carbonic acid lowers pH, catalyzes esterification. No peer-reviewed chemical analysis.)</li>
+  <li id="r149">Wang Y, et al. (2022) &ldquo;Whether the Research on Ethanol-Water Microstructure in Traditional Baijiu Should Be Strengthened?&rdquo; <em>PMC</em>. (DLS and SAXS of aged baijiu/whiskey. Small cluster component (1&ndash;5 nm) correlates with positive flavor attributes. Large cluster component (&gt;10 nm) correlates with alcohol irritation, <strong>not</strong> with maturity time. Paradigm-shifting: the target is not maximum clustering but a specific size distribution.)</li>
+  <li id="r150">Karlsson BCG, Friedman R. (2017) &ldquo;Dilution of whisky&mdash;the molecular perspective.&rdquo; <em>Sci Rep</em> 7:6489. <a href="https://doi.org/10.1038/s41598-017-06423-5">DOI</a> (MD simulation of ethanol-water-guaiacol systems. Guaiacol preferentially at air-liquid interface below ~45% ABV; driven to bulk above ~59% ABV. Ethanol clustering solvates hydrophobic aromatics. Explains why diluting cask-strength whisky enhances aroma.)</li>
 </ol>
 
 
@@ -3308,6 +3332,16 @@ var refs = {
     source: "US Patent 11,053,467 B2",
     excerpt: "CO\u2082 pressurization at 30\u2013160 psi with virgin American white oak. Ozone pretreatment 3\u201330 min. Claim: 50 psi CO\u2082 at 80\u00b0F over 3 days \u2248 2 years aging. CO\u2082 dissolves to form carbonic acid, lowering pH and catalyzing esterification. No peer-reviewed validation.",
     url: "#r148"
+  },
+  149: {
+    source: "Wang et al. (2022), PMC",
+    excerpt: "DLS + SAXS of aged baijiu and whiskey. Small cluster component (1\u20135 nm Rh) correlates with positive flavor. Large cluster component (>10 nm) correlates with alcohol irritation, NOT with maturity time. The target is not maximum clustering but a specific size distribution: abundant small clusters, minimal large aggregates.",
+    url: "#r149"
+  },
+  150: {
+    source: "Karlsson & Friedman (2017), Sci Rep 7:6489",
+    excerpt: "MD simulation of ethanol-water-guaiacol. Guaiacol at air\u2013liquid interface below ~45% ABV; driven to bulk above ~59% ABV by ethanol clustering. Diluting cask-strength whisky releases amphiphilic aromatics from ethanol-solvated bulk to the surface where they contribute to aroma perception.",
+    url: "#r150"
   }
 };
 
