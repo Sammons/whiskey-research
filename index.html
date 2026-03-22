@@ -386,7 +386,7 @@
 <div class="author-block">
   <div class="label">Prepared for</div>
   <div class="name">Dr. R. Douglas Sammons, Ph.D.</div>
-  <div class="label" style="margin-top:0.3rem">Former Senior Fellow, Monsanto Company &mdash; Biochemistry of herbicide action, EPSPS enzymology, and RNAi-mediated crop protection. WSSA Fellow.<span class="cite" data-ref="7"><sup>[7]</sup></span></div>
+  <div class="label" style="margin-top:0.3rem">Former Senior Fellow, Monsanto Company &mdash; Biochemistry of herbicide action, EPSPS enzymology, and RNAi-mediated crop protection.<span class="cite" data-ref="4"><sup>[4]</sup></span> WSSA Fellow.<span class="cite" data-ref="7"><sup>[7]</sup></span></div>
   <div style="margin-top:0.8rem; font-size:0.85rem; color:var(--text-muted);">
     March 2026 &bull; Compiled by the Sci-Lead research agent
   </div>
@@ -400,10 +400,11 @@
     <li><a href="#s3">Catalog of High-Boiling Flavor Compounds</a></li>
     <li><a href="#s4">The Activity Coefficient Crossover &mdash; The Central Insight</a></li>
     <li><a href="#s5">Congener Partitioning: Heads, Hearts, and Tails</a></li>
-    <li><a href="#s6">Seven Strategies for Optimizing Flavor Recovery</a></li>
+    <li><a href="#s6">Practical Strategies for Optimizing Flavor Recovery</a></li>
     <li><a href="#s7">Advanced &amp; Novel Approaches for the Biochemist-Distiller</a></li>
     <li><a href="#s8">Putting It Together: A Recommended Protocol</a></li>
-    <li><a href="#s9">References</a></li>
+    <li><a href="#s9">Accelerated Maturation: Premium Flavor in Months, Not Years</a></li>
+    <li><a href="#s10">References</a></li>
   </ol>
   <div style="margin-top:0.6rem; font-size:0.8rem; color:var(--text-muted);">Tap any <span style="color:var(--link);">[n]</span> citation to see the source excerpt inline.</div>
 </div>
@@ -493,7 +494,7 @@ K<sub>i</sub> = y<sub>i</sub> / x<sub>i</sub> = &gamma;<sub>i</sub><sup>&infin;<
 <!-- ============================================================ -->
 <h2 id="s3">3. Catalog of High-Boiling Flavor Compounds</h2>
 
-<p>The following table presents the key congener classes relevant to premium whiskey character, organized by boiling point. Compounds are color-coded by their typical distillation fraction. Boiling points are standard literature values; flavor thresholds are drawn from Lee et al. (2001)<span class="cite" data-ref="25"><sup>[25]</sup></span> and Nykanen &amp; Suomalainen (1983).<span class="cite" data-ref="24"><sup>[24]</sup></span></p>
+<p>The following table presents the key congener classes relevant to premium whiskey character, organized by boiling point. Compounds are color-coded by their typical distillation fraction. Boiling points are standard literature values; flavor thresholds are drawn from Lee et al. (2001),<span class="cite" data-ref="25"><sup>[25]</sup></span> Nykanen &amp; Suomalainen (1983),<span class="cite" data-ref="24"><sup>[24]</sup></span> and Beaulieu &amp; Grimm (2001).<span class="cite" data-ref="16"><sup>[16]</sup></span></p>
 
 <div class="table-wrap">
 <table>
@@ -762,7 +763,7 @@ K<sub>i</sub> = y<sub>i</sub> / x<sub>i</sub> = &gamma;<sub>i</sub><sup>&infin;<
 </div>
 
 <div class="callout">
-  <strong>Note on &gamma;<sup>&infin;</sup> values:</strong> Activity coefficients at infinite dilution in pure water are order-of-magnitude estimates based on UNIFAC group-contribution predictions and published experimental data.<span class="cite" data-ref="17"><sup>[17]</sup></span><span class="cite" data-ref="2"><sup>[2]</sup></span> In ethanol-water mixtures typical of distillation (40&ndash;60% ethanol), these values are 10&ndash;100&times; lower. This composition dependence is the crux of the optimization problem.
+  <strong>Note on &gamma;<sup>&infin;</sup> values:</strong> These are <em>order-of-magnitude estimates</em>, not direct measurements. Values for esters are from UNIFAC group-contribution predictions cross-checked against Athes et al.'s NRTL-fitted data for 44 aroma compounds.<span class="cite" data-ref="2"><sup>[2]</sup></span> Values for alcohols and acids are from Jousse et al.'s experimental measurements where available.<span class="cite" data-ref="17"><sup>[17]</sup></span> For compounds lacking direct measurement (e.g., sotolon, hexyl acetate), these are purely predictive. In ethanol-water mixtures typical of distillation (40&ndash;60% ethanol), all values are 10&ndash;100&times; lower. This composition dependence is the crux of the optimization problem.
 </div>
 
 <div class="callout warning">
@@ -778,7 +779,7 @@ K<sub>i</sub> = y<sub>i</sub> / x<sub>i</sub> = &gamma;<sub>i</sub><sup>&infin;<
 
 <p>Consider ethyl octanoate: BP = 207&deg;C, far above water's 100&deg;C. Its pure-component vapor pressure at 78&deg;C is negligible (~0.5 mmHg). By naive reasoning, it should never appear in the distillate. Yet it is routinely found in the hearts cut of whiskey distillation.<span class="cite" data-ref="21"><sup>[21]</sup></span></p>
 
-<p>The resolution: its activity coefficient in dilute aqueous solution is <em>enormous</em> (&gamma;<sup>&infin;</sup> ~ 30,000 in pure water).<span class="cite" data-ref="2"><sup>[2]</sup></span> This means the <em>effective</em> vapor pressure&mdash;the fugacity, or thermodynamic "escaping tendency"&mdash;is amplified by a factor of 30,000:</p>
+<p>The resolution: its activity coefficient in dilute aqueous solution is <em>enormous</em>. UNIFAC group-contribution methods predict &gamma;<sup>&infin;</sup> on the order of 10<sup>4</sup>&ndash;10<sup>5</sup> in pure water (the value used here, ~30,000, is a representative mid-range estimate consistent with Athes et al.'s NRTL-fitted data for C8 esters).<span class="cite" data-ref="2"><sup>[2]</sup></span> This means the <em>effective</em> vapor pressure&mdash;the fugacity, or thermodynamic "escaping tendency"&mdash;is amplified by a factor of 30,000:</p>
 
 <div class="equation">
 P<sub>eff</sub> = &gamma;<sup>&infin;</sup> &times; P<sup>sat</sup> = 30,000 &times; 0.5 mmHg = 15,000 mmHg
@@ -967,7 +968,7 @@ ln &gamma;<sub>mix</sub> &asymp; 0.44 &times; 0.69 + 0.56 &times; 10.31 = 6.08
 </div>
 
 <!-- ============================================================ -->
-<h2 id="s6">6. Seven Strategies for Optimizing Flavor Recovery</h2>
+<h2 id="s6">6. Practical Strategies for Optimizing Flavor Recovery</h2>
 
 <div class="strategy-card">
   <h4><span class="strategy-number">1</span> Reduced-Pressure (Vacuum) Distillation</h4>
@@ -1004,6 +1005,47 @@ d(ln P<sup>sat</sup>) / d(1/T) = -&Delta;H<sub>vap</sub> / R
   <div class="callout key-insight">
     <strong>Why this works:</strong> At 8% ABV, ethyl octanoate has &gamma; &asymp; 15,000. At 40% ABV (spirit run), &gamma; &asymp; 800. The compound is ~19&times; more volatile relative to its concentration in the dilute wash. Recycling tails into wash is a free thermodynamic boost. (This is a standard practice in Scotch whisky distillation, where feints are recycled into the next spirit still charge.<span class="cite" data-ref="22"><sup>[22]</sup></span>)
   </div>
+
+  <h4>Stripping Run: Pot Still vs. Continuous Column</h4>
+
+  <p>For the stripping run specifically, pot stills and continuous (column) stills produce different congener profiles:<span class="cite" data-ref="22"><sup>[22]</sup></span></p>
+
+  <div class="table-wrap">
+  <table>
+    <tr>
+      <th>Parameter</th>
+      <th>Pot Still Stripping</th>
+      <th>Column Still Stripping</th>
+    </tr>
+    <tr>
+      <td>Theoretical plates</td>
+      <td>1&ndash;3 (low separation)</td>
+      <td>8&ndash;20+ (high separation)</td>
+    </tr>
+    <tr>
+      <td>Heavy ester recovery</td>
+      <td>Higher&mdash;less reflux means more heavy congeners pass</td>
+      <td>Lower&mdash;high reflux strips heavy esters back to pot</td>
+    </tr>
+    <tr>
+      <td>Fusel oil carryover</td>
+      <td>Higher (broader cut)</td>
+      <td>Lower (concentrated in side-draw or tails)</td>
+    </tr>
+    <tr>
+      <td>Throughput</td>
+      <td>Batch; slow</td>
+      <td>Continuous; fast</td>
+    </tr>
+    <tr>
+      <td>Flavor character</td>
+      <td>Richer, more complex low wines</td>
+      <td>Cleaner, higher-proof low wines</td>
+    </tr>
+  </table>
+  </div>
+
+  <p><strong>Recommendation for flavor recovery:</strong> Use a pot still for the stripping run. The low plate count allows more heavy congeners into the low wines. A column still produces cleaner distillate but at the cost of the very flavor compounds you want to recover. Reserve the column (or variable reflux) for the spirit run, where you need precision to separate desirable congeners from fusel oils.<span class="cite" data-ref="23"><sup>[23]</sup></span></p>
 </div>
 
 <div class="strategy-card">
@@ -1095,18 +1137,10 @@ d(ln P<sup>sat</sup>) / d(1/T) = -&Delta;H<sub>vap</sub> / R
 <div class="strategy-card">
   <h4><span class="strategy-number">7</span> Selective Congener Extraction via pH and Ionic Strength</h4>
 
-  <p>This is where your biochemistry background gives you a unique advantage, Dr. Sammons.</p>
-
-  <p>Fatty acids (caprylic, capric, lauric) exist in equilibrium between protonated (volatile) and deprotonated (non-volatile carboxylate anion) forms:</p>
-
-  <div class="equation">
-R-COOH &hArr; R-COO<sup>&minus;</sup> + H<sup>+</sup> &nbsp;&nbsp;&nbsp; pK<sub>a</sub> &asymp; 4.8&ndash;4.9 (C8&ndash;C12 fatty acids)
-  </div>
-
-  <p>At typical wash pH of 4.0&ndash;4.5, most fatty acids are protonated and therefore volatile. By <strong>raising the wash pH to 6&ndash;7</strong> (with food-grade CaCO<sub>3</sub> or NaHCO<sub>3</sub>) before distillation, you convert fatty acids to their non-volatile salt forms. They stay in the pot. Meanwhile, neutral esters, phenols, and lactones are unaffected and distill normally.</p>
+  <p>Fatty acids (C8&ndash;C12) partition between protonated (volatile, R-COOH) and deprotonated (non-volatile, R-COO<sup>&minus;</sup>) forms with pK<sub>a</sub> &asymp; 4.8&ndash;4.9. At typical wash pH of 4.0&ndash;4.5, most are protonated and therefore volatile. Raising wash pH to 6&ndash;7 with CaCO<sub>3</sub> or NaHCO<sub>3</sub> before distillation converts them to non-volatile carboxylate salts. They stay in the pot. Neutral esters, phenols, and lactones are unaffected.</p>
 
   <div class="callout key-insight">
-    <strong>This is novel and powerful:</strong> Most distillers think only in terms of temperature and timing for their cuts. pH manipulation before distillation is an underutilized orthogonal dimension that a biochemist is uniquely positioned to exploit. (Note: this approach is well-established in chemical engineering for acid separation<span class="cite" data-ref="26"><sup>[26]</sup></span> but is not widely applied in artisanal spirits production.)
+    <strong>Underutilized lever:</strong> pH manipulation before distillation is an orthogonal dimension to temperature, pressure, and timing. Well-established in chemical engineering for acid separation<span class="cite" data-ref="26"><sup>[26]</sup></span> but rarely applied in artisanal spirits production.
   </div>
 </div>
 
@@ -1129,13 +1163,32 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
   <li><strong>Precursor addition</strong>: adding trace amounts of specific fatty acids (C6, C8, C10) to the wash before fermentation to drive ester synthesis toward desired profiles</li>
 </ul>
 
-<h3>7.2 Copper Surface Chemistry</h3>
+<h3>7.2 Ester Formation <em>During</em> Distillation: Fischer Esterification in the Pot</h3>
+
+<p>Ester formation does not stop when fermentation ends. During distillation itself, <strong>Fischer esterification</strong> occurs in the pot as organic acids react with ethanol under acidic conditions and heat:</p>
+
+<div class="equation">
+R-COOH + C<sub>2</sub>H<sub>5</sub>OH &hArr; R-COOC<sub>2</sub>H<sub>5</sub> + H<sub>2</sub>O &nbsp;&nbsp; (acid-catalyzed, reversible)
+</div>
+
+<p>This is distinct from the enzyme-mediated ATF1/ATF2 pathway in fermentation. Fischer esterification is governed by Le Chatelier's principle: the reaction is driven forward by the continuous removal of one product (the ester) into the vapor phase during distillation. Conditions that promote it:</p>
+
+<ul>
+  <li><strong>Higher pot temperature:</strong> Reaction rate approximately doubles per 10&deg;C (Arrhenius). Atmospheric distillation (78&ndash;100&deg;C pot) favors Fischer ester formation more than vacuum distillation (55&ndash;65&deg;C).</li>
+  <li><strong>Lower pH:</strong> The reaction is acid-catalyzed. Wash pH of 3.5&ndash;4.5 provides proton catalysis. (Note: this conflicts with the pH-raising strategy in &sect;6 for suppressing fatty acid volatility&mdash;there is a genuine tradeoff here.)</li>
+  <li><strong>Longer pot residence time:</strong> Slower distillation gives more time for equilibrium to shift. The stripping run, with its extended low-wines collection, provides more Fischer esterification than a fast spirit run.</li>
+  <li><strong>Metal catalysis:</strong> Martinez de la Ossa &amp; Galan Serrano (1991) observed that CuCl<sub>2</sub> in the pot catalyzed conversion of acetaldehyde to ethyl acetate during wine distillation<span class="cite" data-ref="31"><sup>[31]</sup></span>&mdash;a copper-catalyzed esterification. Standard copper pot stills may provide a milder version of this effect.</li>
+</ul>
+
+<p><strong>Practical implication:</strong> The stripping run is where most in-pot Fischer esterification occurs (higher acid concentration, longer run time, high temperature). The spirit run contributes less. For maximum ester formation during distillation, avoid rushing the stripping run, maintain low pH in the wash (accepting higher fatty acid carryover as a tradeoff), and use a copper pot.</p>
+
+<h3>7.3 Copper Surface Chemistry</h3>
 
 <p>Copper's role in whiskey distillation is well-characterized: Cu<sup>2+</sup> ions catalyze the removal of sulfur compounds (H<sub>2</sub>S, DMS, DMDS) via formation of insoluble CuS.<span class="cite" data-ref="20"><sup>[20]</sup></span> Harrison et al. (2011) systematically demonstrated that copper location in the still (pot, column, lyne arm, condenser) differentially affects different sulfur compound classes.<span class="cite" data-ref="20"><sup>[20]</sup></span></p>
 
 <p><strong>Optimization:</strong> Use copper in the lyne arm and condenser (high vapor contact, post-pot), but consider stainless steel for the pot itself. This gives sulfur removal where needed without catalyzing ester breakdown in the liquid phase. For vacuum distillation, stainless steel pots are also mechanically superior under reduced pressure.<span class="cite" data-ref="14"><sup>[14]</sup></span></p>
 
-<h3>7.3 Molecular Sieve Post-Treatment of Tails</h3>
+<h3>7.4 Molecular Sieve Post-Treatment of Tails</h3>
 
 <p>Type 3A molecular sieves (zeolites with 3&Aring; pore diameter) selectively adsorb water while excluding ethanol and larger organic molecules.<span class="cite" data-ref="26"><sup>[26]</sup></span> By passing tails fractions through a 3A sieve bed, you can:</p>
 
@@ -1147,7 +1200,7 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
 
 <p>This is standard practice in fuel ethanol production but rarely applied to artisanal spirits.</p>
 
-<h3>7.4 Two-Stage Pressure Protocol</h3>
+<h3>7.5 Two-Stage Pressure Protocol</h3>
 
 <p>A novel protocol combining the advantages of both atmospheric and vacuum distillation:</p>
 
@@ -1160,7 +1213,7 @@ Alcohol + Acyl-CoA &rarr; Ester + CoA-SH &nbsp;&nbsp; (ATF1/ATF2)
   <strong>This two-stage approach maximizes recovery AND quality:</strong> Stage 1 captures everything (thermodynamically favorable at low ABV). Stage 2 separates with thermal gentleness (preserving delicate volatiles). The biochemist's equivalent of a two-step purification&mdash;crude extraction followed by gentle chromatography.
 </div>
 
-<h3>7.5 Salt-Effect Distillation: Breaking the Azeotrope with Dissolved Salts</h3>
+<h3>7.6 Salt-Effect Distillation: Breaking the Azeotrope with Dissolved Salts</h3>
 
 <p>A classical technique from industrial separation that is underexplored in craft distilling: adding dissolved salts to the pot charge to shift or eliminate the ethanol-water azeotrope. The foundational work is Furter's series of reviews spanning 1967&ndash;1993.<span class="cite" data-ref="28"><sup>[28]</sup></span><span class="cite" data-ref="29"><sup>[29]</sup></span></p>
 
@@ -1227,7 +1280,7 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
   <li><strong>Esters</strong> (ethyl acetate, isoamyl acetate): Poorly water-soluble, highly volatile. Salting out further reduces their aqueous solubility, likely <em>increasing</em> their vapor-phase concentration. <strong>Favorable.</strong></li>
   <li><strong>Higher alcohols</strong> (isoamyl alcohol, isobutanol): Less polar than water; experience a mild salting-out effect similar to ethanol. <strong>Neutral to slightly favorable.</strong></li>
   <li><strong>Organic acids</strong> (acetic, lactic): Water-soluble and polar. Mixed effects depending on specific acid-salt interactions.</li>
-  <li><strong>High-BP phenolics</strong> (vanillin, guaiacol): Already poorly volatile at distillation temperatures. Salt effect is negligible for these compounds&mdash;other techniques (see &sect;7.6) are needed.</li>
+  <li><strong>High-BP phenolics</strong> (vanillin, guaiacol): Already poorly volatile at distillation temperatures. Salt effect is negligible for these compounds&mdash;other techniques (see &sect;7.7, gin basket) are needed.</li>
 </ul>
 
 <p>Martinez de la Ossa &amp; Galan Serrano also observed that CuCl<sub>2</sub> (not food-safe) catalyzed ester formation from acetaldehyde during distillation<span class="cite" data-ref="31"><sup>[31]</sup></span>&mdash;a reminder that salt selection affects more than just VLE.</p>
@@ -1236,7 +1289,7 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
   <strong>Practical note:</strong> All salts remain in the pot (non-volatile) and do not carry into the distillate. However, TTB regulations govern additives in US spirit production. For home distilling, the GRAS salts listed above are food-safe at the concentrations used. Always verify local regulations for commercial production.
 </div>
 
-<h3>7.6 Gin Basket Vapor Infusion for Flavor Compound Recovery</h3>
+<h3>7.7 Gin Basket Vapor Infusion for Flavor Compound Recovery</h3>
 
 <p>A gin basket (also: botanical basket, Carter-head basket) is a perforated container placed in the vapor path between pot and condenser. Flavor materials loaded into the basket are extracted by the rising ethanol-water vapor via an <em>in-situ</em> steam distillation mechanism. This technique, standard in gin production (e.g., Bombay Sapphire's Carter-head still), has unexplored potential for whiskey flavor optimization.</p>
 
@@ -1248,7 +1301,7 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
 
 <h4>Application: Oak Chips in a Gin Basket During Spirit Runs</h4>
 
-<p>Could a gin basket loaded with toasted oak chips, staves, or spirals be used during whiskey spirit runs? The thermodynamic analysis by compound class:</p>
+<p>Could a gin basket loaded with toasted oak chips, staves, or spirals be used during whiskey spirit runs? <strong>No published experiments test this specific application.</strong> The following is a thermodynamic prediction based on steam distillation principles and the Hodel gin data&mdash;not demonstrated results. Analysis by compound class:</p>
 
 <div class="table-wrap">
 <table>
@@ -1273,19 +1326,19 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
   <strong>Practical setup:</strong> Place a stainless steel or copper mesh basket containing 20&ndash;50 g of medium-toast oak chips (American or French) per liter of pot charge in the vapor path above the pot. The chips should be loosely packed to allow vapor flow. Heavy toast yields more guaiacol and furfural; medium toast favors oak lactone and eugenol. Change chips between runs&mdash;extraction is rapid and largely complete within a single distillation.
 </div>
 
-<h3>7.7 The Combined Strategy: Salt + Gin Basket Synergy</h3>
+<h3>7.8 The Combined Strategy: Salt + Gin Basket Synergy</h3>
 
 <p>Salt-effect distillation and gin basket vapor infusion are <strong>synergistic</strong> when combined:</p>
 
 <ol>
-  <li><strong>Salt in the pot</strong> increases ethanol concentration in the vapor (see &sect;7.5)</li>
+  <li><strong>Salt in the pot</strong> increases ethanol concentration in the vapor (see &sect;7.6)</li>
   <li><strong>Higher-proof vapor</strong> passing through the gin basket is a <em>better</em> solvent for lipophilic wood-derived compounds (Hodel et al. confirmed ethanol concentration affects extraction of oxygenated monoterpenes<span class="cite" data-ref="33"><sup>[33]</sup></span>)</li>
   <li>The salt simultaneously concentrates volatile esters via salting out, while the gin basket captures semi-volatile wood compounds that would otherwise remain in the pot</li>
 </ol>
 
 <p>This is a novel combined protocol: use CaCl<sub>2</sub> or potassium acetate in the pot charge to boost ethanol enrichment, with toasted oak chips in a vapor basket above. The result should be a spirit with both enhanced ester content (from salting out) and vapor-extracted wood character (from the basket)&mdash;in a single distillation pass.</p>
 
-<h3>7.8 Glycerol as Liquid-Phase Entrainer</h3>
+<h3>7.9 Glycerol as Liquid-Phase Entrainer</h3>
 
 <p>Adding 1&ndash;2% food-grade glycerol (GRAS, BP 290&deg;C) to the pot modifies activity coefficients of all congeners.<span class="cite" data-ref="26"><sup>[26]</sup></span> Glycerol is a poor solvent for esters, potentially boosting their relative volatility. Glycerol itself does not distill at spirit-run temperatures.</p>
 
@@ -1303,7 +1356,7 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
   <li><strong>Fermentation:</strong> Use a whiskey yeast strain with high ATF1 expression (e.g., SafSpirit M-1 or Distila-Max MW). Ferment at 20&ndash;22&deg;C for balanced ester synthesis vs. retention.<span class="cite" data-ref="5"><sup>[5]</sup></span></li>
   <li><strong>pH adjustment:</strong> After fermentation, raise wash pH to 5.5&ndash;6.0 with CaCO<sub>3</sub> to suppress fatty acid volatility while leaving esters unaffected.</li>
   <li><strong>Tails recycling:</strong> Add saved tails from the previous run to the wash (typically 5&ndash;10% by volume).</li>
-  <li><strong>Optional &mdash; salt addition:</strong> Dissolve 100&ndash;200 g CaCl<sub>2</sub> or potassium acetate per kg water in the wash to salt out esters and boost ethanol enrichment (&sect;7.5).<span class="cite" data-ref="28"><sup>[28]</sup></span></li>
+  <li><strong>Recommended &mdash; salt addition:</strong> Dissolve 100&ndash;200 g CaCl<sub>2</sub> or potassium acetate per kg water in the wash to salt out esters and boost ethanol enrichment (&sect;7.6). Start with the low end and compare distillate against an unsalted control run.<span class="cite" data-ref="28"><sup>[28]</sup></span></li>
 </ol>
 
 <h3>Phase B: Stripping Run (Atmospheric)</h3>
@@ -1317,7 +1370,7 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
 <h3>Phase C: Spirit Run (Reduced Pressure, with Optional Gin Basket)</h3>
 <ol>
   <li>Charge the spirit still with low wines (typically 25&ndash;35% ABV)</li>
-  <li><strong>Optional &mdash; gin basket:</strong> Load a vapor-path basket with 20&ndash;50 g medium-toast oak chips per liter of pot charge for vapor-extracted wood character (&sect;7.6)<span class="cite" data-ref="32"><sup>[32]</sup></span></li>
+  <li><strong>Recommended &mdash; gin basket:</strong> Load a vapor-path basket with 20&ndash;50 g medium-toast oak chips per liter of pot charge for vapor-extracted wood character (&sect;7.7). Synergistic with salt addition: higher-proof vapor from salting out is a better solvent for wood-derived lipophilic compounds (&sect;7.8).<span class="cite" data-ref="32"><sup>[32]</sup></span></li>
   <li>Pull vacuum to 200&ndash;300 mmHg (achievable with an inexpensive aspirator or HVAC vacuum pump)</li>
   <li>Pot temperature will reach ~55&ndash;65&deg;C instead of 78&ndash;95&deg;C</li>
   <li>Apply variable reflux:
@@ -1385,7 +1438,7 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
 
 <h3>9.3 Wood Alternatives with Micro-Oxygenation</h3>
 
-<p>Oak chips, cubes, spirals, and staves in glass containers provide high SA/V extraction without the over-tannin risk of tiny barrels. <strong>However, sealed glass provides no oxidation</strong>&mdash;no esterification, no acetal formation, no tannin smoothing. The solution: pair wood alternatives with controlled oxygen introduction.</p>
+<p>Oak chips, cubes, spirals, and staves in glass containers provide high SA/V extraction without the over-tannin risk of tiny barrels. <strong>However, sealed glass provides no oxidation</strong>&mdash;no esterification, no acetal formation, no tannin smoothing. The solution: pair wood alternatives with controlled oxygen introduction. (Note: these same wood formats can also be used <em>during distillation</em> in a gin basket for vapor-phase extraction of volatile wood compounds&mdash;see &sect;7.6.)</p>
 
 <h4>Extraction Kinetics by Format</h4>
 
@@ -1419,7 +1472,7 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
 
 <p>Temperature changes drive a pressure-mediated pump: heat causes liquid expansion, forcing spirit <em>into</em> wood pores; cooling reverses the flow, pulling spirit back out carrying dissolved extractives. Each cycle is one extraction event. Kentucky warehouses provide 4&ndash;6 natural cycles per year.</p>
 
-<p>Michter&rsquo;s Distillery quantifies the benefit: heat cycling provides approximately <strong>an additional 6 months of maturing quality for every year</strong> heat-cycled.<span class="cite" data-ref="37"><sup>[37]</sup></span> For comparison, Scotland&rsquo;s climate permits maturation at roughly one-quarter the rate of Kentucky&mdash;four years in Scotland approximates one in Kentucky.<span class="cite" data-ref="11"><sup>[11]</sup></span></p>
+<p>Michter&rsquo;s Distillery (industry source, not peer-reviewed) estimates that heat cycling provides approximately <strong>an additional 6 months of maturing quality for every year</strong> heat-cycled.<span class="cite" data-ref="37"><sup>[37]</sup></span> For comparison, Scotland&rsquo;s climate permits maturation at roughly one-quarter the rate of Kentucky&mdash;four years in Scotland approximates one in Kentucky.<span class="cite" data-ref="11"><sup>[11]</sup></span></p>
 
 <p><strong>Home implementation:</strong> Place a small barrel or glass jar with wood in a location with strong diurnal temperature swings (garage, shed). For more aggressive cycling: a heat mat on a 12h on/off timer, targeting 60&ndash;100&deg;F daily swings.</p>
 
@@ -1427,7 +1480,7 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
 
 <p>Ultrasonic waves (20&ndash;40 kHz) generate acoustic cavitation: rapid formation and violent collapse of micro-bubbles producing intense shear forces, local hot spots (thousands of degrees at cavitation sites), and dramatically accelerated mass transfer from wood.</p>
 
-<p>Delgado-Gonz&aacute;lez et al. (2022) measured phenolic extraction from American oak chips in 40% ABV spirit at 40 kHz:<span class="cite" data-ref="38"><sup>[38]</sup></span> sonicated extractions achieved initial rates equivalent to thermal extractions at <strong>18&ndash;24&deg;C higher</strong> than actual temperature. Chang (2005) reported that 20 kHz irradiation achieved color values in <strong>&lt;1 day</strong> comparable to ~1.5 months of conventional aging, with <strong>3.2&times; more vanillin</strong> and <strong>2.7&times; more <em>cis</em>-oak-lactone</strong> than static chips alone.</p>
+<p>Delgado-Gonz&aacute;lez et al. (2022) measured phenolic extraction from American oak chips in 40% ABV spirit at 40 kHz:<span class="cite" data-ref="38"><sup>[38]</sup></span> sonicated extractions achieved initial rates equivalent to thermal extractions at <strong>18&ndash;24&deg;C higher</strong> than actual temperature. Chang (2005, University of Tennessee; reported values cited via secondary sources&mdash;primary publication details incomplete) found that 20 kHz irradiation achieved color values in <strong>&lt;1 day</strong> comparable to ~1.5 months of conventional aging, with reported increases in vanillin and <em>cis</em>-oak-lactone extraction vs. static chips alone. (Exact multipliers vary by source; treat as directional.)</p>
 
 <p><strong>Protocol:</strong> 20&ndash;40 kHz, minimum 20 W/L power density. Sessions of 60 minutes with 10-minute cooldowns. Keep temperature <strong>below 45&deg;C</strong> to avoid thermal degradation. Use during the initial extraction phase (first 1&ndash;2 weeks), then transition to slower MOX-based maturation.</p>
 
@@ -1492,7 +1545,7 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
 
   <li id="ref-15">"Atmospheric and Vacuum Distillation of Shochu." The Japanese Bar. <a href="https://thejapanesebar.com/shochu-awamori/vacuum-atmospheric-distillation/">TheJapaneseBar</a></li>
 
-  <li id="ref-16">Beaulieu, J.C. &amp; Grimm, C.C. (2001). "Identification of volatile compounds in cantaloupe." <em>J. Agric. Food Chem.</em></li>
+  <li id="ref-16">Beaulieu, J.C. &amp; Grimm, C.C. (2001). "Identification of volatile compounds in cantaloupe at various developmental stages using solid phase microextraction." <em>J. Agric. Food Chem.</em>, 49(3), 1345-1352. Cited for detection threshold data of shared volatile esters. <a href="https://pubs.acs.org/doi/10.1021/jf0005768">ACS</a></li>
 
   <li id="ref-17">Jousse, C., et al. (2019). "Effect of Ethanol and Temperature on Partition Coefficients of Ethyl Acetate, Isoamyl Acetate, and Isoamyl Alcohol." <em>J. Chem. Eng. Data</em>, 64(5), 2499-2507. <a href="https://pubs.acs.org/doi/10.1021/acs.jced.8b01125">ACS</a></li>
 
@@ -1561,17 +1614,17 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
   var refs = {
     1: {
       source: "Faundez et al. (2006), Fluid Phase Equilibria",
-      excerpt: "NRTL model accurately predicts VLE for ternary mixtures of water + ethanol + congener using only binary interaction parameters, enabling computational prediction of congener behavior during wine and spirit distillation.",
+      excerpt: "[Abstract summary \u2014 full text paywalled] NRTL model predicts VLE for ternary mixtures of water + ethanol + congener using binary interaction parameters, enabling computational prediction of congener behavior during wine and spirit distillation.",
       url: "https://www.sciencedirect.com/science/article/abs/pii/S0040603106004850"
     },
     2: {
       source: "Athes et al. (2008), Ind. Eng. Chem. Res.",
-      excerpt: "Comprehensive review of published VLE data for 44 aroma compounds highly diluted in ethanol-water mixtures at 101.3 kPa. NRTL model parameters fitted; activity coefficients at infinite dilution reported for esters, alcohols, aldehydes, and acids in aqueous ethanol.",
+      excerpt: "[Abstract summary \u2014 full text paywalled] Review of published VLE data for 44 aroma compounds highly diluted in ethanol-water mixtures at 101.3 kPa. NRTL model parameters fitted; activity coefficients at infinite dilution reported for esters, alcohols, aldehydes, and acids in aqueous ethanol.",
       url: "https://www.researchgate.net/publication/323530720"
     },
     3: {
       source: "Valderrama & Faundez (2003), Chinese J. Chem. Eng.",
-      excerpt: "Wilson, NRTL, and UNIQUAC activity coefficient models evaluated for describing VLE in ternary hydro-alcoholic solutions relevant to distillation of fermented beverages.",
+      excerpt: "[Abstract summary \u2014 full text paywalled] Wilson, NRTL, and UNIQUAC activity coefficient models evaluated for describing VLE in ternary hydro-alcoholic solutions relevant to distillation of fermented beverages.",
       url: "https://www.sciencedirect.com/science/article/abs/pii/S1004954108602037"
     },
     4: {
@@ -1636,12 +1689,12 @@ log(&gamma;<sub>salt</sub> / &gamma;<sub>0</sub>) = k<sub>s</sub> &middot; c<sub
     },
     16: {
       source: "Beaulieu & Grimm (2001), J. Agric. Food Chem.",
-      excerpt: "SPME methodology for identifying volatile compounds; referenced for activity coefficient estimation approaches in aqueous systems.",
-      url: "#ref-16"
+      excerpt: "Identified 26 volatile esters, alcohols, and aldehydes in cantaloupe using SPME-GC-MS. Referenced here for sensory detection threshold data of shared volatile esters (ethyl hexanoate, ethyl octanoate, ethyl butanoate) that are also key whiskey congeners.",
+      url: "https://pubs.acs.org/doi/10.1021/jf0005768"
     },
     17: {
       source: "Jousse et al. (2019), J. Chem. Eng. Data",
-      excerpt: "Partition coefficients of ethyl acetate, isoamyl acetate, and isoamyl alcohol measured at multiple ethanol concentrations and temperatures. Activity coefficients at infinite dilution follow Henry\u2019s law; water and ethanol follow Raoult\u2019s law convention.",
+      excerpt: "[Abstract summary \u2014 full text paywalled] Partition coefficients of ethyl acetate, isoamyl acetate, and isoamyl alcohol measured experimentally at multiple ethanol concentrations (0\u201340 wt%) and temperatures (25\u201375\u00b0C). Activity coefficients at infinite dilution quantified.",
       url: "https://pubs.acs.org/doi/10.1021/acs.jced.8b01125"
     },
     18: {
