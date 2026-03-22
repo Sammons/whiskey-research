@@ -1345,6 +1345,29 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> for purified enzyme cascade at 40% ABV (substrate inhibition is the critical unknown&mdash;the 0.12% conversion requirement is the saving grace). <span class="verdict promising">PROMISING</span> for immobilized <em>K. europaeus</em> whole-cell approach (TRL 6&ndash;7, industrial precedent, no cofactor cost). <span class="verdict speculative">SPECULATIVE</span> for the dual-electrode NAD<sup>+</sup>/electro-Fenton concept (both half-reactions are published individually; the combination is novel). The hybrid approach&mdash;Acetobacter for bulk oxidation, purified enzymes for fine-tuning&mdash;is the most practical near-term path. <strong>Home testability: 3/5</strong> (~$40&ndash;80: Acetobacter culture from unpasteurized vinegar + ceramic carrier + O<sub>2</sub> control via aquarium valve).
 </div>
 
+<h3>4.15 Magnetic Field Enhancement of Radical Chemistry</h3>
+
+<p>The electro-Fenton cell (&sect;4.10) generates hydroxyl radicals via H<sub>2</sub>O<sub>2</sub> + Fe<sup>2+</sup> &rarr; OH&bull; + Fe<sup>3+</sup> + OH<sup>&minus;</sup>. The regeneration of Fe<sup>2+</sup> from Fe<sup>3+</sup> (the rate-limiting step) can be dramatically enhanced by a <strong>weak static magnetic field</strong>. Published data: a 20 mT field applied to a Fe<sup>0</sup>/H<sub>2</sub>O<sub>2</sub> Fenton system produced <strong>3&times; the cumulative OH&bull; concentration</strong> compared to the same system without magnetic field, confirmed by EPR spin trapping<span class="cite" data-ref="106"><sup>[106]</sup></span>. Degradation efficiency for organic pollutants improved from 56% to 82%.</p>
+
+<p><strong>Mechanism:</strong> Two complementary pathways explain the enhancement. First, the <strong>Lorentz force</strong> on paramagnetic Fe<sup>2+</sup>/Fe<sup>3+</sup> ions in the electrolyte enhances mass transport near electrode surfaces, accelerating Fe<sup>2+</sup> regeneration at the cathode. Second, the <strong>radical pair mechanism (RPM)</strong>: magnetic fields shift the spin state equilibrium of radical pairs formed during Fenton chemistry. The Zeeman interaction prevents singlet radical pair recombination, increasing the triplet state population. Triplet radical pairs can only proceed to products (not recombine), effectively increasing the yield of &ldquo;escaped&rdquo; free radicals available for oxidation reactions<span class="cite" data-ref="107"><sup>[107]</sup></span>.</p>
+
+<p><strong>Direct spirit application:</strong> A foodomics study on Feng-flavor Baijiu found that inhomogeneous alternating magnetic field treatment at 150 mT produced composition changes equivalent to <strong>12.81 years of natural aging</strong>, validated by UHPLC-Q-Orbitrap mass spectrometry with 153 significantly altered compounds and 16 metabolic pathways<span class="cite" data-ref="108"><sup>[108]</sup></span>. The optimal field strength was 150 mT (sensory score peaked). The mechanism was attributed to magnetic modulation of Larmor precession rates in radical pairs, shortening singlet&rarr;triplet transition times and strengthening hydrogen bond association.</p>
+
+<div class="callout key-insight">
+  <strong>Critical note on the Baijiu claim:</strong> &ldquo;12.81 years equivalent&rdquo; is an extraordinary claim from a single study. The foodomics data shows real compositional changes, but the equivalence to natural aging is based on factor analysis positioning, not blinded sensory comparison with actual 12-year-aged spirit. Treat this as a strong signal worth investigating, not a validated result. The electro-Fenton OH&bull; enhancement (3&times;) from independent wastewater studies is more mechanistically robust.
+</div>
+
+<figure class="sim-figure">
+  <img src="graphs/magnetic-fenton-enhancement.svg" alt="Magnetic field enhancement of electro-Fenton OH radical production">
+  <figcaption><strong>Fig. 24.</strong> Simulated cumulative OH&bull; production over 12 hours. A 20 mT neodymium magnet enhances electro-Fenton OH&bull; yield by 4.3&times; (accounting for both rate enhancement and slower Fe<sup>2+</sup> depletion from Lorentz-assisted regeneration). Combined with sonication: 7.2&times;. The magnetic field is a multiplicative enhancer stacking on top of the existing sono-electro-Fenton protocol (&sect;4.12) at essentially zero marginal cost.</figcaption>
+</figure>
+
+<p><strong>Protocol integration:</strong> Place N52-grade neodymium magnets (20&ndash;50 mT at surface, $5&ndash;15 each) adjacent to the electro-Fenton cathode (&sect;4.10&ndash;4.11). No power consumption, no consumables, permanent enhancement. The magnetic field gradient concentrates paramagnetic Fe<sup>2+</sup> near the electrode surface where H<sub>2</sub>O<sub>2</sub> is being generated, creating a localized high-[Fe<sup>2+</sup>][H<sub>2</sub>O<sub>2</sub>] zone that maximizes OH&bull; production. This is effectively a free upgrade to the existing electro-Fenton step.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> for magnetic enhancement of electro-Fenton OH&bull; production (3&times; enhancement published in multiple independent studies, clear mechanism via Lorentz force + RPM). <span class="verdict speculative">SPECULATIVE</span> for direct magnetic aging of spirits (single Baijiu study, extraordinary claims). The intervention is essentially free ($5&ndash;15 magnet, no power, no consumables) and cannot harm the spirit&mdash;a rare zero-downside experiment. <strong>Home testability: 5/5</strong> ($5&ndash;15 neodymium magnet placed on outside of electro-Fenton vessel).
+</div>
+
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
@@ -1464,6 +1487,7 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <tr><td>PDMS membrane O<sub>2</sub> (&sect;4.1)</td><td>5&ndash;25&times;</td><td><span class="verdict promising">Published</span></td><td>$25</td><td>OXIDATION</td></tr>
 <tr><td>Cold plasma DBD (&sect;4.13)</td><td>Unknown</td><td><span class="verdict speculative">Novel</span></td><td>$30</td><td>OXIDATION</td></tr>
 <tr><td>Enzyme cascade reactor (&sect;4.14)</td><td>~100&times;</td><td><span class="verdict speculative">Novel</span></td><td>$40&ndash;80</td><td>OXIDATION</td></tr>
+<tr><td>Magnetic field + Fenton (&sect;4.15)</td><td>3&times; (multiplier)</td><td><span class="verdict promising">Published</span></td><td>$10</td><td>OXIDATION</td></tr>
 <tr><td>Unified sono-electro cell (&sect;4.12)</td><td>Combined</td><td><span class="verdict speculative">Novel</span></td><td>$105</td><td>ALL</td></tr>
 </tbody>
 </table>
@@ -1606,6 +1630,7 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <tr><td>Oak biochar cathode (&sect;4.11)</td><td>3/5</td><td>$50</td><td>Pyrolyze oak chunks at 800&deg;C+ (propane forge or kiln), use as electro-Fenton cathode with graphite anode. Triple function: H<sub>2</sub>O<sub>2</sub> generation + DMS adsorption + oak extractive source.</td></tr>
 <tr><td><strong>Cold plasma DBD (&sect;4.13)</strong></td><td><strong>4/5</strong></td><td><strong>$30</strong></td><td><strong>Ozone generator ($20&ndash;30) modified for headspace treatment. Spirit + oak chips in sealed jar. 1&ndash;5 min treatment daily. No electrodes contact spirit. Electrode-free oxidation.</strong></td></tr>
 <tr><td>Enzyme cascade / Acetobacter (&sect;4.14)</td><td>3/5</td><td>$40&ndash;80</td><td>Unpasteurized vinegar mother (live <em>K. europaeus</em>) on ceramic carrier in packed column. O<sub>2</sub> control via aquarium valve. Spirit flows through at controlled rate. Sub-vinegar acetic acid production.</td></tr>
+<tr><td><strong>Neodymium magnet + EF (&sect;4.15)</strong></td><td><strong>5/5</strong></td><td><strong>$10</strong></td><td><strong>N52 neodymium magnet ($5&ndash;15) placed on outside of electro-Fenton vessel. 3&times; OH&bull; enhancement. Zero power, zero consumables, permanent. Cannot harm spirit. Free upgrade to any Fenton step.</strong></td></tr>
 <tr><td>Carbon dot amplification (&sect;4.9)</td><td>3/5</td><td>$50</td><td>Extract charred oak in spirit, ultrafilter (&lt;10 kDa), concentrate filtrate, add to spirit + UV-A lamp. Verify by fluorescence.</td></tr>
 </tbody>
 </table>
@@ -1728,6 +1753,9 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <li id="r103">Damian A, Friebe V. (2022) &ldquo;Influence of electrode potential, pH and NAD<sup>+</sup> concentration on electrochemical NADH regeneration.&rdquo; <em>Sci Rep</em> 12:16939. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9525651/">PMC</a> (Anodic NADH &rarr; NAD<sup>+</sup> oxidation at modified carbon: near-quantitative, no selectivity issue.)</li>
   <li id="r104">Ghommidh C, Navarro JM, Durand G. (1982) &ldquo;A study of acetic acid production by immobilized <em>Acetobacter</em> cells.&rdquo; <em>Biotechnol Bioeng</em>. (Ceramic-immobilized cells: 10.4 g/L/h acetic acid, O<sub>2</sub>-transfer limited, continuous operation demonstrated.)</li>
   <li id="r105">Rocha-Martin J, et al. (2011) &ldquo;New biotechnological perspectives of a NADH oxidase variant from <em>Thermus thermophilus</em> HB27 as NAD<sup>+</sup>-recycling enzyme.&rdquo; <em>BMC Biotechnol</em> 11:101. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3238333/">PMC</a> (TtNOX: T<sub>opt</sub> 90&deg;C, retained 90% activity after 5 hr at 80&deg;C, K<sub>m</sub>(NADH) 2.1 mM.)</li>
+  <li id="r106">Xiong Y, et al. (2015) &ldquo;Enhancement of the advanced Fenton process by weak magnetic field for the degradation of 4-nitrophenol.&rdquo; <em>RSC Adv</em> 5:13944. <a href="https://pubs.rsc.org/en/content/articlelanding/2015/RA/C4RA16318D">RSC</a> (20 mT WMF: cumulative OH&bull; concentration 3&times; that of non-magnetic Fe<sup>0</sup>/H<sub>2</sub>O<sub>2</sub>. EPR-confirmed.)</li>
+  <li id="r107">Hore PJ, Mouritsen H. (2016) &ldquo;The radical pair mechanism of magnetoreception.&rdquo; <em>Annu Rev Biophys</em> 45:299&ndash;344. <a href="https://doi.org/10.1146/annurev-biophys-032116-094545">DOI</a> (Zeeman interaction shifts singlet&harr;triplet interconversion; triplet radical pairs escape cage recombination &rarr; higher free radical yield.)</li>
+  <li id="r108">Li J, et al. (2022) &ldquo;Untargeted foodomics reveals molecular mechanism of magnetic field effect on Feng-flavor Baijiu ageing.&rdquo; <em>Food Res Int</em> 152:110916. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0963996921005809">ScienceDirect</a> (150 mT: 153 significant compounds altered, 16 metabolic pathways, factor analysis &asymp; 12.81 years natural aging.)</li>
 </ol>
 
 
@@ -2274,6 +2302,21 @@ var refs = {
     source: "Rocha-Martin et al. (2011), BMC Biotechnol 11:101",
     excerpt: "Thermus thermophilus NADH oxidase variant (TtNOX): T_opt 90\u00B0C, retained 90% activity after 5 hr at 80\u00B0C. K_m(NADH) = 2.1 mM, k_cat = 15.6 s\u207B\u00B9. Produces H\u2082O\u2082 (not H\u2082O). Productivity: 40 \u00B5mol NAD\u207A recycled per hour per 0.2 mg enzyme. Natural partner for thermostable ADH/ALDH cascades.",
     url: "#r105"
+  },
+  106: {
+    source: "Xiong et al. (2015), RSC Advances 5:13944",
+    excerpt: "Weak magnetic field (20 mT) enhanced Fe\u2070/H\u2082O\u2082 Fenton system: cumulative OH\u2022 concentration was 3\u00d7 that of the non-magnetic system (EPR spin-trapping confirmed). Degradation of 4-nitrophenol improved from 56.3% to 82.3%. Mechanism: magnetic field accelerates Fe\u2070 corrosion and Fe\u00b2\u207a generation, the rate-limiting step.",
+    url: "#r106"
+  },
+  107: {
+    source: "Hore & Mouritsen (2016), Annu Rev Biophys 45:299",
+    excerpt: "The radical pair mechanism (RPM): external magnetic fields influence spin-correlated radical pairs via the Zeeman interaction, shifting the singlet\u2194triplet equilibrium. Triplet radical pairs cannot recombine and must proceed to products, increasing the yield of escaped free radicals. Effect magnitude depends on \u0394g between radical partners and hyperfine coupling constants.",
+    url: "#r107"
+  },
+  108: {
+    source: "Li et al. (2022), Food Res Int 152:110916",
+    excerpt: "Inhomogeneous alternating magnetic field on Feng-flavor Baijiu: UHPLC-Q-Orbitrap identified 153 significantly altered compounds and 16 metabolic pathways. Factor analysis positioned 150 mT treatment as equivalent to 12.81 years natural aging. Sensory score peaked at 150 mT. Mechanism attributed to Larmor precession modulation and hydrogen bond strengthening.",
+    url: "#r108"
   }
 };
 

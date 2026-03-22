@@ -87,6 +87,9 @@ fn main() {
 
     fs::write("../graphs/enzyme-cascade-reactor.svg", sim_enzyme_cascade_reactor()).unwrap();
     println!("Wrote enzyme-cascade-reactor.svg");
+
+    fs::write("../graphs/magnetic-fenton-enhancement.svg", sim_magnetic_fenton_enhancement()).unwrap();
+    println!("Wrote magnetic-fenton-enhancement.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -4029,6 +4032,130 @@ fn sim_enzyme_cascade_reactor() -> String {
     svg += &label(bx + 5.0, by + 26.0, &format!("BsADH rate: {:.2} mM/hr", rate_40), GREEN, 8, "start");
     svg += &label(bx + 5.0, by + 38.0, &format!("Conversion needed: 0.12%"), TEXT, 8, "start");
     svg += &label(bx + 5.0, by + 50.0, &format!("Cost: $0.02-0.07/L"), YELLOW, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 24: Magnetic Field Enhancement of Fenton Chemistry
+// 3× OH• enhancement at 20 mT via radical pair mechanism + Lorentz force
+// ═══════════════════════════════════════════════════════════════
+fn sim_magnetic_fenton_enhancement() -> String {
+    let w = 700.0_f64;
+    let h = 340.0_f64;
+    let mt = 45.0;
+    let ml = 65.0;
+    let pw = w - ml - 30.0; // plot width
+    let ph = h - mt - 40.0; // plot height
+
+    let mut svg = svg_header(w, h, "Magnetic Field Enhancement of Electro-Fenton OH\u{2022} Production");
+
+    // Model: Fenton OH• generation rate vs time (hours)
+    // Without MF: base rate with Fe2+ depletion (exponential decay as Fe2+ -> Fe3+)
+    // With MF: 3× base rate, slower Fe2+ depletion (Lorentz-enhanced regeneration)
+    // With MF + sonication: further enhancement from cavitation O2 mass transfer
+
+    let t_max = 12.0_f64; // hours
+    let n = 600;
+
+    // Base Fenton kinetics: rate = k * [Fe2+] * [H2O2]
+    // Simplified to: rate(t) = r0 * exp(-k_dep * t)  where k_dep models Fe2+ depletion
+    let r0_base = 0.5_f64; // mM OH•/hr (electro-Fenton baseline)
+    let k_dep_base = 0.15_f64; // hr-1 (Fe2+ depletion rate)
+
+    // Magnetic field: 3× rate, slower depletion (enhanced Fe2+ regen)
+    let mf_rate_mult = 3.0_f64;
+    let mf_dep_factor = 0.5_f64; // depletion rate halved
+
+    // Sono + MF: additional 1.5× from cavitation-enhanced mass transfer
+    let sono_mult = 1.5_f64;
+
+    struct Scenario {
+        label: &'static str,
+        color: &'static str,
+        rate_mult: f64,
+        dep_mult: f64,
+    }
+
+    let scenarios = [
+        Scenario { label: "EF only (no MF)", color: RED, rate_mult: 1.0, dep_mult: 1.0 },
+        Scenario { label: "EF + 20 mT magnet", color: GREEN, rate_mult: mf_rate_mult, dep_mult: mf_dep_factor },
+        Scenario { label: "EF + 50 mT magnet", color: BLUE, rate_mult: mf_rate_mult * 1.2, dep_mult: mf_dep_factor * 0.8 },
+        Scenario { label: "EF + 20 mT + sono", color: CYAN, rate_mult: mf_rate_mult * sono_mult, dep_mult: mf_dep_factor * 0.7 },
+    ];
+
+    // Compute cumulative OH• for each scenario
+    let dt = t_max / n as f64;
+    let mut all_curves: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut final_vals: Vec<f64> = Vec::new();
+
+    println!("=== Magnetic Fenton Enhancement ===");
+    for s in &scenarios {
+        let mut pts: Vec<(f64, f64)> = Vec::new();
+        let mut cum = 0.0_f64;
+        for i in 0..=n {
+            let t = i as f64 * dt;
+            if i % 5 == 0 {
+                pts.push((t, cum));
+            }
+            let rate = r0_base * s.rate_mult * E.powf(-k_dep_base * s.dep_mult * t);
+            cum += rate * dt;
+        }
+        println!("  {}: {:.2} mM OH* in {t_max} hr", s.label, cum);
+        final_vals.push(cum);
+        all_curves.push(pts);
+    }
+
+    let y_max = final_vals.iter().cloned().fold(0.0_f64, f64::max) * 1.15;
+
+    let sx = |x: f64| -> f64 { ml + (x / t_max) * pw };
+    let sy = |y: f64| -> f64 { mt + ph - (y / y_max) * ph };
+
+    // Axes
+    svg += &hline(ml, ml + pw, mt + ph, MUTED, "1");
+    svg += &vline(ml, mt, mt + ph, MUTED, "1");
+
+    // Grid
+    for i in 1..=6 {
+        let x = 2.0 * i as f64;
+        let xp = sx(x);
+        svg += &vline(xp, mt, mt + ph, GRID, "0.5");
+        svg += &label(xp, mt + ph + 13.0, &format!("{:.0}h", x), MUTED, 9, "middle");
+    }
+    for i in 1..=5 {
+        let y = y_max * i as f64 / 5.0;
+        let yp = sy(y);
+        svg += &hline(ml, ml + pw, yp, GRID, "0.5");
+        svg += &label(ml - 4.0, yp + 3.5, &format!("{:.1}", y), MUTED, 9, "end");
+    }
+
+    // Axis labels
+    svg += &label(ml + pw / 2.0, mt + ph + 30.0, "Time (hours)", TEXT, 11, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"11\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml - 48.0, mt + ph / 2.0, ml - 48.0, mt + ph / 2.0, "Cumulative OH\u{2022} (mM)");
+
+    // Plot curves
+    for (i, s) in scenarios.iter().enumerate() {
+        svg += &polyline_svg(&all_curves[i], s.color, if i == 3 { "2.5" } else { "2" }, &sx, &sy);
+    }
+
+    // Legend
+    let mut ly = mt + 12.0;
+    for (i, s) in scenarios.iter().enumerate() {
+        svg += &hline(ml + 15.0, ml + 40.0, ly, s.color, "2.5");
+        svg += &label(ml + 44.0, ly + 4.0, &format!("{} ({:.1} mM)", s.label, final_vals[i]), TEXT, 9, "start");
+        ly += 16.0;
+    }
+
+    // Enhancement annotations
+    let enh_base = final_vals[1] / final_vals[0];
+    let enh_sono = final_vals[3] / final_vals[0];
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"180\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.7\"/>\n",
+        ml + pw - 190.0, mt + ph - 60.0, GRID);
+    svg += &label(ml + pw - 185.0, mt + ph - 44.0, &format!("20 mT enhancement: {:.1}x", enh_base), GREEN, 10, "start");
+    svg += &label(ml + pw - 185.0, mt + ph - 28.0, &format!("20 mT + sono: {:.1}x", enh_sono), CYAN, 10, "start");
+    svg += &label(ml + pw - 185.0, mt + ph - 14.0, "Cost: $5-15 (magnet only)", YELLOW, 9, "start");
 
     svg.push_str("</svg>");
     svg
