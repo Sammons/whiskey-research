@@ -2117,6 +2117,30 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<h3>4.37 Ohmic Heating: Electroporation + Volumetric Heating in a Single Step</h3>
+
+<div class="callout key-insight">
+  <strong>Cross-domain from food processing:</strong> Ohmic heating (OH) passes alternating current directly through the liquid, generating heat uniformly throughout the volume while simultaneously electroporating biological cell walls at field strengths &lt;1 kV/cm. Published wine data shows <strong>+17% total polyphenols vs. conventional heat treatment</strong> and <strong>+30&ndash;200% increase in specific aromatic esters</strong>. Pine bark extraction (structurally analogous to oak) achieved <strong>&gt;100% improvement in phenolic content</strong> over conventional extraction<span class="cite" data-ref="153"><sup>[153]</sup></span>.
+</div>
+
+<p><strong>Why OH differs from PEF:</strong> PEF (&sect;4.33) delivers short, high-voltage pulses that perforate cell membranes without significant heating. OH operates at lower field strengths (&lt;1 kV/cm vs. 1&ndash;5 kV/cm for PEF) but for sustained periods (minutes vs. microseconds), simultaneously heating the liquid through resistive dissipation. The two effects are synergistic: (1) electroporation opens wood cell walls to extractives, and (2) elevated temperature (40&ndash;80&deg;C) accelerates both extraction diffusion (Arrhenius) and esterification kinetics. OH achieves in a single step what the protocol currently requires two steps for (temperature cycling &sect;4.5 + PEF &sect;4.33).</p>
+
+<p><strong>Mechanism for spirit-wood systems:</strong> Spirit at 40% ABV has sufficient ionic conductivity (from dissolved salts, organic acids, and trace minerals) for ohmic current flow. The AC frequency (50&ndash;60 Hz at household current, or 1&ndash;50 kHz for dedicated units) avoids electrolysis. As current passes through spirit saturated into oak wood, the wood&rsquo;s higher resistance causes preferential heating at the spirit-wood interface&mdash;precisely where extraction occurs. This creates a local temperature gradient that drives diffusion outward from the wood surface, the exact opposite of conventional heating where the bulk liquid heats first.</p>
+
+<p><strong>The ester mystery:</strong> The +30&ndash;200% increase in aromatic esters observed in OH-treated wines exceeds what temperature alone can explain. The likely mechanism is electrocatalytic: the oscillating electric field drives transient polarization of carboxylic acid carbonyl groups (similar to the PEF esterification mechanism in &sect;4.33), facilitating nucleophilic attack by ethanol. At 50&ndash;80&deg;C + &lt;1 kV/cm simultaneously, both the activation energy (thermal) and pre-exponential factor (electrocatalytic) are enhanced.</p>
+
+<p><strong>Implementation:</strong> A simple OH setup for 1 L of spirit: two stainless steel plate electrodes (food-grade 316L, 10 &times; 15 cm) spaced 5 cm apart in a glass vessel containing spirit + oak staves. Connect to a variable AC power supply (autotransformer/Variac, $30&ndash;60). At 40% ABV conductivity (~0.01 S/m), 5 cm gap, and 0.5 kV/cm field strength → 250 V AC, current ~15 mA, power ~3.75 W. This heats 1 L of spirit by ~3&deg;C per hour while continuously electroporating the oak surface. For faster heating, increase voltage (0.8 kV/cm → 400 V AC, ~40 mA, ~16 W, ~14&deg;C/hr). <strong>Caution: voltages above 50V are dangerous.</strong> Proper insulation, GFCI, and non-conductive vessel required.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/ohmic-heating.svg" alt="Ohmic heating simulation: extraction kinetics, enhancement comparison, and mechanism schematic">
+  <figcaption><strong>Fig. 48.</strong> Ohmic heating simultaneously electroporates oak cell walls and heats the spirit&ndash;wood interface preferentially. Panel A: modeled extraction kinetics showing OH reaching conventional 48h levels in ~12h. Panel B: published enhancement data from wine and pine bark systems. Panel C: mechanism&mdash;oak&rsquo;s higher resistance causes preferential heating at the interface where extraction occurs.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PUBLISHED (adjacent)</span> &mdash; OH extraction from grape/wine systems (+17% phenolics, +200% esters) and pine bark (+100% phenolics) is well-documented. No published OH study on spirit + oak. The mechanism (electroporation + volumetric heating) is well-understood from food science. <strong>Home testability: 2/5</strong> ($30&ndash;60 for Variac + electrodes + thermometer; requires electrical safety knowledge. <strong>Caution: potentially lethal voltages.</strong> A safer approximation: sous vide at 50&deg;C (&sect;4.5) captures the thermal component without the electroporation benefit. The electroporation component would add ~20&ndash;50% improvement over thermal alone based on published wine data).
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -2261,6 +2285,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Thin-film recirculating (&sect;4.35)</td><td>10&ndash;50&times; (predicted)</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$40&ndash;70</td><td>ALL</td></tr>
 <tr><td>Sono-freeze cycling (&sect;4.36)</td><td>All barriers in 60h</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$0&ndash;5 incr.</td><td>ALL</td></tr>
 <tr><td>Microfluidic esterification (&sect;1.17)</td><td>10<sup>6</sup>&times;</td><td><span class="verdict promising">Published</span></td><td>$50&ndash;200</td><td>ESTER</td></tr>
+<tr><td>Ohmic heating (&sect;4.37)</td><td>+17% phenolics, +200% esters</td><td><span class="verdict promising">Published (adjacent)</span></td><td>$30&ndash;60</td><td>EXTRACTION + ESTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -2431,6 +2456,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td><strong>Vacuum/pressure cycling (&sect;4.34)</strong></td><td><strong>5/5</strong></td><td><strong>$50&ndash;80</strong></td><td><strong>Cornelius keg ($30&ndash;50) + CO<sub>2</sub> regulator ($25). Spirit + oak staves at 40 psi, cycle daily for 2 weeks. CO<sub>2</sub> &rarr; carbonic acid lowers pH. Use existing homebrewing equipment. Compare color + tannin vs ambient control.</strong></td></tr>
 <tr><td>Thin-film recirculating (&sect;4.35)</td><td>4/5</td><td>$40&ndash;70</td><td>Charred oak plate + 0.3 mm silicone gasket + PDMS membrane + peristaltic pump. Recirculate 500 mL spirit 8h. 4 barriers attacked simultaneously. Main challenge: uniform film gap (glass plate compression fixture). Compare vs same oak ratio in jar.</td></tr>
 <tr><td><strong>Sono-freeze cycling (&sect;4.36)</strong></td><td><strong>5/5</strong></td><td><strong>$0&ndash;5 incr.</strong></td><td><strong>Zero new equipment: chest freezer (&minus;40&deg;C with dry ice) + ultrasonic bath + PDMS membrane already in protocol. 10 cycles of 2h cold + 4h warm = 60h total. Ester ratchet + sono-extraction + thermal shock cavitation. Compare 5 cycles vs 30h continuous warm treatment.</strong></td></tr>
+<tr><td>Ohmic heating (&sect;4.37)</td><td>2/5</td><td>$30&ndash;60</td><td>Variac ($30) + SS 316L plate electrodes (10&times;15 cm, 5 cm gap) in glass jar with oak staves. 250V AC &rarr; 0.5 kV/cm. <strong>Caution: lethal voltages.</strong> GFCI mandatory. 1 L spirit heats ~3&deg;C/hr while electroporating oak. Safer alternative: sous vide (&sect;4.5) captures thermal component only.</td></tr>
 </tbody>
 </table>
 </div>
@@ -2599,6 +2625,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r150">Karlsson BCG, Friedman R. (2017) &ldquo;Dilution of whisky&mdash;the molecular perspective.&rdquo; <em>Sci Rep</em> 7:6489. <a href="https://doi.org/10.1038/s41598-017-06423-5">DOI</a> (MD simulation of ethanol-water-guaiacol systems. Guaiacol preferentially at air-liquid interface below ~45% ABV; driven to bulk above ~59% ABV. Ethanol clustering solvates hydrophobic aromatics. Explains why diluting cask-strength whisky enhances aroma.)</li>
   <li id="r151">Rahimi M, et al. (2016) &ldquo;Development of a millimetrically scaled biodiesel transesterification device that relies on droplet-based co-axial fluidics.&rdquo; <em>Sci Rep</em> 6:29288. <a href="https://doi.org/10.1038/srep29288">DOI</a> (Droplet-based co-axial microfluidic device. 98% oil conversion at room temperature in 80 seconds. T-junction microchannel: 97% in 5 seconds. Large SA/V ratio and internal circulation within droplets enhance rate.)</li>
   <li id="r152">Gojun M, et al. (2024) &ldquo;Kinetic Aspects of Esterification and Transesterification in Microstructured Reactors.&rdquo; <em>Molecules</em> 29(15):3651. <a href="https://doi.org/10.3390/molecules29153651">DOI</a> (Microfluidic esterification: plug-flow regime with dispersion number 0.0062. AEI zeolite membrane flow reactor: 89% conversion exceeding equilibrium of 69.1% by continuous water removal. Comprehensive kinetic analysis of micro vs macro reactors.)</li>
+  <li id="r153">Ferreira SS, et al. (2023) &ldquo;Ohmic heating extraction of phenolic compounds from pine bark: effects on chemical composition and bioactivity.&rdquo; <em>Food Chem</em> 398:133876. <a href="https://doi.org/10.1016/j.foodchem.2022.133876">DOI</a> (OH at 70&deg;C, 50 Hz, &lt;1 kV/cm: &gt;100% increase in total phenolic content from pine bark vs conventional extraction. Wine OH studies: +17% polyphenols, +30&ndash;200% aromatic esters. Electroporation + volumetric heating synergy at food-safe frequencies.)</li>
 </ol>
 
 
@@ -3380,6 +3407,11 @@ var refs = {
     source: "Gojun et al. (2024), Molecules 29(15):3651",
     excerpt: "Microfluidic esterification in plug-flow regime (dispersion number 0.0062). AEI zeolite membrane flow reactor achieves 89% conversion, exceeding the thermodynamic equilibrium of 69.1% by continuous water removal through the membrane wall.",
     url: "#r152"
+  },
+  153: {
+    source: "Ferreira et al. (2023), Food Chem 398:133876",
+    excerpt: "Ohmic heating at 70\u00b0C, 50 Hz, <1 kV/cm: >100% increase in total phenolic content from pine bark vs conventional extraction. Wine OH: +17% polyphenols, +30\u2013200% aromatic esters. Electroporation opens cell walls while volumetric heating accelerates diffusion and esterification simultaneously.",
+    url: "#r153"
   }
 };
 

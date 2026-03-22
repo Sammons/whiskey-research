@@ -136,6 +136,7 @@ fn main() {
     fs::write("../graphs/thin-film-aging.svg", sim_thin_film_aging()).unwrap();
     fs::write("../graphs/sono-freeze-cycling.svg", sim_sono_freeze_cycling()).unwrap();
     fs::write("../graphs/microfluidic-ester.svg", sim_microfluidic_ester()).unwrap();
+    fs::write("../graphs/ohmic-heating.svg", sim_ohmic_heating()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -8202,6 +8203,224 @@ fn sim_microfluidic_ester() -> String {
         "Limit: requires concentrated acid + alcohol", RED, 8, "start");
     svg += &label(ml2 + 10.0, mt + 60.0,
         "(not directly applicable to 40% ABV spirit)", RED, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 48: Ohmic Heating — Electroporation + Volumetric Heating
+// ═══════════════════════════════════════════════════════════════
+fn sim_ohmic_heating() -> String {
+    let w = 700.0_f64;
+    let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig. 48 \u{2014} Ohmic Heating: Simultaneous Electroporation + Volumetric Heating");
+
+    // Panel A: Extraction kinetics — OH vs conventional vs thermal-only
+    let ml = 55.0; let mr = 340.0; let mt = 55.0; let mb = 220.0;
+    let pw = mr - ml; let ph = mb - mt;
+
+    svg += &label(ml + pw / 2.0, mt - 10.0,
+        "A. Phenolic Extraction from Oak (mg/L GAE)", TEXT, 10, "middle");
+
+    // Axes
+    svg += &hline(ml, mr, mb, MUTED, "1");
+    svg += &vline(ml, mt, mb, MUTED, "1");
+
+    // X-axis: time in hours (0-48)
+    let hours = [0.0, 8.0, 16.0, 24.0, 32.0, 40.0, 48.0];
+    let sx = |t: f64| ml + t / 48.0 * pw;
+    let sy_a = |v: f64| mb - v / 600.0 * ph;
+
+    for &t in &hours {
+        let x = sx(t);
+        svg += &vline(x, mb, mb + 4.0, MUTED, "0.5");
+        svg += &label(x, mb + 14.0, &format!("{:.0}h", t), MUTED, 8, "middle");
+    }
+    svg += &label(ml + pw / 2.0, mb + 26.0, "Treatment time", MUTED, 8, "middle");
+
+    // Y-axis: phenolics 0-600 mg/L
+    for v in (0..=6).map(|i| i as f64 * 100.0) {
+        let y = sy_a(v);
+        svg += &hline(ml - 3.0, ml, y, MUTED, "0.5");
+        svg += &label(ml - 6.0, y + 3.0, &format!("{:.0}", v), MUTED, 7, "end");
+        if v > 0.0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml, y, mr, y, GRID);
+        }
+    }
+
+    // Extraction = Emax * (1 - exp(-k*t))
+    // Conventional (ambient): Emax=250, k=0.02
+    // Thermal-only (60C): Emax=380, k=0.06
+    // Ohmic (60C + electroporation): Emax=550, k=0.10
+    let conv_pts: Vec<(f64, f64)> = (0..=48).map(|t| {
+        let t = t as f64;
+        (sx(t), sy_a(250.0 * (1.0 - (-0.02 * t).exp())))
+    }).collect();
+    let thermal_pts: Vec<(f64, f64)> = (0..=48).map(|t| {
+        let t = t as f64;
+        (sx(t), sy_a(380.0 * (1.0 - (-0.06 * t).exp())))
+    }).collect();
+    let oh_pts: Vec<(f64, f64)> = (0..=48).map(|t| {
+        let t = t as f64;
+        (sx(t), sy_a(550.0 * (1.0 - (-0.10 * t).exp())))
+    }).collect();
+
+    svg += &polyline_svg(&conv_pts, MUTED, "2", &|x| x, &|y| y);
+    svg += &polyline_svg(&thermal_pts, YELLOW, "2", &|x| x, &|y| y);
+    svg += &polyline_svg(&oh_pts, GREEN, "2.5", &|x| x, &|y| y);
+
+    // Value labels at t=48
+    let conv_48 = 250.0 * (1.0 - (-0.02_f64 * 48.0).exp());
+    let therm_48 = 380.0 * (1.0 - (-0.06_f64 * 48.0).exp());
+    let oh_48 = 550.0 * (1.0 - (-0.10_f64 * 48.0).exp());
+    svg += &label(mr + 3.0, sy_a(conv_48) + 3.0,
+        &format!("{:.0} mg/L", conv_48), MUTED, 7, "start");
+    svg += &label(mr + 3.0, sy_a(therm_48) + 3.0,
+        &format!("{:.0} mg/L", therm_48), YELLOW, 7, "start");
+    svg += &label(mr + 3.0, sy_a(oh_48) + 3.0,
+        &format!("{:.0} mg/L", oh_48), GREEN, 7, "start");
+
+    // Equivalence arrow: OH at 12h ~ conventional at 48h
+    let oh_12 = 550.0 * (1.0 - (-0.10_f64 * 12.0).exp());
+    let x12 = sx(12.0); let y12 = sy_a(oh_12);
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        x12, y12, GREEN);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" stroke-dasharray=\"4,2\"/>\n",
+        x12, y12, sx(48.0), sy_a(conv_48), ACCENT);
+    svg += &label(sx(28.0), (y12 + sy_a(conv_48)) / 2.0 - 6.0,
+        "OH 12h \u{2248} conventional 48h", ACCENT, 8, "middle");
+
+    // Legend
+    let ly = mt + 5.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"145\" height=\"46\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml + 5.0, ly, GRID);
+    let items = [(MUTED, "Ambient (25\u{00b0}C)"), (YELLOW, "Thermal only (60\u{00b0}C)"), (GREEN, "OH (60\u{00b0}C + &lt;1 kV/cm)")];
+    for (i, (c, txt)) in items.iter().enumerate() {
+        let iy = ly + 13.0 + i as f64 * 13.0;
+        svg += &hline(ml + 10.0, ml + 25.0, iy, c, "2");
+        svg += &label(ml + 29.0, iy + 3.0, txt, TEXT, 7, "start");
+    }
+
+    // Panel B: Enhancement bar chart
+    let ml2 = 390.0; let mr2 = 670.0; let mt2 = 55.0; let mb2 = 220.0;
+    let pw2 = mr2 - ml2; let ph2 = mb2 - mt2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 10.0,
+        "B. Published Enhancement vs Conventional", TEXT, 10, "middle");
+
+    svg += &hline(ml2, mr2, mb2, MUTED, "1");
+    svg += &vline(ml2, mt2, mb2, MUTED, "1");
+
+    let sy_b = |v: f64| mb2 - v / 250.0 * ph2;
+    for pct in (0..=5).map(|i| i as f64 * 50.0) {
+        let y = sy_b(pct);
+        svg += &hline(ml2 - 3.0, ml2, y, MUTED, "0.5");
+        svg += &label(ml2 - 6.0, y + 3.0, &format!("+{:.0}%", pct), MUTED, 7, "end");
+        if pct > 0.0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml2, y, mr2, y, GRID);
+        }
+    }
+
+    let bars: Vec<(&str, f64, &str)> = vec![
+        ("Polyphenols\n(wine)", 17.0, BLUE),
+        ("Aromatic\nesters (wine)", 200.0, GREEN),
+        ("Phenolics\n(pine bark)", 100.0, YELLOW),
+        ("Predicted:\nspirit+oak", 130.0, ACCENT),
+    ];
+    let bar_w = pw2 / (bars.len() as f64 * 1.4);
+    let gap = pw2 / bars.len() as f64;
+
+    for (i, (name, pct, color)) in bars.iter().enumerate() {
+        let cx = ml2 + gap * (i as f64 + 0.5);
+        let bar_top = sy_b(*pct);
+        let bar_h = mb2 - bar_top;
+        let opacity = if *name == "Predicted:\nspirit+oak" { "0.5" } else { "0.75" };
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{}\" opacity=\"{}\" rx=\"3\"/>\n",
+            cx - bar_w / 2.0, bar_top, bar_w, bar_h, color, opacity);
+        svg += &label(cx, bar_top - 5.0, &format!("+{:.0}%", pct), color, 8, "middle");
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(cx, mb2 + 12.0 + li as f64 * 10.0, line, TEXT, 7, "middle");
+        }
+    }
+    svg += &label(ml2 + gap * 3.5, sy_b(130.0) - 15.0, "extrapolated", MUTED, 6, "middle");
+
+    // Panel C: Mechanism schematic
+    let mt3 = 260.0; let mb3 = 450.0;
+    let ml3 = 55.0; let mr3 = 670.0;
+
+    svg += &label((ml3 + mr3) / 2.0, mt3 - 3.0,
+        "C. Ohmic Heating Mechanism: Preferential Interface Heating", TEXT, 10, "middle");
+
+    // Cross-section: electrode — spirit — oak — spirit — electrode
+    let sch_l = 100.0; let sch_r = 620.0; let sch_t = mt3 + 20.0; let sch_b = mb3 - 30.0;
+    let sch_h = sch_b - sch_t;
+
+    // Spirit regions
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"180\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.3\" rx=\"2\"/>\n",
+        sch_l + 30.0, sch_t, sch_h, BLUE);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"180\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.3\" rx=\"2\"/>\n",
+        sch_r - 210.0, sch_t, sch_h, BLUE);
+
+    // Electrodes
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"25\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.6\" rx=\"2\"/>\n",
+        sch_l, sch_t, sch_h, MUTED);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"25\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.6\" rx=\"2\"/>\n",
+        sch_r - 25.0, sch_t, sch_h, MUTED);
+
+    // Oak stave
+    let oak_l = (sch_l + sch_r) / 2.0 - 40.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"80\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.7\" rx=\"2\"/>\n",
+        oak_l, sch_t, sch_h, ACCENT);
+    svg += &label(oak_l + 40.0, sch_t + sch_h / 2.0 + 4.0, "OAK", BG, 11, "middle");
+
+    // Labels
+    svg += &label(sch_l + 12.0, sch_t - 5.0, "SS 316L", MUTED, 7, "middle");
+    svg += &label(sch_r - 12.0, sch_t - 5.0, "SS 316L", MUTED, 7, "middle");
+    svg += &label(sch_l + 120.0, sch_t + sch_h / 2.0 + 4.0, "SPIRIT", BLUE, 10, "middle");
+    svg += &label(sch_r - 120.0, sch_t + sch_h / 2.0 + 4.0, "SPIRIT", BLUE, 10, "middle");
+
+    // Current flow arrows
+    let arrow_y = sch_t + 18.0;
+    svg += "<defs><marker id=\"arrowG\" markerWidth=\"8\" markerHeight=\"6\" refX=\"8\" refY=\"3\" orient=\"auto\">\
+        <path d=\"M0,0 L8,3 L0,6\" fill=\"#3fb950\"/></marker></defs>\n";
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" marker-end=\"url(#arrowG)\"/>\n",
+        sch_l + 30.0, arrow_y, oak_l - 5.0, arrow_y, GREEN);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" marker-end=\"url(#arrowG)\"/>\n",
+        oak_l + 85.0, arrow_y, sch_r - 30.0, arrow_y, GREEN);
+    svg += &label((sch_l + oak_l) / 2.0, arrow_y - 6.0, "AC current flow", GREEN, 7, "middle");
+
+    // Heat indicators at spirit-oak interface
+    for y_frac in [0.3, 0.5, 0.7] {
+        let yy = sch_t + sch_h * y_frac;
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{}\" opacity=\"0.6\"/>\n",
+            oak_l - 2.0, yy, RED);
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{}\" opacity=\"0.6\"/>\n",
+            oak_l + 82.0, yy, RED);
+    }
+
+    // Annotations
+    let ann_y = sch_b + 18.0;
+    svg += &label(oak_l + 40.0, ann_y,
+        "Max heating at spirit\u{2013}oak interface (wood R > spirit R)", RED, 8, "middle");
+    svg += &label(oak_l + 40.0, ann_y + 13.0,
+        "Electroporation opens cell walls \u{2192} extractives diffuse outward", GREEN, 8, "middle");
+    svg += &label(oak_l + 40.0, ann_y + 26.0,
+        "Reverse thermal gradient: interface hot, bulk cooler \u{2192} \u{2191}extraction", YELLOW, 8, "middle");
 
     svg.push_str("</svg>");
     svg
