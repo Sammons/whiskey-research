@@ -144,6 +144,8 @@ fn main() {
     fs::write("../graphs/hph-oak-shear.svg", sim_hph_oak_shear()).unwrap();
     fs::write("../graphs/emulsion-maillard.svg", sim_emulsion_maillard()).unwrap();
     fs::write("../graphs/scco2-dual-mode.svg", sim_scco2_dual_mode()).unwrap();
+    fs::write("../graphs/cryo-enzymatic.svg", sim_cryo_enzymatic()).unwrap();
+    fs::write("../graphs/plasma-fenton.svg", sim_plasma_fenton()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -9699,6 +9701,355 @@ fn sim_scco2_dual_mode() -> String {
         "Every scCO\u{2082} extraction has been silently", ACCENT, 8, "start");
     svg += &label(ml2 + 10.0, mb2 - 18.0,
         "driving ester formation \u{2014} unrecognized dual mode", ACCENT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_cryo_enzymatic() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 56 \u{2014} Cryo-Enzymatic Esterification: Direction Reversal");
+
+    let r = 8.314_f64;
+
+    // Panel A: Phase diagram — a_w vs temperature, coloring ester vs hydrolysis zones
+    let ml1 = 70.0;
+    let mr1 = 340.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 320.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: CALB Reaction Direction Map", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // X: Temperature -40 to 60°C
+    let sx1 = |t: f64| ml1 + (t + 40.0) / 100.0 * pw1;
+    for t in [-40, -20, 0, 20, 40, 60] {
+        let x = sx1(t as f64);
+        svg += &vline(x, mb1, mb1 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb1 + 14.0, &format!("{}\u{00b0}C", t), MUTED, 7, "middle");
+    }
+    svg += &label(ml1 + pw1 / 2.0, mb1 + 28.0, "Temperature", MUTED, 8, "middle");
+
+    // Y: Water activity 0 to 1.0
+    let sy1 = |a: f64| mb1 - a / 1.0 * ph1;
+    for v in (0..=5).map(|i| i as f64 * 0.2) {
+        let y = sy1(v);
+        svg += &hline(ml1 - 3.0, ml1, y, MUTED, "0.5");
+        svg += &label(ml1 - 6.0, y + 3.0, &format!("{:.1}", v), MUTED, 7, "end");
+    }
+    svg += &label(ml1 - 32.0, mt1 + ph1 / 2.0, "a\u{1d61}", MUTED, 9, "middle");
+
+    // Threshold line at a_w = 0.35
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"2\" stroke-dasharray=\"8,4\"/>\n",
+        ml1, sy1(0.35), mr1, sy1(0.35), ACCENT);
+    svg += &label(mr1 - 5.0, sy1(0.35) - 5.0, "a\u{1d61} = 0.35 threshold", ACCENT, 7, "end");
+
+    // Zone shading: green below (esterification), red above (hydrolysis)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.10\"/>\n",
+        ml1, sy1(0.35), pw1, mb1 - sy1(0.35), GREEN);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.10\"/>\n",
+        ml1, mt1, pw1, sy1(0.35) - mt1, RED);
+    svg += &label(ml1 + 15.0, sy1(0.15), "ESTER SYNTHESIS", GREEN, 9, "start");
+    svg += &label(ml1 + 15.0, sy1(0.70), "ESTER HYDROLYSIS", RED, 9, "start");
+
+    // Spirit at 25°C point (a_w = 0.85)
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"6\" fill=\"{}\" stroke=\"{}\" stroke-width=\"1.5\"/>\n",
+        sx1(25.0), sy1(0.85), RED, TEXT);
+    svg += &label(sx1(25.0) + 10.0, sy1(0.85) + 3.0, "Spirit 25\u{00b0}C", TEXT, 8, "start");
+    svg += &label(sx1(25.0) + 10.0, sy1(0.85) + 15.0, "a\u{1d61}=0.85", RED, 7, "start");
+
+    // Cryo point (-30°C, a_w = 0.35)
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"6\" fill=\"{}\" stroke=\"{}\" stroke-width=\"1.5\"/>\n",
+        sx1(-30.0), sy1(0.35), GREEN, TEXT);
+    svg += &label(sx1(-30.0) - 10.0, sy1(0.35) + 15.0, "Cryo \u{2013}30\u{00b0}C", TEXT, 8, "end");
+    svg += &label(sx1(-30.0) - 10.0, sy1(0.35) + 27.0, "a\u{1d61}=0.35", GREEN, 7, "end");
+
+    // Arrow from spirit to cryo point
+    svg += &format!("<defs><marker id=\"arrow-dir\" markerWidth=\"8\" markerHeight=\"6\" \
+        refX=\"8\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L8,3 L0,6\" fill=\"{}\"/></marker></defs>\n", ACCENT);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"2\" marker-end=\"url(#arrow-dir)\"/>\n",
+        sx1(25.0) - 5.0, sy1(0.85) + 5.0, sx1(-30.0) + 8.0, sy1(0.35) - 5.0, ACCENT);
+    svg += &label((sx1(25.0) + sx1(-30.0)) / 2.0 + 5.0, (sy1(0.85) + sy1(0.35)) / 2.0,
+        "Freeze!", ACCENT, 9, "start");
+
+    // Panel B: Net ester accumulation over 24h
+    let ml2 = 390.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 320.0;
+    let mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: Net Ester Gain Over 24 Hours", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    // X: Time 0-24 h
+    let sx2 = |t: f64| ml2 + t / 24.0 * pw2;
+    for t in [0, 4, 8, 12, 16, 20, 24] {
+        let x = sx2(t as f64);
+        svg += &vline(x, mb2, mb2 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb2 + 14.0, &format!("{}h", t), MUTED, 7, "middle");
+    }
+    svg += &label(ml2 + pw2 / 2.0, mb2 + 28.0, "Time (hours)", MUTED, 8, "middle");
+
+    // Y: Net ester change (arbitrary units) -100 to +100
+    let mid_y = mt2 + ph2 / 2.0;
+    let sy2 = |e: f64| mid_y - e / 100.0 * (ph2 / 2.0);
+
+    // Zero line
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\"/>\n",
+        ml2, mid_y, mr2, mid_y, MUTED);
+
+    for v in [-100, -50, 0, 50, 100] {
+        let y = sy2(v as f64);
+        svg += &hline(ml2 - 3.0, ml2, y, MUTED, "0.5");
+        let lbl = if v > 0 { format!("+{}", v) } else { format!("{}", v) };
+        svg += &label(ml2 - 6.0, y + 3.0, &lbl, MUTED, 7, "end");
+    }
+    svg += &label(ml2 - 32.0, mt2 + ph2 / 2.0, "Net ester", MUTED, 7, "middle");
+
+    // Zone shading
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.08\"/>\n",
+        ml2, mt2, pw2, ph2 / 2.0, GREEN);
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.08\"/>\n",
+        ml2, mid_y, pw2, ph2 / 2.0, RED);
+
+    // Curve 1: Room temp CALB in spirit (hydrolysis, fast negative)
+    let ea = 40000.0_f64; // J/mol
+    let room_pts: Vec<(f64, f64)> = (0..=240).map(|i| {
+        let t_h = i as f64 / 10.0;
+        let rate = -100.0 * (1.0 - (-0.5_f64 * t_h).exp());
+        (sx2(t_h), sy2(rate))
+    }).collect();
+    svg += &polyline_svg(&room_pts, RED, "2", &|x| x, &|y| y);
+
+    // Curve 2: Cryo CALB in freeze-concentrated spirit (esterification, slow positive)
+    let arrhenius_factor = ((-ea / r) * (1.0 / 243.0 - 1.0 / 298.0)).exp(); // ~0.026
+    let cryo_pts: Vec<(f64, f64)> = (0..=240).map(|i| {
+        let t_h = i as f64 / 10.0;
+        let rate = 100.0 * arrhenius_factor / 0.026 * arrhenius_factor
+            * (1.0 - (-0.013_f64 * t_h).exp());
+        (sx2(t_h), sy2(rate.min(100.0)))
+    }).collect();
+    svg += &polyline_svg(&cryo_pts, GREEN, "2.5", &|x| x, &|y| y);
+
+    // Curve 3: No enzyme control (flat at zero)
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" stroke-dasharray=\"4,4\"/>\n",
+        ml2, mid_y, mr2, mid_y, BLUE);
+
+    // Legend
+    let ly2 = mt2 + 5.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"175\" height=\"46\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, ly2, GRID);
+    let leg2 = [
+        (RED, "CALB 25\u{00b0}C (hydrolysis)"),
+        (GREEN, "CALB \u{2013}30\u{00b0}C (esterification)"),
+        (BLUE, "No enzyme (control)"),
+    ];
+    for (i, (c, txt)) in leg2.iter().enumerate() {
+        let iy = ly2 + 13.0 + i as f64 * 13.0;
+        svg += &hline(ml2 + 10.0, ml2 + 25.0, iy, c, "2");
+        svg += &label(ml2 + 29.0, iy + 3.0, txt, TEXT, 7, "start");
+    }
+
+    // Insight
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml2 + 5.0, mb2 - 50.0, pw2 - 10.0, GRID);
+    svg += &label(ml2 + 10.0, mb2 - 32.0,
+        "38\u{00d7} slower but RIGHT direction:", GREEN, 8, "start");
+    svg += &label(ml2 + 10.0, mb2 - 18.0,
+        "slow synthesis > fast hydrolysis", ACCENT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_plasma_fenton() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 57 \u{2014} Plasma-Fenton Oxidation Cascade");
+
+    // Panel A: Reactive species over time
+    let ml1 = 70.0;
+    let mr1 = 340.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 320.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: Reactive Species Concentration vs Time", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // X: Time 0-60 min (0-5 plasma, 5-60 Fenton)
+    let sx1 = |t: f64| ml1 + t / 60.0 * pw1;
+    for t in [0, 5, 10, 20, 30, 40, 50, 60] {
+        let x = sx1(t as f64);
+        svg += &vline(x, mb1, mb1 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb1 + 14.0, &format!("{}", t), MUTED, 7, "middle");
+    }
+    svg += &label(ml1 + pw1 / 2.0, mb1 + 28.0, "Time (min)", MUTED, 8, "middle");
+
+    // Phase shading: plasma (0-5 min) vs Fenton (5-60 min)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.10\"/>\n",
+        ml1, mt1, sx1(5.0) - ml1, ph1, PURPLE);
+    svg += &label(ml1 + (sx1(5.0) - ml1) / 2.0, mt1 + 12.0, "Plasma", PURPLE, 8, "middle");
+    svg += &label(sx1(32.0), mt1 + 12.0, "Photo-Fenton", ACCENT, 8, "middle");
+
+    // Y: Concentration (log scale conceptual, but linear for simplicity 0-100 arb)
+    let sy1 = |c: f64| mb1 - c / 100.0 * ph1;
+    for v in (0..=5).map(|i| i as f64 * 20.0) {
+        let y = sy1(v);
+        svg += &hline(ml1 - 3.0, ml1, y, MUTED, "0.5");
+        svg += &label(ml1 - 6.0, y + 3.0, &format!("{:.0}", v), MUTED, 7, "end");
+    }
+    svg += &label(ml1 - 32.0, mt1 + ph1 / 2.0, "Conc. (arb)", MUTED, 7, "middle");
+
+    // H₂O₂: rises during plasma, decays during Fenton
+    let h2o2_pts: Vec<(f64, f64)> = (0..=600).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = if t <= 5.0 {
+            80.0 * t / 5.0
+        } else {
+            80.0 * (-0.03_f64 * (t - 5.0)).exp()
+        };
+        (sx1(t), sy1(c))
+    }).collect();
+    svg += &polyline_svg(&h2o2_pts, BLUE, "2", &|x| x, &|y| y);
+
+    // OH radicals: spike during plasma, sustained by Fenton
+    let oh_pts: Vec<(f64, f64)> = (0..=600).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = if t <= 5.0 {
+            60.0 * t / 5.0  // plasma-generated
+        } else {
+            // Fenton-sustained: proportional to H₂O₂ × Fe²⁺
+            let h2o2 = 80.0 * (-0.03_f64 * (t - 5.0)).exp();
+            let fe_avail = 30.0; // steady from oak
+            0.5 * (h2o2 / 80.0) * fe_avail
+        };
+        (sx1(t), sy1(c))
+    }).collect();
+    svg += &polyline_svg(&oh_pts, GREEN, "2", &|x| x, &|y| y);
+
+    // Fe²⁺ from oak: steady low level
+    let fe_pts: Vec<(f64, f64)> = (0..=600).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = 15.0 * (1.0 - (-0.1_f64 * t).exp()); // leaches gradually
+        (sx1(t), sy1(c))
+    }).collect();
+    svg += &polyline_svg(&fe_pts, YELLOW, "1.5", &|x| x, &|y| y);
+
+    // Acetaldehyde: product, accumulates
+    let acetal_pts: Vec<(f64, f64)> = (0..=600).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = 50.0 * (1.0 - (-0.02_f64 * t).exp());
+        (sx1(t), sy1(c))
+    }).collect();
+    svg += &polyline_svg(&acetal_pts, RED, "1.5", &|x| x, &|y| y);
+
+    // Legend
+    let ly1 = mt1 + 20.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"130\" height=\"60\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        mr1 - 135.0, ly1, GRID);
+    let leg1 = [
+        (BLUE, "H\u{2082}O\u{2082}"),
+        (GREEN, "OH\u{2022} radicals"),
+        (YELLOW, "Fe\u{00b2}\u{207a} (from oak)"),
+        (RED, "Acetaldehyde (product)"),
+    ];
+    for (i, (c, txt)) in leg1.iter().enumerate() {
+        let iy = ly1 + 13.0 + i as f64 * 13.0;
+        svg += &hline(mr1 - 130.0, mr1 - 115.0, iy, c, "2");
+        svg += &label(mr1 - 111.0, iy + 3.0, txt, TEXT, 7, "start");
+    }
+
+    // Panel B: Comparison bar chart — oxidation mechanisms
+    let ml2 = 390.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 320.0;
+    let mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: OH\u{2022} Generation Rate by Method", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    // Horizontal bar chart: method → relative OH• flux
+    let methods: [(f64, &str, &str, &str); 5] = [
+        (1.0,   "Natural micro-O\u{2082}",    MUTED,  "1x (baseline)"),
+        (100.0, "Dark Fenton",                BLUE,   "~100x"),
+        (500.0, "Photo-Fenton + UV",          ACCENT, "~500x"),
+        (1000.0,"Plasma direct",              PURPLE, "~1000x (5 min only)"),
+        (800.0, "Plasma \u{2192} Fenton + UV", GREEN,  "~800x (sustained)"),
+    ];
+    let max_oh = 1200.0_f64;
+    let bar_h = 38.0;
+    let bar_gap = 10.0;
+    let bars_start_x = ml2 + 10.0;
+    let bars_w = pw2 - 20.0;
+    let sx_bar = |v: f64| bars_start_x + (v.log10().max(0.0)) / max_oh.log10() * bars_w;
+
+    // X gridlines (log scale)
+    for p in [1, 10, 100, 1000] {
+        let x = sx_bar(p as f64);
+        svg += &vline(x, mb2, mb2 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb2 + 14.0, &format!("{}x", p), MUTED, 7, "middle");
+        if p > 1 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                x, mt2, x, mb2, GRID);
+        }
+    }
+    svg += &label(ml2 + pw2 / 2.0, mb2 + 28.0, "Relative OH\u{2022} flux (log scale)", MUTED, 8, "middle");
+
+    let total_h = methods.len() as f64 * (bar_h + bar_gap) - bar_gap;
+    let bars_top = mt2 + (ph2 - total_h) / 2.0;
+
+    for (i, (val, lbl, color, ann)) in methods.iter().enumerate() {
+        let y = bars_top + i as f64 * (bar_h + bar_gap);
+        let bw = (sx_bar(*val) - bars_start_x).max(3.0);
+
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            rx=\"2\" fill=\"{}\" opacity=\"0.7\"/>\n",
+            bars_start_x, y, bw, bar_h, color);
+
+        svg += &label(bars_start_x + bw + 4.0, y + bar_h / 2.0 + 3.0,
+            ann, TEXT, 7, "start");
+        svg += &label(bars_start_x - 3.0, y + bar_h / 2.0 + 3.0,
+            lbl, TEXT, 7, "end");
+    }
+
+    // Insight
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml2 + 5.0, mb2 - 50.0, pw2 - 10.0, GRID);
+    svg += &label(ml2 + 10.0, mb2 - 32.0,
+        "Plasma \u{2192} Fenton: trades peak intensity", GREEN, 8, "start");
+    svg += &label(ml2 + 10.0, mb2 - 18.0,
+        "for sustained bulk oxidation (hours vs min)", ACCENT, 8, "start");
 
     svg.push_str("</svg>");
     svg

@@ -2336,6 +2336,60 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<h3>4.44 Cryo-Enzymatic Esterification (Novel Prediction)</h3>
+
+<div class="callout key-insight">
+  <strong>Three-section connection:</strong> Freeze-concentration (&sect;1.16) at &minus;30&deg;C reduces water activity of the unfrozen spirit fraction to a<sub>w</sub> &asymp; 0.35 (&sect;4.40). CALB lipase (Novozym 435) switches from hydrolysis to esterification at a<sub>w</sub> &lt; 0.35 (&sect;4.34). <strong>Novel prediction:</strong> adding immobilized CALB beads to freeze-concentrated spirit enables enzymatic ester synthesis <em>without</em> any chemical dehydration, CO<sub>2</sub> pressure, or CXL solvent. The freezer provides the water-activity control.
+</div>
+
+<p><strong>The thermodynamic trick:</strong> At room temperature, spirit has a<sub>w</sub> &asymp; 0.85 &mdash; CALB catalyzes ester hydrolysis at 6,000 s<sup>&minus;1</sup>, <em>destroying</em> esters. At &minus;30&deg;C in the unfrozen fraction (a<sub>w</sub> &asymp; 0.35), CALB switches direction but runs slower due to the Arrhenius penalty:</p>
+
+<ul>
+  <li>E<sub>a</sub> for CALB &asymp; 40 kJ/mol. Rate at &minus;30&deg;C = rate(25&deg;C) &times; exp(&minus;E<sub>a</sub>/R &times; (1/243 &minus; 1/298)) = 2.6% of room-temperature rate.</li>
+  <li>At 25&deg;C: k<sub>cat</sub> = 6,000 s<sup>&minus;1</sup> &times; hydrolysis direction = <strong>&minus;6,000</strong> net ester s<sup>&minus;1</sup>.</li>
+  <li>At &minus;30&deg;C: k<sub>cat</sub> = 156 s<sup>&minus;1</sup> &times; esterification direction = <strong>+156</strong> net ester s<sup>&minus;1</sup>.</li>
+</ul>
+
+<p><strong>Counter-intuitive result:</strong> cooling to &minus;30&deg;C <em>increases</em> net ester accumulation because the direction switch (hydrolysis &rarr; synthesis) outweighs the 38&times; rate reduction. Over 24 hours, CALB at &minus;30&deg;C would catalyze ~1.35 &times; 10<sup>7</sup> turnovers per active site &mdash; enough to produce analytically detectable ester enrichment in a 1 L batch.</p>
+
+<p><strong>Implementation:</strong> Freeze spirit in chest freezer with dry ice (&minus;30&deg;C). Decant unfrozen fraction (~65% ABV, a<sub>w</sub> &asymp; 0.35). Add 1 g Novozym 435 beads per 100 mL. Incubate at &minus;30&deg;C for 24&ndash;72 hours with gentle periodic inversion. Filter out beads (reusable). Recombine with thawed ice fraction. Compare ester profile (GC-FID) vs untreated freeze-concentrated control.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/cryo-enzymatic.svg" alt="Cryo-enzymatic esterification: water activity vs temperature phase diagram">
+  <figcaption><strong>Fig. 56.</strong> Cryo-enzymatic esterification. (A) CALB reaction direction as a function of water activity and temperature: green region (esterification) below the a<sub>w</sub> = 0.35 threshold, red region (hydrolysis) above. Freeze-concentration at &minus;30&deg;C pushes spirit from the red zone into the green zone. (B) Net ester accumulation over 24 hours: despite 38&times; Arrhenius penalty, direction reversal yields positive net ester gain at &minus;30&deg;C.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">Novel prediction</span> &mdash; CALB esterification in freeze-concentrated spirit has not been published. Individual components are all validated: freeze-concentration achieves a<sub>w</sub> &asymp; 0.35 (&sect;4.40), immobilized CALB retains activity in frozen organic media (literature shows lipase activity at &minus;20&deg;C), and CALB direction depends on a<sub>w</sub> (&sect;4.34). Key uncertainty: whether ice crystal damage to the immobilization matrix reduces activity beyond the Arrhenius prediction. <strong>Home testability: 3/5</strong> ($25 for 5 g Novozym 435 on eBay + dry ice. The experiment is simple: freeze, decant, add beads, wait, filter, analyze. No exotic equipment.)
+</div>
+
+<h3>4.45 Plasma-Fenton Oxidation Cascade (Novel Synthesis)</h3>
+
+<div class="callout key-insight">
+  <strong>Three-component self-catalyzing cascade:</strong> Cold plasma (&sect;4.38) generates <strong>H<sub>2</sub>O<sub>2</sub></strong> in spirit (up to 1 mM in 5 min). Oak wood naturally leaches <strong>trace iron</strong> (5&ndash;30 ppm Fe from oak, well-documented in cooperage). UV irradiation drives the <strong>photo-Fenton cycle</strong>: Fe<sup>2+</sup> + H<sub>2</sub>O<sub>2</sub> &rarr; Fe<sup>3+</sup> + OH&bull; + OH<sup>&minus;</sup>, then Fe<sup>3+</sup> + h&nu; &rarr; Fe<sup>2+</sup> + OH&bull;. Result: sustained OH radical generation from components already present in aging spirit. Each OH radical drives the same ethanol &rarr; acetaldehyde &rarr; acetic acid cascade that barrel aging achieves over years.
+</div>
+
+<p><strong>Why this cascade is self-sustaining:</strong></p>
+
+<ol>
+  <li><strong>Initiation:</strong> 5 min cold plasma treatment generates ~1 mM H<sub>2</sub>O<sub>2</sub> and 445 ppm acetic acid in spirit (ref <span class="cite" data-ref="156"><sup>[156]</sup></span>). This is the oxidant reservoir.</li>
+  <li><strong>Catalysis:</strong> Fe<sup>2+</sup> leached from oak at 5&ndash;30 ppm catalyzes H<sub>2</sub>O<sub>2</sub> &rarr; OH&bull; (Fenton reaction, k = 63 M<sup>&minus;1</sup>s<sup>&minus;1</sup>). At pH 3&ndash;4 (spirit pH), Fenton efficiency is near-optimal.</li>
+  <li><strong>Regeneration:</strong> UV irradiation (254 nm, standard germicidal lamp) reduces Fe<sup>3+</sup> back to Fe<sup>2+</sup>, closing the catalytic cycle. Without UV, iron is consumed stoichiometrically; with UV, it cycles catalytically &mdash; each iron atom generates tens of OH radicals before deactivation.</li>
+  <li><strong>Selectivity:</strong> At spirit pH 3&ndash;4, OH radical lifetime is ~550 ns (ref <span class="cite" data-ref="156"><sup>[156]</sup></span>), long enough for selective oxidation of ethanol (k<sub>OH+EtOH</sub> = 1.9 &times; 10<sup>9</sup> M<sup>&minus;1</sup>s<sup>&minus;1</sup>) and higher alcohols, but not long enough for extensive degradation of flavor-active esters (lower k values).</li>
+</ol>
+
+<p><strong>Relevance to barrier framework:</strong> Photo-Fenton attacks <strong>Barrier 4 (oxidative polymerization)</strong> by generating OH radicals that polymerize ellagitannins (t &frac12; for tannin oxidation drops from years to hours) and <strong>Barrier 2 (off-flavor removal)</strong> by oxidizing sulfur compounds and acetaldehyde. Unlike direct plasma treatment, Fenton operates in bulk solution &mdash; no surface-proximity limitation.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/plasma-fenton.svg" alt="Plasma-Fenton oxidation cascade in oak-aged spirit">
+  <figcaption><strong>Fig. 57.</strong> Plasma-Fenton oxidation cascade. (A) Reactive species concentration over time: plasma generates initial H<sub>2</sub>O<sub>2</sub> burst, Fenton + UV converts to sustained OH radical flux. (B) Comparison of oxidation mechanisms: dark Fenton (stoichiometric, iron consumed), photo-Fenton (catalytic, iron recycled), and natural micro-oxygenation (reference baseline).</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">Novel synthesis</span> &mdash; Photo-Fenton is well-established in environmental chemistry (wastewater treatment). Cold plasma H<sub>2</sub>O<sub>2</sub> generation in ethanol is published (&sect;4.38). Oak iron leaching is documented. The combination for spirit aging has not been proposed. <strong>Home testability: 2/5</strong> ($30&ndash;40: UV-C germicidal lamp from hardware store + cold-plasma-treated spirit + oak chips. The plasma step is the bottleneck (needs DBD or ozone generator). Simpler proxy: add 0.1% food-grade H<sub>2</sub>O<sub>2</sub> to spirit with oak chips, expose to sunlight for 8 hours. Compare color and taste vs dark control. If photo-Fenton is active, the sunlight sample should show faster color development.)
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -2486,6 +2540,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>HPH + oak shear (&sect;4.41)</td><td>6.4 years in minutes</td><td><span class="verdict promising">Published</span></td><td>$500+</td><td>EXTRACT + ESTER + CLUSTER</td></tr>
 <tr><td>Emulsion Maillard (&sect;4.42)</td><td>Unknown (novel prediction)</td><td><span class="verdict speculative">Novel prediction</span></td><td>$20&ndash;30</td><td>EXTRACTION (Maillard)</td></tr>
 <tr><td>scCO<sub>2</sub> dual-mode (&sect;4.43)</td><td>+14% ester conversion (free bonus)</td><td><span class="verdict promising">Published (components)</span></td><td>$800+</td><td>EXTRACT + ESTER</td></tr>
+<tr><td>Cryo-enzymatic (&sect;4.44)</td><td>Direction reversal: +156 vs &minus;6000 s<sup>&minus;1</sup></td><td><span class="verdict speculative">Novel prediction</span></td><td>$25</td><td>ESTER</td></tr>
+<tr><td>Plasma-Fenton (&sect;4.45)</td><td>Sustained OH&bull; from H<sub>2</sub>O<sub>2</sub> + Fe + UV</td><td><span class="verdict speculative">Novel synthesis</span></td><td>$30&ndash;40</td><td>OXIDATION</td></tr>
 </tbody>
 </table>
 </div>
@@ -2664,6 +2720,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>HPH + oak shear (&sect;4.41)</td><td>1/5</td><td>$500+</td><td>True UHPH requires industrial equipment (400 bar). Crude home approximation: high-speed blender + oak chips (finest possible grind) in spirit, 5&times; 30-second bursts. Generates shear/cavitation at far lower intensity. Compare blended vs macerated-only by taste and color extraction rate. Will not reach published acceleration factors.</td></tr>
 <tr><td>Emulsion Maillard (&sect;4.42)</td><td>3/5</td><td>$20&ndash;30</td><td>Soy lecithin (grocery store, $5) + xylose 3 g/L (homebrew supplier, $10) + glycine 0.2 g/L. Mix into spirit with oak extract, pump through 170&deg;C oil bath coil from &sect;4.39. Compare emulsified vs non-emulsified flash Maillard. The hypothesis: emulsion-confined reaction produces more furanthiol/furfurylthiol aroma (smoky, meaty notes) and less melanoidin browning.</td></tr>
 <tr><td>scCO<sub>2</sub> dual-mode (&sect;4.43)</td><td>2/5</td><td>$800+</td><td>Tabletop scCO<sub>2</sub> extractor + oak chips as in &sect;3.11. The esterification bonus is automatic at extraction pressures &mdash; no protocol change. To quantify: compare ethyl acetate in scCO<sub>2</sub> extract vs conventional ethanol maceration extract at same oak/solvent ratio. GC-FID or ester test strips.</td></tr>
+<tr><td>Cryo-enzymatic (&sect;4.44)</td><td>3/5</td><td>$25</td><td>Chest freezer + dry ice (&minus;30&deg;C). Freeze 500 mL spirit, decant unfrozen fraction. Add 0.5 g Novozym 435 beads (eBay ~$5/g). Incubate 24&ndash;72h at &minus;30&deg;C. Filter, recombine. Compare ethyl acetate/hexanoate vs same-a<sub>w</sub> room-temp lipase control (which should show hydrolysis, not synthesis).</td></tr>
+<tr><td>Plasma-Fenton (&sect;4.45)</td><td>2/5</td><td>$30&ndash;40</td><td>UV-C lamp + oak chips + H<sub>2</sub>O<sub>2</sub> proxy (0.1% food-grade). Expose 100 mL spirit with oak chips to UV-C for 8 hours. Compare color (spectrophotometer or phone app) and taste vs dark control. Faster color development = photo-Fenton active. <strong>Caution: UV-C is harmful to eyes/skin. Enclosed setup required.</strong></td></tr>
 </tbody>
 </table>
 </div>
