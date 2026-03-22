@@ -3428,6 +3428,118 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<!-- §4.89 — Lactonization Kinetics -->
+
+<h3 id="s4-89">&sect;4.89 &mdash; Lactonization Kinetics: Cyclization Is Fast, Extraction Is the Bottleneck</h3>
+
+<p>Whiskey lactone (&beta;-methyl-&gamma;-octalactone) is the signature compound of oak-aged spirits, contributing coconut and woody character. Its formation occurs via intramolecular esterification of a &gamma;-hydroxy acid precursor in the oak lignin matrix. A persistent misconception in accelerated aging literature is that lactone <em>formation</em> limits the rate. Quantitative analysis of the kinetics reveals the opposite: cyclization is fast, extraction is slow.</p>
+
+<p>At spirit pH (3.0&ndash;4.5), the equilibrium constant K<sub>eq</sub> for &gamma;-lactone cyclization is approximately 1,000&ndash;3,000, overwhelmingly favoring the closed ring form<span class="cite" data-ref="243"><sup>[243]</sup></span>. The activation energy for the reverse reaction (alkaline hydrolysis, ring opening) is 84 kJ/mol<span class="cite" data-ref="243"><sup>[243]</sup></span>, meaning ring opening is slow at acidic pH. Fegyverneki et al. (2016)<span class="cite" data-ref="244"><sup>[244]</sup></span> showed that the model compound &gamma;-valerolactone does not react with water up to 60&deg;C for weeks&mdash;the closed form is kinetically trapped at spirit conditions.</p>
+
+<p>The practical implication: <strong>cyclization completes in minutes once precursors are in solution</strong>. The rate-limiting step is extraction of the hydroxy acid precursors from deep within the oak stave, governed by diffusion kinetics with an effective rate constant of ~0.01&ndash;0.012 day<sup>&minus;1</sup>. All effort should focus on maximizing extraction rate (surface area, temperature, ABV (&sect;4.86), iontophoresis (&sect;4.90)), not on pH manipulation or catalytic cyclization.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/lactonization-kinetics.svg" style="width:100%;max-width:700px">
+  <img src="graphs/lactonization-kinetics.svg" alt="Lactonization kinetics: cyclization vs extraction rate-limiting step">
+  </object>
+  <figcaption><strong>Fig. 101.</strong> Lactonization kinetics. (A) Equilibrium constant K<sub>eq</sub> vs pH: at whiskey pH 3.0&ndash;4.5, K<sub>eq</sub> &asymp; 1,000&ndash;3,000 (strongly favoring closed lactone). (B) Rate-limiting step identification: cyclization completes in ~15 minutes at pH 3.5, while extraction from barrel oak takes ~365 days to 90% completion. Even accelerated chip extraction at 40&deg;C takes 14 days. The bottleneck is always extraction, never cyclization.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict published">Published</span> &mdash; Lazare 2023<span class="cite" data-ref="243"><sup>[243]</sup></span>, Fegyverneki 2016<span class="cite" data-ref="244"><sup>[244]</sup></span>. The bottleneck analysis is novel synthesis. <strong>Home testability: 3/5</strong> ($10&ndash;15: Prepare oak chip extract by soaking 10 g/L medium-toast chips in warm water at 50&deg;C overnight. Filter. Add extract to 40% spirit vs adding same chips directly to spirit. If cyclization were rate-limiting, the direct-extract approach would show faster lactone aroma development. It should develop instantly, proving extraction is the bottleneck.)
+</div>
+
+
+<!-- §4.90 — Iontophoretic Oak Extraction -->
+
+<h3 id="s4-90">&sect;4.90 &mdash; Iontophoretic Oak Extraction: Electroosmotic Flow Through Wood</h3>
+
+<p>Transdermal drug delivery uses iontophoresis&mdash;small DC currents (~0.5 mA/cm&sup2;) that drive molecules through biological barriers via three mechanisms: electromigration (charged species follow the field), electroosmosis (bulk solvent flow), and membrane permeabilization. Oak wood is a porous medium with negatively charged surfaces (cellulose carboxyl groups, &zeta; = &minus;10 to &minus;25 mV at pH 3&ndash;4). Applying a DC field should drive electroosmotic flow of spirit through the wood pore network.</p>
+
+<p>The Helmholtz-Smoluchowski equation predicts v<sub>eo</sub> = &epsilon;&epsilon;<sub>0</sub>&zeta;E/&mu;. For 40% ethanol (&epsilon; &asymp; 50, &mu; = 2.5 mPa&middot;s) at &zeta; = &minus;20 mV and E = 10 V/cm: v<sub>eo</sub> &asymp; 3.5 &mu;m/s = 13 mm/hr<span class="cite" data-ref="245"><sup>[245]</sup></span>. Practical flow is 3&ndash;7&times; lower due to wood pore tortuosity, yielding ~2&ndash;5 mm/hr.</p>
+
+<p>Rocha et al. (2019)<span class="cite" data-ref="246"><sup>[246]</sup></span> demonstrated this experimentally: moderate electric field (MEF) at 5&ndash;15 V/cm applied to <em>Pinus pinaster</em> bark in 50% ethanol achieved <strong>2.25&times; enhancement</strong> of phenolic extraction over conventional methods, with &gt;50% energy savings compared to thermal extraction. Critically, they identified <strong>non-thermal electric field effects</strong> contributing to the enhancement beyond what heating alone provides.</p>
+
+<p>The key distinction from PEF (&sect;3.1): PEF uses microsecond high-voltage pulses to disrupt cell membranes (electroporation). DC iontophoresis uses continuous low-voltage to drive <em>sustained solvent migration</em> through the pore network. These are complementary&mdash;PEF pre-treatment opens cells, then DC iontophoresis drives the released extractives into the spirit.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/iontophoretic-oak.svg" style="width:100%;max-width:700px">
+  <img src="graphs/iontophoretic-oak.svg" alt="Iontophoretic oak extraction: electroosmotic velocity and penetration depth">
+  </object>
+  <figcaption><strong>Fig. 102.</strong> Iontophoretic oak extraction. (A) Electroosmotic velocity vs field strength: H-S theoretical (blue) and practical estimate with 5&times; tortuosity correction (gold). Rocha 2019<span class="cite" data-ref="246"><sup>[246]</sup></span> data point at 10 V/cm. (B) Penetration depth at 30 days: passive diffusion ~0.5 mm vs DC 10 V/cm ~7 mm vs MEF 15 V/cm ~16 mm. Orders-of-magnitude improvement in extraction depth.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (bark)</span> &mdash; Rocha 2019<span class="cite" data-ref="246"><sup>[246]</sup></span>, Tompkins &amp; Healey 2024<span class="cite" data-ref="245"><sup>[245]</sup></span>. Application to oak staves is novel but physically sound. <strong>Home testability: 3/5</strong> ($20&ndash;30: Two identical jars with oak staves in 40% spirit. In one, insert stainless steel electrodes on either side of the stave and apply 9V DC via battery. Compare extraction intensity (color, aroma) at 1 and 2 weeks. Electrode jar should show deeper, faster extraction.)
+</div>
+
+
+<!-- §4.91 — Pervaporation Membrane Ester Reactor -->
+
+<h3 id="s4-91">&sect;4.91 &mdash; Pervaporation Membrane Reactor: Breaking the 58% Ester Equilibrium</h3>
+
+<p>Fischer esterification in 40% spirit is thermodynamically limited to ~58.5% conversion due to the enormous water concentration (53 mol%). Molecular sieve 3A (&sect;1.12) raises this to ~73.8% by adsorbing water, but continuous regeneration is required. <strong>Pervaporation (PV) membrane reactors</strong> offer a more elegant solution: a selective membrane continuously removes water as vapor from the reaction side, driving conversion toward 95% or higher.</p>
+
+<p>Modern hydrophilic PV membranes achieve remarkable water fluxes from ethanol-water mixtures. PVA/MXene composites reach 942 g/m&sup2;&middot;h with separation factor 294<span class="cite" data-ref="247"><sup>[247]</sup></span>. CHA zeolite membranes achieve 8,490 g/m&sup2;&middot;h at 75&deg;C with separation factor &gt;10,000<span class="cite" data-ref="248"><sup>[248]</sup></span>. The AEI zeolite membrane reactor (&sect;4.18) already demonstrated 89% conversion exceeding equilibrium<span class="cite" data-ref="117"><sup>[117]</sup></span>; CHA variants have reached 99%.</p>
+
+<p>The critical engineering challenge is <strong>acid stability</strong>: NaA zeolite membranes (Si/Al &asymp; 1) corrode within 10 minutes of acid contact. CHA zeolites (Si/Al &asymp; 5&ndash;15) are more resistant but still decline ~32% in permeance over 62 days. PVA membranes tolerate pH 5&ndash;8 but struggle at spirit pH 3.5&ndash;4.5. The commercial PERVAP 1131 (acid-resistant PVA variant) withstood 30-day exposure in lactic acid esterification media at 60&deg;C with E<sub>a</sub> = 106.55 kJ/mol<span class="cite" data-ref="247"><sup>[247]</sup></span>.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/pervaporation-ester-reactor.svg" style="width:100%;max-width:700px">
+  <img src="graphs/pervaporation-ester-reactor.svg" alt="Pervaporation membrane reactor: ester conversion and membrane flux comparison">
+  </object>
+  <figcaption><strong>Fig. 103.</strong> Pervaporation membrane ester reactor. (A) Conversion kinetics: batch esterification caps at 58.5% (red), molecular sieve at 73.8% (yellow), PV membrane reactor reaches 95% (green) by continuous water removal. (B) Membrane water flux comparison: PVA standard (320 g/m&sup2;&middot;h), PVA/MXene (942), PVA/g-C<sub>3</sub>N<sub>4</sub> (2,328), CHA zeolite (8,490).</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict published">Published</span> &mdash; Multiple membrane reactor studies<span class="cite" data-ref="247"><sup>[247]</sup></span><span class="cite" data-ref="248"><sup>[248]</sup></span>. Spirit-specific application is novel. <strong>Home testability: 2/5</strong> ($50+: PV membranes are not consumer-available. Approximate with molecular sieve 3A beads ($15) in a side-stream: recirculate spirit through a column of sieve beads to strip water, then through a heated section with Amberlyst-15 ($20). Compare ester levels vs static spirit after 1 week.)
+</div>
+
+
+<!-- §4.92 — POMS Pervaporation Aroma Ester Recovery -->
+
+<h3 id="s4-92">&sect;4.92 &mdash; POMS Pervaporation: Selective Aroma Ester Recovery</h3>
+
+<p>While hydrophilic PV membranes (&sect;4.91) remove water to shift equilibrium, <strong>organophilic</strong> PV membranes do the opposite: they selectively permeate organic aroma compounds while rejecting water and ethanol. Polyoctylmethylsiloxane (POMS) membranes achieve extraordinary enrichment factors for desirable aroma esters from dilute aqueous/ethanolic solutions<span class="cite" data-ref="249"><sup>[249]</sup></span>.</p>
+
+<p>Baudot &amp; Marin demonstrated POMS enrichment factors of <strong>118&ndash;281&times;</strong> for aroma esters, with performance increasing sharply with ester chain length: ethyl butyrate (C4) = 48&times;, ethyl hexanoate (C6) = 118&times;, ethyl octanoate (C8) = 210&times;, ethyl decanoate (C10) = 281&times;<span class="cite" data-ref="249"><sup>[249]</sup></span>. This selectivity is ideal for spirits: the desirable fruity/floral C6&ndash;C10 esters (apple, apricot, grape aromas) are preferentially enriched over the dominant but less desirable ethyl acetate (C2, solvent character).</p>
+
+<p>The practical workflow: run a high-yield ester reactor (Amberlyst + molecular sieve, &sect;1.1 + &sect;1.12) to produce a crude ester mixture, then use POMS pervaporation to selectively concentrate the long-chain aroma esters while rejecting ethyl acetate and water. The concentrated aroma ester permeate is then dosed back into the spirit at precise levels to hit the target profile of 0.05&ndash;0.1 mg/L for each C6&ndash;C10 ester.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/poms-ester-recovery.svg" style="width:100%;max-width:700px">
+  <img src="graphs/poms-ester-recovery.svg" alt="POMS pervaporation enrichment factors for aroma esters">
+  </object>
+  <figcaption><strong>Fig. 104.</strong> POMS pervaporation ester recovery. (A) Enrichment factor vs chain length: longer-chain esters enrich more strongly (6.5&times; for C2 vs 281&times; for C10). (B) PDMS vs POMS comparison: POMS achieves 3.2&times; higher enrichment than standard PDMS across all chain lengths (Baudot &amp; Marin<span class="cite" data-ref="249"><sup>[249]</sup></span>).</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict published">Published</span> &mdash; Baudot &amp; Marin<span class="cite" data-ref="249"><sup>[249]</sup></span>. Application to spirit ester recovery is novel. <strong>Home testability: 2/5</strong> ($40+: POMS membranes are specialty items. Approximate with PDMS tubing: fill PDMS tubing (Silastic, $15) with ester-containing solution, immerse in clean spirit. Esters permeate through the wall preferentially. Compare aroma intensity of the receiving spirit vs control after 48 hours.)
+</div>
+
+
+<!-- §4.93 — Molecular Distillation Ester Fractionation -->
+
+<h3 id="s4-93">&sect;4.93 &mdash; Short-Path Molecular Distillation: Volatility-Based Ester Fractionation</h3>
+
+<p>At atmospheric pressure, ethanol (bp 78&deg;C) and ethyl acetate (bp 77&deg;C) are inseparable by distillation. At <strong>1 mbar vacuum</strong>, however, the boiling point landscape changes dramatically: ethanol drops to &minus;15&deg;C, ethyl acetate to &minus;10&deg;C, while the desirable medium-chain esters (ethyl hexanoate = 55&deg;C, ethyl octanoate = 85&deg;C, ethyl decanoate = 110&deg;C) remain in a well-separated range<span class="cite" data-ref="250"><sup>[250]</sup></span>.</p>
+
+<p>Wiped-film molecular distillation at 1&ndash;2 mbar achieves remarkable enrichment of oxygenated aroma compounds from terpene-rich matrices. Orange essential oil processing demonstrates: linalool 8.3&times;, decanal 20.6&times;, valencene 46.6&times; enrichment in the residue fraction at 30&ndash;35&deg;C evaporator temperature<span class="cite" data-ref="250"><sup>[250]</sup></span>. The process is purely physical&mdash;no solvents, no reagents, no chemical modification.</p>
+
+<p>For spirits, the workflow is: (1) flash off ethanol/water/ethyl acetate at low temperature under vacuum (first fraction), (2) collect C4&ndash;C6 esters at moderate temperature (second fraction), (3) retain C8&ndash;C10+ esters in the residue. Each fraction can then be dosed back into the spirit at precise concentrations. The technique complements POMS pervaporation (&sect;4.92)&mdash;molecular distillation fractionates by volatility, while POMS fractionates by hydrophobicity.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/molecular-distillation.svg" style="width:100%;max-width:700px">
+  <img src="graphs/molecular-distillation.svg" alt="Molecular distillation: boiling point shift and enrichment factors at 1 mbar">
+  </object>
+  <figcaption><strong>Fig. 105.</strong> Molecular distillation fractionation. (A) Boiling points at 1 atm vs 1 mbar: ethanol and ethyl acetate co-boil at atmospheric pressure but separate from medium-chain esters under vacuum. (B) Demonstrated enrichment factors from orange oil molecular distillation at 1.5&ndash;2 mmHg: linalool 8.3&times;, decanal 20.6&times;, valencene 46.6&times;<span class="cite" data-ref="250"><sup>[250]</sup></span>.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict published">Published</span> &mdash; Essential oil molecular distillation<span class="cite" data-ref="250"><sup>[250]</sup></span>. Application to spirit ester fractionation is novel but technically straightforward. <strong>Home testability: 1/5</strong> ($200+: Requires vacuum distillation apparatus. Approximate: use a standard short-path distillation kit with vacuum pump to collect fractions from oak-aged spirit. The heavier, later fractions should be enriched in woody/fruity aroma compounds while the light fraction is predominantly ethanol.)
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -3623,6 +3735,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Lactone ABV peak (&sect;4.86)</td><td>2.1&times; at 40% vs 62.5% ABV</td><td><span class="verdict published">Published</span></td><td>$10&ndash;15</td><td>EXTRACTION (solvent opt.)</td></tr>
 <tr><td>Ellagitannin matrix O<sub>2</sub> (&sect;4.87)</td><td>4.3&times; via metal/polyphenol matrix</td><td><span class="verdict published">Published</span></td><td>$15&ndash;25</td><td>OXIDATION (catalysis)</td></tr>
 <tr><td>Extraction&ndash;degradation race (&sect;4.88)</td><td>80% value in first 20% of time</td><td><span class="verdict published">Published</span></td><td>$10&ndash;15</td><td>EXTRACTION (kinetic opt.)</td></tr>
+<tr><td>Lactonization kinetics (&sect;4.89)</td><td>Cyclization 10,000&times; faster than extraction</td><td><span class="verdict published">Published</span></td><td>$10&ndash;15</td><td>ESTERIFICATION (bottleneck ID)</td></tr>
+<tr><td>Iontophoretic oak (&sect;4.90)</td><td>2.25&times; at 10 V/cm DC</td><td><span class="verdict promising">Published (bark)</span></td><td>$20&ndash;30</td><td>EXTRACTION (electrokinetic)</td></tr>
+<tr><td>PV membrane ester reactor (&sect;4.91)</td><td>58% &rarr; 95% conversion</td><td><span class="verdict published">Published</span></td><td>$50+</td><td>ESTERIFICATION (equilibrium)</td></tr>
+<tr><td>POMS ester recovery (&sect;4.92)</td><td>118&ndash;281&times; enrichment</td><td><span class="verdict published">Published</span></td><td>$40+</td><td>SEPARATION (selective)</td></tr>
+<tr><td>Molecular distillation (&sect;4.93)</td><td>8&ndash;47&times; enrichment at 1 mbar</td><td><span class="verdict published">Published</span></td><td>$200+</td><td>SEPARATION (volatility)</td></tr>
 </tbody>
 </table>
 </div>
@@ -3846,6 +3963,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Lactone ABV peak (&sect;4.86)</td><td>5/5</td><td>$10&ndash;15</td><td>Split 60% spirit into two jars. Dilute one to 40% ABV. Same oak spirals, same weight. Blind sample at 2 and 4 weeks. 40% jar should show stronger coconut/woody lactone aroma.</td></tr>
 <tr><td>Ellagitannin matrix O<sub>2</sub> (&sect;4.87)</td><td>3/5</td><td>$15&ndash;25</td><td>Two oak chip jars (40% ABV, 5 g/L chips). One with 2 mg/L FeSO<sub>4</sub> + cream of tartar. Identical aeration. Compare color and tannin softening at 1&ndash;2 weeks.</td></tr>
 <tr><td>Extraction&ndash;degradation race (&sect;4.88)</td><td>5/5</td><td>$10&ndash;15</td><td>10 g/L American oak chips in 40% spirit at 40&deg;C. Sample at 3, 7, 14, 21, 28 days. Plot vanilla intensity. Should see rapid gain then plateau. Room-temp control for comparison.</td></tr>
+<tr><td>Lactonization kinetics (&sect;4.89)</td><td>3/5</td><td>$10&ndash;15</td><td>Pre-extract oak chips in warm water overnight, filter. Add extract to spirit vs chips directly in spirit. If cyclization were rate-limiting, extract approach shows faster lactone aroma. It should develop instantly.</td></tr>
+<tr><td>Iontophoretic oak (&sect;4.90)</td><td>3/5</td><td>$20&ndash;30</td><td>Two jars with oak staves in 40% spirit. One with SS electrodes + 9V DC battery. Compare color and aroma at 1&ndash;2 weeks. Electrode jar should show deeper, faster extraction.</td></tr>
+<tr><td>PV membrane ester reactor (&sect;4.91)</td><td>2/5</td><td>$50+</td><td>Approximate with mol. sieve 3A beads in side-stream: recirculate spirit through sieve column then heated Amberlyst section. Compare ester levels vs static spirit after 1 week.</td></tr>
+<tr><td>POMS ester recovery (&sect;4.92)</td><td>2/5</td><td>$40+</td><td>Approximate with PDMS (Silastic) tubing filled with ester solution, immersed in clean spirit. Esters permeate wall preferentially. Compare aroma intensity after 48 hours.</td></tr>
+<tr><td>Molecular distillation (&sect;4.93)</td><td>1/5</td><td>$200+</td><td>Requires vacuum distillation. Approximate: short-path distillation kit with vacuum pump. Collect fractions from oak-aged spirit. Later fractions enriched in woody/fruity compounds.</td></tr>
 </tbody>
 </table>
 </div>
@@ -4104,6 +4226,14 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r240">Jeremic S, Kontogiannopoulos KN, Navarini L, Guilbert S, Bucher T. (2020) &ldquo;Oxygen Consumption Kinetics of Oenological Tannins.&rdquo; <em>Food Chem</em> 313:126177. <a href="https://doi.org/10.1016/j.foodchem.2020.126177">DOI</a> (First-order O<sub>2</sub> consumption: model wine k = 0.071/day vs <strong>real wine k = 0.307/day (4.3&times; matrix amplification)</strong>. Catalytic metals (Fe, Cu) and polyphenol co-substrates drive the matrix effect. Condensed tannins consume O<sub>2</sub> faster than hydrolyzable tannins in both conditions.)</li>
   <li id="r241">Castro RE, Fernandes SA, de Oliveira FA, Borges W, Caixeta F. (2020) &ldquo;Lignin-Derived Phenolic Compounds in Cacha&ccedil;a Aged in Different Wood Barrels.&rdquo; <em>J Braz Chem Soc</em> 31:2370&ndash;2382. <a href="https://doi.org/10.21577/0103-5053.20200128">DOI</a> (60-month aging study: American oak vanillin 3.58&rarr;9.44 mg/L. <strong>80% of per-unit-time extraction value captured in first 20% of aging</strong>. Saturating kinetics model: rapid initial extraction from surface wood, then diffusion-limited deceleration as lignin depletes in stave surface layers.)</li>
   <li id="r242">Tarko T, Krankowski F, Duda-Chodak A. (2023) &ldquo;The Impact of Compounds Extracted during the Process of Wine Aging in Oak Barrels on Human Health.&rdquo; <em>Antioxidants</em> 12:1507. <a href="https://doi.org/10.3390/antiox12081507">DOI</a> (Comprehensive thresholds for wood-derived compounds: vanillin (0.2 mg/L), furfural (14.1 mg/L), guaiacol (0.01 mg/L), eugenol (0.006 mg/L). <strong>Sensory-relevant concentrations reached well before extraction plateau</strong>, supporting early wood removal to prevent over-extraction of harsh tannins.)</li>
+  <li id="r243">Lazare J, Tebes-Stevens CL, Weber EJ. (2023) &ldquo;A multiple linear regression approach to the estimation of carboxylic acid ester and lactone alkaline hydrolysis rate constants.&rdquo; <em>SAR QSAR Environ Res</em> 34:183&ndash;210. <a href="https://doi.org/10.1080/1062936X.2023.2188608">DOI</a> (Lactone alkaline hydrolysis log(k<sub>b</sub>) range: &minus;3.70 to 3.53 L/(mol&middot;s). <strong>E<sub>a</sub> hydrolysis = 84 kJ/mol</strong>. R&sup2; = 0.92 for QSAR prediction. 5- and 6-membered lactones are most stable. Confirms cyclization is fast at acidic pH, hydrolysis is slow.)</li>
+  <li id="r244">Fegyverneki D, Orha L, L&aacute;ng G, Horv&aacute;th IT. (2016) &ldquo;Stability of &gamma;-valerolactone under neutral, acidic, and basic conditions.&rdquo; <em>Struct Chem</em> 28:423&ndash;433. <a href="https://doi.org/10.1007/s11224-016-0887-6">DOI</a> (<strong>GVL does not react with water up to 60&deg;C for weeks</strong>. At 100&deg;C: equilibrium with hydroxy acid reached in days. Acid catalysis enables ring opening at RT, but at whiskey pH 3&ndash;4 the closed (lactone) form is overwhelmingly favored. Confirms lactone stability in spirit conditions.)</li>
+  <li id="r245">Tompkins BW, Healey AL. (2024) &ldquo;Electrical Phenomena in Trees and Wood: A Review.&rdquo; <em>Curr For Rep</em>. <a href="https://doi.org/10.1007/s40725-024-00238-0">DOI</a> (Wood cell walls carry immobile negative charges (&zeta; = &minus;10 to &minus;50 mV). Applied electric field drives electroosmotic solvent flow. <strong>H-S equation predicts v<sub>eo</sub> &asymp; 3.5 &mu;m/s at 10 V/cm</strong> for 40% ethanol in oak. Established physics for timber drying and copper removal from recycled wood.)</li>
+  <li id="r246">Rocha CMR, Genisheva Z, Ferreira-Santos P, Rodrigues R, Vicente AA, Teixeira JA, Pereira RN. (2019) &ldquo;Moderate Electric Fields as a Potential Tool for Sustainable Recovery of Phenolic Compounds from <em>Pinus pinaster</em> Bark.&rdquo; <em>ACS Sustain Chem Eng</em> 7:15942&ndash;15950. <a href="https://doi.org/10.1021/acssuschemeng.9b00780">DOI</a> (MEF at 5&ndash;15 V/cm: <strong>2.25&times; phenolic extraction enhancement</strong> (~90 vs ~40 mg GAE/g). &gt;50% energy reduction vs thermal. Non-thermal electric field effects identified. 50% ethanol solvent. Closest published analog to iontophoretic oak extraction.)</li>
+  <li id="r247">PMC 10608438 &mdash; Comprehensive review of pervaporation membranes for ethanol dehydration. PVA/MXene: <strong>942 g/m&sup2;&middot;h flux, separation factor 294</strong>. PVA/g-C<sub>3</sub>N<sub>4</sub>: 2,328 g/m&sup2;&middot;h at 75&deg;C. PVA-PTES: factor 1,026. PVA/PAN: &gt;10,000 selectivity. Commercial PERVAP 1131: acid-resistant, 30-day lifetime, E<sub>a</sub> = 106.55 kJ/mol.</li>
+  <li id="r248">PMC 10631551 &mdash; Commercial zeolite membrane long-term stability. CHA ZX2: 6,820&rarr;4,660 GPU (32% decline, 62 days). NaA ZX0: 6,060&rarr;2,050 GPU (66% decline, 39 days). <strong>NaA corrodes within 10 minutes of acid contact</strong>. T-type: most stable permeance but declining selectivity. CHA most practical for acid-tolerant applications.</li>
+  <li id="r249">Baudot A, Marin M. (1997) &ldquo;Pervaporation of Aroma Compounds: Comparison of Membrane Performances with Vapour-Liquid Equilibria and Engineering Aspects.&rdquo; <em>Food Bioprod Process</em> 75:117&ndash;142. <a href="https://doi.org/10.1016/S0960-3085(97)80003-3">DOI</a> (POMS enrichment factors: <strong>ethyl butyrate 48&times;, ethyl hexanoate 118&times;, ethyl octanoate 210&times;, ethyl decanoate 281&times;</strong>. POMS &gt; PDMS for all aroma esters. Enrichment increases with chain length. Decreasing downstream pressure increases both flux and separation factor.)</li>
+  <li id="r250">MDPI Processes 11/4/991 &mdash; Wiped-film molecular distillation of orange essential oil at 1.5&ndash;2 mmHg, 30&ndash;35&deg;C. <strong>Enrichment factors: linalool 8.3&times;, decanal 20.6&times;, valencene 46.6&times;</strong>. D-limonene reduced from 92.6% to 48%. Low temperature + deep vacuum = best separation of volatile terpenes from oxygenated aroma compounds.</li>
 </ol>
 
 
@@ -5335,6 +5465,46 @@ var refs = {
     source: "Tarko T et al. (2023), Antioxidants 12:1507",
     excerpt: "Wood-derived compound thresholds: vanillin 0.2 mg/L, furfural 14.1 mg/L, guaiacol 0.01 mg/L. Sensory-relevant concentrations reached well before extraction plateau, supporting early wood removal.",
     url: "#r242"
+  },
+  243: {
+    source: "Lazare J et al. (2023), SAR QSAR Environ Res 34:183\u2013210",
+    excerpt: "Lactone alkaline hydrolysis Ea = 84 kJ/mol. 5- and 6-membered lactones most stable. QSAR prediction R\u00b2 = 0.92. Confirms cyclization is fast at acidic pH, hydrolysis is slow.",
+    url: "#r243"
+  },
+  244: {
+    source: "Fegyverneki D et al. (2016), Struct Chem 28:423\u2013433",
+    excerpt: "\u03b3-Valerolactone does not react with water up to 60\u00b0C for weeks. Lactone form overwhelmingly favored at whiskey pH. Confirms lactone stability in spirit conditions.",
+    url: "#r244"
+  },
+  245: {
+    source: "Tompkins BW, Healey AL (2024), Curr For Rep",
+    excerpt: "Wood cell walls carry negative charges (\u03b6 = \u221210 to \u221250 mV). H-S equation predicts v_eo \u2248 3.5 \u00b5m/s at 10 V/cm for 40% ethanol in oak. Electroosmotic flow established for timber drying and copper removal.",
+    url: "#r245"
+  },
+  246: {
+    source: "Rocha CMR et al. (2019), ACS Sustain Chem Eng 7:15942\u201315950",
+    excerpt: "MEF at 5\u201315 V/cm: 2.25\u00d7 phenolic extraction from Pinus pinaster bark. ~90 vs ~40 mg GAE/g. >50% energy savings vs thermal. Non-thermal electric field effects identified.",
+    url: "#r246"
+  },
+  247: {
+    source: "PMC 10608438 \u2014 Pervaporation membrane review",
+    excerpt: "PVA/MXene: 942 g/m\u00b2\u00b7h flux, separation factor 294. PVA/g-C\u2083N\u2084: 2,328 g/m\u00b2\u00b7h at 75\u00b0C. CHA zeolite: 8,490 g/m\u00b2\u00b7h. Commercial PERVAP 1131: acid-resistant, 30-day lifetime.",
+    url: "#r247"
+  },
+  248: {
+    source: "PMC 10631551 \u2014 Zeolite membrane stability",
+    excerpt: "CHA ZX2: 32% permeance decline over 62 days. NaA ZX0: 66% decline in 39 days, corrodes within 10 min of acid contact. CHA most practical for acid-tolerant applications.",
+    url: "#r248"
+  },
+  249: {
+    source: "Baudot A, Marin M (1997), Food Bioprod Process 75:117\u2013142",
+    excerpt: "POMS enrichment factors: ethyl butyrate 48\u00d7, ethyl hexanoate 118\u00d7, ethyl octanoate 210\u00d7, ethyl decanoate 281\u00d7. POMS > PDMS for all aroma esters. Enrichment increases with chain length.",
+    url: "#r249"
+  },
+  250: {
+    source: "MDPI Processes 11/4/991 \u2014 Orange oil molecular distillation",
+    excerpt: "Wiped-film at 1.5\u20132 mmHg, 30\u201335\u00b0C. Linalool 8.3\u00d7, decanal 20.6\u00d7, valencene 46.6\u00d7 enrichment. D-limonene 92.6% \u2192 48%. Low temp + deep vacuum = best aroma compound separation.",
+    url: "#r250"
   }
 };
 

@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 101 — Lactonization Kinetics: Cyclization Is Fast, Extraction Is the Bottleneck</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Lactone Equilibrium vs pH</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="200" y="393" fill="#8b949e" font-size="8" text-anchor="middle">pH</text>
+<text x="48" y="220" fill="#8b949e" font-size="7" text-anchor="middle">log₁₀(Kₑₗ)</text>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="387" fill="#8b949e" font-size="7" text-anchor="middle">1</text>
+<line x1="98.88888888888889" y1="375" x2="98.88888888888889" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="98.88888888888889" y="387" fill="#8b949e" font-size="7" text-anchor="middle">2</text>
+<line x1="127.77777777777777" y1="375" x2="127.77777777777777" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="127.77777777777777" y="387" fill="#8b949e" font-size="7" text-anchor="middle">3</text>
+<line x1="156.66666666666666" y1="375" x2="156.66666666666666" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="156.66666666666666" y="387" fill="#8b949e" font-size="7" text-anchor="middle">4</text>
+<line x1="185.55555555555554" y1="375" x2="185.55555555555554" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="185.55555555555554" y="387" fill="#8b949e" font-size="7" text-anchor="middle">5</text>
+<line x1="214.44444444444446" y1="375" x2="214.44444444444446" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="214.44444444444446" y="387" fill="#8b949e" font-size="7" text-anchor="middle">6</text>
+<line x1="243.33333333333331" y1="375" x2="243.33333333333331" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="243.33333333333331" y="387" fill="#8b949e" font-size="7" text-anchor="middle">7</text>
+<line x1="272.22222222222223" y1="375" x2="272.22222222222223" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="272.22222222222223" y="387" fill="#8b949e" font-size="7" text-anchor="middle">8</text>
+<line x1="301.1111111111111" y1="375" x2="301.1111111111111" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="301.1111111111111" y="387" fill="#8b949e" font-size="7" text-anchor="middle">9</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="387" fill="#8b949e" font-size="7" text-anchor="middle">10</text>
+<line x1="67" y1="375" x2="70" y2="375" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">10⁻²</text>
+<line x1="67" y1="323.3333333333333" x2="70" y2="323.3333333333333" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="326.3333333333333" fill="#8b949e" font-size="7" text-anchor="end">10⁻¹</text>
+<line x1="67" y1="271.6666666666667" x2="70" y2="271.6666666666667" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="274.6666666666667" fill="#8b949e" font-size="7" text-anchor="end">10⁰</text>
+<line x1="67" y1="220" x2="70" y2="220" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="223" fill="#8b949e" font-size="7" text-anchor="end">10¹</text>
+<line x1="67" y1="168.33333333333334" x2="70" y2="168.33333333333334" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="171.33333333333334" fill="#8b949e" font-size="7" text-anchor="end">10²</text>
+<line x1="67" y1="116.66666666666663" x2="70" y2="116.66666666666663" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="119.66666666666663" fill="#8b949e" font-size="7" text-anchor="end">10³</text>
+<line x1="67" y1="65" x2="70" y2="65" stroke="#8b949e" stroke-width="0.5"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">10⁴</text>
+<polyline points="70.0,90.8 72.9,90.8 75.8,90.8 78.7,90.8 81.6,90.8 84.4,90.8 87.3,90.8 90.2,90.8 93.1,90.8 96.0,90.8 98.9,90.8 101.8,90.8 104.7,90.8 107.6,90.8 110.4,90.8 113.3,90.8 116.2,90.8 119.1,90.8 122.0,90.8 124.9,90.8 127.8,90.8 130.7,95.0 133.6,99.1 136.4,103.2 139.3,107.4 142.2,111.5 145.1,115.6 148.0,119.8 150.9,123.9 153.8,128.0 156.7,132.2 159.6,136.3 162.4,140.4 165.3,144.6 168.2,148.7 171.1,152.8 174.0,157.0 176.9,161.1 179.8,165.2 182.7,169.4 185.6,173.5 188.4,177.6 191.3,181.8 194.2,185.9 197.1,190.0 200.0,194.2 202.9,198.3 205.8,202.4 208.7,206.6 211.6,210.7 214.4,214.8 217.3,219.0 220.2,223.1 223.1,227.2 226.0,231.4 228.9,235.5 231.8,239.6 234.7,243.8 237.6,247.9 240.4,252.0 243.3,256.2 246.2,260.3 249.1,264.4 252.0,268.6 254.9,272.7 257.8,276.8 260.7,281.0 263.6,285.1 266.4,289.2 269.3,293.4 272.2,297.5 275.1,301.6 278.0,305.8 280.9,309.9 283.8,314.0 286.7,318.2 289.6,322.3 292.4,326.4 295.3,330.6 298.2,334.7 301.1,338.8 304.0,343.0 306.9,347.1 309.8,349.2 312.7,349.2 315.6,349.2 318.4,349.2 321.3,349.2 324.2,349.2 327.1,349.2 330.0,349.2" fill="none" stroke="#e8a665" stroke-width="2.5"/>
+<rect x="127.77777777777777" y="65" width="43.33333333333334" height="310" fill="#3fb950" opacity="0.10"/>
+<text x="149.44444444444446" y="80" fill="#3fb950" font-size="7" text-anchor="middle">Whiskey pH</text>
+<text x="149.44444444444446" y="92" fill="#3fb950" font-size="7" text-anchor="middle">Kₑₗ ≈ 1000–3000</text>
+<line x1="70" y1="271.6666666666667" x2="330" y2="271.6666666666667" stroke="#8b949e" stroke-width="1"/>
+<text x="325" y="266.6666666666667" fill="#8b949e" font-size="7" text-anchor="end">Kₑₗ = 1</text>
+<rect x="80" y="315" width="110" height="42" rx="3" fill="#30363d" opacity="0.8"/>
+<text x="85" y="332" fill="#f85149" font-size="7" text-anchor="start">Eₐ hydrolysis = 84 kJ/mol</text>
+<text x="85" y="345" fill="#f85149" font-size="7" text-anchor="start">Ring opening is SLOW</text>
+<text x="85" y="356" fill="#f85149" font-size="7" text-anchor="start">at pH 3–4</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Rate-Limiting Step Identification</text>
+<rect x="390" y="65" width="270" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="525" y="393" fill="#8b949e" font-size="8" text-anchor="middle">Process Step</text>
+<text x="375" y="220" fill="#8b949e" font-size="7" text-anchor="middle">Time to 90% (days, log scale)</text>
+<line x1="390" y1="375" x2="660" y2="375" stroke="#30363d" stroke-width="0.5"/>
+<text x="663" y="378" fill="#8b949e" font-size="6" text-anchor="start">0.01d (~15min)</text>
+<line x1="390" y1="313" x2="660" y2="313" stroke="#30363d" stroke-width="0.5"/>
+<text x="663" y="316" fill="#8b949e" font-size="6" text-anchor="start">0.1d (~2.4h)</text>
+<line x1="390" y1="251" x2="660" y2="251" stroke="#30363d" stroke-width="0.5"/>
+<text x="663" y="254" fill="#8b949e" font-size="6" text-anchor="start">1 day</text>
+<line x1="390" y1="189" x2="660" y2="189" stroke="#30363d" stroke-width="0.5"/>
+<text x="663" y="192" fill="#8b949e" font-size="6" text-anchor="start">10 days</text>
+<line x1="390" y1="127" x2="660" y2="127" stroke="#30363d" stroke-width="0.5"/>
+<text x="663" y="130" fill="#8b949e" font-size="6" text-anchor="start">100 days</text>
+<line x1="390" y1="65" x2="660" y2="65" stroke="#30363d" stroke-width="0.5"/>
+<text x="663" y="68" fill="#8b949e" font-size="6" text-anchor="start">1000 days</text>
+<rect x="415" y="375" width="45" height="0" fill="#3fb950" opacity="0.7" rx="2"/>
+<text x="437.5" y="370" fill="#3fb950" font-size="8" text-anchor="middle">14min</text>
+<text x="437.5" y="387" fill="#8b949e" font-size="6" text-anchor="middle">Cyclization</text>
+<text x="437.5" y="397" fill="#8b949e" font-size="6" text-anchor="middle">(pH 3.5)</text>
+<rect x="475" y="251" width="45" height="124" fill="#58a6ff" opacity="0.7" rx="2"/>
+<text x="497.5" y="246" fill="#58a6ff" font-size="8" text-anchor="middle">1d</text>
+<text x="497.5" y="387" fill="#8b949e" font-size="6" text-anchor="middle">Cyclization</text>
+<text x="497.5" y="397" fill="#8b949e" font-size="6" text-anchor="middle">(pH 7.0)</text>
+<rect x="535" y="92.13784240369858" width="45" height="282.8621575963014" fill="#f85149" opacity="0.7" rx="2"/>
+<text x="557.5" y="87.13784240369858" fill="#f85149" font-size="8" text-anchor="middle">365d</text>
+<text x="557.5" y="387" fill="#8b949e" font-size="6" text-anchor="middle">Extraction</text>
+<text x="557.5" y="397" fill="#8b949e" font-size="6" text-anchor="middle">(barrel)</text>
+<rect x="595" y="179.94006178794922" width="45" height="195.05993821205078" fill="#e8a665" opacity="0.7" rx="2"/>
+<text x="617.5" y="174.94006178794922" fill="#e8a665" font-size="8" text-anchor="middle">14d</text>
+<text x="617.5" y="387" fill="#8b949e" font-size="6" text-anchor="middle">Extraction</text>
+<text x="617.5" y="397" fill="#8b949e" font-size="6" text-anchor="middle">(chips 40°C)</text>
+<line x1="557.5" y1="85" x2="557.5" y2="100" stroke="#f85149" stroke-width="2" marker-end="url(#arr)"/>
+<text x="557.5" y="80" fill="#f85149" font-size="8" text-anchor="middle">BOTTLENECK</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Lactone cyclization is 10,000× faster than extraction at whiskey pH — optimizing extraction</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">(surface area, temperature, ABV) is the ONLY lever. pH control has no effect.</text>
+</svg>
