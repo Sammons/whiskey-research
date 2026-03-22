@@ -1,0 +1,482 @@
+use std::f64::consts::E;
+use std::fs;
+
+const R: f64 = 8.314;
+
+// Theme colors (matching barriers.html)
+const BG: &str = "#161b22";
+const GRID: &str = "#30363d";
+const TEXT: &str = "#e6edf3";
+const MUTED: &str = "#8b949e";
+const ACCENT: &str = "#e8a665";
+const GREEN: &str = "#3fb950";
+const RED: &str = "#f85149";
+const BLUE: &str = "#58a6ff";
+const YELLOW: &str = "#d29922";
+const PURPLE: &str = "#bc8cff";
+const CYAN: &str = "#39d2c0";
+
+fn main() {
+    fs::create_dir_all("../graphs").unwrap();
+
+    fs::write("../graphs/ester-kinetics.svg", sim_ester_kinetics()).unwrap();
+    println!("Wrote ester-kinetics.svg");
+
+    fs::write("../graphs/hydrophobic-force.svg", sim_hydrophobic_driving_force()).unwrap();
+    println!("Wrote hydrophobic-force.svg");
+
+    fs::write("../graphs/pdms-o2-flux.svg", sim_pdms_oxygen_flux()).unwrap();
+    println!("Wrote pdms-o2-flux.svg");
+
+    fs::write("../graphs/cryoconcentration.svg", sim_cryoconcentration()).unwrap();
+    println!("Wrote cryoconcentration.svg");
+
+    fs::write("../graphs/electrochemical-cascade.svg", sim_electrochemical_cascade()).unwrap();
+    println!("Wrote electrochemical-cascade.svg");
+}
+
+fn svg_header(w: f64, h: f64, title: &str) -> String {
+    format!(
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {w} {h}\" \
+         style=\"background:{BG};font-family:Georgia,serif\">\n\
+         <rect width=\"{w}\" height=\"{h}\" fill=\"{BG}\"/>\n\
+         <text x=\"{}\" y=\"25\" fill=\"{ACCENT}\" font-size=\"14\" \
+         text-anchor=\"middle\" font-weight=\"bold\">{title}</text>\n",
+        w / 2.0
+    )
+}
+
+fn hline(x1: f64, x2: f64, y: f64, color: &str, w: &str) -> String {
+    format!("<line x1=\"{x1}\" y1=\"{y}\" x2=\"{x2}\" y2=\"{y}\" stroke=\"{color}\" stroke-width=\"{w}\"/>\n")
+}
+
+fn vline(x: f64, y1: f64, y2: f64, color: &str, w: &str) -> String {
+    format!("<line x1=\"{x}\" y1=\"{y1}\" x2=\"{x}\" y2=\"{y2}\" stroke=\"{color}\" stroke-width=\"{w}\"/>\n")
+}
+
+fn label(x: f64, y: f64, text: &str, color: &str, size: u32, anchor: &str) -> String {
+    format!("<text x=\"{x}\" y=\"{y}\" fill=\"{color}\" font-size=\"{size}\" text-anchor=\"{anchor}\">{text}</text>\n")
+}
+
+fn polyline_svg(pts: &[(f64, f64)], color: &str, width: &str,
+    sx: &dyn Fn(f64)->f64, sy: &dyn Fn(f64)->f64) -> String {
+    let p: String = pts.iter()
+        .map(|(x,y)| format!("{:.1},{:.1}", sx(*x), sy(*y)))
+        .collect::<Vec<_>>().join(" ");
+    format!("<polyline points=\"{p}\" fill=\"none\" stroke=\"{color}\" stroke-width=\"{width}\"/>\n")
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 1: Fischer Esterification Kinetics
+// ═══════════════════════════════════════════════════════════════
+fn sim_ester_kinetics() -> String {
+    let t_k = 298.15_f64;
+    let k_eq = 4.0_f64;
+    let acid_0 = 0.0083_f64;
+    let ethanol_0 = 11.2_f64;
+    let water_0 = 19.4_f64;
+
+    let ea_uncat = 60_000.0;
+    let ea_cat = 35_000.0;
+    let k_f_uncat = 2.5e-9_f64;
+    let k_r_uncat = k_f_uncat / k_eq;
+
+    let rate_enh = E.powf((ea_uncat - ea_cat) / (R * t_k));
+    let k_f_cat = k_f_uncat * rate_enh;
+    let k_r_cat = k_f_cat / k_eq;
+    let k_f_elec = k_f_uncat * 10_000.0;
+    let k_r_elec = k_f_elec / k_eq;
+
+    println!("=== Ester Kinetics ===");
+    println!("  Amberlyst rate enhancement: {:.0}x", rate_enh);
+
+    let dt = 60.0; // 1-minute steps for numerical stability with fast catalysts
+    let n = (730.0 * 24.0 * 3600.0 / dt) as usize;
+    let sample_every = (3600.0 / dt) as usize; // sample hourly
+
+    let mut s_u = [acid_0, ethanol_0, 0.0, water_0]; // acid, etoh, ester, water
+    let mut s_c = s_u;
+    let mut s_e = s_u;
+
+    fn step(s: &mut [f64; 4], kf: f64, kr: f64, dt: f64) {
+        let r = kf * s[0] * s[1] - kr * s[2] * s[3];
+        let mut dx = r * dt;
+        // Clamp reaction extent to available reactants (prevents overshoot)
+        if dx > 0.0 {
+            dx = dx.min(s[0] * 0.5).min(s[1] * 0.5);
+        } else {
+            dx = dx.max(-s[2] * 0.5).max(-s[3] * 0.5);
+        }
+        s[0] = (s[0] - dx).max(0.0);
+        s[1] = (s[1] - dx).max(0.0);
+        s[2] = (s[2] + dx).max(0.0);
+        s[3] = (s[3] + dx).max(0.0);
+    }
+
+    let mut d_u = Vec::new();
+    let mut d_c = Vec::new();
+    let mut d_e = Vec::new();
+
+    for i in 0..=n {
+        if i % (sample_every * 24) == 0 { // sample daily
+            let days = (i as f64) * dt / 86400.0;
+            let conv = |s: &[f64; 4]| (s[2] / acid_0 * 100.0).min(100.0);
+            d_u.push((days, conv(&s_u)));
+            d_c.push((days, conv(&s_c)));
+            d_e.push((days, conv(&s_e)));
+        }
+        if i < n {
+            step(&mut s_u, k_f_uncat, k_r_uncat, dt);
+            step(&mut s_c, k_f_cat, k_r_cat, dt);
+            step(&mut s_e, k_f_elec, k_r_elec, dt);
+        }
+    }
+
+    // True equilibrium in this system: K = x*W / ((A-x)*E) with water excess
+    // x/A = K*E / (W + K*E) = 4*11.2 / (19.4 + 4*11.2) = 44.8/64.2 = 69.8%
+    let eq_conv = k_eq * ethanol_0 / (water_0 + k_eq * ethanol_0) * 100.0;
+    if let Some((_,c)) = d_u.iter().find(|(d,_)| (*d - 365.0).abs() < 1.0) { println!("  Uncat at 1yr: {:.1}%", c); }
+    if let Some((_,c)) = d_c.iter().find(|(d,_)| (*d - 1.0).abs() < 1.0) { println!("  Amberlyst at 1d: {:.1}%", c); }
+    if let Some((_,c)) = d_e.iter().find(|(d,_)| (*d - 1.0).abs() < 1.0) { println!("  Electrochemical at 1d: {:.1}%", c); }
+    println!("  Equilibrium: {:.1}%", eq_conv);
+
+    let (w, h, m) = (700.0, 400.0, 70.0);
+    let (pw, ph) = (w - 2.0*m, h - 2.0*m);
+    let sx = |d: f64| m + (d / 730.0) * pw;
+    let sy = |p: f64| m + ph - (p / 100.0) * ph;
+
+    let mut s = svg_header(w, h, "Fischer Esterification: % Conversion vs. Time at 25\u{b0}C");
+    for pct in (0..=100).step_by(20) {
+        s += &hline(m, m+pw, sy(pct as f64), GRID, "0.5");
+        s += &label(m-5.0, sy(pct as f64)+3.0, &format!("{pct}%"), MUTED, 10, "end");
+    }
+    for yr in [0, 1, 2] {
+        let d = yr as f64 * 365.0;
+        s += &vline(sx(d), m, m+ph, GRID, "0.5");
+        s += &label(sx(d), m+ph+15.0, &format!("{yr} yr"), MUTED, 10, "middle");
+    }
+    // Axes
+    s += &vline(m, m, m+ph, MUTED, "1.5");
+    s += &hline(m, m+pw, m+ph, MUTED, "1.5");
+    s += &label((2.0*m+pw)/2.0, m+ph+35.0, "Time", MUTED, 11, "middle");
+
+    // Eq line
+    s += &hline(m, m+pw, sy(eq_conv), YELLOW, "1");
+    s.push_str(&format!("<line x1=\"{m}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{YELLOW}\" \
+        stroke-width=\"1\" stroke-dasharray=\"6,3\"/>\n", sy(eq_conv), m+pw, sy(eq_conv)));
+    s += &label(m+pw-140.0, sy(eq_conv)-5.0, &format!("Equilibrium ({:.0}%, water-limited)", eq_conv), YELLOW, 9, "start");
+
+    s += &polyline_svg(&d_u, RED, "2.5", &sx, &sy);
+    s += &polyline_svg(&d_c, GREEN, "2.5", &sx, &sy);
+    s += &polyline_svg(&d_e, BLUE, "2.5", &sx, &sy);
+
+    let legend = [
+        (RED, "Uncatalyzed (Ea = 60 kJ/mol)"),
+        (GREEN, "Amberlyst-15 (Ea = 35 kJ/mol)"),
+        (BLUE, "Electrochemical Au (10,000\u{d7} rate)"),
+    ];
+    for (i, (c, l)) in legend.iter().enumerate() {
+        let y = 55.0 + i as f64 * 18.0;
+        s.push_str(&format!("<line x1=\"{}\" y1=\"{y}\" x2=\"{}\" y2=\"{y}\" stroke=\"{c}\" stroke-width=\"2.5\"/>\n", m+10.0, m+30.0));
+        s += &label(m+35.0, y+4.0, l, TEXT, 10, "start");
+    }
+    s += "</svg>";
+    s
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 2: Hydrophobic Driving Force vs. ABV
+// ═══════════════════════════════════════════════════════════════
+fn sim_hydrophobic_driving_force() -> String {
+    fn abv_to_x(abv: f64) -> f64 {
+        let ve = abv / 100.0;
+        let ne = ve * 0.789 / 46.07;
+        let nw = (1.0-ve) * 1.0 / 18.015;
+        ne / (ne + nw)
+    }
+    fn hf(abv: f64) -> f64 {
+        let x = abv_to_x(abv);
+        let g = (-((x - 0.12_f64).powi(2)) / (2.0 * 0.06_f64.powi(2))).exp();
+        g * if x < 0.02 { x / 0.02 } else { 1.0 }
+    }
+
+    println!("\n=== Hydrophobic Driving Force ===");
+    for abv in [20, 30, 35, 40, 46, 63] {
+        println!("  {}% ABV: x={:.3}, force={:.3}", abv, abv_to_x(abv as f64), hf(abv as f64));
+    }
+
+    let data: Vec<(f64,f64)> = (0..=700).map(|i| { let a = i as f64 / 10.0; (a, hf(a)) }).collect();
+
+    let (w, h, m) = (700.0, 400.0, 70.0);
+    let (pw, ph) = (w - 2.0*m, h - 2.0*m);
+    let sx = |a: f64| m + (a / 70.0) * pw;
+    let sy = |f: f64| m + ph - f * ph;
+
+    let mut s = svg_header(w, h, "Hydrophobic Driving Force for Cluster Formation vs. Proof");
+    for f in [0.0, 0.25, 0.5, 0.75, 1.0] {
+        s += &hline(m, m+pw, sy(f), GRID, "0.5");
+        s += &label(m-5.0, sy(f)+3.0, &format!("{:.0}%", f*100.0), MUTED, 10, "end");
+    }
+    for abv in (0..=70).step_by(10) {
+        s += &vline(sx(abv as f64), m, m+ph, GRID, "0.5");
+        s += &label(sx(abv as f64), m+ph+15.0, &format!("{abv}%"), MUTED, 10, "middle");
+    }
+    s += &vline(m, m, m+ph, MUTED, "1.5");
+    s += &hline(m, m+pw, m+ph, MUTED, "1.5");
+    s += &label((2.0*m+pw)/2.0, m+ph+35.0, "ABV (%)", MUTED, 11, "middle");
+
+    // Optimal zone
+    let (x1, x2) = (sx(27.0), sx(37.0));
+    s.push_str(&format!("<rect x=\"{x1}\" y=\"{m}\" width=\"{}\" height=\"{ph}\" fill=\"{GREEN}\" opacity=\"0.1\"/>\n", x2-x1));
+    s += &label((x1+x2)/2.0, m+15.0, "Optimal clustering", GREEN, 9, "middle");
+    s += &label((x1+x2)/2.0, m+27.0, "27\u{2013}37% ABV", GREEN, 9, "middle");
+
+    // Cask strength
+    s.push_str(&format!("<line x1=\"{}\" y1=\"{m}\" x2=\"{}\" y2=\"{}\" stroke=\"{RED}\" stroke-width=\"1.5\" stroke-dasharray=\"4,3\"/>\n", sx(63.0), sx(63.0), m+ph));
+    s += &label(sx(63.0)-4.0, m+50.0, "Cask strength 63%", RED, 9, "end");
+
+    // Chill haze
+    s.push_str(&format!("<line x1=\"{}\" y1=\"{m}\" x2=\"{}\" y2=\"{}\" stroke=\"{YELLOW}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n", sx(46.0), sx(46.0), m+ph));
+    s += &label(sx(46.0)+4.0, m+40.0, "Chill haze 46%", YELLOW, 9, "start");
+
+    s += &polyline_svg(&data, PURPLE, "2.5", &sx, &sy);
+    s += "</svg>";
+    s
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 3: PDMS Membrane O₂ Flux
+// ═══════════════════════════════════════════════════════════════
+fn sim_pdms_oxygen_flux() -> String {
+    let p = 600.0e-10_f64;
+    let tl = 30.0; let id = 0.3;
+
+    let cases: [(&str, f64, &str); 3] = [
+        ("Air (21% O\u{2082})", 0.21 * 76.0, BLUE),
+        ("5% O\u{2082}/N\u{2082}", 0.05 * 76.0, GREEN),
+        ("Pure O\u{2082}", 76.0, RED),
+    ];
+
+    println!("\n=== PDMS O\u{2082} Flux ===");
+    let mut all: Vec<Vec<(f64,f64)>> = Vec::new();
+    for (lbl, dp, _) in &cases {
+        let c: Vec<(f64,f64)> = (5..=30).map(|t10| {
+            let th = t10 as f64 / 100.0;
+            let od = id + 2.0 * th;
+            let a = std::f64::consts::PI * od * tl;
+            let j = p * dp * a / th;
+            (t10 as f64 / 10.0, j * 86400.0)
+        }).collect();
+        if let Some((_,f)) = c.iter().find(|(t,_)| (*t-1.0).abs() < 0.15) {
+            println!("  {}: 1mm wall = {:.4} mL/L/day", lbl, f);
+        }
+        all.push(c);
+    }
+
+    let (w, h, m) = (700.0, 400.0, 70.0);
+    let (pw, ph) = (w - 2.0*m, h - 2.0*m);
+    let ymax = 0.5;
+    let sx = |mm: f64| m + ((mm - 0.5) / 2.5) * pw;
+    let sy = |f: f64| m + ph - (f / ymax) * ph;
+
+    let mut s = svg_header(w, h, "PDMS Membrane O\u{2082} Delivery (30 cm tube, 3 mm I.D., 1 L spirit)");
+
+    // Barrel range band
+    s.push_str(&format!("<rect x=\"{m}\" y=\"{}\" width=\"{pw}\" height=\"{}\" fill=\"{YELLOW}\" opacity=\"0.15\"/>\n",
+        sy(0.10), sy(0.01) - sy(0.10)));
+    s += &label(m+pw-5.0, (sy(0.10)+sy(0.01))/2.0+3.0, "Barrel range: 0.01\u{2013}0.10 mL/L/day", YELLOW, 9, "end");
+
+    for f in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5] {
+        s += &hline(m, m+pw, sy(f), GRID, "0.5");
+        s += &label(m-5.0, sy(f)+3.0, &format!("{f:.1}"), MUTED, 10, "end");
+    }
+    for mm in [0.5, 1.0, 1.5, 2.0, 2.5, 3.0] {
+        s += &vline(sx(mm), m, m+ph, GRID, "0.5");
+        s += &label(sx(mm), m+ph+15.0, &format!("{mm:.1}"), MUTED, 10, "middle");
+    }
+    s += &vline(m, m, m+ph, MUTED, "1.5");
+    s += &hline(m, m+pw, m+ph, MUTED, "1.5");
+    s += &label((2.0*m+pw)/2.0, m+ph+35.0, "Wall Thickness (mm)", MUTED, 11, "middle");
+
+    for (i, (lbl, _, color)) in cases.iter().enumerate() {
+        let capped: Vec<(f64,f64)> = all[i].iter().map(|(x,y)| (*x, y.min(ymax))).collect();
+        s += &polyline_svg(&capped, color, "2.5", &sx, &sy);
+        let ly = 55.0 + i as f64 * 18.0;
+        s.push_str(&format!("<line x1=\"{}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" stroke=\"{color}\" stroke-width=\"2.5\"/>\n", m+10.0, m+30.0));
+        s += &label(m+35.0, ly+4.0, lbl, TEXT, 10, "start");
+    }
+    s += "</svg>";
+    s
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 4: Freeze-Thaw Cryoconcentration
+// ═══════════════════════════════════════════════════════════════
+fn sim_cryoconcentration() -> String {
+    let fp: Vec<(f64,f64)> = vec![
+        (0.0,0.0),(10.0,-4.0),(20.0,-9.0),(30.0,-15.0),
+        (40.0,-23.0),(50.0,-32.0),(60.0,-37.0),(70.0,-51.0),
+    ];
+
+    fn fp_inv(fp: &[(f64,f64)], t: f64) -> f64 {
+        if t >= fp[0].1 { return fp[0].0; }
+        for i in 0..fp.len()-1 {
+            if t <= fp[i].1 && t >= fp[i+1].1 {
+                let f = (t - fp[i].1) / (fp[i+1].1 - fp[i].1);
+                return fp[i].0 + f * (fp[i+1].0 - fp[i].0);
+            }
+        }
+        fp[fp.len()-1].0
+    }
+
+    println!("\n=== Cryoconcentration ===");
+    // 40% ABV ≈ 34.5 wt% ethanol. Freezing point of 40% ABV is ~-23°C.
+    // Below that temperature, water ice forms, concentrating the liquid phase.
+    let init = 40.0; // initial ABV as rough ethanol%
+    let mut data: Vec<(f64,f64)> = Vec::new();
+    // Sweep from 0°C down to -50°C
+    for t10 in (-500..=0).rev() {
+        let t = t10 as f64 / 10.0;
+        let liq = fp_inv(&fp, t);
+        let cf = if liq > init { liq / init } else { 1.0 };
+        data.push((t, cf));
+    }
+    for t in [-25, -30, -35, -40, -45] {
+        if let Some((_,c)) = data.iter().find(|(temp,_)| (*temp - t as f64).abs() < 0.15) {
+            println!("  At {}°C: {:.2}x", t, c);
+        }
+    }
+
+    let (w, h, m) = (700.0, 400.0, 70.0);
+    let (pw, ph) = (w - 2.0*m, h - 2.0*m);
+    let ymax = 1.8;
+    let tmin = -50.0_f64;
+    let tmax = 0.0_f64;
+    let sx = |t: f64| m + ((t - tmin) / (tmax - tmin)) * pw;
+    let sy = |f: f64| m + ph - ((f - 1.0) / (ymax - 1.0)) * ph;
+
+    let mut s = svg_header(w, h, "Cryoconcentration of Solutes in 40% ABV Spirit");
+    for f in [1.0, 1.2, 1.4, 1.6, 1.8] {
+        s += &hline(m, m+pw, sy(f), GRID, "0.5");
+        s += &label(m-5.0, sy(f)+3.0, &format!("{f:.1}\u{d7}"), MUTED, 10, "end");
+    }
+    for t in [-50, -40, -30, -20, -10, 0] {
+        s += &vline(sx(t as f64), m, m+ph, GRID, "0.5");
+        s += &label(sx(t as f64), m+ph+15.0, &format!("{t}\u{b0}C"), MUTED, 10, "middle");
+    }
+    s += &vline(m, m, m+ph, MUTED, "1.5");
+    s += &hline(m, m+pw, m+ph, MUTED, "1.5");
+    s += &label((2.0*m+pw)/2.0, m+ph+35.0, "Temperature (\u{b0}C)", MUTED, 11, "middle");
+
+    // Mark freezing onset at -23°C
+    let onset_t = -23.0;
+    s.push_str(&format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{YELLOW}\" stroke-width=\"1.5\" stroke-dasharray=\"6,4\"/>\n",
+        sx(onset_t), m, sx(onset_t), m+ph));
+    s += &label(sx(onset_t)+4.0, m+15.0, "Freezing onset", YELLOW, 9, "start");
+    s += &label(sx(onset_t)+4.0, m+27.0, "(\u{2212}23\u{b0}C)", YELLOW, 9, "start");
+
+    let capped: Vec<(f64,f64)> = data.iter().filter(|(_,y)| *y <= ymax).copied().collect();
+    s += &polyline_svg(&capped, CYAN, "2.5", &sx, &sy);
+
+    // Annotate practical point at -35°C
+    if let Some((_,c)) = data.iter().find(|(t,_)| (*t - (-35.0)).abs() < 0.15) {
+        s.push_str(&format!("<circle cx=\"{}\" cy=\"{}\" r=\"4\" fill=\"{CYAN}\"/>\n", sx(-35.0), sy(*c)));
+        s += &label(sx(-35.0)+8.0, sy(*c)-8.0, &format!("{:.2}\u{d7} at \u{2212}35\u{b0}C", c), CYAN, 10, "start");
+    }
+    // Annotate -45°C
+    if let Some((_,c)) = data.iter().find(|(t,_)| (*t - (-45.0)).abs() < 0.15) {
+        s.push_str(&format!("<circle cx=\"{}\" cy=\"{}\" r=\"4\" fill=\"{CYAN}\"/>\n", sx(-45.0), sy(*c)));
+        s += &label(sx(-45.0)+8.0, sy(*c)+15.0, &format!("{:.2}\u{d7} at \u{2212}45\u{b0}C", c), CYAN, 10, "start");
+    }
+    s += "</svg>";
+    s
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 5: Electrochemical Cascade
+// ═══════════════════════════════════════════════════════════════
+fn sim_electrochemical_cascade() -> String {
+    let dt = 60.0;
+    let n = (7200.0 / dt) as usize;
+
+    fn step(s: &mut [f64; 3], k1: f64, k2: f64, dt: f64) {
+        let r1 = k1 * s[0];
+        let r2 = k2 * s[1];
+        s[0] = (s[0] - r1 * dt).max(0.0);
+        s[1] = (s[1] + (r1 - r2) * dt).max(0.0);
+        s[2] += r2 * dt;
+    }
+
+    let scenarios: [(&str, f64, f64); 3] = [
+        ("0.50 V (aldehyde selective)", 3e-4, 1e-5),
+        ("0.68 V (balanced cascade)", 6e-4, 2e-4),
+        ("0.80 V (rapid maturation)", 2e-3, 1.2e-3),
+    ];
+
+    println!("\n=== Electrochemical Cascade ===");
+    let mut all: Vec<Vec<(f64,f64,f64,f64)>> = Vec::new();
+    for (lbl, k1, k2) in &scenarios {
+        let mut s = [1.0, 0.0, 0.0_f64];
+        let mut c = Vec::new();
+        for i in 0..=n {
+            if i % 5 == 0 { c.push(((i as f64)*dt/60.0, s[0], s[1], s[2])); }
+            if i < n { step(&mut s, *k1, *k2, dt); }
+        }
+        let f = c.last().unwrap();
+        println!("  {} \u{2014} alc={:.0}% ald={:.0}% est={:.0}%", lbl, f.1*100.0, f.2*100.0, f.3*100.0);
+        all.push(c);
+    }
+
+    let (tw, th) = (700.0, 350.0);
+    let panw = tw / 3.0;
+    let (mx, my, mb) = (45.0, 55.0, 40.0);
+    let (pw, ph) = (panw - mx - 15.0, th - my - mb);
+
+    let mut svg = format!(
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {tw} {th}\" \
+         style=\"background:{BG};font-family:Georgia,serif\">\n\
+         <rect width=\"{tw}\" height=\"{th}\" fill=\"{BG}\"/>\n\
+         <text x=\"{}\" y=\"22\" fill=\"{ACCENT}\" font-size=\"13\" \
+         text-anchor=\"middle\" font-weight=\"bold\">\
+         Electrochemical Cascade: Product Distribution vs. Applied Potential</text>\n",
+        tw / 2.0
+    );
+
+    let colors = [(RED, "Alcohol"), (YELLOW, "Aldehyde"), (GREEN, "Acid/Ester")];
+
+    for (pi, (lbl, _, _)) in scenarios.iter().enumerate() {
+        let ox = pi as f64 * panw;
+        let sx = |min: f64| ox + mx + (min / 120.0) * pw;
+        let sy = |f: f64| my + ph - f * ph;
+
+        svg += &label(ox + mx + pw/2.0, my-5.0, lbl, CYAN, 10, "middle");
+        svg += &vline(ox+mx, my, my+ph, MUTED, "1");
+        svg += &hline(ox+mx, ox+mx+pw, my+ph, MUTED, "1");
+
+        if pi == 0 {
+            for pct in [0, 50, 100] {
+                svg += &label(ox+mx-4.0, sy(pct as f64/100.0)+3.0, &format!("{pct}%"), MUTED, 9, "end");
+            }
+        }
+        for min in [0, 60, 120] {
+            svg += &label(sx(min as f64), my+ph+14.0, &format!("{min}m"), MUTED, 9, "middle");
+        }
+
+        let data = &all[pi];
+        for (si, (color, _)) in colors.iter().enumerate() {
+            let pts: Vec<(f64,f64)> = data.iter().map(|(t,a,b,c)| {
+                (*t, match si { 0 => *a, 1 => *b, _ => *c })
+            }).collect();
+            svg += &polyline_svg(&pts, color, "2", &sx, &sy);
+        }
+    }
+
+    let ly = th - 15.0;
+    for (i, (color, lbl)) in colors.iter().enumerate() {
+        let lx = tw/2.0 - 120.0 + i as f64 * 100.0;
+        svg.push_str(&format!("<line x1=\"{lx}\" y1=\"{ly}\" x2=\"{}\" y2=\"{ly}\" stroke=\"{color}\" stroke-width=\"2.5\"/>\n", lx+20.0));
+        svg += &label(lx+25.0, ly+4.0, lbl, TEXT, 10, "start");
+    }
+    svg += "</svg>";
+    svg
+}

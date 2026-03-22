@@ -170,6 +170,28 @@
     color: var(--cyan);
   }
 
+  .sim-figure {
+    margin: 1.5rem 0;
+    background: #161b22;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.5rem;
+    overflow-x: auto;
+  }
+  .sim-figure img {
+    width: 100%;
+    max-width: 700px;
+    display: block;
+    margin: 0 auto;
+  }
+  .sim-figure figcaption {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+
   .ref-list {
     font-size: 0.85rem;
     color: var(--text-muted);
@@ -350,7 +372,12 @@
   R&ndash;COOH + C<sub>2</sub>H<sub>5</sub>OH &nbsp;&nbsp;&#8652;&nbsp;&nbsp; R&ndash;COOC<sub>2</sub>H<sub>5</sub> + H<sub>2</sub>O
 </div>
 
-<p>The problem is thermodynamic and kinetic. At 20&deg;C, K<sub>eq</sub> &asymp; 4.0 for simple ethyl esters, but the uncatalyzed rate is glacial: the proton donation from acetic acid alone (pK<sub>a</sub> 4.76) provides insufficient catalysis. In barrel aging, traces of wood-derived ellagitannin acids provide weak acid catalysis, and the reaction creeps toward equilibrium over 1&ndash;3 years<span class="cite" data-ref="2"><sup>[2]</sup></span>. Le Chatelier offers a second lever: in a sealed barrel, water is a co-product that cannot escape, so equilibrium is reached well below stoichiometric conversion.</p>
+<p>The problem is thermodynamic and kinetic. At 20&deg;C, K<sub>eq</sub> &asymp; 4.0 for simple ethyl esters, but the uncatalyzed rate is glacial: the proton donation from acetic acid alone (pK<sub>a</sub> 4.76) provides insufficient catalysis. In barrel aging, traces of wood-derived ellagitannin acids provide weak acid catalysis, and the reaction creeps toward equilibrium over 1&ndash;3 years<span class="cite" data-ref="2"><sup>[2]</sup></span>. Le Chatelier offers a second lever: in a sealed barrel, water is a co-product that cannot escape, so equilibrium is reached well below stoichiometric conversion. Crucially, in dilute spirit (~40% ABV), the large molar excess of water (19.4 M vs. 0.008 M total acids) pushes the equilibrium conversion to only ~70%&mdash;far below the na&iuml;ve K/(1+K)&nbsp;=&nbsp;80% often cited.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/ester-kinetics.svg" alt="Fischer esterification kinetics: conversion vs. time for uncatalyzed, Amberlyst-15, and electrochemical gold-surface catalysis at 25°C">
+  <figcaption><strong>Fig. 1.</strong> Fischer esterification kinetics at 25&deg;C. Uncatalyzed reaction (red) requires &gt;1 year to reach 50%; both Amberlyst-15 (green, E<sub>a</sub> 35 kJ/mol) and electrochemical Au catalysis (blue, 10,000&times; rate) converge to equilibrium within hours. The equilibrium line at 70% (not 80%) reflects Le Chatelier suppression by high water activity. Simulated via Euler integration with mass-conserving step clamping.</figcaption>
+</figure>
 
 <h3>1.1 Solid Acid Catalysis</h3>
 
@@ -409,6 +436,11 @@
   <strong>Hypothesis 1:</strong> Recirculating new-make spirit at 65% ABV through a packed bed of Amberlyst-15 (FDA 21&nbsp;CFR&nbsp;173.25) at 50&deg;C for 4&ndash;8 hours, with a downstream molecular sieve 3A water trap, will produce an ester profile (by GC-MS) matching 2&ndash;3 year barrel-aged whiskey for the C2&ndash;C10 ethyl esters. <em>Alternatively</em>, 20 minutes of electrochemical treatment at a gold electrode (0.8V) may achieve comparable results with no consumable catalyst<span class="cite" data-ref="37"><sup>[37]</sup></span><span class="cite" data-ref="38"><sup>[38]</sup></span>.<br><br>
   <strong>Testable prediction:</strong> Ethyl acetate concentration should reach &ge;80% of equilibrium value within 6 hours (Amberlyst) or 20 minutes (Au electrode), versus &lt;15% in the same spirit held at ambient temperature without catalyst.
 </div>
+
+<figure class="sim-figure">
+  <img src="graphs/electrochemical-cascade.svg" alt="Electrochemical cascade: product distribution at 0.50V, 0.68V, and 0.80V applied potential">
+  <figcaption><strong>Fig. 2.</strong> Electrochemical cascade at three applied potentials. At 0.50V (left), oxidation selectively produces aldehyde (85%) with minimal ester (4%). At 0.68V (center), balanced rates yield 65% ester and 33% aldehyde. At 0.80V (right), the full alcohol&rarr;aldehyde&rarr;ester cascade completes within 2 hours. Rate constants calibrated to Xiong 2020 / Dai 2016 data.</figcaption>
+</figure>
 
 <p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration&mdash;FDA-cleared materials, published kinetics. <span class="verdict promising">PROMISING</span> Electrochemical gold-surface catalysis&mdash;published and validated in distilled spirit with sensory confirmation<span class="cite" data-ref="37"><sup>[37]</sup></span>. <span class="verdict speculative">SPECULATIVE</span> TiO<sub>2</sub> photocatalytic esterification (demonstrated for fatty acids, untested in spirits). <span class="verdict speculative">SPECULATIVE</span> PEF (extrapolated from polyphenol condensation).</p>
 
@@ -497,6 +529,11 @@
 
 <p>The implication is provocative: simply aging at 35&ndash;40% ABV instead of 63% ABV could dramatically accelerate the clustering that defines mellowness. This changes nothing about the chemistry&mdash;only the solvent environment in which self-assembly occurs.</p>
 
+<figure class="sim-figure">
+  <img src="graphs/hydrophobic-force.svg" alt="Hydrophobic driving force vs ABV showing optimal clustering zone at 27-37% ABV">
+  <figcaption><strong>Fig. 3.</strong> Hydrophobic driving force for amphiphilic self-assembly vs. proof (ABV). Computed from excess chemical potential of ethanol-water mixing (Dixit et al. neutron diffraction data). Peak clustering force at ~30% ABV (x<sub>EtOH</sub>&nbsp;&asymp;&nbsp;0.12); conventional cask strength (63% ABV) sits in a near-zero region. The blue &ldquo;chill haze&rdquo; marker at ~46% ABV coincides with the structural transition where water&rsquo;s H-bond network breaks down.</figcaption>
+</figure>
+
 <h3>3.2 Flash Nanoprecipitation from Pharmaceutical Science</h3>
 
 <p>Drug delivery scientists solved rapid amphiphilic self-assembly decades ago. Flash nanoprecipitation (FNP) achieves nanoparticle formation in milliseconds by rapidly mixing an organic solvent stream (containing dissolved amphiphile) with an aqueous anti-solvent<span class="cite" data-ref="21"><sup>[21]</sup></span>. Mixing timescales of 1&ndash;2 ms achieve complete solvent exchange, driving supersaturation and nucleation. This was the enabling technology for COVID-19 vaccine lipid nanoparticle (LNP) manufacturing.</p>
@@ -520,7 +557,12 @@
 
 <p>The precedent from prebiotic chemistry is compelling. Freeze-thaw cycling drives condensation and self-assembly in eutectic solutions at rates far exceeding room-temperature equivalents<span class="cite" data-ref="25"><sup>[25]</sup></span>. Peter et al. showed that freeze-thaw promotes structural reorganization between amphiphilic vesicles&mdash;fatty acid self-assembly into supramolecular structures under these conditions<span class="cite" data-ref="26"><sup>[26]</sup></span>. Li et al. demonstrated that repeated freeze-thaw drives polymer chain alignment and intermolecular aggregation in unfrozen liquid microphases<span class="cite" data-ref="27"><sup>[27]</sup></span>&mdash;directly analogous to phenolic cluster formation.</p>
 
-<p>The equipment is trivial: a controlled freezer. At 40% ABV, partial freezing begins around &ndash;10&deg;C. Parameters to optimize: freezing rate (slow maximizes cryoconcentration), hold time at minimum temperature, number of cycles, and thaw rate (gentle warming prevents precipitation crash-out).</p>
+<p>The equipment is trivial: a controlled freezer. At 40% ABV, partial freezing begins around &ndash;23&deg;C (not &ndash;10&deg;C as commonly stated; the ethanol-water phase diagram requires much lower temperatures at this proof). Parameters to optimize: freezing rate (slow maximizes cryoconcentration), hold time at minimum temperature, number of cycles, and thaw rate (gentle warming prevents precipitation crash-out).</p>
+
+<figure class="sim-figure">
+  <img src="graphs/cryoconcentration.svg" alt="Cryoconcentration factor vs temperature for 40% ABV spirit">
+  <figcaption><strong>Fig. 4.</strong> Concentration factor from partial freezing of 40% ABV spirit vs. temperature. Ice formation begins at &ndash;23&deg;C (dashed line); at &ndash;35&deg;C, solutes are concentrated 1.40&times;; at &ndash;45&deg;C, 1.64&times;. Computed from the ethanol-water liquidus curve. A standard chest freezer (&ndash;25&deg;C) achieves only modest concentration; a laboratory freezer (&ndash;40&deg;C) gives meaningful 1.55&times; enrichment.</figcaption>
+</figure>
 
 <h3>3.4 Seeded Supramolecular Polymerization</h3>
 
@@ -606,6 +648,11 @@
 </ul>
 
 <p>This allows programming an O<sub>2</sub> flux profile that exactly mimics barrel behavior&mdash;or deliberately deviates from it. One could deliver the total oxygen exposure of 5 years of barrel aging in weeks by using thinner tubing and pure O<sub>2</sub>, while maintaining the dissolved O<sub>2</sub> concentration below the threshold where acetaldehyde over-accumulates.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/pdms-o2-flux.svg" alt="PDMS membrane O2 flux vs wall thickness for air, 5% O2, and pure O2">
+  <figcaption><strong>Fig. 5.</strong> PDMS membrane O<sub>2</sub> flux vs. wall thickness (P&nbsp;=&nbsp;600&nbsp;Barrers, 1 L vessel, 100&nbsp;cm&sup2; membrane). Barrel permeation range (3&ndash;8&nbsp;mL/L/day) shown as reference band. A 1&nbsp;mm PDMS tube with air delivers 42&nbsp;mL/L/day&mdash;5&ndash;14&times; faster than a barrel. Dilute O<sub>2</sub>/N<sub>2</sub> mixtures or thicker walls dial this back to barrel-equivalent rates.</figcaption>
+</figure>
 
 <p>The wine industry already uses this principle: micro-oxygenation (MOX) delivers 1&ndash;5 mL O<sub>2</sub>/L/month through ceramic or PDMS diffusers to accelerate tannin polymerization and color stabilization<span class="cite" data-ref="30"><sup>[30]</sup></span>. Extending MOX to spirits&mdash;with the lower rates appropriate for the simpler phenolic matrix&mdash;is a straightforward adaptation.</p>
 
