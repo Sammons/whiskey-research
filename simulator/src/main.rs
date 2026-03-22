@@ -1,11 +1,14 @@
 // Whiskey Maturation Simulator
 // Coupled multi-species reactor model with implicit Euler ODE integration.
 //
-// Tracks 11 species across 7 reactions covering all four maturation barriers:
+// Tracks 14 species across 10 reactions covering all four maturation barriers:
 //   B1: Ester equilibrium (Fischer esterification)
 //   B2: Sulfur compound removal (DMS/DMDS/DMTS)
 //   B3: Wood extraction (tannin, vanillin)
 //   B4: Oxidation (ethanol -> acetaldehyde -> acetic acid, tannin condensation)
+//   R8: Riboflavin photosensitized oxidation (optional)
+//   R9: Laccase enzymatic oxidation (optional)
+//   R10: pH-dependent ester catalysis (optional)
 
 use nalgebra::{DMatrix, DVector};
 use serde::{Deserialize, Serialize};
@@ -30,8 +33,11 @@ const TANNIN_MONO: usize = 7;
 const TANNIN_POLY: usize = 8;
 const VANILLIN: usize = 9;
 const O2: usize = 10;
+const RIBOFLAVIN: usize = 11;
+const SINGLET_O2: usize = 12;
+const LACCASE: usize = 13;
 
-const N_SPECIES: usize = 11;
+const N_SPECIES: usize = 14;
 
 const SPECIES_NAMES: [&str; N_SPECIES] = [
     "ethanol",
@@ -45,6 +51,9 @@ const SPECIES_NAMES: [&str; N_SPECIES] = [
     "tannin_poly",
     "vanillin",
     "dissolved_o2",
+    "riboflavin",
+    "singlet_o2",
+    "laccase",
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -75,6 +84,9 @@ const SERIES_COLORS: [&str; N_SPECIES] = [
     "#d4764e", // tannin poly (darker amber)
     "#f0c674", // vanillin (light gold)
     "#58a6ff", // dissolved O2
+    "#ffcc00", // riboflavin (bright yellow — vitamin B2)
+    "#ff6b9d", // singlet O2 (pink)
+    "#7ee787", // laccase (bright green — enzyme)
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -110,6 +122,17 @@ struct RunConfig {
     initial_species: Option<InitialSpecies>,
     #[serde(default)]
     custom_kla: Option<f64>,
+    // R8: Riboflavin photosensitized oxidation
+    #[serde(default)]
+    riboflavin_um: Option<f64>,
+    #[serde(default)]
+    led_power_mw: Option<f64>,
+    // R9: Laccase enzymatic oxidation
+    #[serde(default)]
+    laccase_u_per_l: Option<f64>,
+    // R10: pH-dependent ester catalysis
+    #[serde(default)]
+    initial_ph: Option<f64>,
 }
 
 fn default_wood_sa() -> f64 {
@@ -208,6 +231,33 @@ struct KineticParams {
     t_mono_max: f64,
     // Water concentration (constant, background solvent)
     water: f64,
+
+    // R8: Riboflavin photosensitized oxidation
+    r8_enabled: bool,
+    r8_phi_isc: f64,
+    r8_s_delta: f64,
+    r8_k_t_o2: f64,
+    r8_k_t_ethanol: f64,
+    r8_k_t_phenol: f64,
+    r8_k_r_phenol: f64,
+    r8_k_r_vanillin: f64,
+    r8_k_d_1o2: f64,
+    r8_phi_bleach: f64,
+    r8_i0: f64,          // incident photon flux (mol photons / L / s)
+    r8_type_i_frac: f64, // fraction of photons producing AcH via Type I
+    r8_eps_path: f64,     // ε * path_length (M⁻¹cm⁻¹ * cm)
+    r8_ethanol_conc: f64, // [EtOH] for triplet partitioning (constant)
+
+    // R9: Laccase enzymatic oxidation
+    r9_enabled: bool,
+    r9_vmax: f64,      // effective V_max after activity correction (mol/(L·s))
+    r9_km_tannin: f64,
+    r9_km_o2: f64,
+    r9_k_inact: f64,   // thermal inactivation rate constant (1/s)
+
+    // R10: pH-dependent ester catalysis
+    r10_enabled: bool,
+    r10_ka: f64,        // acetic acid dissociation constant
 }
 
 fn compute_kinetics(t_k: f64, cfg: &RunConfig) -> KineticParams {
@@ -293,9 +343,70 @@ fn compute_kinetics(t_k: f64, cfg: &RunConfig) -> KineticParams {
     // ~30-40 mol/L depending on ABV. Simplified: 55.5 * (1 - ABV).
     let water = 55.5 * (1.0 - cfg.initial_abv);
 
+    // ── R8: Riboflavin photosensitized oxidation ──
+    let r8_enabled = cfg.riboflavin_um.is_some() && cfg.led_power_mw.is_some();
+    let r8_phi_isc = 0.67;
+    let r8_s_delta = 0.81;
+    let r8_k_t_o2 = 1.0e9;
+    let r8_k_t_ethanol = 1.0e4;
+    let r8_k_t_phenol = 5.0e7;
+    let r8_k_r_phenol = 1.5e7;
+    let r8_k_r_vanillin = 7.0e6;
+    let r8_k_d_1o2 = 2.0e5;
+    let r8_phi_bleach = 3.0e-4;
+    let r8_type_i_frac = 0.07;
+    let epsilon_450 = 12200.0; // M⁻¹cm⁻¹
+    let path_cm = 2.0;         // cm
+    let r8_eps_path = epsilon_450 * path_cm;
+
+    // Convert LED power (mW) to photon flux (mol photons / L / s).
+    // At 450nm: E_photon = h*c/λ = 4.42e-19 J.
+    // Assume 1 cm² illuminated area, 2 cm path → 2 mL volume = 2e-3 L.
+    // I_0 = P / (E_photon * N_A * V)
+    let r8_i0 = if r8_enabled {
+        let p_w = cfg.led_power_mw.unwrap() * 1.0e-3;
+        let e_photon_j = 4.42e-19;
+        let na = 6.022e23;
+        let vol_l = 2.0e-3; // illuminated volume
+        p_w / (e_photon_j * na * vol_l)
+    } else {
+        0.0
+    };
+
+    let r8_ethanol_conc = cfg.initial_abv * 789.0 / 46.07;
+
+    // ── R9: Laccase enzymatic oxidation ──
+    let r9_enabled = cfg.laccase_u_per_l.is_some();
+    let r9_vmax_per_u = 2.8e-6; // mol/(L·s·U)
+    let r9_km_tannin = 5.0e-4;
+    let r9_km_o2 = 2.0e-5;
+    // Activity fraction: 0.35 at 40% ABV, linear interpolation
+    let activity_frac = (1.0 - 0.65 * cfg.initial_abv / 0.40).max(0.05);
+    let r9_vmax = if r9_enabled {
+        cfg.laccase_u_per_l.unwrap() * r9_vmax_per_u * activity_frac
+    } else {
+        0.0
+    };
+    // Thermal inactivation: t½ = 100h at 35°C (308.15K), Ea_inact = 150 kJ/mol
+    // k_inact(T_ref) = ln(2) / t½
+    let t_ref_inact = 308.15;
+    let k_inact_ref = (2.0_f64).ln() / (100.0 * 3600.0);
+    let ea_inact = 150_000.0;
+    let a_inact = k_inact_ref / (-ea_inact / (R_GAS * t_ref_inact)).exp();
+    let r9_k_inact = arrhenius(a_inact, ea_inact, t_k);
+
+    // ── R10: pH-dependent ester catalysis ──
+    let r10_enabled = cfg.initial_ph.is_some();
+    let r10_ka = 1.75e-5;
     KineticParams {
         k1, k2, kf3, kr3, k4, k5, k5b, k5c,
         kla, o2_sat, k7, v_max, k7b, t_mono_max, water,
+        r8_enabled, r8_phi_isc, r8_s_delta,
+        r8_k_t_o2, r8_k_t_ethanol, r8_k_t_phenol,
+        r8_k_r_phenol, r8_k_r_vanillin, r8_k_d_1o2,
+        r8_phi_bleach, r8_i0, r8_type_i_frac, r8_eps_path, r8_ethanol_conc,
+        r9_enabled, r9_vmax, r9_km_tannin, r9_km_o2, r9_k_inact,
+        r10_enabled, r10_ka,
     }
 }
 
@@ -336,8 +447,30 @@ fn reaction_rates(y: &[f64], p: &KineticParams) -> [f64; N_SPECIES] {
 
     // R3: AcOH + EtOH <-> EtOAc + H2O
     //     rate = kf*[AcOH]*[EtOH] - kr*[EtOAc]*[H2O]
-    let r3 = p.kf3 * c(ACETIC_ACID) * c(ETHANOL)
-           - p.kr3 * c(ETHYL_ACETATE) * p.water;
+    // R10 modifies the forward rate constant by pH factor
+    let kf3_eff = if p.r10_enabled {
+        // pH evolves with acetic acid concentration via dissociation equilibrium.
+        // [H+] = (-Ka + sqrt(Ka^2 + 4*Ka*[AcOH])) / 2
+        let acoh = c(ACETIC_ACID);
+        let h_plus = if acoh > 1e-15 {
+            (-p.r10_ka + (p.r10_ka * p.r10_ka + 4.0 * p.r10_ka * acoh).sqrt()) / 2.0
+        } else {
+            10.0_f64.powf(-4.0) // default pH 4.0
+        };
+        let ph = -(h_plus.max(1e-14)).log10();
+        let ph_factor = 10.0_f64.powf(4.0 - ph);
+        p.kf3 * ph_factor
+    } else {
+        p.kf3
+    };
+    let kr3_eff = if p.r10_enabled {
+        // Reverse rate also affected to maintain same K_eq at reference pH
+        kf3_eff / 4.0
+    } else {
+        p.kr3
+    };
+    let r3 = kf3_eff * c(ACETIC_ACID) * c(ETHANOL)
+           - kr3_eff * c(ETHYL_ACETATE) * p.water;
 
     // R4: Tannin_mono + AcH -> Tannin_poly
     let r4 = p.k4 * c(TANNIN_MONO) * c(ACETALDEHYDE);
@@ -358,6 +491,79 @@ fn reaction_rates(y: &[f64], p: &KineticParams) -> [f64; N_SPECIES] {
     let headroom_t = (p.t_mono_max - c(TANNIN_MONO)).max(0.0);
     let r7b = p.k7b * headroom_t;
 
+    // ── R8: Riboflavin photosensitized oxidation ──
+    // Beer-Lambert absorbed intensity: I_abs = I_0 * (1 - exp(-ε*[Rf]*path))
+    // O2-dependent: o2_fac = [O2] / ([O2] + 2e-5)
+    // ISC: triplet production rate = Φ_ISC * I_abs
+    // Triplet partitioning: f_o2 = k_t_o2*[O2] / (k_t_o2*[O2] + k_t_ethanol*[EtOH] + k_t_phenol*[Tm])
+    // ¹O₂ production = triplet_rate * f_o2 * s_Δ
+    // ¹O₂ reacts with tannin and vanillin, quenched by solvent
+    let (r8_1o2_prod, r8_1o2_tannin, r8_1o2_vanillin, r8_bleach, r8_ach_type_i,
+         r8_o2_consumed) = if p.r8_enabled && c(RIBOFLAVIN) > 1e-15 {
+        let rf = c(RIBOFLAVIN);
+        let o2_c = c(O2);
+        let tm = c(TANNIN_MONO);
+        let van = c(VANILLIN);
+
+        // Beer-Lambert absorbed light
+        let i_abs = p.r8_i0 * (1.0 - (-p.r8_eps_path * rf).exp());
+
+        // O2 dependence
+        let o2_fac = o2_c / (o2_c + 2.0e-5);
+
+        // Triplet production
+        let triplet_rate = p.r8_phi_isc * i_abs * o2_fac;
+
+        // Triplet partitioning to O2
+        let denom_t = p.r8_k_t_o2 * o2_c + p.r8_k_t_ethanol * p.r8_ethanol_conc
+                     + p.r8_k_t_phenol * tm;
+        let f_o2 = if denom_t > 1e-30 {
+            p.r8_k_t_o2 * o2_c / denom_t
+        } else {
+            0.0
+        };
+
+        // ¹O₂ production
+        let singlet_prod = triplet_rate * f_o2 * p.r8_s_delta;
+
+        // ¹O₂ steady-state: d[¹O₂]/dt ~ singlet_prod - k_d*[¹O₂] - k_r_phenol*[¹O₂]*[Tm] - k_r_van*[¹O₂]*[Van]
+        // For the ODE we track [¹O₂] as a species and let the solver handle it.
+        // Consumption rates of ¹O₂:
+        let so2 = c(SINGLET_O2);
+        let r_phenol = p.r8_k_r_phenol * so2 * tm;
+        let r_vanillin = p.r8_k_r_vanillin * so2 * van;
+
+        // Photobleaching: rate = Φ_bleach * I_abs
+        let bleach = p.r8_phi_bleach * i_abs;
+
+        // Type I AcH production: ~7% of absorbed photons
+        let ach_type_i = p.r8_type_i_frac * i_abs * o2_fac;
+
+        // O2 consumed by both pathways: singlet production + Type I
+        let o2_cons = singlet_prod + ach_type_i;
+
+        (singlet_prod, r_phenol, r_vanillin, bleach, ach_type_i, o2_cons)
+    } else {
+        (0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    };
+
+    // ── R9: Laccase enzymatic oxidation ──
+    // Michaelis-Menten dual-substrate: v = V_max * [Tm]/(Km_t+[Tm]) * [O2]/(Km_o2+[O2])
+    // Laccase decays by thermal inactivation: d[Lac]/dt = -k_inact*[Lac]
+    let (r9_ox, r9_inact) = if p.r9_enabled && c(LACCASE) > 1e-15 {
+        let lac = c(LACCASE);
+        let tm = c(TANNIN_MONO);
+        let o2_c = c(O2);
+        // V_max scales with current enzyme concentration (normalized to initial)
+        // V_max was computed for the config's U/L, laccase species tracks fraction remaining.
+        let v = p.r9_vmax * lac * (tm / (p.r9_km_tannin + tm))
+                                 * (o2_c / (p.r9_km_o2 + o2_c));
+        let inact = p.r9_k_inact * lac;
+        (v, inact)
+    } else {
+        (0.0, 0.0)
+    };
+
     let mut dydt = [0.0_f64; N_SPECIES];
 
     // Ethanol: consumed by R1, R3 forward; produced by R3 reverse
@@ -366,8 +572,8 @@ fn reaction_rates(y: &[f64], p: &KineticParams) -> [f64; N_SPECIES] {
     // Acetic acid: produced by R2; consumed by R3 forward, produced by R3 reverse
     dydt[ACETIC_ACID] = r2 - r3;
 
-    // Acetaldehyde: produced by R1; consumed by R2 and R4
-    dydt[ACETALDEHYDE] = r1 - r2 - r4;
+    // Acetaldehyde: produced by R1; consumed by R2 and R4; produced by R8 Type I
+    dydt[ACETALDEHYDE] = r1 - r2 - r4 + r8_ach_type_i;
 
     // Ethyl acetate: produced by R3
     dydt[ETHYL_ACETATE] = r3;
@@ -377,17 +583,29 @@ fn reaction_rates(y: &[f64], p: &KineticParams) -> [f64; N_SPECIES] {
     dydt[DMDS] = -r5b;
     dydt[DMTS] = -r5c;
 
-    // Tannin monomeric: extracted from wood (R7b), consumed by condensation (R4)
-    dydt[TANNIN_MONO] = r7b - r4;
+    // Tannin monomeric: extracted from wood (R7b), consumed by R4, R8 ¹O₂, R9 laccase
+    dydt[TANNIN_MONO] = r7b - r4 - r8_1o2_tannin - r9_ox;
 
-    // Tannin polymeric: produced by condensation (R4)
-    dydt[TANNIN_POLY] = r4;
+    // Tannin polymeric: produced by condensation (R4), R8 ¹O₂ tannin ox, R9 laccase coupling
+    dydt[TANNIN_POLY] = r4 + r8_1o2_tannin + r9_ox;
 
-    // Vanillin: extracted from wood (R7)
-    dydt[VANILLIN] = r7;
+    // Vanillin: extracted from wood (R7), consumed by R8 ¹O₂
+    dydt[VANILLIN] = r7 - r8_1o2_vanillin;
 
-    // Dissolved O2: mass transfer (R6), consumed by R1 and R2
-    dydt[O2] = r6 - r1 - r2;
+    // Dissolved O2: mass transfer (R6), consumed by R1, R2, R8, R9
+    // R9 consumes 0.5 mol O2 per mol tannin oxidized (4e- transfer, O2->2H2O)
+    dydt[O2] = r6 - r1 - r2 - r8_o2_consumed - 0.5 * r9_ox;
+
+    // Riboflavin: consumed by photobleaching (R8)
+    dydt[RIBOFLAVIN] = -r8_bleach;
+
+    // Singlet O2: produced by R8, consumed by reactions with tannin/vanillin and quenching
+    let so2 = c(SINGLET_O2);
+    dydt[SINGLET_O2] = r8_1o2_prod - p.r8_k_d_1o2 * so2
+                      - r8_1o2_tannin - r8_1o2_vanillin;
+
+    // Laccase: consumed by thermal inactivation (R9)
+    dydt[LACCASE] = -r9_inact;
 
     dydt
 }
@@ -411,10 +629,26 @@ fn jacobian(y: &[f64], p: &KineticParams) -> DMatrix<f64> {
     let dr2_dach = p.k2 * c(O2);
     let dr2_do2 = p.k2 * c(ACETALDEHYDE);
 
-    // R3 = kf*[AcOH]*[E] - kr*[EtOAc]*[W]
-    let dr3_de = p.kf3 * c(ACETIC_ACID);
-    let dr3_dacoh = p.kf3 * c(ETHANOL);
-    let dr3_detoac = -p.kr3 * p.water;
+    // R3: with R10 pH modification
+    let (kf3_eff, kr3_eff) = if p.r10_enabled {
+        let acoh = c(ACETIC_ACID);
+        let h_plus = if acoh > 1e-15 {
+            (-p.r10_ka + (p.r10_ka * p.r10_ka + 4.0 * p.r10_ka * acoh).sqrt()) / 2.0
+        } else {
+            10.0_f64.powf(-4.0)
+        };
+        let ph = -(h_plus.max(1e-14)).log10();
+        let ph_factor = 10.0_f64.powf(4.0 - ph);
+        let kf = p.kf3 * ph_factor;
+        (kf, kf / 4.0)
+    } else {
+        (p.kf3, p.kr3)
+    };
+
+    // R3 = kf_eff*[AcOH]*[E] - kr_eff*[EtOAc]*[W]
+    let dr3_de = kf3_eff * c(ACETIC_ACID);
+    let dr3_dacoh = kf3_eff * c(ETHANOL);
+    let dr3_detoac = -kr3_eff * p.water;
 
     // R4 = k4*[Tm]*[AcH]
     let dr4_dtm = p.k4 * c(ACETALDEHYDE);
@@ -438,6 +672,92 @@ fn jacobian(y: &[f64], p: &KineticParams) -> DMatrix<f64> {
     // R7b = k7b*(Tmax - [Tm])  ->  dR7b/dTm = -k7b  (when Tm < Tmax)
     let dr7b_dtm = if c(TANNIN_MONO) < p.t_mono_max { -p.k7b } else { 0.0 };
 
+    // ── R8: Riboflavin photosensitized oxidation Jacobian entries ──
+    // These are partial derivatives of the R8 contribution terms.
+    // We compute approximate Jacobian entries for the key dependencies.
+    let (dr8_bleach_drf, dr8_1o2prod_drf, dr8_1o2prod_do2,
+         dr8_1o2_tm_dso2, dr8_1o2_tm_dtm, dr8_1o2_van_dso2, dr8_1o2_van_dvan,
+         dr8_ach_drf, dr8_ach_do2,
+         dr8_o2cons_drf, dr8_o2cons_do2,
+         dr8_so2_decay) = if p.r8_enabled && c(RIBOFLAVIN) > 1e-15 {
+        let rf = c(RIBOFLAVIN);
+        let o2_c = c(O2);
+        let tm = c(TANNIN_MONO);
+        let van = c(VANILLIN);
+        let so2 = c(SINGLET_O2);
+
+        // I_abs = I_0 * (1 - exp(-eps_path * rf))
+        let exp_term = (-p.r8_eps_path * rf).exp();
+        let i_abs = p.r8_i0 * (1.0 - exp_term);
+        let di_abs_drf = p.r8_i0 * p.r8_eps_path * exp_term;
+
+        // o2_fac = o2/(o2+2e-5)
+        let o2_km = 2.0e-5;
+        let o2_fac = o2_c / (o2_c + o2_km);
+        let do2_fac_do2 = o2_km / ((o2_c + o2_km) * (o2_c + o2_km));
+
+        // triplet_rate = phi_isc * i_abs * o2_fac
+        // Triplet partitioning f_o2 (treat as ~constant for Jacobian simplicity)
+        let denom_t = p.r8_k_t_o2 * o2_c + p.r8_k_t_ethanol * p.r8_ethanol_conc
+                     + p.r8_k_t_phenol * tm;
+        let f_o2 = if denom_t > 1e-30 { p.r8_k_t_o2 * o2_c / denom_t } else { 0.0 };
+
+        // singlet_prod = phi_isc * i_abs * o2_fac * f_o2 * s_delta
+        let base = p.r8_phi_isc * f_o2 * p.r8_s_delta;
+        let d_sprod_drf = base * di_abs_drf * o2_fac;
+        let d_sprod_do2 = base * i_abs * do2_fac_do2;
+
+        // bleach = phi_bleach * i_abs  -> d/drf = phi_bleach * di_abs_drf
+        let d_bleach_drf = p.r8_phi_bleach * di_abs_drf;
+
+        // r8_1o2_tannin = k_r_phenol * [1O2] * [Tm]
+        let d_1o2_tm_dso2 = p.r8_k_r_phenol * tm;
+        let d_1o2_tm_dtm = p.r8_k_r_phenol * so2;
+
+        // r8_1o2_vanillin = k_r_vanillin * [1O2] * [Van]
+        let d_1o2_van_dso2 = p.r8_k_r_vanillin * van;
+        let d_1o2_van_dvan = p.r8_k_r_vanillin * so2;
+
+        // ach_type_i = type_i_frac * i_abs * o2_fac
+        let d_ach_drf = p.r8_type_i_frac * di_abs_drf * o2_fac;
+        let d_ach_do2 = p.r8_type_i_frac * i_abs * do2_fac_do2;
+
+        // o2_consumed = singlet_prod + ach_type_i
+        let d_o2c_drf = d_sprod_drf + d_ach_drf;
+        let d_o2c_do2 = d_sprod_do2 + d_ach_do2;
+
+        // singlet O2 self-decay = k_d * [1O2]
+        let d_so2_decay = p.r8_k_d_1o2;
+
+        (d_bleach_drf, d_sprod_drf, d_sprod_do2,
+         d_1o2_tm_dso2, d_1o2_tm_dtm, d_1o2_van_dso2, d_1o2_van_dvan,
+         d_ach_drf, d_ach_do2,
+         d_o2c_drf, d_o2c_do2,
+         d_so2_decay)
+    } else {
+        (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    };
+
+    // ── R9: Laccase Jacobian entries ──
+    // r9_ox = V_max * [Lac] * [Tm]/(Km_t+[Tm]) * [O2]/(Km_o2+[O2])
+    let (dr9_dtm, dr9_do2, dr9_dlac, dr9_inact_dlac) = if p.r9_enabled && c(LACCASE) > 1e-15 {
+        let lac = c(LACCASE);
+        let tm = c(TANNIN_MONO);
+        let o2_c = c(O2);
+        let f_tm = tm / (p.r9_km_tannin + tm);
+        let f_o2 = o2_c / (p.r9_km_o2 + o2_c);
+        let df_tm = p.r9_km_tannin / ((p.r9_km_tannin + tm) * (p.r9_km_tannin + tm));
+        let df_o2 = p.r9_km_o2 / ((p.r9_km_o2 + o2_c) * (p.r9_km_o2 + o2_c));
+
+        let d_dtm = p.r9_vmax * lac * df_tm * f_o2;
+        let d_do2 = p.r9_vmax * lac * f_tm * df_o2;
+        let d_dlac = p.r9_vmax * f_tm * f_o2;
+        let d_inact = p.r9_k_inact;
+        (d_dtm, d_do2, d_dlac, d_inact)
+    } else {
+        (0.0, 0.0, 0.0, if p.r9_enabled { p.r9_k_inact } else { 0.0 })
+    };
+
     // Now fill J[i][j] = d(dydt_i) / d(y_j)
 
     // dydt[ETHANOL] = -R1 - R3
@@ -453,11 +773,12 @@ fn jacobian(y: &[f64], p: &KineticParams) -> DMatrix<f64> {
     j[(ACETIC_ACID, ETHYL_ACETATE)] = -dr3_detoac;
     j[(ACETIC_ACID, O2)] = dr2_do2;
 
-    // dydt[ACETALDEHYDE] = R1 - R2 - R4
+    // dydt[ACETALDEHYDE] = R1 - R2 - R4 + r8_ach_type_i
     j[(ACETALDEHYDE, ETHANOL)] = dr1_de;
     j[(ACETALDEHYDE, ACETALDEHYDE)] = -dr2_dach - dr4_dach;
     j[(ACETALDEHYDE, TANNIN_MONO)] = -dr4_dtm;
-    j[(ACETALDEHYDE, O2)] = dr1_do2 - dr2_do2;
+    j[(ACETALDEHYDE, O2)] = dr1_do2 - dr2_do2 + dr8_ach_do2;
+    j[(ACETALDEHYDE, RIBOFLAVIN)] = dr8_ach_drf;
 
     // dydt[ETHYL_ACETATE] = R3
     j[(ETHYL_ACETATE, ETHANOL)] = dr3_de;
@@ -473,21 +794,44 @@ fn jacobian(y: &[f64], p: &KineticParams) -> DMatrix<f64> {
     // dydt[DMTS] = -R5c
     j[(DMTS, DMTS)] = -dr5c_ddmts;
 
-    // dydt[TANNIN_MONO] = R7b - R4
+    // dydt[TANNIN_MONO] = R7b - R4 - r8_1o2_tannin - r9_ox
     j[(TANNIN_MONO, ACETALDEHYDE)] = -dr4_dach;
-    j[(TANNIN_MONO, TANNIN_MONO)] = dr7b_dtm - dr4_dtm;
+    j[(TANNIN_MONO, TANNIN_MONO)] = dr7b_dtm - dr4_dtm - dr8_1o2_tm_dtm - dr9_dtm;
+    j[(TANNIN_MONO, SINGLET_O2)] = -dr8_1o2_tm_dso2;
+    j[(TANNIN_MONO, O2)] += -dr9_do2;
+    j[(TANNIN_MONO, LACCASE)] = -dr9_dlac;
 
-    // dydt[TANNIN_POLY] = R4
+    // dydt[TANNIN_POLY] = R4 + r8_1o2_tannin + r9_ox
     j[(TANNIN_POLY, ACETALDEHYDE)] = dr4_dach;
-    j[(TANNIN_POLY, TANNIN_MONO)] = dr4_dtm;
+    j[(TANNIN_POLY, TANNIN_MONO)] = dr4_dtm + dr8_1o2_tm_dtm + dr9_dtm;
+    j[(TANNIN_POLY, SINGLET_O2)] = dr8_1o2_tm_dso2;
+    j[(TANNIN_POLY, O2)] += dr9_do2;
+    j[(TANNIN_POLY, LACCASE)] = dr9_dlac;
 
-    // dydt[VANILLIN] = R7
-    j[(VANILLIN, VANILLIN)] = dr7_dvan;
+    // dydt[VANILLIN] = R7 - r8_1o2_vanillin
+    j[(VANILLIN, VANILLIN)] = dr7_dvan - dr8_1o2_van_dvan;
+    j[(VANILLIN, SINGLET_O2)] = -dr8_1o2_van_dso2;
 
-    // dydt[O2] = R6 - R1 - R2
+    // dydt[O2] = R6 - R1 - R2 - r8_o2_consumed - 0.5*r9_ox
     j[(O2, ETHANOL)] = -dr1_de;
     j[(O2, ACETALDEHYDE)] = -dr2_dach;
-    j[(O2, O2)] = dr6_do2 - dr1_do2 - dr2_do2;
+    j[(O2, O2)] = dr6_do2 - dr1_do2 - dr2_do2 - dr8_o2cons_do2 - 0.5 * dr9_do2;
+    j[(O2, RIBOFLAVIN)] = -dr8_o2cons_drf;
+    j[(O2, TANNIN_MONO)] = -0.5 * dr9_dtm;
+    j[(O2, LACCASE)] = -0.5 * dr9_dlac;
+
+    // dydt[RIBOFLAVIN] = -r8_bleach
+    j[(RIBOFLAVIN, RIBOFLAVIN)] = -dr8_bleach_drf;
+
+    // dydt[SINGLET_O2] = r8_1o2_prod - k_d*[1O2] - r8_1o2_tannin - r8_1o2_vanillin
+    j[(SINGLET_O2, RIBOFLAVIN)] = dr8_1o2prod_drf;
+    j[(SINGLET_O2, O2)] = dr8_1o2prod_do2;
+    j[(SINGLET_O2, SINGLET_O2)] = -dr8_so2_decay - dr8_1o2_tm_dso2 - dr8_1o2_van_dso2;
+    j[(SINGLET_O2, TANNIN_MONO)] = -dr8_1o2_tm_dtm;
+    j[(SINGLET_O2, VANILLIN)] = -dr8_1o2_van_dvan;
+
+    // dydt[LACCASE] = -k_inact*[Lac]
+    j[(LACCASE, LACCASE)] = -dr9_inact_dlac;
 
     j
 }
@@ -595,6 +939,16 @@ fn initial_state(cfg: &RunConfig) -> Vec<f64> {
         "barrel" | "pdms_membrane" => o2_sat,
         _ => 0.0,
     };
+
+    // Riboflavin: convert from µM to mol/L
+    y[RIBOFLAVIN] = cfg.riboflavin_um.unwrap_or(0.0) * 1.0e-6;
+
+    // Singlet O2: starts at zero (produced photochemically)
+    y[SINGLET_O2] = 0.0;
+
+    // Laccase: normalize to 1.0 (V_max already encodes activity units).
+    // The species tracks fraction of initial enzyme remaining.
+    y[LACCASE] = if cfg.laccase_u_per_l.is_some() { 1.0 } else { 0.0 };
 
     y
 }
@@ -744,6 +1098,11 @@ fn generate_svg(label: &str, ts: &TimeSeries) -> String {
             "Oxidation & O2 (B4)",
             vec![O2, ETHANOL],
             vec![BLUE, ACCENT],
+        ),
+        (
+            "Photo/Enzymatic (R8-R9)",
+            vec![RIBOFLAVIN, LACCASE],
+            vec!["#ffcc00", "#7ee787"],
         ),
     ];
 
@@ -1351,6 +1710,11 @@ mod tests {
                 monomeric_tannin_mol_l: 0.0,
                 vanillin_mol_l: 0.0,
             }),
+            custom_kla: None,
+            riboflavin_um: None,
+            led_power_mw: None,
+            laccase_u_per_l: None,
+            initial_ph: None,
         };
 
         let t_k = 293.15;
@@ -1401,6 +1765,11 @@ mod tests {
                 monomeric_tannin_mol_l: 0.0,
                 vanillin_mol_l: 0.0,
             }),
+            custom_kla: None,
+            riboflavin_um: None,
+            led_power_mw: None,
+            laccase_u_per_l: None,
+            initial_ph: None,
         };
 
         let t_k = 293.15;
@@ -1467,6 +1836,11 @@ mod tests {
             duration_days: 1.0,
             wood_surface_area_cm2_per_l: 6.0,
             initial_species: None,
+            custom_kla: None,
+            riboflavin_um: None,
+            led_power_mw: None,
+            laccase_u_per_l: None,
+            initial_ph: None,
         };
 
         let y = initial_state(&cfg);
@@ -1512,6 +1886,11 @@ mod tests {
                 monomeric_tannin_mol_l: 0.0,
                 vanillin_mol_l: 0.0,
             }),
+            custom_kla: None,
+            riboflavin_um: None,
+            led_power_mw: None,
+            laccase_u_per_l: None,
+            initial_ph: None,
         };
 
         let ts = run_simulation(&cfg);
