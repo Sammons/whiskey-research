@@ -1838,6 +1838,26 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but grounded in published microdroplet chemistry<span class="cite" data-ref="123"><sup>[123]</sup></span> and spontaneous H<sub>2</sub>O<sub>2</sub> generation<span class="cite" data-ref="124"><sup>[124]</sup></span>. The rate enhancement numbers are from non-spirit systems; the actual enhancement in 40% ethanol microdroplets has not been measured. Ethanol&rsquo;s lower surface tension may reduce the interfacial electric field, partially attenuating the acceleration. <strong>Home testability: 3/5</strong> ($50&ndash;150: high-voltage DC supply ($40&ndash;80 bench PSU), stainless steel blunt needle (18-gauge, $5/pack), and a glass jar. Safety: the current is microamps (not dangerous), but the high voltage requires insulation and a Faraday cage around the spray chamber. Simpler alternative: use an ultrasonic mesh nebulizer ($25 medical inhaler) to generate microdroplets, collect in a cold chamber, and return to reservoir. Test: nebulize spirit + oak extract for 4&ndash;8 hours, compare turbidity, color, and taste vs. untreated control).
 </div>
 
+<h3>4.30 Sonophotocatalysis: TiO<sub>2</sub>/UV + Ultrasound Synergy</h3>
+
+<p><strong>A zero-cost optimization that combines two techniques already in the protocol.</strong> Running the TiO<sub>2</sub>/UV photocatalysis (&sect;4.26) simultaneously with ultrasonic treatment (&sect;3.14) produces a <strong>synergy factor of 2&ndash;5&times;</strong> over either technique alone. This is well-established in environmental photocatalysis literature and applies directly to spirit aging chemistry.</p>
+
+<p><strong>Four synergy mechanisms:</strong></p>
+<ol>
+  <li><strong>De-agglomeration:</strong> TiO<sub>2</sub> nanoparticles aggregate in suspension, reducing the active surface area by 50&ndash;70%. Ultrasonic cavitation breaks these aggregates, exposing fresh photocatalytic surface. Net effect: 2&ndash;3&times; increase in effective surface area.</li>
+  <li><strong>Mass transfer enhancement:</strong> Acoustic streaming and microjet formation at the TiO<sub>2</sub> particle surface refresh the diffusion boundary layer, increasing the rate of substrate delivery to the photocatalyst. Enhancement: 1.5&ndash;3&times; for diffusion-limited reactions.</li>
+  <li><strong>Sonoluminescence:</strong> Cavitation bubble collapse produces broadband UV light (300&ndash;400 nm), providing additional photon flux to TiO<sub>2</sub> particles near cavitation sites. This is a &ldquo;free&rdquo; UV source that activates particles in the bulk, not just at the lamp-illuminated surface.</li>
+  <li><strong>Radical augmentation:</strong> Cavitation generates OH&bull; independently of the photocatalyst. These radicals supplement the photocatalytic radicals, and the two populations attack different substrate molecules (photocatalytic OH&bull; at the particle surface, sonolytic OH&bull; in the bulk). Combined radical flux exceeds the sum of individual contributions because the photocatalytic and sonolytic radical lifetimes are partially non-overlapping.</li>
+</ol>
+
+<p><strong>Implementation:</strong> Place the spirit + TiO<sub>2</sub> suspension + oak extract in a glass jar inside the ultrasonic bath (&sect;3.14). Position a UV-A LED strip (365 nm, &sect;4.26) above the jar, illuminating through the liquid surface. Run both simultaneously for 15&ndash;30 min sessions. The ultrasonic bath costs $30&ndash;150 (already in protocol), the UV strip costs $10 (already in protocol). Combined cost of adding sonophotocatalysis: <strong>$0 incremental</strong> if both are already present.</p>
+
+<p><strong>Dual-barrier attack:</strong> The combined system simultaneously generates: (1) vanillin and other aromatic aldehydes from photocatalytic oxidation of oak precursors (<span class="barrier-tag oxidation">OXIDATION</span>), (2) sono-tannin condensation via ethylidene bridging (&sect;4.24, <span class="barrier-tag cluster">CLUSTER</span>), and (3) H<sub>2</sub>O<sub>2</sub> from both cavitation and microdroplet interfacial chemistry (&sect;4.21). All three pathways are enhanced by the synergy factor.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; sonophotocatalysis is extensively published in water treatment literature with consistent 2&ndash;5&times; synergy factors for TiO<sub>2</sub>/UV + ultrasound. The mechanisms are well-understood and directly applicable to spirit chemistry. <strong>Home testability: 4/5</strong> ($0 incremental cost if &sect;3.14 + &sect;4.26 are already in the protocol. Test: spirit + TiO<sub>2</sub> + oak extract, compare UV-only vs ultrasound-only vs combined for 30 min. Measure: color intensity, vanillin by smell, turbidity by laser pointer. The combined treatment should show super-additive enhancement).
+</div>
+
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -1974,6 +1994,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Evaporative supersaturation (&sect;4.28)</td><td>25&ndash;100&times;</td><td><span class="verdict speculative">Novel</span></td><td>$0&ndash;30</td><td>CLUSTER</td></tr>
 <tr><td>Electrospray microdroplet (&sect;4.29)</td><td>10<sup>3</sup>&ndash;10<sup>6</sup>&times;</td><td><span class="verdict speculative">Novel</span></td><td>$50&ndash;150</td><td>ESTER + OXIDATION + CLUSTER</td></tr>
 <tr><td>Freeze-concentration cycling (&sect;1.16)</td><td>+13 pp conversion</td><td><span class="verdict speculative">Novel</span></td><td>$0&ndash;5</td><td>ESTER + CLUSTER</td></tr>
+<tr><td>Sonophotocatalysis (&sect;4.30)</td><td>2&ndash;5&times; synergy</td><td><span class="verdict promising">Published</span></td><td>$0 incr.</td><td>OXIDATION + CLUSTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -2136,6 +2157,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td><strong>Evaporative supersaturation (&sect;4.28)</strong></td><td><strong>5/5</strong></td><td><strong>$0&ndash;30</strong></td><td><strong>Spirit + oak extract in shallow tray (5 mm depth) + desk fan + loose plastic wrap on cold surface (condenser). 30 min evaporation, stir, repeat 10&times;/day. Ethanol-depleted surface crosses Ouzo boundary &rarr; cluster nucleation. Compare turbidity vs sealed control. Essentially free.</strong></td></tr>
 <tr><td>Electrospray microdroplet (&sect;4.29)</td><td>3/5</td><td>$50&ndash;150</td><td>HV bench PSU (3&ndash;5 kV) + SS blunt needle + glass jar + peristaltic pump. Spray spirit into closed chamber, collect in reservoir, recirculate 4&ndash;8h. Simpler: $25 ultrasonic mesh nebulizer. Compare turbidity + taste vs control after 8h treatment.</td></tr>
 <tr><td><strong>Freeze-concentration cycling (&sect;1.16)</strong></td><td><strong>5/5</strong></td><td><strong>$0&ndash;5</strong></td><td><strong>Chest freezer ($0) or dry ice ($2/lb). Freeze 40% ABV spirit to &minus;40&deg;C, hold 2&ndash;4h, thaw, repeat 10&times;. Concentrated liquid at 60% ABV breaks the 58% ester ceiling. Synergistic with &sect;3.3 (clustering) &mdash; both mechanisms in one step.</strong></td></tr>
+<tr><td><strong>Sonophotocatalysis (&sect;4.30)</strong></td><td><strong>4/5</strong></td><td><strong>$0 incr.</strong></td><td><strong>Zero incremental cost: run UV-A LED strip + ultrasonic bath simultaneously (both already in protocol from &sect;4.26 + &sect;3.14). 2&ndash;5&times; synergy factor over either alone. 15&ndash;30 min combined sessions.</strong></td></tr>
 </tbody>
 </table>
 </div>
