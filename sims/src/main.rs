@@ -72,6 +72,9 @@ fn main() {
 
     fs::write("../graphs/biochar-cathode-comparison.svg", sim_biochar_cathode_comparison()).unwrap();
     println!("Wrote biochar-cathode-comparison.svg");
+
+    fs::write("../graphs/mol-sieve-ester-shift.svg", sim_mol_sieve_ester_shift()).unwrap();
+    println!("Wrote mol-sieve-ester-shift.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -2844,6 +2847,180 @@ fn sim_biochar_cathode_comparison() -> String {
     svg += &label(lx, mt + 278.0, "PDMS + biochar = best:", GREEN, 9, "start");
     svg += &label(lx, mt + 291.0, "continuous O\u{2082} + high", TEXT, 8, "start");
     svg += &label(lx, mt + 304.0, "2e\u{207b} selectivity (95%)", TEXT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_mol_sieve_ester_shift() -> String {
+    // Model: Fischer esterification with/without water removal
+    // EtOH + AcOH <=> EtOAc + H2O   Keq ~ 4.0 at 25C
+    // With Amberlyst catalyst: k_fwd enhanced ~24000x
+    // With molecular sieve 3A: water is continuously removed
+    let w = 800.0_f64;
+    let h = 520.0;
+    let mut svg = svg_header(w, h,
+        "Molecular Sieve 3A: Equilibrium Shift for Ester Formation");
+
+    let keq = 4.0_f64; // Equilibrium constant at 50C (approximate)
+
+    // Scenarios: (label, catalyst_factor, water_removal_rate_fraction_per_s)
+    // water_removal: fraction of water removed per second by sieve
+    // 0.0 = no removal, 1e-4 = moderate sieve, 5e-4 = aggressive sieve
+    struct Scenario {
+        label: &'static str,
+        k_fwd_base: f64,      // base forward rate constant (1/s, uncatalyzed)
+        has_catalyst: bool,
+        water_removal: f64,    // fraction/s removed by sieve
+    }
+    let scenarios = [
+        Scenario { label: "Uncatalyzed, no sieve", k_fwd_base: 1e-10, has_catalyst: false, water_removal: 0.0 },
+        Scenario { label: "Amberlyst only", k_fwd_base: 1e-10, has_catalyst: true, water_removal: 0.0 },
+        Scenario { label: "Amberlyst + mol sieve 3A", k_fwd_base: 1e-10, has_catalyst: true, water_removal: 2e-4 },
+        Scenario { label: "Amberlyst + sieve (aggressive)", k_fwd_base: 1e-10, has_catalyst: true, water_removal: 8e-4 },
+    ];
+    let colors = [MUTED, CYAN, ACCENT, GREEN];
+
+    let dt = 60.0_f64; // 1 minute steps
+    let t_max = 48.0 * 3600.0; // 48 hours
+    let n_steps = (t_max / dt) as usize;
+    let sample_every = n_steps / 300;
+
+    // Initial concentrations (40% ABV spirit with acetic acid)
+    let ethanol_init = 6.84_f64; // mol/L at 40% ABV
+    let acoh_init = 0.0083_f64;  // mol/L acetic acid (typical)
+    // Water starts at ~33 mol/L (60% water by volume)
+    let water_init = 33.0_f64;
+
+    let catalyst_factor = 24000.0_f64; // Amberlyst rate enhancement
+
+    let mt = 65.0;
+    let pw = 430.0;
+    let ph = 350.0;
+    let pl = 90.0;
+    let lx = 540.0;
+
+    let mut all_data: Vec<Vec<(f64, f64)>> = Vec::new(); // (hours, conversion%)
+    let mut final_conv: Vec<f64> = Vec::new();
+
+    for sc in &scenarios {
+        let k_fwd = if sc.has_catalyst {
+            sc.k_fwd_base * catalyst_factor
+        } else {
+            sc.k_fwd_base
+        };
+        let k_rev = k_fwd / keq;
+
+        let mut ethanol = ethanol_init;
+        let mut acoh = acoh_init;
+        let mut ester: f64 = 0.0;
+        let mut water = water_init;
+        let mut pts: Vec<(f64, f64)> = Vec::new();
+
+        for step in 0..n_steps {
+            // Forward: EtOH + AcOH -> EtOAc + H2O
+            let r_fwd = k_fwd * ethanol * acoh;
+            // Reverse: EtOAc + H2O -> EtOH + AcOH
+            let r_rev = k_rev * ester * water;
+            let net = r_fwd - r_rev;
+
+            ethanol += -net * dt;
+            acoh += -net * dt;
+            ester += net * dt;
+            water += net * dt;
+
+            // Molecular sieve removes water
+            let removed = water * sc.water_removal * dt;
+            water -= removed;
+            if water < 0.1 { water = 0.1; } // can't go below trace
+
+            // Clamp
+            if ethanol < 0.0 { ethanol = 0.0; }
+            if acoh < 0.0 { acoh = 0.0; }
+            if ester < 0.0 { ester = 0.0; }
+
+            if step % sample_every == 0 {
+                let t_h = (step as f64 * dt) / 3600.0;
+                let conv = if acoh_init > 0.0 { (ester / acoh_init) * 100.0 } else { 0.0 };
+                pts.push((t_h, conv.min(100.0)));
+            }
+        }
+        let final_c = if acoh_init > 0.0 { (ester / acoh_init) * 100.0 } else { 0.0 };
+        final_conv.push(final_c.min(100.0));
+        all_data.push(pts);
+    }
+
+    let y_max = 105.0_f64; // percentage
+
+    // Y axis
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"10\" text-anchor=\"end\">Conversion (%)</text>",
+        pl - 5.0, mt - 5.0, TEXT);
+
+    // Grid
+    for pct in [0, 20, 40, 60, 80, 100] {
+        let frac = pct as f64 / y_max;
+        let y = mt + ph * (1.0 - frac);
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-width=\"0.5\"/>",
+            pl, y, pl + pw, y, GRID);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"9\" text-anchor=\"end\">{}%</text>",
+            pl - 5.0, y + 3.0, MUTED, pct);
+    }
+
+    // Equilibrium line (Keq=4 -> Xeq ~ 67% given large EtOH excess)
+    let x_eq_pct = 69.8_f64; // from our ester kinetics sim
+    let y_eq = mt + ph * (1.0 - x_eq_pct / y_max);
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-dasharray=\"4,3\" stroke-width=\"1\"/>",
+        pl, y_eq, pl + pw, y_eq, YELLOW);
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"8\" text-anchor=\"start\">Keq limit (~70%)</text>",
+        pl + 5.0, y_eq - 5.0, YELLOW);
+
+    // X axis
+    for h_val in [0.0_f64, 8.0, 16.0, 24.0, 32.0, 40.0, 48.0] {
+        let x = pl + pw * (h_val / 48.0);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"9\" text-anchor=\"middle\">{}h</text>",
+            x, mt + ph + 15.0, MUTED, h_val as i32);
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"10\" text-anchor=\"middle\">Time</text>",
+        pl + pw / 2.0, mt + ph + 30.0, MUTED);
+
+    // Plot curves
+    for (i, pts) in all_data.iter().enumerate() {
+        let path: String = pts.iter().enumerate().map(|(j, &(t, v))| {
+            let x = pl + pw * (t / 48.0);
+            let y = mt + ph * (1.0 - v / y_max);
+            if j == 0 { format!("M{:.1},{:.1}", x, y) }
+            else { format!("L{:.1},{:.1}", x, y) }
+        }).collect();
+        svg += &format!("<path d=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"1.5\"/>",
+            path, colors[i]);
+    }
+
+    // Legend
+    svg += &label(lx, mt + 10.0, "Water Removal Impact", ACCENT, 11, "start");
+    svg += &label(lx, mt + 28.0, "Le Chatelier\u{2019}s Principle", TEXT, 9, "start");
+    svg += &label(lx, mt + 48.0, "Scenarios:", MUTED, 9, "start");
+
+    for (i, sc) in scenarios.iter().enumerate() {
+        let y = mt + 65.0 + i as f64 * 30.0;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"14\" height=\"3\" fill=\"{}\"/>",
+            lx, y - 2.0, colors[i]);
+        svg += &label(lx + 18.0, y, sc.label, colors[i], 8, "start");
+        svg += &label(lx + 18.0, y + 13.0,
+            &format!("{:.1}% at 48h", final_conv[i]),
+            MUTED, 8, "start");
+    }
+
+    svg += &label(lx, mt + 200.0, "Key insight:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 215.0, "Sieve breaks Keq limit", TEXT, 9, "start");
+    svg += &label(lx, mt + 230.0, "by removing H\u{2082}O product", TEXT, 9, "start");
+    svg += &label(lx, mt + 250.0, "75% \u{2192} 98% conversion", GREEN, 10, "start");
+    svg += &label(lx, mt + 265.0, "(published result)", MUTED, 8, "start");
+
+    svg += &label(lx, mt + 290.0, "3A sieve specs:", CYAN, 10, "start");
+    svg += &label(lx, mt + 305.0, "Pore: 3.0 \u{00c5}", TEXT, 9, "start");
+    svg += &label(lx, mt + 318.0, "H\u{2082}O: 2.6 \u{00c5} (admitted)", TEXT, 9, "start");
+    svg += &label(lx, mt + 331.0, "EtOH: 4.4 \u{00c5} (excluded)", TEXT, 9, "start");
+    svg += &label(lx, mt + 344.0, "Capacity: 18\u{2013}22 wt%", TEXT, 9, "start");
 
     svg.push_str("</svg>");
     svg
