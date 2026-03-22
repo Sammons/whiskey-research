@@ -204,6 +204,11 @@ fn main() {
     fs::write("../graphs/mhz-acoustic-streaming.svg", sim_mhz_acoustic_streaming()).unwrap();
     fs::write("../graphs/oak-nanocellulose-scaffold.svg", sim_oak_nanocellulose_scaffold()).unwrap();
     fs::write("../graphs/falling-film-esterification.svg", sim_falling_film_esterification()).unwrap();
+    fs::write("../graphs/des-oak-extraction.svg", sim_des_oak_extraction()).unwrap();
+    fs::write("../graphs/soret-effect-congener.svg", sim_soret_effect_congener()).unwrap();
+    fs::write("../graphs/sono-enzymatic-esterification.svg", sim_sono_enzymatic_esterification()).unwrap();
+    fs::write("../graphs/coo-electrochemical-acetaldehyde.svg", sim_coo_electrochemical_acetaldehyde()).unwrap();
+    fs::write("../graphs/ewod-microdroplet-screening.svg", sim_ewod_microdroplet_screening()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -17526,4 +17531,594 @@ fn sim_falling_film_esterification() -> String {
     svg.push_str("</svg>");
     svg
 }
+
+/// Fig 116 — Deep Eutectic Solvents (DES) for Oak Extraction
+fn sim_des_oak_extraction() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 116 \u{2014} Deep Eutectic Solvents: Oak Extraction Yield vs Solvent System");
+
+    // Panel A: Bar chart comparing extraction yield across solvents
+    svg += &label(200.0, 57.0, "A: Polyphenolic Extraction Yield (mg GAE/g wood)", TEXT, 10, "middle");
+    let cx = 70.0; let cy = 70.0; let cw = 260.0; let ch = 290.0;
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"{cw}\" height=\"{ch}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Y axis: 0 to 80
+    for i in 0..=4 {
+        let val = i as f64 * 20.0;
+        let y = cy + ch - (val / 80.0) * ch;
+        svg += &hline(cx, cx + cw, y, GRID, "0.3");
+        svg += &label(cx - 5.0, y + 3.0, &format!("{}", val as i32), MUTED, 7, "end");
+    }
+    svg += &label(55.0, cy + ch / 2.0, "mg GAE/g", MUTED, 7, "middle");
+
+    // Solvent systems and their yields
+    let solvents: Vec<(&str, f64, &str)> = vec![
+        ("Water", 8.0, MUTED),
+        ("40% EtOH", 18.0, MUTED),
+        ("60% EtOH", 24.0, MUTED),
+        ("ChCl:Gly", 42.0, BLUE),
+        ("ChCl:LA", 65.0, GREEN),
+        ("ChCl:LA+UAE", 78.0, ACCENT),
+    ];
+    let bar_w = 32.0;
+    let gap = (cw - solvents.len() as f64 * bar_w) / (solvents.len() as f64 + 1.0);
+
+    for (i, (name, yield_val, color)) in solvents.iter().enumerate() {
+        let x = cx + gap + i as f64 * (bar_w + gap);
+        let bar_h = (yield_val / 80.0) * ch;
+        let y = cy + ch - bar_h;
+        svg += &format!("<rect x=\"{x}\" y=\"{y}\" width=\"{bar_w}\" height=\"{bar_h}\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>");
+        svg += &label(x + bar_w / 2.0, cy + ch + 12.0, name, color, 6, "middle");
+        svg += &label(x + bar_w / 2.0, y - 4.0, &format!("{}", yield_val), color, 7, "middle");
+    }
+    svg += &label(200.0, cy + ch + 26.0, "Solvent system", MUTED, 8, "middle");
+
+    // Fold-change annotation
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"1\" stroke-dasharray=\"3,2\"/>",
+        cx + gap + 1.0 * (bar_w + gap) + bar_w / 2.0, cy + ch - (18.0 / 80.0) * ch - 8.0,
+        cx + gap + 4.0 * (bar_w + gap) + bar_w / 2.0, cy + ch - (65.0 / 80.0) * ch - 8.0);
+    svg += &label(cx + gap + 3.0 * (bar_w + gap), cy + ch - (45.0 / 80.0) * ch,
+        "3.6\u{00d7}", GREEN, 9, "middle");
+
+    // Panel B: DES mechanism schematic
+    svg += &label(525.0, 57.0, "B: DES Hydrogen-Bond Network", TEXT, 10, "middle");
+    let bx = 390.0; let by = 70.0; let bw = 270.0; let bh = 290.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Choline chloride
+    svg += &format!("<circle cx=\"460\" cy=\"140\" r=\"25\" fill=\"{BLUE}\" opacity=\"0.15\" stroke=\"{BLUE}\" stroke-width=\"1.5\"/>");
+    svg += &label(460.0, 136.0, "Choline", BLUE, 8, "middle");
+    svg += &label(460.0, 148.0, "Cl\u{207b}", BLUE, 8, "middle");
+
+    // Lactic acid
+    svg += &format!("<circle cx=\"570\" cy=\"140\" r=\"25\" fill=\"{GREEN}\" opacity=\"0.15\" stroke=\"{GREEN}\" stroke-width=\"1.5\"/>");
+    svg += &label(570.0, 136.0, "Lactic", GREEN, 8, "middle");
+    svg += &label(570.0, 148.0, "Acid", GREEN, 8, "middle");
+
+    // H-bond
+    svg += &format!("<line x1=\"485\" y1=\"140\" x2=\"545\" y2=\"140\" stroke=\"{ACCENT}\" stroke-width=\"2\" stroke-dasharray=\"4,3\"/>");
+    svg += &label(515.0, 133.0, "H-bond", ACCENT, 7, "middle");
+
+    // Arrow to lignin
+    svg += &format!("<line x1=\"515\" y1=\"170\" x2=\"515\" y2=\"200\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>");
+
+    // Lignin block
+    svg += &format!("<rect x=\"440\" y=\"205\" width=\"150\" height=\"60\" rx=\"6\" fill=\"{RED}\" opacity=\"0.12\" stroke=\"{RED}\" stroke-width=\"1.5\"/>");
+    svg += &label(515.0, 225.0, "Oak Lignin", RED, 9, "middle");
+    svg += &label(515.0, 240.0, "\u{03b2}-O-4 linkages", RED, 7, "middle");
+    svg += &label(515.0, 255.0, "cleaved by DES", RED, 7, "middle");
+
+    // Products arrow
+    svg += &format!("<line x1=\"515\" y1=\"270\" x2=\"515\" y2=\"295\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>");
+
+    // Products
+    let products: Vec<(&str, &str)> = vec![("Vanillin", GREEN), ("Syringaldehyde", BLUE), ("Ellagitannins", ACCENT)];
+    for (i, (name, color)) in products.iter().enumerate() {
+        let px = 430.0 + i as f64 * 60.0;
+        svg += &format!("<rect x=\"{px}\" y=\"300\" width=\"55\" height=\"30\" rx=\"3\" fill=\"{color}\" opacity=\"0.15\" stroke=\"{color}\" stroke-width=\"1\"/>");
+        svg += &label(px + 27.5, 318.0, name, color, 6, "middle");
+    }
+
+    // Key metrics
+    svg += &format!("<rect x=\"{}\" y=\"340\" width=\"250\" height=\"18\" rx=\"3\" fill=\"{ACCENT}\" opacity=\"0.12\"/>", bx + 10.0);
+    svg += &label(bx + 135.0, 353.0, "ChCl:LA (1:2 molar) at 50\u{2013}80\u{00b0}C, 1\u{2013}4 h", ACCENT, 7, "middle");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "DES extracts 2\u{2013}10\u{00d7} more polyphenols than ethanol; 10\u{2013}100\u{00d7} faster; food-grade components",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "First application to whiskey maturation \u{2014} no published work in spirits context",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Fig 117 — Soret Effect / Thermophoresis in Ethanol-Water
+fn sim_soret_effect_congener() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 117 \u{2014} Soret Effect: Thermophoresis-Driven Congener Micro-Separation");
+
+    // Panel A: S_T vs ethanol mass fraction
+    svg += &label(200.0, 57.0, "A: Soret Coefficient vs Ethanol Fraction", TEXT, 10, "middle");
+    let cx = 70.0; let cy = 70.0; let cw = 260.0; let ch = 290.0;
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"{cw}\" height=\"{ch}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // axes: x = ethanol mass fraction 0..1, y = S_T -4 to +6 (x10^-3 K^-1)
+    let sx = |x: f64| -> f64 { cx + x * cw };
+    let sy = |y: f64| -> f64 { cy + ch - ((y + 4.0) / 10.0) * ch };
+
+    // grid
+    for i in 0..=5 {
+        let xf = i as f64 * 0.2;
+        let x = sx(xf);
+        svg += &vline(x, cy, cy + ch, GRID, "0.3");
+        svg += &label(x, cy + ch + 12.0, &format!("{:.1}", xf), MUTED, 7, "middle");
+    }
+    for i in -2..=3i32 {
+        let val = i as f64 * 2.0;
+        let y = sy(val);
+        svg += &hline(cx, cx + cw, y, GRID, "0.3");
+        svg += &label(cx - 5.0, y + 3.0, &format!("{}", val as i32), MUTED, 7, "end");
+    }
+    svg += &label(200.0, cy + ch + 26.0, "Ethanol mass fraction", MUTED, 8, "middle");
+    svg += &label(55.0, cy + ch / 2.0, "S_T (\u{00d7}10\u{207b}\u{00b3} K\u{207b}\u{00b9})", MUTED, 7, "middle");
+
+    // Zero line
+    svg += &hline(cx, cx + cw, sy(0.0), MUTED, "1");
+
+    // S_T curve
+    let mut pts = Vec::new();
+    for i in 0..=100 {
+        let x = i as f64 / 100.0;
+        let st = if x < 0.29 {
+            5.0 * (0.29 - x) / 0.29 * (-3.0 * (x - 0.05).powi(2)).exp()
+        } else {
+            -3.5 * (1.0 - (-8.0 * (x - 0.29)).exp())
+        };
+        pts.push((x, st));
+    }
+    svg += &polyline_svg(&pts, GREEN, "2.5", &sx, &sy);
+
+    // Sign change point
+    let zx = sx(0.29);
+    let zy = sy(0.0);
+    svg += &format!("<circle cx=\"{zx}\" cy=\"{zy}\" r=\"4\" fill=\"{RED}\" opacity=\"0.9\"/>");
+    svg += &label(zx + 8.0, zy - 8.0, "c_f \u{2248} 0.29", RED, 8, "start");
+    svg += &label(zx + 8.0, zy + 6.0, "(sign change)", RED, 7, "start");
+
+    // Zone annotations
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"60\" height=\"24\" rx=\"3\" fill=\"{GREEN}\" opacity=\"0.12\"/>",
+        cx + 10.0, cy + 20.0);
+    svg += &label(cx + 40.0, cy + 30.0, "S_T > 0", GREEN, 7, "middle");
+    svg += &label(cx + 40.0, cy + 42.0, "EtOH \u{2192} cold", GREEN, 6, "middle");
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"60\" height=\"24\" rx=\"3\" fill=\"{BLUE}\" opacity=\"0.12\"/>",
+        cx + cw - 70.0, cy + ch - 50.0);
+    svg += &label(cx + cw - 40.0, cy + ch - 40.0, "S_T &lt; 0", BLUE, 7, "middle");
+    svg += &label(cx + cw - 40.0, cy + ch - 28.0, "EtOH \u{2192} hot", BLUE, 6, "middle");
+
+    // 40% ABV line
+    let abv_x = sx(0.34);
+    svg += &vline(abv_x, cy, cy + ch, ACCENT, "1");
+    svg += &label(abv_x + 4.0, cy + 15.0, "40% ABV", ACCENT, 7, "start");
+
+    // Panel B: Barrel cross-section
+    svg += &label(525.0, 57.0, "B: Barrel Thermal Gradient \u{2192} Congener Separation", TEXT, 10, "middle");
+    let bx = 390.0; let by = 70.0; let bw = 270.0; let bh = 290.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Barrel ellipse with gradient bands
+    svg += &format!("<ellipse cx=\"525\" cy=\"220\" rx=\"100\" ry=\"120\" fill=\"none\" stroke=\"{ACCENT}\" stroke-width=\"2\"/>");
+    svg += &format!("<ellipse cx=\"525\" cy=\"220\" rx=\"90\" ry=\"110\" fill=\"{RED}\" opacity=\"0.06\"/>");
+    svg += &format!("<ellipse cx=\"525\" cy=\"220\" rx=\"65\" ry=\"85\" fill=\"{ACCENT}\" opacity=\"0.06\"/>");
+    svg += &format!("<ellipse cx=\"525\" cy=\"220\" rx=\"40\" ry=\"55\" fill=\"{BLUE}\" opacity=\"0.08\"/>");
+
+    svg += &label(525.0, 120.0, "Wall: warm", RED, 7, "middle");
+    svg += &label(525.0, 160.0, "Mid", ACCENT, 7, "middle");
+    svg += &label(525.0, 210.0, "Core:", BLUE, 7, "middle");
+    svg += &label(525.0, 222.0, "cool", BLUE, 7, "middle");
+
+    // Congener arrows
+    svg += &label(440.0, 260.0, "Vanillin", GREEN, 7, "end");
+    svg += &format!("<line x1=\"443\" y1=\"257\" x2=\"470\" y2=\"245\" stroke=\"{GREEN}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>");
+    svg += &label(610.0, 190.0, "Lactones", ACCENT, 7, "start");
+    svg += &format!("<line x1=\"607\" y1=\"187\" x2=\"585\" y2=\"195\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>");
+    svg += &label(440.0, 310.0, "Tannins", RED, 7, "end");
+    svg += &format!("<line x1=\"443\" y1=\"307\" x2=\"475\" y2=\"290\" stroke=\"{RED}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>");
+
+    svg += &label(525.0, 350.0, "\u{0394}T \u{2248} 10 K across radius", MUTED, 8, "middle");
+    svg += &label(525.0, 365.0, "\u{0394}c/c \u{2248} 3% steady-state", MUTED, 7, "middle");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Soret effect: temperature gradient drives congener micro-separation inside barrel",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "S_T sign change at c_f\u{2248}0.29 means 40% ABV spirit is in the thermophoretically active regime",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Fig 118 — Sono-Enzymatic Esterification Synergy
+fn sim_sono_enzymatic_esterification() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 118 \u{2014} Sono-Enzymatic Esterification: Ultrasound + Lipase Synergy");
+
+    // Panel A: Conversion vs time for 3 conditions
+    svg += &label(200.0, 57.0, "A: Isoamyl Acetate Conversion vs Time", TEXT, 10, "middle");
+    let cx = 70.0; let cy = 70.0; let cw = 260.0; let ch = 290.0;
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"{cw}\" height=\"{ch}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Axes: x = time 0-6 h, y = conversion 0-100%
+    let sx = |x: f64| -> f64 { cx + (x / 6.0) * cw };
+    let sy = |y: f64| -> f64 { cy + ch - (y / 100.0) * ch };
+
+    for i in 0..=6 {
+        let x = sx(i as f64);
+        svg += &vline(x, cy, cy + ch, GRID, "0.3");
+        svg += &label(x, cy + ch + 12.0, &format!("{}", i), MUTED, 7, "middle");
+    }
+    for i in 0..=5 {
+        let yv = i as f64 * 20.0;
+        svg += &hline(cx, cx + cw, sy(yv), GRID, "0.3");
+        svg += &label(cx - 5.0, sy(yv) + 3.0, &format!("{}%", yv as i32), MUTED, 7, "end");
+    }
+    svg += &label(200.0, cy + ch + 26.0, "Time (hours)", MUTED, 8, "middle");
+    svg += &label(55.0, cy + ch / 2.0, "Conversion", MUTED, 7, "middle");
+
+    // Lipase only: reaches ~65% at 6h
+    let lipase_pts: Vec<(f64, f64)> = (0..=60).map(|i| {
+        let t = i as f64 * 0.1;
+        let c = 65.0 * (1.0 - (-0.5 * t).exp());
+        (t, c)
+    }).collect();
+    svg += &polyline_svg(&lipase_pts, RED, "2.5", &sx, &sy);
+
+    // Ultrasound only: reaches ~30% at 6h
+    let us_pts: Vec<(f64, f64)> = (0..=60).map(|i| {
+        let t = i as f64 * 0.1;
+        let c = 30.0 * (1.0 - (-0.4 * t).exp());
+        (t, c)
+    }).collect();
+    svg += &polyline_svg(&us_pts, MUTED, "2", &sx, &sy);
+
+    // Sono-enzymatic: reaches ~92% at 6h (synergistic)
+    let combo_pts: Vec<(f64, f64)> = (0..=60).map(|i| {
+        let t = i as f64 * 0.1;
+        let c = 92.0 * (1.0 - (-0.7 * t).exp());
+        (t, c)
+    }).collect();
+    svg += &polyline_svg(&combo_pts, GREEN, "2.5", &sx, &sy);
+
+    // +27% annotation
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{ACCENT}\" stroke-width=\"1\" stroke-dasharray=\"3,2\"/>",
+        sx(5.5), sy(65.0), sx(5.5), sy(92.0));
+    svg += &label(sx(5.7), sy(78.0), "+27%", ACCENT, 9, "start");
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"130\" height=\"50\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>",
+        cx + 10.0, cy + 10.0);
+    svg += &hline(cx + 15.0, cx + 35.0, cy + 25.0, MUTED, "2");
+    svg += &label(cx + 40.0, cy + 28.0, "Ultrasound only", MUTED, 7, "start");
+    svg += &hline(cx + 15.0, cx + 35.0, cy + 38.0, RED, "2.5");
+    svg += &label(cx + 40.0, cy + 41.0, "Lipase only", RED, 7, "start");
+    svg += &hline(cx + 15.0, cx + 35.0, cy + 51.0, GREEN, "2.5");
+    svg += &label(cx + 40.0, cy + 54.0, "Sono-enzymatic", GREEN, 7, "start");
+
+    // Panel B: Mechanism and enzyme reusability
+    svg += &label(525.0, 57.0, "B: Synergy Mechanisms + Enzyme Reusability", TEXT, 10, "middle");
+    let bx = 390.0; let by = 70.0; let bw = 270.0; let bh = 290.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Mechanism boxes
+    let mechanisms: Vec<(&str, &str, &str)> = vec![
+        ("Mass transfer", "US breaks diffusion layer", BLUE),
+        ("Enzyme activation", "Vmax +2.85\u{00d7}", GREEN),
+        ("Substrate access", "Cavitation opens pores", ACCENT),
+    ];
+    for (i, (title, detail, color)) in mechanisms.iter().enumerate() {
+        let my = by + 20.0 + i as f64 * 50.0;
+        svg += &format!("<rect x=\"{}\" y=\"{my}\" width=\"240\" height=\"40\" rx=\"4\" fill=\"{color}\" opacity=\"0.12\" stroke=\"{color}\" stroke-width=\"1\"/>",
+            bx + 15.0);
+        svg += &label(bx + 135.0, my + 16.0, title, color, 8, "middle");
+        svg += &label(bx + 135.0, my + 30.0, detail, color, 7, "middle");
+    }
+
+    // Reusability comparison bar chart
+    svg += &label(bx + 135.0, by + 185.0, "Enzyme Reusability (cycles)", MUTED, 8, "middle");
+
+    // Without US: ~3 cycles (43% activity loss per cycle)
+    svg += &label(bx + 100.0, by + 210.0, "Lipase alone:", RED, 7, "end");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"16\" fill=\"{RED}\" opacity=\"0.7\" rx=\"2\"/>",
+        bx + 105.0, by + 200.0, 30.0);
+    svg += &label(bx + 140.0, by + 212.0, "~3 cycles", RED, 7, "start");
+
+    // With US: ~12 cycles (11.3% activity loss per cycle)
+    svg += &label(bx + 100.0, by + 238.0, "Sono-enzyme:", GREEN, 7, "end");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"16\" fill=\"{GREEN}\" opacity=\"0.7\" rx=\"2\"/>",
+        bx + 105.0, by + 228.0, 120.0);
+    svg += &label(bx + 230.0, by + 240.0, "~12 cycles (4\u{00d7})", GREEN, 7, "start");
+
+    // Key parameters
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"240\" height=\"60\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.8\"/>",
+        bx + 15.0, by + bh - 75.0);
+    svg += &label(bx + 135.0, by + bh - 60.0, "Optimal: 0.053 W/mL, 20% amplitude", ACCENT, 7, "middle");
+    svg += &label(bx + 135.0, by + bh - 46.0, "Activity loss: 11.3% vs 43% per cycle", GREEN, 7, "middle");
+    svg += &label(bx + 135.0, by + bh - 32.0, "Regime shift: diffusion \u{2192} kinetic control", BLUE, 7, "middle");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "Ultrasound + lipase synergy: +27% conversion, 4\u{00d7} enzyme reusability, 2.85\u{00d7} Vmax",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Low-power ultrasound (0.053 W/mL) shifts esterification from diffusion-limited to kinetically controlled",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Fig 119 — CoO/Co3O4 Selective Electrochemical Acetaldehyde
+fn sim_coo_electrochemical_acetaldehyde() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 119 \u{2014} CoO/Co\u{2083}O\u{2084} Electrochemical Acetaldehyde: >95% Selectivity");
+
+    // Panel A: Selectivity vs voltage
+    svg += &label(200.0, 57.0, "A: Product Selectivity vs Potential (V vs RHE)", TEXT, 10, "middle");
+    let cx = 70.0; let cy = 70.0; let cw = 260.0; let ch = 290.0;
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"{cw}\" height=\"{ch}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    let sx = |x: f64| -> f64 { cx + ((x - 0.4) / 1.0) * cw };
+    let sy = |y: f64| -> f64 { cy + ch - (y / 100.0) * ch };
+
+    for i in 0..=5 {
+        let xv = 0.4 + i as f64 * 0.2;
+        svg += &vline(sx(xv), cy, cy + ch, GRID, "0.3");
+        svg += &label(sx(xv), cy + ch + 12.0, &format!("{:.1}", xv), MUTED, 7, "middle");
+    }
+    for i in 0..=5 {
+        let yv = i as f64 * 20.0;
+        svg += &hline(cx, cx + cw, sy(yv), GRID, "0.3");
+        svg += &label(cx - 5.0, sy(yv) + 3.0, &format!("{}%", yv as i32), MUTED, 7, "end");
+    }
+    svg += &label(200.0, cy + ch + 26.0, "Potential (V vs RHE)", MUTED, 8, "middle");
+    svg += &label(55.0, cy + ch / 2.0, "Selectivity", MUTED, 7, "middle");
+
+    // Acetaldehyde curve
+    let aa_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let v = 0.4 + i as f64 * 0.01;
+        let sel = if v < 0.55 { 20.0 + 150.0 * (v - 0.4) }
+        else if v < 0.60 { 42.5 + 1050.0 * (v - 0.55) }
+        else if v <= 0.95 { 95.0 + 2.0 * (-(v - 0.775).powi(2) / 0.02).exp() }
+        else if v <= 1.05 { 95.0 - 800.0 * (v - 0.95).powi(2) }
+        else { (95.0 - 800.0 * 0.01 - 350.0 * (v - 1.05)).max(0.0) };
+        (v, sel.max(0.0).min(100.0))
+    }).collect();
+    svg += &polyline_svg(&aa_pts, GREEN, "2.5", &sx, &sy);
+
+    // Acetic acid curve
+    let ac_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let v = 0.4 + i as f64 * 0.01;
+        let sel = if v < 0.95 { 2.0 + 3.0 * (v - 0.4) }
+        else if v < 1.15 { 5.0 + 50.0 * (v - 0.95) }
+        else { (15.0 + 250.0 * (v - 1.15)).min(80.0) };
+        (v, sel.max(0.0).min(100.0))
+    }).collect();
+    svg += &polyline_svg(&ac_pts, RED, "2", &sx, &sy);
+
+    // CO2 curve
+    let co2_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let v = 0.4 + i as f64 * 0.01;
+        let sel = (1.0 + 2.0 * (v - 0.4)).min(5.0);
+        (v, sel)
+    }).collect();
+    svg += &polyline_svg(&co2_pts, MUTED, "1.5", &sx, &sy);
+
+    // Zone annotations
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"90\" height=\"30\" rx=\"3\" fill=\"{GREEN}\" opacity=\"0.10\"/>",
+        sx(0.60), cy + 5.0);
+    svg += &label(sx(0.775), cy + 17.0, "Acetaldehyde", GREEN, 7, "middle");
+    svg += &label(sx(0.775), cy + 29.0, "zone", GREEN, 7, "middle");
+
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"65\" height=\"30\" rx=\"3\" fill=\"{RED}\" opacity=\"0.10\"/>",
+        sx(1.15), cy + ch - 80.0);
+    svg += &label(sx(1.175), cy + ch - 68.0, "Acetic acid", RED, 7, "middle");
+    svg += &label(sx(1.175), cy + ch - 56.0, "zone", RED, 7, "middle");
+
+    // Legend
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"90\" height=\"50\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>",
+        cx + cw - 100.0, cy + ch - 60.0);
+    svg += &hline(cx + cw - 95.0, cx + cw - 75.0, cy + ch - 45.0, GREEN, "2.5");
+    svg += &label(cx + cw - 70.0, cy + ch - 42.0, "CH3CHO", GREEN, 7, "start");
+    svg += &hline(cx + cw - 95.0, cx + cw - 75.0, cy + ch - 32.0, RED, "2");
+    svg += &label(cx + cw - 70.0, cy + ch - 29.0, "CH3COOH", RED, 7, "start");
+    svg += &hline(cx + cw - 95.0, cx + cw - 75.0, cy + ch - 19.0, MUTED, "1.5");
+    svg += &label(cx + cw - 70.0, cy + ch - 16.0, "CO2", MUTED, 7, "start");
+
+    // Panel B: Acetaldehyde tannin bridging
+    svg += &label(525.0, 57.0, "B: Acetaldehyde-Mediated Tannin Bridging", TEXT, 10, "middle");
+    let bx = 390.0; let by = 70.0; let bw = 270.0; let bh = 290.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // EtOH -> acetaldehyde
+    svg += &format!("<rect x=\"420\" y=\"90\" width=\"80\" height=\"35\" rx=\"4\" fill=\"{BLUE}\" opacity=\"0.15\" stroke=\"{BLUE}\" stroke-width=\"1.5\"/>");
+    svg += &label(460.0, 103.0, "EtOH", BLUE, 8, "middle");
+    svg += &label(460.0, 115.0, "(in spirit)", BLUE, 7, "middle");
+
+    svg += &format!("<line x1=\"500\" y1=\"107\" x2=\"530\" y2=\"107\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>");
+    svg += &label(515.0, 100.0, "CoO/Co3O4", ACCENT, 6, "middle");
+
+    svg += &format!("<rect x=\"535\" y=\"90\" width=\"90\" height=\"35\" rx=\"4\" fill=\"{GREEN}\" opacity=\"0.15\" stroke=\"{GREEN}\" stroke-width=\"1.5\"/>");
+    svg += &label(580.0, 103.0, "CH3CHO", GREEN, 8, "middle");
+    svg += &label(580.0, 115.0, "(acetaldehyde)", GREEN, 7, "middle");
+
+    svg += &format!("<line x1=\"580\" y1=\"125\" x2=\"580\" y2=\"155\" stroke=\"{GREEN}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>");
+
+    // Tannins bridging
+    svg += &format!("<rect x=\"420\" y=\"160\" width=\"80\" height=\"30\" rx=\"4\" fill=\"{RED}\" opacity=\"0.15\" stroke=\"{RED}\" stroke-width=\"1\"/>");
+    svg += &label(460.0, 178.0, "Tannin A", RED, 7, "middle");
+
+    svg += &format!("<line x1=\"500\" y1=\"175\" x2=\"535\" y2=\"175\" stroke=\"{GREEN}\" stroke-width=\"2\" stroke-dasharray=\"4,2\"/>");
+    svg += &label(517.0, 168.0, "CH-CH", GREEN, 6, "middle");
+
+    svg += &format!("<rect x=\"540\" y=\"160\" width=\"80\" height=\"30\" rx=\"4\" fill=\"{RED}\" opacity=\"0.15\" stroke=\"{RED}\" stroke-width=\"1\"/>");
+    svg += &label(580.0, 178.0, "Tannin B", RED, 7, "middle");
+
+    svg += &format!("<line x1=\"525\" y1=\"195\" x2=\"525\" y2=\"225\" stroke=\"{ACCENT}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>");
+
+    svg += &format!("<rect x=\"440\" y=\"230\" width=\"170\" height=\"40\" rx=\"6\" fill=\"{PURPLE}\" opacity=\"0.15\" stroke=\"{PURPLE}\" stroke-width=\"1.5\"/>");
+    svg += &label(525.0, 248.0, "Polymeric pigments", PURPLE, 8, "middle");
+    svg += &label(525.0, 262.0, "(color + mouthfeel complexity)", PURPLE, 7, "middle");
+
+    // Key metrics
+    svg += &format!("<rect x=\"420\" y=\"285\" width=\"200\" height=\"60\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.8\"/>");
+    svg += &label(520.0, 300.0, "CoO/Co3O4 at 200 mA/cm2:", ACCENT, 7, "middle");
+    svg += &label(520.0, 314.0, ">95% aldehyde selectivity", GREEN, 8, "middle");
+    svg += &label(520.0, 328.0, ">90% Faradaic efficiency", GREEN, 7, "middle");
+    svg += &label(520.0, 342.0, "0.60\u{2013}0.95 V vs RHE", MUTED, 7, "middle");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "CoO/Co3O4 electrode converts ethanol to acetaldehyde at >95% selectivity, >90% Faradaic efficiency",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Acetaldehyde bridges tannins into polymeric pigments \u{2014} precision electrochemical maturation",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+/// Fig 120 — EWOD Microdroplet Aging Screening
+fn sim_ewod_microdroplet_screening() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 120 \u{2014} EWOD Microdroplet Array: High-Throughput Aging Parameter Screening");
+
+    // Panel A: Throughput comparison
+    svg += &label(200.0, 57.0, "A: Screening Throughput vs Sample Volume", TEXT, 10, "middle");
+    let cx = 70.0; let cy = 70.0; let cw = 260.0; let ch = 290.0;
+    svg += &format!("<rect x=\"{cx}\" y=\"{cy}\" width=\"{cw}\" height=\"{ch}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    let methods: Vec<(&str, f64, f64, &str)> = vec![
+        ("Barrel aging", 1.0, 200000.0, RED),
+        ("Lab flask", 12.0, 500.0, YELLOW),
+        ("Microplate", 96.0, 0.3, BLUE),
+        ("EWOD array", 100.0, 0.001, GREEN),
+    ];
+
+    let bar_h = 50.0;
+    let gap = (ch - methods.len() as f64 * bar_h) / (methods.len() as f64 + 1.0);
+
+    svg += &label(cx + cw / 4.0, cy + gap / 2.0, "Conditions/hour", MUTED, 7, "middle");
+    let max_cond = 100.0_f64.log10();
+    for (i, (name, cond, _vol, color)) in methods.iter().enumerate() {
+        let y = cy + gap + i as f64 * (bar_h + gap);
+        svg += &label(cx + 5.0, y + 12.0, name, color, 7, "start");
+
+        let bwidth = (cond.log10().max(0.01) / max_cond) * (cw / 2.0 - 15.0);
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"20\" fill=\"{color}\" opacity=\"0.7\" rx=\"2\"/>",
+            cx + 5.0, y + 18.0, bwidth.max(5.0));
+        svg += &label(cx + 10.0 + bwidth.max(5.0), y + 32.0, &format!("{}", *cond as i32), color, 7, "start");
+    }
+
+    svg += &label(cx + 3.0 * cw / 4.0, cy + gap / 2.0, "Volume (mL)", MUTED, 7, "middle");
+    let max_vol = 200000.0_f64.log10();
+    for (i, (_name, _cond, vol, color)) in methods.iter().enumerate() {
+        let y = cy + gap + i as f64 * (bar_h + gap);
+        let bwidth = (vol.log10().abs().max(0.01) / max_vol) * (cw / 2.0 - 15.0);
+        let x_start = cx + cw / 2.0 + 10.0;
+        svg += &format!("<rect x=\"{x_start}\" y=\"{}\" width=\"{}\" height=\"20\" fill=\"{color}\" opacity=\"0.5\" rx=\"2\"/>",
+            y + 18.0, bwidth.max(5.0));
+        let vol_str = if *vol >= 1.0 { format!("{} mL", *vol as i64) } else { format!("{} \u{00b5}L", (*vol * 1000.0) as i32) };
+        svg += &label(x_start + bwidth.max(5.0) + 4.0, y + 32.0, &vol_str, color, 7, "start");
+    }
+
+    // Panel B: EWOD chip schematic
+    svg += &label(525.0, 57.0, "B: EWOD Chip Architecture", TEXT, 10, "middle");
+    let bx = 390.0; let by = 70.0; let bw = 270.0; let bh = 290.0;
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>");
+
+    // Electrode grid 8x8
+    let grid_x = bx + 35.0;
+    let grid_y = by + 30.0;
+    let cell = 25.0;
+    let grid_size = 8;
+
+    for row in 0..grid_size {
+        for col in 0..grid_size {
+            let ex = grid_x + col as f64 * cell;
+            let ey = grid_y + row as f64 * cell;
+            let opacity = if (row + col) % 3 == 0 { "0.25" } else { "0.08" };
+            let color = match (row * grid_size + col) % 4 {
+                0 => BLUE,
+                1 => GREEN,
+                2 => ACCENT,
+                _ => PURPLE,
+            };
+            svg += &format!("<rect x=\"{ex}\" y=\"{ey}\" width=\"{}\" height=\"{}\" fill=\"{color}\" opacity=\"{opacity}\" stroke=\"{MUTED}\" stroke-width=\"0.5\" rx=\"2\"/>",
+                cell - 2.0, cell - 2.0);
+        }
+    }
+
+    // Droplet path
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"8\" fill=\"{GREEN}\" opacity=\"0.8\"/>",
+        grid_x + 1.5 * cell, grid_y + 1.5 * cell);
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>",
+        grid_x + 2.0 * cell, grid_y + 1.5 * cell,
+        grid_x + 4.0 * cell, grid_y + 1.5 * cell);
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{GREEN}\" stroke-width=\"1.5\" marker-end=\"url(#arr)\"/>",
+        grid_x + 4.5 * cell, grid_y + 2.0 * cell,
+        grid_x + 4.5 * cell, grid_y + 4.0 * cell);
+
+    svg += &label(grid_x + 4.0 * cell, grid_y + grid_size as f64 * cell + 15.0,
+        "64-electrode array", MUTED, 7, "middle");
+
+    // Side info boxes
+    let info_x = grid_x + grid_size as f64 * cell + 10.0;
+    let info_items: Vec<(&str, &str, &str)> = vec![
+        ("Spirit", "\u{00b5}L droplets", BLUE),
+        ("Oak extract", "variable conc.", GREEN),
+        ("O2 level", "0\u{2013}sat.", ACCENT),
+        ("Temperature", "20\u{2013}60\u{00b0}C", RED),
+    ];
+    for (i, (param, val, color)) in info_items.iter().enumerate() {
+        let iy = by + 40.0 + i as f64 * 28.0;
+        svg += &format!("<rect x=\"{info_x}\" y=\"{iy}\" width=\"70\" height=\"22\" rx=\"3\" fill=\"{color}\" opacity=\"0.12\" stroke=\"{color}\" stroke-width=\"0.8\"/>");
+        svg += &label(info_x + 35.0, iy + 10.0, param, color, 6, "middle");
+        svg += &label(info_x + 35.0, iy + 19.0, val, color, 5, "middle");
+    }
+
+    // Key metrics
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"250\" height=\"55\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.8\"/>",
+        bx + 10.0, by + bh - 70.0);
+    svg += &label(bx + 135.0, by + bh - 54.0, "100 conditions/hour", GREEN, 9, "middle");
+    svg += &label(bx + 135.0, by + bh - 40.0, "&lt;1 mL total spirit consumed", ACCENT, 8, "middle");
+    svg += &label(bx + 135.0, by + bh - 26.0, "Droplet velocity: up to 72.7 mm/s", MUTED, 7, "middle");
+
+    // Bottom summary
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0,
+        "EWOD microdroplet array screens 100 aging conditions/hour using &lt;1 mL spirit",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0,
+        "Combinatorial optimization of extract concentration, O2, temperature, and time in nanoliter volumes",
+        GREEN, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
 

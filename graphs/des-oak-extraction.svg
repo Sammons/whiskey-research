@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 116 — Deep Eutectic Solvents: Oak Extraction Yield vs Solvent System</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Polyphenolic Extraction Yield (mg GAE/g wood)</text>
+<rect x="70" y="70" width="260" height="290" fill="none" stroke="#8b949e" stroke-width="1"/><line x1="70" y1="360" x2="330" y2="360" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="363" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<line x1="70" y1="287.5" x2="330" y2="287.5" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="290.5" fill="#8b949e" font-size="7" text-anchor="end">20</text>
+<line x1="70" y1="215" x2="330" y2="215" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="218" fill="#8b949e" font-size="7" text-anchor="end">40</text>
+<line x1="70" y1="142.5" x2="330" y2="142.5" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="145.5" fill="#8b949e" font-size="7" text-anchor="end">60</text>
+<line x1="70" y1="70" x2="330" y2="70" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="73" fill="#8b949e" font-size="7" text-anchor="end">80</text>
+<text x="55" y="215" fill="#8b949e" font-size="7" text-anchor="middle">mg GAE/g</text>
+<rect x="79.71428571428571" y="331" width="32" height="29" fill="#8b949e" opacity="0.7" rx="2"/><text x="95.71428571428571" y="372" fill="#8b949e" font-size="6" text-anchor="middle">Water</text>
+<text x="95.71428571428571" y="327" fill="#8b949e" font-size="7" text-anchor="middle">8</text>
+<rect x="121.42857142857142" y="294.75" width="32" height="65.25" fill="#8b949e" opacity="0.7" rx="2"/><text x="137.42857142857142" y="372" fill="#8b949e" font-size="6" text-anchor="middle">40% EtOH</text>
+<text x="137.42857142857142" y="290.75" fill="#8b949e" font-size="7" text-anchor="middle">18</text>
+<rect x="163.14285714285714" y="273" width="32" height="87" fill="#8b949e" opacity="0.7" rx="2"/><text x="179.14285714285714" y="372" fill="#8b949e" font-size="6" text-anchor="middle">60% EtOH</text>
+<text x="179.14285714285714" y="269" fill="#8b949e" font-size="7" text-anchor="middle">24</text>
+<rect x="204.85714285714283" y="207.75" width="32" height="152.25" fill="#58a6ff" opacity="0.7" rx="2"/><text x="220.85714285714283" y="372" fill="#58a6ff" font-size="6" text-anchor="middle">ChCl:Gly</text>
+<text x="220.85714285714283" y="203.75" fill="#58a6ff" font-size="7" text-anchor="middle">42</text>
+<rect x="246.57142857142856" y="124.375" width="32" height="235.625" fill="#3fb950" opacity="0.7" rx="2"/><text x="262.57142857142856" y="372" fill="#3fb950" font-size="6" text-anchor="middle">ChCl:LA</text>
+<text x="262.57142857142856" y="120.375" fill="#3fb950" font-size="7" text-anchor="middle">65</text>
+<rect x="288.2857142857143" y="77.25" width="32" height="282.75" fill="#e8a665" opacity="0.7" rx="2"/><text x="304.2857142857143" y="372" fill="#e8a665" font-size="6" text-anchor="middle">ChCl:LA+UAE</text>
+<text x="304.2857142857143" y="73.25" fill="#e8a665" font-size="7" text-anchor="middle">78</text>
+<text x="200" y="386" fill="#8b949e" font-size="8" text-anchor="middle">Solvent system</text>
+<line x1="137.42857142857142" y1="286.75" x2="262.57142857142856" y2="116.375" stroke="#3fb950" stroke-width="1" stroke-dasharray="3,2"/><text x="204.85714285714283" y="196.875" fill="#3fb950" font-size="9" text-anchor="middle">3.6×</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: DES Hydrogen-Bond Network</text>
+<rect x="390" y="70" width="270" height="290" fill="none" stroke="#8b949e" stroke-width="1"/><circle cx="460" cy="140" r="25" fill="#58a6ff" opacity="0.15" stroke="#58a6ff" stroke-width="1.5"/><text x="460" y="136" fill="#58a6ff" font-size="8" text-anchor="middle">Choline</text>
+<text x="460" y="148" fill="#58a6ff" font-size="8" text-anchor="middle">Cl⁻</text>
+<circle cx="570" cy="140" r="25" fill="#3fb950" opacity="0.15" stroke="#3fb950" stroke-width="1.5"/><text x="570" y="136" fill="#3fb950" font-size="8" text-anchor="middle">Lactic</text>
+<text x="570" y="148" fill="#3fb950" font-size="8" text-anchor="middle">Acid</text>
+<line x1="485" y1="140" x2="545" y2="140" stroke="#e8a665" stroke-width="2" stroke-dasharray="4,3"/><text x="515" y="133" fill="#e8a665" font-size="7" text-anchor="middle">H-bond</text>
+<line x1="515" y1="170" x2="515" y2="200" stroke="#e8a665" stroke-width="1.5" marker-end="url(#arr)"/><rect x="440" y="205" width="150" height="60" rx="6" fill="#f85149" opacity="0.12" stroke="#f85149" stroke-width="1.5"/><text x="515" y="225" fill="#f85149" font-size="9" text-anchor="middle">Oak Lignin</text>
+<text x="515" y="240" fill="#f85149" font-size="7" text-anchor="middle">β-O-4 linkages</text>
+<text x="515" y="255" fill="#f85149" font-size="7" text-anchor="middle">cleaved by DES</text>
+<line x1="515" y1="270" x2="515" y2="295" stroke="#e8a665" stroke-width="1.5" marker-end="url(#arr)"/><rect x="430" y="300" width="55" height="30" rx="3" fill="#3fb950" opacity="0.15" stroke="#3fb950" stroke-width="1"/><text x="457.5" y="318" fill="#3fb950" font-size="6" text-anchor="middle">Vanillin</text>
+<rect x="490" y="300" width="55" height="30" rx="3" fill="#58a6ff" opacity="0.15" stroke="#58a6ff" stroke-width="1"/><text x="517.5" y="318" fill="#58a6ff" font-size="6" text-anchor="middle">Syringaldehyde</text>
+<rect x="550" y="300" width="55" height="30" rx="3" fill="#e8a665" opacity="0.15" stroke="#e8a665" stroke-width="1"/><text x="577.5" y="318" fill="#e8a665" font-size="6" text-anchor="middle">Ellagitannins</text>
+<rect x="400" y="340" width="250" height="18" rx="3" fill="#e8a665" opacity="0.12"/><text x="525" y="353" fill="#e8a665" font-size="7" text-anchor="middle">ChCl:LA (1:2 molar) at 50–80°C, 1–4 h</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/><text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">DES extracts 2–10× more polyphenols than ethanol; 10–100× faster; food-grade components</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">First application to whiskey maturation — no published work in spirits context</text>
+</svg>

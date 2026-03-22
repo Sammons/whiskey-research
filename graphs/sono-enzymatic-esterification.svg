@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 118 — Sono-Enzymatic Esterification: Ultrasound + Lipase Synergy</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Isoamyl Acetate Conversion vs Time</text>
+<rect x="70" y="70" width="260" height="290" fill="none" stroke="#8b949e" stroke-width="1"/><line x1="70" y1="70" x2="70" y2="360" stroke="#30363d" stroke-width="0.3"/>
+<text x="70" y="372" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="113.33333333333333" y1="70" x2="113.33333333333333" y2="360" stroke="#30363d" stroke-width="0.3"/>
+<text x="113.33333333333333" y="372" fill="#8b949e" font-size="7" text-anchor="middle">1</text>
+<line x1="156.66666666666666" y1="70" x2="156.66666666666666" y2="360" stroke="#30363d" stroke-width="0.3"/>
+<text x="156.66666666666666" y="372" fill="#8b949e" font-size="7" text-anchor="middle">2</text>
+<line x1="200" y1="70" x2="200" y2="360" stroke="#30363d" stroke-width="0.3"/>
+<text x="200" y="372" fill="#8b949e" font-size="7" text-anchor="middle">3</text>
+<line x1="243.33333333333331" y1="70" x2="243.33333333333331" y2="360" stroke="#30363d" stroke-width="0.3"/>
+<text x="243.33333333333331" y="372" fill="#8b949e" font-size="7" text-anchor="middle">4</text>
+<line x1="286.6666666666667" y1="70" x2="286.6666666666667" y2="360" stroke="#30363d" stroke-width="0.3"/>
+<text x="286.6666666666667" y="372" fill="#8b949e" font-size="7" text-anchor="middle">5</text>
+<line x1="330" y1="70" x2="330" y2="360" stroke="#30363d" stroke-width="0.3"/>
+<text x="330" y="372" fill="#8b949e" font-size="7" text-anchor="middle">6</text>
+<line x1="70" y1="360" x2="330" y2="360" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="363" fill="#8b949e" font-size="7" text-anchor="end">0%</text>
+<line x1="70" y1="302" x2="330" y2="302" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="305" fill="#8b949e" font-size="7" text-anchor="end">20%</text>
+<line x1="70" y1="244" x2="330" y2="244" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="247" fill="#8b949e" font-size="7" text-anchor="end">40%</text>
+<line x1="70" y1="186" x2="330" y2="186" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="189" fill="#8b949e" font-size="7" text-anchor="end">60%</text>
+<line x1="70" y1="128" x2="330" y2="128" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="131" fill="#8b949e" font-size="7" text-anchor="end">80%</text>
+<line x1="70" y1="70" x2="330" y2="70" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="73" fill="#8b949e" font-size="7" text-anchor="end">100%</text>
+<text x="200" y="386" fill="#8b949e" font-size="8" text-anchor="middle">Time (hours)</text>
+<text x="55" y="215" fill="#8b949e" font-size="7" text-anchor="middle">Conversion</text>
+<polyline points="70.0,360.0 74.3,350.8 78.7,342.1 83.0,333.7 87.3,325.8 91.7,318.3 96.0,311.1 100.3,304.3 104.7,297.9 109.0,291.7 113.3,285.8 117.7,280.3 122.0,275.0 126.3,269.9 130.7,265.1 135.0,260.5 139.3,256.2 143.7,252.1 148.0,248.1 152.3,244.4 156.7,240.8 161.0,237.5 165.3,234.2 169.7,231.2 174.0,228.3 178.3,225.5 182.7,222.9 187.0,220.4 191.3,218.0 195.7,215.7 200.0,213.6 204.3,211.5 208.7,209.6 213.0,207.7 217.3,205.9 221.7,204.3 226.0,202.7 230.3,201.1 234.7,199.7 239.0,198.3 243.3,197.0 247.7,195.8 252.0,194.6 256.3,193.5 260.7,192.4 265.0,191.4 269.3,190.4 273.7,189.5 278.0,188.6 282.3,187.8 286.7,187.0 291.0,186.2 295.3,185.5 299.7,184.8 304.0,184.2 308.3,183.6 312.7,183.0 317.0,182.4 321.3,181.9 325.7,181.4 330.0,180.9" fill="none" stroke="#f85149" stroke-width="2.5"/>
+<polyline points="70.0,360.0 74.3,356.6 78.7,353.3 83.0,350.2 87.3,347.1 91.7,344.2 96.0,341.4 100.3,338.8 104.7,336.2 109.0,333.7 113.3,331.3 117.7,329.0 122.0,326.8 126.3,324.7 130.7,322.7 135.0,320.7 139.3,318.9 143.7,317.1 148.0,315.3 152.3,313.7 156.7,312.1 161.0,310.6 165.3,309.1 169.7,307.7 174.0,306.3 178.3,305.0 182.7,303.8 187.0,302.5 191.3,301.4 195.7,300.3 200.0,299.2 204.3,298.2 208.7,297.2 213.0,296.2 217.3,295.3 221.7,294.5 226.0,293.6 230.3,292.8 234.7,292.0 239.0,291.3 243.3,290.6 247.7,289.9 252.0,289.2 256.3,288.6 260.7,288.0 265.0,287.4 269.3,286.8 273.7,286.3 278.0,285.8 282.3,285.3 286.7,284.8 291.0,284.3 295.3,283.9 299.7,283.4 304.0,283.0 308.3,282.6 312.7,282.3 317.0,281.9 321.3,281.5 325.7,281.2 330.0,280.9" fill="none" stroke="#8b949e" stroke-width="2"/>
+<polyline points="70.0,360.0 74.3,342.0 78.7,325.1 83.0,309.5 87.3,294.8 91.7,281.2 96.0,268.5 100.3,256.6 104.7,245.6 109.0,235.3 113.3,225.7 117.7,216.7 122.0,208.4 126.3,200.6 130.7,193.3 135.0,186.6 139.3,180.3 143.7,174.4 148.0,168.9 152.3,163.8 156.7,159.0 161.0,154.5 165.3,150.4 169.7,146.5 174.0,142.9 178.3,139.6 182.7,136.4 187.0,133.5 191.3,130.8 195.7,128.2 200.0,125.9 204.3,123.7 208.7,121.6 213.0,119.7 217.3,117.9 221.7,116.2 226.0,114.7 230.3,113.2 234.7,111.9 239.0,110.6 243.3,109.4 247.7,108.3 252.0,107.3 256.3,106.4 260.7,105.5 265.0,104.6 269.3,103.9 273.7,103.1 278.0,102.5 282.3,101.8 286.7,101.3 291.0,100.7 295.3,100.2 299.7,99.7 304.0,99.3 308.3,98.9 312.7,98.5 317.0,98.1 321.3,97.8 325.7,97.5 330.0,97.2" fill="none" stroke="#3fb950" stroke-width="2.5"/>
+<line x1="308.3333333333333" y1="171.5" x2="308.3333333333333" y2="93.19999999999999" stroke="#e8a665" stroke-width="1" stroke-dasharray="3,2"/><text x="317" y="133.79999999999998" fill="#e8a665" font-size="9" text-anchor="start">+27%</text>
+<rect x="80" y="80" width="130" height="50" rx="3" fill="#30363d" opacity="0.8"/><line x1="85" y1="95" x2="105" y2="95" stroke="#8b949e" stroke-width="2"/>
+<text x="110" y="98" fill="#8b949e" font-size="7" text-anchor="start">Ultrasound only</text>
+<line x1="85" y1="108" x2="105" y2="108" stroke="#f85149" stroke-width="2.5"/>
+<text x="110" y="111" fill="#f85149" font-size="7" text-anchor="start">Lipase only</text>
+<line x1="85" y1="121" x2="105" y2="121" stroke="#3fb950" stroke-width="2.5"/>
+<text x="110" y="124" fill="#3fb950" font-size="7" text-anchor="start">Sono-enzymatic</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Synergy Mechanisms + Enzyme Reusability</text>
+<rect x="390" y="70" width="270" height="290" fill="none" stroke="#8b949e" stroke-width="1"/><rect x="405" y="90" width="240" height="40" rx="4" fill="#58a6ff" opacity="0.12" stroke="#58a6ff" stroke-width="1"/><text x="525" y="106" fill="#58a6ff" font-size="8" text-anchor="middle">Mass transfer</text>
+<text x="525" y="120" fill="#58a6ff" font-size="7" text-anchor="middle">US breaks diffusion layer</text>
+<rect x="405" y="140" width="240" height="40" rx="4" fill="#3fb950" opacity="0.12" stroke="#3fb950" stroke-width="1"/><text x="525" y="156" fill="#3fb950" font-size="8" text-anchor="middle">Enzyme activation</text>
+<text x="525" y="170" fill="#3fb950" font-size="7" text-anchor="middle">Vmax +2.85×</text>
+<rect x="405" y="190" width="240" height="40" rx="4" fill="#e8a665" opacity="0.12" stroke="#e8a665" stroke-width="1"/><text x="525" y="206" fill="#e8a665" font-size="8" text-anchor="middle">Substrate access</text>
+<text x="525" y="220" fill="#e8a665" font-size="7" text-anchor="middle">Cavitation opens pores</text>
+<text x="525" y="255" fill="#8b949e" font-size="8" text-anchor="middle">Enzyme Reusability (cycles)</text>
+<text x="490" y="280" fill="#f85149" font-size="7" text-anchor="end">Lipase alone:</text>
+<rect x="495" y="270" width="30" height="16" fill="#f85149" opacity="0.7" rx="2"/><text x="530" y="282" fill="#f85149" font-size="7" text-anchor="start">~3 cycles</text>
+<text x="490" y="308" fill="#3fb950" font-size="7" text-anchor="end">Sono-enzyme:</text>
+<rect x="495" y="298" width="120" height="16" fill="#3fb950" opacity="0.7" rx="2"/><text x="620" y="310" fill="#3fb950" font-size="7" text-anchor="start">~12 cycles (4×)</text>
+<rect x="405" y="285" width="240" height="60" rx="4" fill="#30363d" opacity="0.8"/><text x="525" y="300" fill="#e8a665" font-size="7" text-anchor="middle">Optimal: 0.053 W/mL, 20% amplitude</text>
+<text x="525" y="314" fill="#3fb950" font-size="7" text-anchor="middle">Activity loss: 11.3% vs 43% per cycle</text>
+<text x="525" y="328" fill="#58a6ff" font-size="7" text-anchor="middle">Regime shift: diffusion → kinetic control</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/><text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Ultrasound + lipase synergy: +27% conversion, 4× enzyme reusability, 2.85× Vmax</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Low-power ultrasound (0.053 W/mL) shifts esterification from diffusion-limited to kinetically controlled</text>
+</svg>
