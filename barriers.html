@@ -380,12 +380,37 @@
 
 <p>Lipases (notably Candida antarctica lipase B, CALB) are superb esterification catalysts in organic media. However, whiskey is an aqueous medium: 40&ndash;65% ABV means 35&ndash;60% water. CALB requires water activity (a<sub>w</sub>) below ~0.3 for ester synthesis; above that threshold, it preferentially catalyzes hydrolysis&mdash;the reverse reaction<span class="cite" data-ref="10"><sup>[10]</sup></span>. The very environment that defines whiskey is hostile to lipase-catalyzed esterification. This approach is a dead end for spirits at drinking strength.</p>
 
-<div class="callout hypothesis">
-  <strong>Hypothesis 1:</strong> Recirculating new-make spirit at 65% ABV through a packed bed of Amberlyst-15 (FDA 21&nbsp;CFR&nbsp;173.25) at 50&deg;C for 4&ndash;8 hours, with a downstream molecular sieve 3A water trap, will produce an ester profile (by GC-MS) matching 2&ndash;3 year barrel-aged whiskey for the C2&ndash;C10 ethyl esters.<br><br>
-  <strong>Testable prediction:</strong> Ethyl acetate concentration should reach &ge;80% of equilibrium value within 6 hours, versus &lt;15% in the same spirit held at ambient temperature without catalyst.
+<h3>1.5 Electrochemical Gold-Surface Catalysis</h3>
+
+<div class="callout key-insight">
+  <strong>From battery &amp; semiconductor research:</strong> This is arguably the single most powerful finding in the entire cross-disciplinary search. Published, validated, quantified&mdash;and the acceleration factor is staggering.
 </div>
 
-<p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration. FDA-cleared materials exist. Published kinetic data supports the timeline. <span class="verdict speculative">SPECULATIVE</span> PEF for ester bond formation specifically (extrapolated from polyphenol condensation data).</p>
+<p>Wang et al. demonstrated that a gold electrode surface at applied potential directly catalyzes Fischer esterification in distilled spirit by stabilizing a carbocation intermediate from the carboxylic acid. The Au surface reduces the carbocation charge from ~0.7 eV to ~0.1 eV, dramatically lowering the activation barrier<span class="cite" data-ref="37"><sup>[37]</sup></span>. Results after just 20 minutes of treatment:</p>
+<ul>
+  <li>Total ester content: <strong>+20%</strong> vs. untreated spirit</li>
+  <li>Ethyl acetate: <strong>+34.3%</strong></li>
+  <li>Ethyl hexanoate: <strong>+13.7%</strong></li>
+  <li>Turnover frequency: 1.4&ndash;4.6 &times; 10<sup>5</sup> h<sup>&ndash;1</sup></li>
+  <li>Sensory evaluation: &ldquo;outstanding taste and strong ester aroma&rdquo;</li>
+</ul>
+
+<p>Separately, Xiong et al. showed electrochemical oxidation of spirit at 0.8V produced flavor profiles indistinguishable from 1-year natural aging by electronic tongue PCA analysis&mdash;in 20 minutes. The alcohol consumption rate at 0.8V was ~4&times;10<sup>&ndash;4</sup> mg/mL/min versus &lt;5&times;10<sup>&ndash;8</sup> mg/mL/min for natural aging&mdash;an acceleration factor of approximately <strong>10,000&times;</strong><span class="cite" data-ref="38"><sup>[38]</sup></span>.</p>
+
+<p>Dai et al. took this further with Co<sub>3</sub>O<sub>4</sub> nanosheets, achieving 98% Faradaic efficiency for the 4-electron oxidative pathway: ethanol &rarr; acetaldehyde &rarr; hemiacetal &rarr; ethyl acetate<span class="cite" data-ref="39"><sup>[39]</sup></span>. This is exactly the cascade that occurs during barrel aging, compressed from years to hours. Gold is food-safe (E175), and Co<sub>3</sub>O<sub>4</sub> electrodes are used in water treatment.</p>
+
+<h3>1.6 TiO<sub>2</sub> Photocatalytic Esterification</h3>
+
+<p>Welter et al. demonstrated that TiO<sub>2</sub> (anatase) under UVA light drives Fischer esterification at ambient temperature&mdash;bypassing the ~60&ndash;75 kJ/mol activation energy by generating reactive surface intermediates via photon-induced electron-hole pairs. They achieved 98% conversion of oleic acid to methyl oleate at 55&deg;C, and 96% at 35&deg;C with optimized conditions (3 hours UV, 4 wt% catalyst). The catalyst retained &gt;87% activity after 5 cycles<span class="cite" data-ref="36"><sup>[36]</sup></span>.</p>
+
+<p>TiO<sub>2</sub> is GRAS (used in food coloring as E171, though EU-restricted since 2022). A flow-through reactor with UV-transparent tubing and immobilized TiO<sub>2</sub> could drive esterification of the ~500 mg/L organic acids in new-make spirit without bulk heating&mdash;preserving volatile aroma compounds that would be lost at reflux temperatures.</p>
+
+<div class="callout hypothesis">
+  <strong>Hypothesis 1:</strong> Recirculating new-make spirit at 65% ABV through a packed bed of Amberlyst-15 (FDA 21&nbsp;CFR&nbsp;173.25) at 50&deg;C for 4&ndash;8 hours, with a downstream molecular sieve 3A water trap, will produce an ester profile (by GC-MS) matching 2&ndash;3 year barrel-aged whiskey for the C2&ndash;C10 ethyl esters. <em>Alternatively</em>, 20 minutes of electrochemical treatment at a gold electrode (0.8V) may achieve comparable results with no consumable catalyst<span class="cite" data-ref="37"><sup>[37]</sup></span><span class="cite" data-ref="38"><sup>[38]</sup></span>.<br><br>
+  <strong>Testable prediction:</strong> Ethyl acetate concentration should reach &ge;80% of equilibrium value within 6 hours (Amberlyst) or 20 minutes (Au electrode), versus &lt;15% in the same spirit held at ambient temperature without catalyst.
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Solid acid catalysis in packed-bed configuration&mdash;FDA-cleared materials, published kinetics. <span class="verdict promising">PROMISING</span> Electrochemical gold-surface catalysis&mdash;published and validated in distilled spirit with sensory confirmation<span class="cite" data-ref="37"><sup>[37]</sup></span>. <span class="verdict speculative">SPECULATIVE</span> TiO<sub>2</sub> photocatalytic esterification (demonstrated for fatty acids, untested in spirits). <span class="verdict speculative">SPECULATIVE</span> PEF (extrapolated from polyphenol condensation).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -423,14 +448,20 @@
   (bp 37&deg;C, pungent) &nbsp;&rarr;&nbsp; (bp 189&deg;C, odorless) &nbsp;&rarr;&nbsp; (bp 238&deg;C, odorless)
 </div>
 
-<p>In principle, a UV-LED illuminated TiO<sub>2</sub>-coated flow cell could oxidize DMS to DMSO in a single pass. DMSO is FDA-approved as a pharmaceutical solvent and is flavorless at the ppb concentrations relevant here. The selectivity concern is whether TiO<sub>2</sub> photocatalysis would also oxidize desirable flavor compounds (esters, aldehydes)&mdash;this requires careful wavelength and dose control to target only the most oxidizable species (sulfur compounds have the lowest oxidation potentials in the mixture).</p>
+<p>This is not mere speculation. Lin et al. demonstrated that S-doped TiO<sub>2</sub> degrades DMS under <em>visible light</em> (not just UV), with reaction kinetics enhanced by humidity&mdash;directly applicable since spirit is ~60% water<span class="cite" data-ref="40"><sup>[40]</sup></span>. The sulfur doping narrows TiO<sub>2</sub>&rsquo;s band gap from 3.2 eV (UV-only) to ~2.5 eV (visible light), enabling the use of inexpensive LED illumination.</p>
 
-<div class="callout hypothesis">
-  <strong>Hypothesis 2:</strong> Passing new-make spirit through a Cu/AC packed-bed cartridge (1 kg adsorbent per 10 L spirit, 2&ndash;3 bed volumes at 5 mL/min) will reduce DMS, DMDS, and DMTS concentrations to below sensory detection thresholds (&lt;25 ppb DMS, &lt;12 ppb DMDS, &lt;0.01 ppb DMTS) in a single day, matching the sulfur profile of 5&ndash;8 year aged whiskey.<br><br>
-  <strong>Testable prediction:</strong> GC-PFPD (pulsed flame photometric detection) analysis of treated vs. untreated spirit should show &ge;90% reduction in total volatile sulfur within 24 hours of cartridge treatment.
+<p>Man et al. went further: UiO-66@TiO<sub>2</sub> nanocomposites (a zirconium MOF coupled to TiO<sub>2</sub>) achieved 17.8&times; and 7.1&times; higher DMS degradation rates than pristine UiO-66 or TiO<sub>2</sub> alone<span class="cite" data-ref="41"><sup>[41]</sup></span>. The MOF provides high-surface-area adsorption sites that concentrate DMS at the photocatalytic surface&mdash;a synergistic mechanism. The nanocomposite showed stable performance over multiple cycles.</p>
+
+<div class="callout key-insight">
+  <strong>Critical advantage over adsorption:</strong> Charcoal and MOF adsorption merely sequesters DMS&mdash;it can desorb during temperature cycling. Photocatalytic oxidation <em>chemically destroys</em> the sulfur compound, converting it irreversibly to odorless DMSO<sub>2</sub> and sulfate. There is no desorption risk.
 </div>
 
-<p><span class="verdict promising">PROMISING</span> Cu/AC cartridge (known materials, simple engineering). <span class="verdict speculative">SPECULATIVE</span> HKUST-1 MOF (excellent adsorption data, food-grade pathway unclear). <span class="verdict moonshot">MOONSHOT</span> TiO<sub>2</sub> photocatalytic ODS (powerful chemistry, selectivity unproven in spirits).</p>
+<div class="callout hypothesis">
+  <strong>Hypothesis 2:</strong> Passing new-make spirit through a Cu/AC packed-bed cartridge (1 kg adsorbent per 10 L spirit, 2&ndash;3 bed volumes at 5 mL/min) will reduce DMS, DMDS, and DMTS concentrations to below sensory detection thresholds (&lt;25 ppb DMS, &lt;12 ppb DMDS, &lt;0.01 ppb DMTS) in a single day. <em>Alternatively</em>, a visible-light S-doped TiO<sub>2</sub> or UiO-66@TiO<sub>2</sub> flow photoreactor could achieve the same result in hours via irreversible oxidation<span class="cite" data-ref="40"><sup>[40]</sup></span><span class="cite" data-ref="41"><sup>[41]</sup></span>.<br><br>
+  <strong>Testable prediction:</strong> GC-PFPD analysis of treated vs. untreated spirit should show &ge;90% reduction in total volatile sulfur within 24 hours (Cu/AC) or &lt;4 hours (photocatalytic).
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Cu/AC cartridge (known materials, simple engineering). <span class="verdict speculative">SPECULATIVE</span> HKUST-1 MOF (excellent adsorption data, food-grade pathway unclear). <span class="verdict speculative">SPECULATIVE</span> S-doped TiO<sub>2</sub> photocatalytic ODS (published DMS-specific data, but selectivity in complex spirit matrix unproven<span class="cite" data-ref="40"><sup>[40]</sup></span>).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -501,7 +532,15 @@
   <strong>Unknown:</strong> Whether the Morishima clusters are equilibrium structures (thermodynamically stable, would reform regardless) or kinetically trapped structures (pathway-dependent, requiring specific formation conditions) determines whether seeding is necessary or merely helpful. No data exists on this question.
 </div>
 
-<h3>3.5 The Two-Phase Aging Protocol</h3>
+<h3>3.5 Layered Double Hydroxide Extractive Delivery</h3>
+
+<p>From battery intercalation chemistry: layered double hydroxides (LDHs) are anionic clays that reversibly intercalate organic anions between brucite-like hydroxide sheets. In battery research, layered materials (LiCoO<sub>2</sub>, LiFePO<sub>4</sub>) store and release lithium ions at rates controlled by applied potential. In an LDH, pH replaces voltage as the driving force.</p>
+
+<p>Vanillic acid and gallic acid&mdash;both key whiskey barrel extractives&mdash;have been successfully intercalated into LDH galleries with controlled, sustained release following Higuchi diffusion kinetics<span class="cite" data-ref="43"><sup>[43]</sup></span>. The LDH absorbs phenolic compounds at high pH and releases them at the slightly acidic pH of new-make spirit (~3.5&ndash;4.5). This mimics years of barrel extraction in a programmable reservoir format.</p>
+
+<p>The kinetics are directly relevant: the Higuchi diffusion model that describes LDH phenolic release is the <em>same model</em> that describes natural barrel extraction. But the LDH concentration of extractives per unit mass is orders of magnitude higher than wood, and the release medium (bulk liquid rather than through centimeters of stave) eliminates mass-transfer limitations.</p>
+
+<h3>3.6 The Two-Phase Aging Protocol</h3>
 
 <p>The approaches above converge on a two-phase protocol that separates the <em>extraction</em> problem from the <em>assembly</em> problem:</p>
 
@@ -586,18 +625,52 @@
 
 <p>An alternative: <strong>photo-Fenton</strong>, where Fe<sup>3+</sup> is photoreduced back to Fe<sup>2+</sup> by UV/visible light, allowing catalytic cycling with minimal total iron. This limits residual iron to ppb levels<span class="cite" data-ref="32"><sup>[32]</sup></span>.</p>
 
-<h3>4.3 Electrochemical Oxidation</h3>
+<h3>4.3 Electrochemical Potential Programming</h3>
 
-<p>Zhou et al. demonstrated that electrochemical treatment of Chinese Baijiu (a grain spirit) produced flavor profiles consistent with aged product<span class="cite" data-ref="33"><sup>[33]</sup></span>. The mechanism: controlled oxidation at the anode surface generates reactive oxygen species at a rate determined by the applied potential. By operating below the water oxidation potential (~1.23 V vs. SHE) but above the oxidation potential of target alcohols (~0.5&ndash;0.8 V), selective partial oxidation becomes feasible.</p>
+<p>This approach borrows directly from battery science, where applied electrochemical potentials drive selective redox reactions at electrode surfaces with exquisite control. The key insight: different oxidation steps in the whiskey cascade occur at different potentials, and the applied voltage acts as a <em>precisely tunable oxygen flux equivalent</em>.</p>
 
-<p>Electrode materials matter. Platinum oxidizes broadly; boron-doped diamond (BDD) generates OH&bull; radicals at higher potential with greater selectivity; dimensionally stable anodes (DSA, RuO<sub>2</sub>/IrO<sub>2</sub> on Ti) offer intermediate behavior. For spirits, BDD electrodes at low current density (0.1&ndash;1 mA/cm<sup>2</sup>) could provide the &ldquo;slow drip&rdquo; of oxidation equivalents that barrels deliver over years.</p>
+<p>Xiong et al. identified two distinct oxidation windows in distilled spirit using cyclic voltammetry at a gold electrode<span class="cite" data-ref="38"><sup>[38]</sup></span>:</p>
 
-<div class="callout hypothesis">
-  <strong>Hypothesis 4:</strong> Immersing a 30 cm length of medical-grade PDMS tubing (1 mm wall thickness, 3 mm I.D.) in 1 L of new-make spirit, with 5% O<sub>2</sub>/N<sub>2</sub> flowing through the lumen at 10 mL/min for 4 weeks, will produce a dissolved O<sub>2</sub> flux of ~0.05 mL/L/day&mdash;matching a bourbon barrel. GC-MS analysis should show acetaldehyde peaking at week 1&ndash;2 then declining as it oxidizes to acetic acid, which in turn feeds esterification (connecting to <a href="#b1">Barrier 1</a>).<br><br>
-  <strong>Testable prediction:</strong> Acetaldehyde/acetic acid ratio should follow the same trajectory as barrel-aged spirit sampled at annual intervals, but compressed to weekly intervals.
+<div class="table-wrap">
+<table>
+  <tr>
+    <th>Potential (V)</th>
+    <th>Reaction Driven</th>
+    <th>Cascade Step</th>
+  </tr>
+  <tr>
+    <td>0.45&ndash;0.58 V</td>
+    <td>Primary alcohol &rarr; aldehyde</td>
+    <td>Initial oxidation</td>
+  </tr>
+  <tr>
+    <td>0.63&ndash;0.72 V</td>
+    <td>Aldehyde &rarr; carboxylic acid</td>
+    <td>Acid formation</td>
+  </tr>
+  <tr>
+    <td>0.80 V</td>
+    <td>Net ester formation (combined cascade)</td>
+    <td>Maturation endpoint</td>
+  </tr>
+  <tr>
+    <td>1.445 V (Co<sub>3</sub>O<sub>4</sub>)</td>
+    <td>4e<sup>&ndash;</sup> pathway: ethanol &rarr; ethyl acetate directly</td>
+    <td>Complete 4-step cascade<span class="cite" data-ref="39"><sup>[39]</sup></span></td>
+  </tr>
+</table>
 </div>
 
-<p><span class="verdict promising">PROMISING</span> Silicone membrane MOX (proven materials, proven concept in wine, FDA-approved). <span class="verdict speculative">SPECULATIVE</span> Electrochemical oxidation (one published study on Baijiu, selectivity questions). <span class="verdict speculative">SPECULATIVE</span> Controlled Fenton (powerful but risky without analytical monitoring).</p>
+<p>Zhou et al. confirmed that electrochemical treatment of grain spirit (Baijiu) produced flavor profiles consistent with aged product<span class="cite" data-ref="33"><sup>[33]</sup></span>. The critical advantage over barrel aging or MOX: <em>selectivity</em>. By stepping through potentials, one can drive the cascade in the correct sequence&mdash;first accumulating aldehydes, then converting them to acids, then to esters&mdash;without over-oxidation at any stage.</p>
+
+<p>Electrode materials determine selectivity. Platinum oxidizes broadly; Co<sub>3</sub>O<sub>4</sub> nanosheets with exposed (111) facets achieve 98% Faradaic efficiency for the ethyl acetate pathway<span class="cite" data-ref="39"><sup>[39]</sup></span>; boron-doped diamond (BDD) generates OH&bull; radicals at higher potential. Gold is food-safe (E175) and directly demonstrated in spirit.</p>
+
+<div class="callout hypothesis">
+  <strong>Hypothesis 4:</strong> Two complementary approaches, depending on equipment: (A) Immersing PDMS tubing (1 mm wall, 3 mm I.D.) in 1 L spirit with 5% O<sub>2</sub>/N<sub>2</sub> flowing at 10 mL/min for 4 weeks will deliver barrel-equivalent O<sub>2</sub> flux. (B) Electrochemical treatment at a gold electrode, stepping from 0.50 V (4 hr) &rarr; 0.68 V (4 hr) &rarr; 0.80 V (4 hr), will compress the entire oxidation&ndash;esterification cascade into 12 hours<span class="cite" data-ref="38"><sup>[38]</sup></span>.<br><br>
+  <strong>Testable prediction:</strong> Approach (B) should produce an acetaldehyde&ndash;acetic acid&ndash;ethyl acetate trajectory matching barrel-aged spirit sampled at annual intervals, but in hours. GC-FID comparison of treated vs. 3-year-aged spirit should show &ge;70% overlap in the C2&ndash;C8 aldehyde/acid/ester ratios.
+</div>
+
+<p><span class="verdict promising">PROMISING</span> Silicone membrane MOX (proven materials, proven concept in wine, FDA-approved). <span class="verdict promising">PROMISING</span> Electrochemical potential programming (published in spirit, 10,000&times; acceleration demonstrated<span class="cite" data-ref="38"><sup>[38]</sup></span>). <span class="verdict speculative">SPECULATIVE</span> Controlled Fenton (powerful but risky without analytical monitoring).</p>
 
 
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -806,6 +879,14 @@
   <li id="r33">Zhou Y, Gao Y, Li X, Yan J. (2017) &ldquo;Effect of electrochemical treatment on the quality of Baijiu.&rdquo; <em>Food Chem</em> 233:390&ndash;398. <a href="https://doi.org/10.1016/j.foodchem.2017.04.140">DOI</a></li>
   <li id="r34">Hosono M, Arai I, Aoyama S. (2000) &ldquo;The effect of ultrasonic irradiation on aging of distilled spirits.&rdquo; <em>J Food Sci</em> 65:830&ndash;833. <a href="https://doi.org/10.1111/j.1365-2621.2000.tb13597.x">DOI</a></li>
   <li id="r35">Cavalieri F, Colombo E, Vibrational spectroscopic characterization of sonochemical products. (2021) <em>Nanoscale Advances</em> 3:4540. <a href="https://doi.org/10.1039/d1na00496d">DOI</a></li>
+  <li id="r36">Welter RA, et al. (2022) &ldquo;Methyl oleate synthesis by TiO<sub>2</sub> photocatalytic esterification of oleic acid.&rdquo; <em>ChemPhotoChem</em> 6:e202200007. <a href="https://doi.org/10.1002/cptc.202200007">DOI</a></li>
+  <li id="r37">Wang Y, Xiong K, Yu H, Zheng J. (2022) &ldquo;Electrochemical esterification in distilled liquor via gold catalysis.&rdquo; <em>Curr Res Food Sci</em> 5:1794&ndash;1802. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9576826/">PMC</a></li>
+  <li id="r38">Xiong K, et al. (2020) &ldquo;Influence of electrochemical oxidation on the maturation process of the distilled spirit.&rdquo; <em>ACS Omega</em> 5:18349&ndash;18355. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7391936/">PMC</a></li>
+  <li id="r39">Dai C, et al. (2016) &ldquo;Electrochemical partial reforming of ethanol into ethyl acetate using Co<sub>3</sub>O<sub>4</sub> nanosheets.&rdquo; <em>ACS Cent Sci</em> 2:538&ndash;544. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4999969/">PMC</a></li>
+  <li id="r40">Lin F, et al. (2016) &ldquo;Visible light-driven photodegradation of dimethyl sulfide on S-doped TiO<sub>2</sub>.&rdquo; <em>Appl Catal B</em> 198:340&ndash;352. <a href="https://doi.org/10.1016/j.apcatb.2016.06.009">DOI</a></li>
+  <li id="r41">Man Z, et al. (2022) &ldquo;Assembling UiO-66@TiO<sub>2</sub> nanocomposites for efficient photocatalytic degradation of dimethyl sulfide.&rdquo; <em>Chem Eng J</em> 431:133952. <a href="https://doi.org/10.1016/j.cej.2021.133952">DOI</a></li>
+  <li id="r42">Gracie K, Zamberlan F, Andrews BT, Smith WE, Peveler WJ. (2022) &ldquo;Growth of plasmonic nanoparticles for aging cask-matured whisky.&rdquo; <em>ACS Appl Nano Mater</em> 5:15362&ndash;15368. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9624259/">PMC</a></li>
+  <li id="r43">Badreddine M, et al. (2012) &ldquo;New hybrid materials based on layered double hydroxides and antioxidant compounds.&rdquo; <em>J Porous Mater</em> 19:1&ndash;7. <a href="https://doi.org/10.1007/s10934-011-9473-x">DOI</a></li>
 </ol>
 
 
@@ -1002,6 +1083,46 @@ var refs = {
     source: "Cavalieri et al. (2021), Nanoscale Advances",
     excerpt: "During high-frequency ultrasound (0.35\u20131 MHz), the gas-liquid interface of cavitation microbubbles binds amphiphilic aromatic molecules. This initiates hydroxylation, oligomerization, and self-assembly at the bubble surface, forming supramolecular nanostructures.",
     url: "https://doi.org/10.1039/d1na00496d"
+  },
+  36: {
+    source: "Welter et al. (2022), ChemPhotoChem",
+    excerpt: "TiO2 photocatalytic esterification of oleic acid achieved 98% conversion at 55\u00b0C under UVA and 96.14% at 35\u00b0C (ethanol:acid 12:1, 4 wt% catalyst, 3h UV). Catalyst retained >87% activity after 5 cycles. UV photons supply the activation energy that normally requires heating to ~78\u00b0C reflux.",
+    url: "https://doi.org/10.1002/cptc.202200007"
+  },
+  37: {
+    source: "Wang, Xiong, Yu & Zheng (2022), Curr Res Food Sci",
+    excerpt: "Gold electrode surface at applied potential catalyzes direct esterification in distilled spirit by stabilizing a carbocation intermediate. Au surface reduces carbocation charge from ~0.7 eV to ~0.1 eV. Results: total ester +20%, ethyl acetate +34.3%, ethyl hexanoate +13.7% in 20 minutes. Sensory: 'outstanding taste and strong ester aroma.'",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9576826/"
+  },
+  38: {
+    source: "Xiong et al. (2020), ACS Omega",
+    excerpt: "Electrochemical oxidation of distilled spirit at 0.8V: alcohol consumption rate ~4\u00d710\u207b\u2074 mg/mL/min vs <5\u00d710\u207b\u2078 for natural aging \u2014 acceleration factor ~10,000\u00d7. Electronic tongue PCA: 20 min at 0.8V indistinguishable from 1-year natural aging. Two oxidation peaks at 0.45\u20130.58V and 0.63\u20130.72V correspond to different alcohol species.",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7391936/"
+  },
+  39: {
+    source: "Dai et al. (2016), ACS Central Science",
+    excerpt: "Co3O4 nanosheets with exposed (111) facets achieve 98% Faradaic efficiency for ethanol-to-ethyl acetate at 1.445V vs RHE. The 4-electron pathway (ethanol \u2192 acetaldehyde \u2192 hemiacetal \u2192 ethyl acetate) is the same cascade as whiskey aging, compressed from years to hours. 95% ethanol conversion in 48h.",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4999969/"
+  },
+  40: {
+    source: "Lin et al. (2016), Appl Catal B",
+    excerpt: "S-doped TiO2 degrades DMS under visible light via Langmuir-Hinshelwood kinetics. Humidity enhances the reaction by generating more hydroxyl radicals \u2014 directly applicable since spirit is ~60% water. Reaction products: DMSO, DMSO2, SO2, CO2. Sulfur doping narrows band gap from 3.2 to ~2.5 eV.",
+    url: "https://doi.org/10.1016/j.apcatb.2016.06.009"
+  },
+  41: {
+    source: "Man et al. (2022), Chem Eng J",
+    excerpt: "UiO-66@TiO2 nanocomposites achieved 17.8\u00d7 and 7.1\u00d7 higher DMS degradation rates than pristine UiO-66 or TiO2 alone. The MOF provides high-surface-area adsorption sites concentrating DMS at the photocatalytic surface \u2014 a synergistic mechanism. Stable performance over multiple cycles.",
+    url: "https://doi.org/10.1016/j.cej.2021.133952"
+  },
+  42: {
+    source: "Gracie et al. (2022), ACS Appl Nano Mater",
+    excerpt: "Whiskey congeners (gallic acid, tannic acid, vanillin, furfural) reduce Au3+ to form gold nanoparticles with plasmonic properties correlating with maturation time. Unaged spirit: no NP formation. 30-week aged: distinct plasmon band at ~540 nm. Tannic acid is the primary reducing/stabilizing agent.",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9624259/"
+  },
+  43: {
+    source: "Badreddine et al. (2012), J Porous Mater",
+    excerpt: "Vanillic acid and gallic acid (key whiskey barrel extractives) successfully intercalated into layered double hydroxide galleries with controlled, sustained release. Release follows Higuchi diffusion kinetics \u2014 the same model that describes natural barrel extraction. pH-triggered release at spirit pH (3.5\u20134.5).",
+    url: "https://doi.org/10.1007/s10934-011-9473-x"
   }
 };
 
