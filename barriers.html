@@ -498,6 +498,8 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <strong>Home testability:</strong> A basic PEF setup is achievable with a bench power supply (0&ndash;30V DC, ~$40), stainless steel mesh electrodes, and a glass jar. At 5 cm electrode spacing, 1.2 kV/cm requires 6 kV&mdash;this exceeds bench supply range. However, the sustained EF approach (1 kV/cm AC) at 5 cm spacing requires only 500 V, achievable with a neon sign transformer ($25 surplus). <strong>Cost: ~$30&ndash;$60. Safety: high-voltage precautions required.</strong>
 </div>
 
+<p><strong>DC Iontophoresis: sustained extraction via electroosmotic flow.</strong> Distinct from PEF (high-voltage pulses), low-voltage DC (5&ndash;10 V/cm) drives continuous electroosmotic flow through wood&rsquo;s negatively-charged pore network. Tannins at pH 3&ndash;4 carry charge &minus;0.5 to &minus;3 and migrate under the field. Quantitative Nernst-Planck modeling predicts <strong>2&ndash;4&times; extraction enhancement</strong> for singly-charged species at 10 V/cm<span class="cite" data-ref="98"><sup>[98]</sup></span>. The key limitation: oak heartwood tyloses severely restrict bulk permeability, confining electroosmotic flow to the charred/toasted surface layer (top 1&ndash;5 mm). Optimal geometry: <strong>thin oak staves (3&ndash;5 mm)</strong> sandwiched between graphite mesh electrodes, where the electrokinetic P&eacute;clet number rises to ~0.6, giving meaningful acceleration. Pairs naturally with the biochar cathode (&sect;4.11): the oak char layer itself serves as the cathode electrode while simultaneously being the extraction source.</p>
+
 <h3>1.10 pH Acidification for Ester Acceleration</h3>
 
 <p>Fischer esterification is <em>first-order in [H<sup>+</sup>]</em>: rate = k<sub>2</sub>&middot;[H<sup>+</sup>]&middot;[AcOH]&middot;[EtOH], where k<sub>2</sub> &asymp; 4.8&times;10<sup>&minus;4</sup> L&sup2;/(mol&sup2;&middot;s) at 25&deg;C, E<sub>a</sub> &asymp; 56 kJ/mol<span class="cite" data-ref="62"><sup>[62]</sup></span><span class="cite" data-ref="63"><sup>[63]</sup></span>. Since the rate depends directly on proton concentration, lowering pH from 4.0 (native whiskey) to 3.0 gives a <strong>10&times; rate increase</strong>; to 2.5 gives <strong>31.6&times;</strong>. Combining pH 3.0 with 50&deg;C heating yields an estimated <strong>80&times; acceleration</strong> vs. native conditions&mdash;compressing months of ester development into ~1.5 days.</p>
@@ -1627,6 +1629,7 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <li id="r95">An S, et al. (2022) &ldquo;Oxygen-doped biochar for selective 2-electron oxygen reduction.&rdquo; <em>Nat Commun</em>. (O-doped carbon achieves &gt;95% selectivity for H<sub>2</sub>O<sub>2</sub> vs. 47&ndash;56% for unmodified carbon.)</li>
   <li id="r96">Sigma-Aldrich/Merck. &ldquo;Molecular sieves: technical information bulletin.&rdquo; Type 3A: pore diameter 3.0 &Aring;, admits H<sub>2</sub>O (2.6 &Aring;), excludes EtOH (~4.4 &Aring;). Static water capacity 18&ndash;22 wt%. Regeneration 175&ndash;260&deg;C.</li>
   <li id="r97">Patel D, Saha B. (2021) &ldquo;Esterification of free fatty acids with methanol using heterogeneous sulfonated resin catalyst and molecular sieve 3A.&rdquo; <em>Results Eng</em>. (Conversion increased from 75.2% to 98.3% with molecular sieve water removal.)</li>
+  <li id="r98">Asp&eacute; E, Fern&aacute;ndez K. (2011) &ldquo;DC-assisted extraction: electroosmotic and electromigration transport of phenolics from pine bark.&rdquo; <em>Ind Crops Prod</em>. (MEF: 2.25&times; total phenolic extraction at 10 V/cm vs. unassisted control.)</li>
 </ol>
 
 
@@ -2133,6 +2136,11 @@ var refs = {
     source: "Patel & Saha (2021), Results Eng",
     excerpt: "Free fatty acid esterification with heterogeneous sulfonated resin catalyst: conversion increased from 75.2% (catalyst alone) to 98.3% (catalyst + molecular sieve 3A water removal). The 23 percentage-point improvement demonstrates Le Chatelier\u2019s principle applied to equilibrium-limited esterification. Molecular sieve and acid resin are chemically compatible.",
     url: "#r97"
+  },
+  98: {
+    source: "Asp\u00e9 & Fern\u00e1ndez (2011), Ind Crops Prod",
+    excerpt: "Moderate electric field (MEF) assisted extraction of total phenolics from Pinus radiata bark at 10 V/cm: 2.25\u00d7 enhancement vs. conventional extraction. Electroosmotic flow + electromigration of charged polyphenols through plant cell wall pores. DC mode outperformed AC mode. Enhancement is distance-dependent: thin samples benefit most.",
+    url: "#r98"
   }
 };
 
