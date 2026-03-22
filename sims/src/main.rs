@@ -142,6 +142,8 @@ fn main() {
     fs::write("../graphs/flash-maillard.svg", sim_flash_maillard()).unwrap();
     fs::write("../graphs/cryo-nebulized-ester.svg", sim_cryo_nebulized_ester()).unwrap();
     fs::write("../graphs/hph-oak-shear.svg", sim_hph_oak_shear()).unwrap();
+    fs::write("../graphs/emulsion-maillard.svg", sim_emulsion_maillard()).unwrap();
+    fs::write("../graphs/scco2-dual-mode.svg", sim_scco2_dual_mode()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -9347,6 +9349,356 @@ fn sim_hph_oak_shear() -> String {
         "HPH: 10\u{00d7} lower pressure than HPP but shear +", GREEN, 8, "start");
     svg += &label(ml2 + 10.0, mb2 - 18.0,
         "cavitation compensate \u{2192} triple-barrier attack", GREEN, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_emulsion_maillard() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 54 \u{2014} Emulsion-Confined Maillard Microreactors");
+
+    // Panel A: Product selectivity — bar chart comparing bulk vs microemulsion vs cubic phase
+    let ml1 = 70.0;
+    let mr1 = 340.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 320.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: Maillard Product Enhancement by Confinement", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // Y: Relative yield (1x = aqueous bulk)
+    let sy1 = |v: f64| mb1 - v / 10.0 * ph1;
+    for v in (0..=5).map(|i| i as f64 * 2.0) {
+        let y = sy1(v);
+        svg += &hline(ml1 - 3.0, ml1, y, MUTED, "0.5");
+        svg += &label(ml1 - 6.0, y + 3.0, &format!("{:.0}x", v), MUTED, 7, "end");
+        if v > 0.0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml1, y, mr1, y, GRID);
+        }
+    }
+    svg += &label(ml1 - 40.0, mt1 + ph1 / 2.0, "Rel. yield", MUTED, 8, "middle");
+
+    // Compounds: furfurylthiol, furanthiol, pyrazine, melanoidin
+    let compounds = [
+        "2-Furfurylthiol",
+        "2-Me-3-furanthiol",
+        "Methylpyrazine",
+        "Melanoidins",
+    ];
+    // Data: [bulk, microemulsion, cubic phase] — relative yields from Vauthey 2000
+    let data: [(f64, f64, f64); 4] = [
+        (1.0, 5.5, 8.0),   // furfurylthiol: strongly enhanced
+        (1.0, 4.0, 7.0),   // furanthiol: strongly enhanced
+        (1.0, 2.0, 3.0),   // pyrazine: moderately enhanced
+        (1.0, 0.6, 0.3),   // melanoidins: suppressed (desirable)
+    ];
+
+    let group_w = pw1 / compounds.len() as f64;
+    let bar_w = group_w / 4.5;
+
+    for (i, (cname, (bulk, me, cubic))) in compounds.iter().zip(data.iter()).enumerate() {
+        let gx = ml1 + i as f64 * group_w + group_w / 2.0;
+
+        // Three bars per group
+        let colors = [BLUE, ACCENT, GREEN];
+        let vals = [*bulk, *me, *cubic];
+
+        for (j, (val, col)) in vals.iter().zip(colors.iter()).enumerate() {
+            let bx = gx - 1.5 * bar_w + j as f64 * bar_w;
+            let bh = val / 10.0 * ph1;
+            svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+                rx=\"1\" fill=\"{}\" opacity=\"0.75\"/>\n",
+                bx, mb1 - bh, bar_w - 2.0, bh, col);
+        }
+
+        // X-axis label
+        svg += &label(gx, mb1 + 12.0, cname, MUTED, 7, "middle");
+    }
+
+    // Legend
+    let ly1 = mt1 + 5.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"130\" height=\"46\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml1 + pw1 - 135.0, ly1, GRID);
+    let leg1 = [
+        (BLUE, "Bulk aqueous (1x)"),
+        (ACCENT, "L(2) microemulsion"),
+        (GREEN, "Cubic phase"),
+    ];
+    for (i, (c, txt)) in leg1.iter().enumerate() {
+        let iy = ly1 + 13.0 + i as f64 * 13.0;
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"12\" height=\"8\" fill=\"{}\"/>\n",
+            ml1 + pw1 - 130.0, iy - 6.0, c);
+        svg += &label(ml1 + pw1 - 114.0, iy + 3.0, txt, TEXT, 7, "start");
+    }
+
+    // Panel B: Process diagram — flash heating + interfacial confinement
+    let ml2 = 390.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 320.0;
+    let mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: Flash + Confinement Combined Effect", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    // X: Residence time (s) — log scale 0.1 to 100
+    let sx2 = |t: f64| ml2 + (t.log10() + 1.0) / 3.0 * pw2;  // -1 to 2 → 0 to pw2
+    let time_ticks: [(f64, &str); 4] = [(0.1, "0.1"), (1.0, "1"), (10.0, "10"), (100.0, "100")];
+    for (t, lbl) in &time_ticks {
+        let x = sx2(*t);
+        svg += &vline(x, mb2, mb2 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb2 + 14.0, lbl, MUTED, 7, "middle");
+    }
+    svg += &label(ml2 + pw2 / 2.0, mb2 + 28.0, "Residence time (s)", MUTED, 8, "middle");
+
+    // Y: Flavor quality score (0-100)
+    let sy2 = |v: f64| mb2 - v / 100.0 * ph2;
+    for v in (0..=5).map(|i| i as f64 * 20.0) {
+        let y = sy2(v);
+        svg += &hline(ml2 - 3.0, ml2, y, MUTED, "0.5");
+        svg += &label(ml2 - 6.0, y + 3.0, &format!("{:.0}", v), MUTED, 7, "end");
+    }
+    svg += &label(ml2 - 28.0, mt2 + ph2 / 2.0, "Flavor score", MUTED, 7, "middle");
+
+    // Curve 1: Bulk batch (slow rise, over-reacts at long times)
+    let bulk_pts: Vec<(f64, f64)> = (1..=300).map(|i| {
+        let t = 0.1_f64 * (i as f64 / 10.0).powf(1.5);
+        let q = 80.0 * (1.0 - (-0.03_f64 * t).exp()) - 20.0 * (0.01 * t).min(1.0);
+        (sx2(t.max(0.1).min(100.0)), sy2(q.max(0.0)))
+    }).collect();
+    svg += &polyline_svg(&bulk_pts, BLUE, "1.5", &|x| x, &|y| y);
+
+    // Curve 2: Flash only (fast rise, good plateau, slight decline)
+    let flash_pts: Vec<(f64, f64)> = (1..=300).map(|i| {
+        let t = 0.1_f64 * (i as f64 / 10.0).powf(1.5);
+        let q = 85.0 * (1.0 - (-0.5_f64 * t).exp()) - 10.0 * (0.05 * t).min(1.0);
+        (sx2(t.max(0.1).min(100.0)), sy2(q.max(0.0)))
+    }).collect();
+    svg += &polyline_svg(&flash_pts, YELLOW, "1.5", &|x| x, &|y| y);
+
+    // Curve 3: Flash + emulsion confinement (highest, best plateau)
+    let combined_pts: Vec<(f64, f64)> = (1..=300).map(|i| {
+        let t = 0.1_f64 * (i as f64 / 10.0).powf(1.5);
+        let q = 95.0 * (1.0 - (-0.8_f64 * t).exp()) - 5.0 * (0.03 * t).min(1.0);
+        (sx2(t.max(0.1).min(100.0)), sy2(q.max(0.0)))
+    }).collect();
+    svg += &polyline_svg(&combined_pts, GREEN, "2.5", &|x| x, &|y| y);
+
+    // Quench window shading (0.5 - 3 s)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.12\"/>\n",
+        sx2(0.5), mt2, sx2(3.0) - sx2(0.5), ph2, GREEN);
+    svg += &label(sx2(1.2), mt2 + 12.0, "Quench window", GREEN, 7, "middle");
+
+    // Legend
+    let ly2 = mt2 + 20.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"150\" height=\"46\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        mr2 - 155.0, ly2, GRID);
+    let leg2 = [
+        (BLUE, "Bulk batch (conventional)"),
+        (YELLOW, "Flash only (\u{00a7}4.39)"),
+        (GREEN, "Flash + emulsion confined"),
+    ];
+    for (i, (c, txt)) in leg2.iter().enumerate() {
+        let iy = ly2 + 13.0 + i as f64 * 13.0;
+        svg += &hline(mr2 - 150.0, mr2 - 135.0, iy, c, "2");
+        svg += &label(mr2 - 131.0, iy + 3.0, txt, TEXT, 7, "start");
+    }
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml2 + 5.0, mb2 - 50.0, pw2 - 10.0, GRID);
+    svg += &label(ml2 + 10.0, mb2 - 32.0,
+        "Emulsion confinement: selectivity + acceleration", GREEN, 8, "start");
+    svg += &label(ml2 + 10.0, mb2 - 18.0,
+        "Flavor-active thiols UP, melanoidins DOWN", ACCENT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_scco2_dual_mode() -> String {
+    let w = 700.0;
+    let h = 480.0;
+    let mut svg = svg_header(w, h, "Fig 55 \u{2014} scCO\u{2082} Dual-Mode: Extract + Esterify");
+
+    // Panel A: Ester conversion vs CO₂ pressure
+    let ml1 = 70.0;
+    let mr1 = 340.0;
+    let mt1 = 65.0;
+    let pw1 = mr1 - ml1;
+    let ph1 = 320.0;
+    let mb1 = mt1 + ph1;
+
+    svg += &label(ml1 + pw1 / 2.0, mt1 - 8.0,
+        "A: Ester Conversion vs CO\u{2082} Pressure", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml1, mt1, pw1, ph1, MUTED);
+
+    // X: Pressure 0-200 bar
+    let sx1 = |p: f64| ml1 + p / 200.0 * pw1;
+    for p in [0, 50, 100, 150, 200] {
+        let x = sx1(p as f64);
+        svg += &vline(x, mb1, mb1 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb1 + 14.0, &format!("{}", p), MUTED, 7, "middle");
+    }
+    svg += &label(ml1 + pw1 / 2.0, mb1 + 28.0, "CO\u{2082} pressure (bar)", MUTED, 8, "middle");
+
+    // Y: Conversion % 55-80
+    let sy1 = |c: f64| mb1 - (c - 55.0) / 25.0 * ph1;
+    for v in [55, 60, 65, 70, 75, 80] {
+        let y = sy1(v as f64);
+        svg += &hline(ml1 - 3.0, ml1, y, MUTED, "0.5");
+        svg += &label(ml1 - 6.0, y + 3.0, &format!("{}%", v), MUTED, 7, "end");
+        if v > 55 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml1, y, mr1, y, GRID);
+        }
+    }
+    svg += &label(ml1 - 40.0, mt1 + ph1 / 2.0, "Conversion", MUTED, 8, "middle");
+
+    // Critical pressure line
+    let pc = 73.8; // CO₂ critical pressure
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" stroke-dasharray=\"6,4\"/>\n",
+        sx1(pc), mt1, sx1(pc), mb1, RED);
+    svg += &label(sx1(pc) + 4.0, mt1 + 12.0, "P\u{1d9c} (73.8 bar)", RED, 7, "start");
+
+    // Two-phase → single-phase shading
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.08\"/>\n",
+        ml1, mt1, sx1(pc) - ml1, ph1, ACCENT);
+    svg += &label(ml1 + (sx1(pc) - ml1) / 2.0, mb1 - 10.0, "Two-phase", MUTED, 7, "middle");
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.08\"/>\n",
+        sx1(pc), mt1, mr1 - sx1(pc), ph1, BLUE);
+    svg += &label(sx1(pc) + (mr1 - sx1(pc)) / 2.0, mb1 - 10.0, "Supercritical", MUTED, 7, "middle");
+
+    // Conversion curve: rises in two-phase, peaks near Pc, drops in supercritical
+    // Based on Chrisochoou 2001: 63% neat → 72% at Pc → ~68% in supercritical
+    let conv_pts: Vec<(f64, f64)> = (0..=200).map(|p| {
+        let pf = p as f64;
+        let conv = if pf < pc {
+            // Two-phase: rises from 63% toward 72%
+            63.0 + 9.0 * (pf / pc).powf(1.5)
+        } else {
+            // Supercritical: drops from 72% toward ~66%
+            72.0 - 6.0 * (1.0 - (-0.01_f64 * (pf - pc)).exp())
+        };
+        (sx1(pf), sy1(conv))
+    }).collect();
+    svg += &polyline_svg(&conv_pts, ACCENT, "2.5", &|x| x, &|y| y);
+
+    // Neat baseline
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" stroke-dasharray=\"4,4\"/>\n",
+        ml1, sy1(63.0), mr1, sy1(63.0), MUTED);
+    svg += &label(mr1 - 5.0, sy1(63.0) - 5.0, "Neat (63%)", MUTED, 7, "end");
+
+    // Peak annotation
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"none\" stroke=\"{}\" stroke-width=\"2\"/>\n",
+        sx1(pc), sy1(72.0), ACCENT);
+    svg += &label(sx1(pc) + 8.0, sy1(72.0) - 3.0, "72% at P\u{1d9c}", ACCENT, 9, "start");
+    svg += &label(sx1(pc) + 8.0, sy1(72.0) + 10.0, "+14% rel. to neat", GREEN, 8, "start");
+
+    // Panel B: Dual-mode schematic — what happens in scCO₂ vessel
+    let ml2 = 390.0;
+    let mr2 = 670.0;
+    let mt2 = 65.0;
+    let pw2 = mr2 - ml2;
+    let ph2 = 320.0;
+    let mb2 = mt2 + ph2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 8.0,
+        "B: Dual-Mode Process in scCO\u{2082} Vessel", TEXT, 10, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"none\" stroke=\"{}\" stroke-width=\"1\"/>\n", ml2, mt2, pw2, ph2, MUTED);
+
+    // Draw vessel schematic
+    let vx = ml2 + pw2 / 2.0;
+    let vy = mt2 + 60.0;
+    let vw = 120.0;
+    let vh = 180.0;
+
+    // Vessel body
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        rx=\"8\" fill=\"{}\" opacity=\"0.3\" stroke=\"{}\" stroke-width=\"1.5\"/>\n",
+        vx - vw / 2.0, vy, vw, vh, GRID, MUTED);
+    svg += &label(vx, vy - 5.0, "Pressure vessel", TEXT, 8, "middle");
+    svg += &label(vx, vy + 15.0, "150 bar, 45\u{00b0}C", ACCENT, 8, "middle");
+
+    // Oak chips inside vessel
+    for (ox, oy) in [(vx - 30.0, vy + 50.0), (vx + 10.0, vy + 70.0),
+                      (vx - 15.0, vy + 90.0), (vx + 25.0, vy + 110.0),
+                      (vx - 25.0, vy + 130.0), (vx + 5.0, vy + 150.0)] {
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"20\" height=\"8\" \
+            rx=\"2\" fill=\"{}\" opacity=\"0.6\" transform=\"rotate({:.0},{:.1},{:.1})\"/>\n",
+            ox, oy, ACCENT, (ox * 3.14).sin() * 20.0, ox + 10.0, oy + 4.0);
+    }
+    svg += &label(vx + vw / 2.0 + 5.0, vy + 50.0, "Oak chips", ACCENT, 7, "start");
+
+    // CO₂ + EtOH medium
+    svg += &label(vx + vw / 2.0 + 5.0, vy + 90.0, "scCO\u{2082} + 5%", BLUE, 7, "start");
+    svg += &label(vx + vw / 2.0 + 5.0, vy + 103.0, "EtOH cosolvent", BLUE, 7, "start");
+
+    // Arrows showing dual mechanism
+    let arr_y = vy + vh + 20.0;
+
+    // Left arrow: Extraction
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"2\" marker-end=\"url(#arrow-g)\"/>\n",
+        vx - 40.0, vy + vh, vx - 40.0, arr_y + 10.0, GREEN);
+
+    // Right arrow: Esterification
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"2\" marker-end=\"url(#arrow-a)\"/>\n",
+        vx + 40.0, vy + vh, vx + 40.0, arr_y + 10.0, ACCENT);
+
+    // Arrow markers
+    svg += &format!("<defs><marker id=\"arrow-g\" markerWidth=\"8\" markerHeight=\"6\" \
+        refX=\"8\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L8,3 L0,6\" fill=\"{}\"/></marker></defs>\n", GREEN);
+    svg += &format!("<defs><marker id=\"arrow-a\" markerWidth=\"8\" markerHeight=\"6\" \
+        refX=\"8\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L8,3 L0,6\" fill=\"{}\"/></marker></defs>\n", ACCENT);
+
+    // Output boxes
+    let box_y = arr_y + 15.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"80\" height=\"50\" \
+        rx=\"4\" fill=\"{}\" opacity=\"0.5\" stroke=\"{}\" stroke-width=\"1\"/>\n",
+        vx - 80.0, box_y, GRID, GREEN);
+    svg += &label(vx - 40.0, box_y + 15.0, "EXTRACTION", GREEN, 8, "middle");
+    svg += &label(vx - 40.0, box_y + 28.0, "Vanillin", TEXT, 7, "middle");
+    svg += &label(vx - 40.0, box_y + 40.0, "Oak lactones", TEXT, 7, "middle");
+
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"80\" height=\"50\" \
+        rx=\"4\" fill=\"{}\" opacity=\"0.5\" stroke=\"{}\" stroke-width=\"1\"/>\n",
+        vx, box_y, GRID, ACCENT);
+    svg += &label(vx + 40.0, box_y + 15.0, "ESTERIFICATION", ACCENT, 8, "middle");
+    svg += &label(vx + 40.0, box_y + 28.0, "Ethyl acetate", TEXT, 7, "middle");
+    svg += &label(vx + 40.0, box_y + 40.0, "+14% free bonus", GREEN, 7, "middle");
+
+    // Key insight
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"38\" rx=\"4\" fill=\"{}\" opacity=\"0.85\"/>\n",
+        ml2 + 5.0, mb2 - 50.0, pw2 - 10.0, GRID);
+    svg += &label(ml2 + 10.0, mb2 - 32.0,
+        "Every scCO\u{2082} extraction has been silently", ACCENT, 8, "start");
+    svg += &label(ml2 + 10.0, mb2 - 18.0,
+        "driving ester formation \u{2014} unrecognized dual mode", ACCENT, 8, "start");
 
     svg.push_str("</svg>");
     svg
