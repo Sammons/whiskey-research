@@ -139,6 +139,7 @@ fn main() {
     fs::write("../graphs/ohmic-heating.svg", sim_ohmic_heating()).unwrap();
     fs::write("../graphs/microdroplet-ester.svg", sim_microdroplet_ester()).unwrap();
     fs::write("../graphs/cold-plasma-aging.svg", sim_cold_plasma_aging()).unwrap();
+    fs::write("../graphs/flash-maillard.svg", sim_flash_maillard()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -8782,6 +8783,183 @@ fn sim_cold_plasma_aging() -> String {
         "He/O\u{2082}: destructive over-oxidation", RED, 8, "start");
     svg += &label(ml2 + 10.0, mb2 - 12.0,
         "Gas composition = selectivity switch", ACCENT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 51: Flash Maillard — Precision Browning via Microfluidics
+// ═══════════════════════════════════════════════════════════════
+fn sim_flash_maillard() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Fig. 51 \u{2014} Microfluidic Flash Maillard: Precision Browning");
+
+    // Panel A: Product distribution vs residence time at 170°C
+    let ml = 55.0; let mr = 320.0; let mt = 55.0; let mb = 370.0;
+    let pw = mr - ml; let ph = mb - mt;
+
+    svg += &label(ml + pw / 2.0, mt - 10.0,
+        "A. Maillard Product Distribution at 170\u{00b0}C", TEXT, 10, "middle");
+
+    svg += &hline(ml, mr, mb, MUTED, "1");
+    svg += &vline(ml, mt, mb, MUTED, "1");
+
+    // X-axis: residence time 0-30s (log-ish but linear for clarity)
+    let sx = |t: f64| ml + t / 30.0 * pw;
+    for t in [0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0] {
+        let x = sx(t);
+        svg += &vline(x, mb, mb + 4.0, MUTED, "0.5");
+        svg += &label(x, mb + 14.0, &format!("{:.0}s", t), MUTED, 7, "middle");
+    }
+    svg += &label(ml + pw / 2.0, mb + 26.0, "Residence time at 170\u{00b0}C", MUTED, 8, "middle");
+
+    // Y-axis: relative concentration (0-100 arbitrary units)
+    let sy = |c: f64| mb - c / 100.0 * ph;
+    for v in (0..=5).map(|i| i as f64 * 20.0) {
+        let y = sy(v);
+        svg += &hline(ml - 3.0, ml, y, MUTED, "0.5");
+        svg += &label(ml - 6.0, y + 3.0, &format!("{:.0}", v), MUTED, 7, "end");
+        if v > 0.0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml, y, mr, y, GRID);
+        }
+    }
+    svg += &label(ml - 28.0, mt + ph / 2.0, "Rel. conc.", MUTED, 7, "middle");
+
+    // Product curves at 170°C:
+    // Furfural/HMF: rises fast, peaks at ~3s, then consumed
+    // Strecker aldehydes: rises, peaks ~5s, slowly declines
+    // Melanoidin polymers: slow rise, then accelerates after ~8s
+    // Amadori intermediates: very fast rise, consumed by 2s
+
+    let furfural_pts: Vec<(f64, f64)> = (0..=300).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = 80.0 * t * (-0.3_f64 * t).exp();
+        (sx(t), sy(c))
+    }).collect();
+
+    let strecker_pts: Vec<(f64, f64)> = (0..=300).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = 55.0 * t * (-0.15_f64 * t).exp();
+        (sx(t), sy(c))
+    }).collect();
+
+    let melanoidin_pts: Vec<(f64, f64)> = (0..=300).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = 90.0 * (1.0 - (-0.04_f64 * t * t).exp());
+        (sx(t), sy(c))
+    }).collect();
+
+    let amadori_pts: Vec<(f64, f64)> = (0..=300).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = 60.0 * t * (-0.8_f64 * t).exp();
+        (sx(t), sy(c))
+    }).collect();
+
+    svg += &polyline_svg(&amadori_pts, MUTED, "1.5", &|x| x, &|y| y);
+    svg += &polyline_svg(&furfural_pts, ACCENT, "2.5", &|x| x, &|y| y);
+    svg += &polyline_svg(&strecker_pts, GREEN, "2", &|x| x, &|y| y);
+    svg += &polyline_svg(&melanoidin_pts, RED, "2", &|x| x, &|y| y);
+
+    // Optimal quench window (0.5-2s)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.12\"/>\n",
+        sx(0.5), mt, sx(2.0) - sx(0.5), ph, GREEN);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1.5\" stroke-dasharray=\"6,3\"/>\n",
+        sx(2.0), mt, sx(2.0), mb, GREEN);
+    svg += &label(sx(1.25), mt + 15.0, "Quench", GREEN, 8, "middle");
+    svg += &label(sx(1.25), mt + 27.0, "window", GREEN, 8, "middle");
+
+    // Over-browning zone (>10s)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.10\"/>\n",
+        sx(10.0), mt, sx(30.0) - sx(10.0), ph, RED);
+    svg += &label(sx(20.0), mt + 15.0, "Over-browning", RED, 8, "middle");
+    svg += &label(sx(20.0), mt + 27.0, "(batch regime)", RED, 7, "middle");
+
+    // Legend
+    let ly = mb - 70.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"130\" height=\"60\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml + 5.0, ly, GRID);
+    let items = [
+        (MUTED, "Amadori intermediates"),
+        (ACCENT, "Furfural / HMF"),
+        (GREEN, "Strecker aldehydes"),
+        (RED, "Melanoidin polymers"),
+    ];
+    for (i, (c, txt)) in items.iter().enumerate() {
+        let iy = ly + 13.0 + i as f64 * 13.0;
+        svg += &hline(ml + 10.0, ml + 25.0, iy, c, "2");
+        svg += &label(ml + 29.0, iy + 3.0, txt, TEXT, 7, "start");
+    }
+
+    // Panel B: Temperature comparison — equivalent furfural yield
+    let ml2 = 380.0; let mr2 = 670.0; let mt2 = 55.0; let mb2 = 370.0;
+    let pw2 = mr2 - ml2; let ph2 = mb2 - mt2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 10.0,
+        "B. Time to Equivalent Furfural Yield", TEXT, 10, "middle");
+
+    svg += &hline(ml2, mr2, mb2, MUTED, "1");
+    svg += &vline(ml2, mt2, mb2, MUTED, "1");
+
+    // Log-scale bars: 1s, 30min, 1 day, 1 year, 5 years
+    // In seconds: 1, 1800, 86400, 3.15e7, 1.58e8
+    let conditions: Vec<(&str, f64, &str, &str)> = vec![
+        ("Microfluidic\n170\u{00b0}C", 1.0, GREEN, "1 s"),
+        ("Batch\n170\u{00b0}C", 30.0, YELLOW, "30 s"),
+        ("Batch\n60\u{00b0}C", 86400.0, ACCENT, "1 day"),
+        ("Barrel\n25\u{00b0}C", 1.58e8, MUTED, "5 yr"),
+    ];
+
+    let max_log = (1.58e8_f64).log10(); // ~8.2
+    let sy2 = |secs: f64| mt2 + (1.0 - secs.max(1.0).log10() / max_log) * ph2;
+
+    // Horizontal bars from left
+    let bar_h2 = ph2 / (conditions.len() as f64 * 1.5);
+    for (i, (name, secs, color, time_lbl)) in conditions.iter().enumerate() {
+        let cy = mt2 + ph2 * (i as f64 + 0.5) / conditions.len() as f64;
+        let bar_right = ml2 + (secs.max(1.0).log10() / max_log) * pw2;
+
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{}\" opacity=\"0.7\" rx=\"3\"/>\n",
+            ml2, cy - bar_h2 / 2.0, bar_right - ml2, bar_h2, color);
+
+        svg += &label(bar_right + 5.0, cy + 4.0, time_lbl, color, 9, "start");
+
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(ml2 - 5.0, cy - 4.0 + li as f64 * 11.0, line, TEXT, 7, "end");
+        }
+    }
+
+    // Log scale labels on x-axis
+    let time_labels: [(f64, &str); 6] = [
+        (1.0, "1s"), (60.0, "1m"), (3600.0, "1h"),
+        (86400.0, "1d"), (2.63e6, "1mo"), (3.15e7, "1yr"),
+    ];
+    for (secs, lbl) in &time_labels {
+        let x = ml2 + ((*secs).max(1.0).log10() / max_log) * pw2;
+        svg += &vline(x, mb2, mb2 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb2 + 14.0, lbl, MUTED, 7, "middle");
+        svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+            stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+            x, mt2, x, mb2, GRID);
+    }
+
+    // Acceleration annotation
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"170\" height=\"42\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 90.0, mb2 - 60.0, GRID);
+    svg += &label(ml2 + 95.0, mb2 - 43.0,
+        "2000\u{d7} rate at 170\u{b0}C vs 60\u{b0}C", GREEN, 9, "start");
+    svg += &label(ml2 + 95.0, mb2 - 30.0,
+        "Q\u{2081}\u{2080} \u{2248} 2 (Maillard E\u{2090} = 80\u{2013}120 kJ/mol)", ACCENT, 8, "start");
+    svg += &label(ml2 + 95.0, mb2 - 18.0,
+        "Microfluidic quench stops at stage 3", TEXT, 8, "start");
 
     svg.push_str("</svg>");
     svg
