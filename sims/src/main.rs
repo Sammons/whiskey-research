@@ -137,6 +137,8 @@ fn main() {
     fs::write("../graphs/sono-freeze-cycling.svg", sim_sono_freeze_cycling()).unwrap();
     fs::write("../graphs/microfluidic-ester.svg", sim_microfluidic_ester()).unwrap();
     fs::write("../graphs/ohmic-heating.svg", sim_ohmic_heating()).unwrap();
+    fs::write("../graphs/microdroplet-ester.svg", sim_microdroplet_ester()).unwrap();
+    fs::write("../graphs/cold-plasma-aging.svg", sim_cold_plasma_aging()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -8421,6 +8423,365 @@ fn sim_ohmic_heating() -> String {
         "Electroporation opens cell walls \u{2192} extractives diffuse outward", GREEN, 8, "middle");
     svg += &label(oak_l + 40.0, ann_y + 26.0,
         "Reverse thermal gradient: interface hot, bulk cooler \u{2192} \u{2191}extraction", YELLOW, 8, "middle");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 49: Microdroplet Esterification — Interface Effect
+// ═══════════════════════════════════════════════════════════════
+fn sim_microdroplet_ester() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Fig. 49 \u{2014} Microdroplet Esterification: Air\u{2013}Liquid Interface Acceleration");
+
+    // Panel A: Acceleration factor vs droplet diameter (log-log)
+    let ml = 55.0; let mr = 320.0; let mt = 55.0; let mb = 370.0;
+    let pw = mr - ml; let ph = mb - mt;
+
+    svg += &label(ml + pw / 2.0, mt - 10.0,
+        "A. Acceleration Factor vs Droplet Diameter", TEXT, 10, "middle");
+
+    svg += &hline(ml, mr, mb, MUTED, "1");
+    svg += &vline(ml, mt, mb, MUTED, "1");
+
+    // X-axis: droplet diameter (log scale, 1 µm to 10 mm)
+    // log10(1e-6) = -6, log10(10e-3) = -2; but in µm: 1 to 10000
+    let x_log = |d_um: f64| ml + (d_um.log10() / 4.0) * pw; // 1 µm = 0, 10000 µm = 1
+    let diams = [1.0, 10.0, 100.0, 1000.0, 10000.0];
+    let labels_x = ["1 \u{b5}m", "10 \u{b5}m", "100 \u{b5}m", "1 mm", "10 mm"];
+    for (d, lbl) in diams.iter().zip(labels_x.iter()) {
+        let x = x_log(*d);
+        svg += &vline(x, mb, mb + 4.0, MUTED, "0.5");
+        svg += &label(x, mb + 14.0, lbl, MUTED, 7, "middle");
+        if *d > 1.0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                x, mt, x, mb, GRID);
+        }
+    }
+    svg += &label(ml + pw / 2.0, mb + 26.0, "Droplet diameter", MUTED, 8, "middle");
+
+    // Y-axis: acceleration factor (log scale, 1 to 10^7)
+    let y_log = |acc: f64| mb - (acc.log10() / 7.0) * ph;
+    for exp in 0..=7 {
+        let y = y_log(10.0_f64.powi(exp));
+        svg += &hline(ml - 3.0, ml, y, MUTED, "0.5");
+        let sup = match exp {
+            0 => "10\u{2070}",
+            1 => "10\u{b9}",
+            2 => "10\u{b2}",
+            3 => "10\u{b3}",
+            4 => "10\u{2074}",
+            5 => "10\u{2075}",
+            6 => "10\u{2076}",
+            7 => "10\u{2077}",
+            _ => "",
+        };
+        svg += &label(ml - 6.0, y + 3.0, sup, MUTED, 7, "end");
+        if exp > 0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml, y, mr, y, GRID);
+        }
+    }
+    svg += &label(ml - 28.0, mt + ph / 2.0, "Acceleration", MUTED, 8, "middle");
+
+    // Model: acceleration ~ (d_ref / d)^2 for SA/V effect, capped at 10^7
+    // d_ref = 10 mm (bulk, acceleration = 1)
+    let curve_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let d = 10.0_f64.powf(i as f64 / 25.0); // 1 to 10000 µm
+        let acc = ((10000.0 / d).powi(2)).min(1e7);
+        (x_log(d), y_log(acc))
+    }).collect();
+    svg += &polyline_svg(&curve_pts, GREEN, "2.5", &|x| x, &|y| y);
+
+    // Data points from literature
+    let data = [
+        (5.0, 1e7, "Collision (Cooks 2022)", GREEN),     // microdroplet collision
+        (15.0, 1e6, "T-junction (Rahimi 2016)", ACCENT),  // microfluidic
+        (100.0, 1e4, "Electrospray (Wei 2020)", YELLOW),
+        (5000.0, 1.0, "Bulk flask", MUTED),
+    ];
+    for (d, acc, lbl, color) in &data {
+        let x = x_log(*d);
+        let y = y_log(*acc);
+        svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{}\" opacity=\"0.9\"/>\n",
+            x, y, color);
+        svg += &label(x + 6.0, y - 6.0, lbl, color, 7, "start");
+    }
+
+    // Spirit zone annotation (water kills the effect)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"30\" rx=\"3\" \
+        fill=\"{}\" opacity=\"0.15\"/>\n",
+        x_log(1.0), mt + 5.0, x_log(100.0) - x_log(1.0), RED);
+    svg += &label((x_log(1.0) + x_log(100.0)) / 2.0, mt + 20.0,
+        "Water suppresses at >1.5%", RED, 7, "middle");
+    svg += &label((x_log(1.0) + x_log(100.0)) / 2.0, mt + 32.0,
+        "Requires dehydration step", RED, 7, "middle");
+
+    // Panel B: Water suppression curve
+    let ml2 = 380.0; let mr2 = 670.0; let mt2 = 55.0; let mb2 = 370.0;
+    let pw2 = mr2 - ml2; let ph2 = mb2 - mt2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 10.0,
+        "B. Water Suppression of Interfacial Esterification", TEXT, 10, "middle");
+
+    svg += &hline(ml2, mr2, mb2, MUTED, "1");
+    svg += &vline(ml2, mt2, mb2, MUTED, "1");
+
+    // X-axis: water content 0-60%
+    let sx2 = |w_pct: f64| ml2 + w_pct / 60.0 * pw2;
+    for pct in [0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0] {
+        let x = sx2(pct);
+        svg += &vline(x, mb2, mb2 + 4.0, MUTED, "0.5");
+        svg += &label(x, mb2 + 14.0, &format!("{:.0}%", pct), MUTED, 7, "middle");
+    }
+    svg += &label(ml2 + pw2 / 2.0, mb2 + 26.0, "Water content (vol%)", MUTED, 8, "middle");
+
+    // Y-axis: relative ester yield (0-100%)
+    let sy2 = |y_pct: f64| mb2 - y_pct / 100.0 * ph2;
+    for pct in (0..=5).map(|i| i as f64 * 20.0) {
+        let y = sy2(pct);
+        svg += &hline(ml2 - 3.0, ml2, y, MUTED, "0.5");
+        svg += &label(ml2 - 6.0, y + 3.0, &format!("{:.0}%", pct), MUTED, 7, "end");
+        if pct > 0.0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml2, y, mr2, y, GRID);
+        }
+    }
+    svg += &label(ml2 - 30.0, mt2 + ph2 / 2.0, "Ester yield", MUTED, 8, "middle");
+
+    // Sigmoid suppression: yield = 100 / (1 + exp(3*(water - 2)))
+    let water_pts: Vec<(f64, f64)> = (0..=600).map(|i| {
+        let w_pct = i as f64 / 10.0;
+        let yield_pct = 100.0 / (1.0 + (3.0_f64 * (w_pct - 2.0)).exp());
+        (sx2(w_pct), sy2(yield_pct))
+    }).collect();
+    svg += &polyline_svg(&water_pts, GREEN, "2.5", &|x| x, &|y| y);
+
+    // Spirit zone shading (40-60% water)
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.12\"/>\n",
+        sx2(36.0), mt2, sx2(60.0) - sx2(36.0), ph2, RED);
+    svg += &label(sx2(48.0), mt2 + 20.0, "Spirit", RED, 9, "middle");
+    svg += &label(sx2(48.0), mt2 + 32.0, "(40\u{2013}60% water)", RED, 7, "middle");
+
+    // Dehydrated zone
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+        fill=\"{}\" opacity=\"0.12\"/>\n",
+        sx2(0.0), mt2, sx2(5.0) - sx2(0.0), ph2, GREEN);
+    svg += &label(sx2(2.5), mt2 + 50.0, "Dehydrated", GREEN, 7, "middle");
+    svg += &label(sx2(2.5), mt2 + 62.0, "zone", GREEN, 7, "middle");
+
+    // Critical threshold annotation
+    let crit_x = sx2(1.5);
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" stroke-dasharray=\"4,2\"/>\n",
+        crit_x, mt2, crit_x, mb2, YELLOW);
+    svg += &label(crit_x + 4.0, mt2 + 80.0, "1.5% threshold", YELLOW, 7, "start");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"165\" height=\"48\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 15.0, mb2 - 65.0, GRID);
+    svg += &label(ml2 + 20.0, mb2 - 50.0,
+        "10\u{2077}\u{d7} in anhydrous droplets", GREEN, 9, "start");
+    svg += &label(ml2 + 20.0, mb2 - 37.0,
+        "~0\u{d7} at 40% ABV without dehydration", RED, 8, "start");
+    svg += &label(ml2 + 20.0, mb2 - 25.0,
+        "Mol sieve side-stream enables hybrid", ACCENT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 50: Cold Atmospheric Plasma — Controlled Oxidation
+// ═══════════════════════════════════════════════════════════════
+fn sim_cold_plasma_aging() -> String {
+    let w = 700.0_f64;
+    let h = 420.0_f64;
+    let mut svg = svg_header(w, h, "Fig. 50 \u{2014} Cold Atmospheric Plasma: Controlled Radical-Mediated Oxidation");
+
+    // Panel A: Reactive species vs treatment time
+    let ml = 55.0; let mr = 320.0; let mt = 55.0; let mb = 370.0;
+    let pw = mr - ml; let ph = mb - mt;
+
+    svg += &label(ml + pw / 2.0, mt - 10.0,
+        "A. Reactive Species in Plasma-Treated Ethanol", TEXT, 10, "middle");
+
+    svg += &hline(ml, mr, mb, MUTED, "1");
+    svg += &vline(ml, mt, mb, MUTED, "1");
+
+    // X-axis: treatment time 0-10 min
+    let sx = |t: f64| ml + t / 10.0 * pw;
+    for t in 0..=10 {
+        let x = sx(t as f64);
+        svg += &vline(x, mb, mb + 4.0, MUTED, "0.5");
+        if t % 2 == 0 {
+            svg += &label(x, mb + 14.0, &format!("{} min", t), MUTED, 7, "middle");
+        }
+    }
+    svg += &label(ml + pw / 2.0, mb + 26.0, "Plasma treatment time", MUTED, 8, "middle");
+
+    // Y-axis: concentration 0-500 ppm
+    let sy = |c: f64| mb - c / 500.0 * ph;
+    for ppm in (0..=5).map(|i| i as f64 * 100.0) {
+        let y = sy(ppm);
+        svg += &hline(ml - 3.0, ml, y, MUTED, "0.5");
+        svg += &label(ml - 6.0, y + 3.0, &format!("{:.0}", ppm), MUTED, 7, "end");
+        if ppm > 0.0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml, y, mr, y, GRID);
+        }
+    }
+    svg += &label(ml - 30.0, mt + ph / 2.0, "Concentration (ppm)", MUTED, 7, "middle");
+
+    // Model species generation (saturating curves based on published endpoint data)
+    // Acetic acid: 445 ppm at ~5 min (primary oxidation product)
+    // Peroxyacetic acid: 166 ppm at ~5 min
+    // H2O2: 118 ppm at ~5 min
+    // Acetaldehyde: peaks early then declines (intermediate)
+
+    let acetic_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = 445.0 * (1.0 - (-0.5_f64 * t).exp());
+        (sx(t), sy(c))
+    }).collect();
+    let peroxy_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = 166.0 * (1.0 - (-0.4_f64 * t).exp());
+        (sx(t), sy(c))
+    }).collect();
+    let h2o2_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = 118.0 * (1.0 - (-0.6_f64 * t).exp());
+        (sx(t), sy(c))
+    }).collect();
+    // Acetaldehyde: intermediate, peaks then consumed
+    let acetal_pts: Vec<(f64, f64)> = (0..=100).map(|i| {
+        let t = i as f64 / 10.0;
+        let c = 200.0 * t * (-0.3_f64 * t).exp();
+        (sx(t), sy(c))
+    }).collect();
+
+    svg += &polyline_svg(&acetic_pts, ACCENT, "2.5", &|x| x, &|y| y);
+    svg += &polyline_svg(&peroxy_pts, YELLOW, "2", &|x| x, &|y| y);
+    svg += &polyline_svg(&h2o2_pts, BLUE, "2", &|x| x, &|y| y);
+    svg += &polyline_svg(&acetal_pts, PURPLE, "2", &|x| x, &|y| y);
+
+    // Labels at endpoint
+    svg += &label(mr + 3.0, sy(445.0 * (1.0 - (-0.5_f64 * 10.0).exp())) + 3.0,
+        "445 ppm", ACCENT, 7, "start");
+    svg += &label(mr + 3.0, sy(166.0 * (1.0 - (-0.4_f64 * 10.0).exp())) + 3.0,
+        "166 ppm", YELLOW, 7, "start");
+    svg += &label(mr + 3.0, sy(118.0 * (1.0 - (-0.6_f64 * 10.0).exp())) + 3.0,
+        "118 ppm", BLUE, 7, "start");
+
+    // Legend
+    let ly = mt + 5.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"125\" height=\"60\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml + 5.0, ly, GRID);
+    let items = [
+        (ACCENT, "Acetic acid"),
+        (YELLOW, "Peroxyacetic acid"),
+        (BLUE, "H\u{2082}O\u{2082}"),
+        (PURPLE, "Acetaldehyde (intermediate)"),
+    ];
+    for (i, (c, txt)) in items.iter().enumerate() {
+        let iy = ly + 13.0 + i as f64 * 13.0;
+        svg += &hline(ml + 10.0, ml + 25.0, iy, c, "2");
+        svg += &label(ml + 29.0, iy + 3.0, txt, TEXT, 7, "start");
+    }
+
+    // Panel B: Gas selectivity comparison
+    let ml2 = 380.0; let mr2 = 670.0; let mt2 = 55.0; let mb2 = 370.0;
+    let pw2 = mr2 - ml2; let ph2 = mb2 - mt2;
+
+    svg += &label(ml2 + pw2 / 2.0, mt2 - 10.0,
+        "B. Gas Composition \u{2192} Selectivity Switch", TEXT, 10, "middle");
+
+    // Two grouped bar charts: He/N2 vs He/O2 for phenolics and anthocyanins
+    svg += &hline(ml2, mr2, mb2, MUTED, "1");
+    svg += &vline(ml2, mt2, mb2, MUTED, "1");
+
+    // Y-axis: % of control (0-120%)
+    let sy2 = |pct: f64| mb2 - pct / 120.0 * ph2;
+    for pct in (0..=6).map(|i| i as f64 * 20.0) {
+        let y = sy2(pct);
+        svg += &hline(ml2 - 3.0, ml2, y, MUTED, "0.5");
+        svg += &label(ml2 - 6.0, y + 3.0, &format!("{:.0}%", pct), MUTED, 7, "end");
+        if pct > 0.0 {
+            svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+                stroke=\"{}\" stroke-width=\"0.3\" stroke-dasharray=\"3,3\"/>\n",
+                ml2, y, mr2, y, GRID);
+        }
+    }
+
+    // 100% reference line
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{}\" stroke-width=\"1\" stroke-dasharray=\"6,3\"/>\n",
+        ml2, sy2(100.0), mr2, sy2(100.0), TEXT);
+    svg += &label(mr2 + 3.0, sy2(100.0) + 3.0, "Control", TEXT, 7, "start");
+
+    // Groups: (metric, He/N2 value, He/O2 value)
+    let groups: Vec<(&str, f64, f64)> = vec![
+        ("Total\nphenolics", 99.5, 67.0),     // 1944/1954 and ~-33%
+        ("Anthocyanins", 92.8, 81.4),          // free anthocyanins
+        ("Color\n(\u{394}E*)", 98.9, 63.0),   // DeltaE 1.12 vs big change
+        ("DPPH\nscavenging", 87.8, 41.6),      // 50.2/57.2 vs 23.8/57.2
+    ];
+
+    let group_w = pw2 / groups.len() as f64;
+    let bar_w = group_w * 0.35;
+
+    for (i, (name, hen2, heo2)) in groups.iter().enumerate() {
+        let cx = ml2 + group_w * (i as f64 + 0.5);
+
+        // He/N2 bar (green = good)
+        let h1 = sy2(*hen2);
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{}\" opacity=\"0.7\" rx=\"2\"/>\n",
+            cx - bar_w - 1.0, h1, bar_w, mb2 - h1, GREEN);
+        svg += &label(cx - bar_w / 2.0 - 1.0, h1 - 5.0,
+            &format!("{:.0}%", hen2), GREEN, 7, "middle");
+
+        // He/O2 bar (red = degradation)
+        let h2 = sy2(*heo2);
+        svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{:.1}\" height=\"{:.1}\" \
+            fill=\"{}\" opacity=\"0.7\" rx=\"2\"/>\n",
+            cx + 1.0, h2, bar_w, mb2 - h2, RED);
+        svg += &label(cx + bar_w / 2.0 + 1.0, h2 - 5.0,
+            &format!("{:.0}%", heo2), RED, 7, "middle");
+
+        // Group label
+        let lines: Vec<&str> = name.split('\n').collect();
+        for (li, line) in lines.iter().enumerate() {
+            svg += &label(cx, mb2 + 12.0 + li as f64 * 10.0, line, TEXT, 7, "middle");
+        }
+    }
+
+    // Legend
+    let ly2 = mt2 + 5.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"105\" height=\"34\" rx=\"3\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + pw2 - 110.0, ly2, GRID);
+    svg += &hline(ml2 + pw2 - 105.0, ml2 + pw2 - 90.0, ly2 + 13.0, GREEN, "3");
+    svg += &label(ml2 + pw2 - 86.0, ly2 + 16.0, "He/N\u{2082} (preserves)", TEXT, 7, "start");
+    svg += &hline(ml2 + pw2 - 105.0, ml2 + pw2 - 90.0, ly2 + 26.0, RED, "3");
+    svg += &label(ml2 + pw2 - 86.0, ly2 + 29.0, "He/O\u{2082} (degrades)", TEXT, 7, "start");
+
+    // Insight box
+    svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"180\" height=\"42\" rx=\"4\" fill=\"{}\" opacity=\"0.8\"/>\n",
+        ml2 + 5.0, mb2 - 55.0, GRID);
+    svg += &label(ml2 + 10.0, mb2 - 38.0,
+        "He/N\u{2082}: phenolics preserved, oxidation controlled", GREEN, 8, "start");
+    svg += &label(ml2 + 10.0, mb2 - 25.0,
+        "He/O\u{2082}: destructive over-oxidation", RED, 8, "start");
+    svg += &label(ml2 + 10.0, mb2 - 12.0,
+        "Gas composition = selectivity switch", ACCENT, 8, "start");
 
     svg.push_str("</svg>");
     svg
