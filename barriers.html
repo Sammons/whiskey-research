@@ -1480,6 +1480,20 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but biologically grounded. LAB ethyl lactate production is published<span class="cite" data-ref="120"><sup>[120]</sup></span> in food fermentation; application to spirit maturation is novel. The biocycle approach uses GRAS organisms and produces a specific aging-signature compound that Fischer chemistry misses entirely. Koji enzyme extract (&sect;3.12 enhancement) is commercially available and food-grade. <strong>Home testability: 3/5</strong> ($20&ndash;40: kefir grains or kimchi starter as LAB source, baker&rsquo;s yeast, sugar solution. Run biocycle in separate vessel. Distill or extract ethyl lactate. Koji enzyme available from homebrew suppliers).
 </div>
 
+<h3>1.14 Lipase Ester Synthesis in Supercritical CO<sub>2</sub></h3>
+
+<p><strong>The water activity inversion.</strong> Section 4.18 showed that spirit&rsquo;s 19.4 M water caps Fischer esterification at 58.5%. But lipases operate by a fundamentally different mechanism&mdash;and they <em>prefer</em> low water activity. Novozym 435 (immobilized <em>Candida antarctica</em> lipase B, CALB) is the most widely studied industrial biocatalyst. In aqueous ethanol (spirit conditions), it catalyzes <em>hydrolysis</em>, not esterification&mdash;because a<sub>w</sub> &gt; 0.8 thermodynamically favors bond cleavage. This is why &sect;1.1&rsquo;s Barrier 1 analysis dismissed enzymatic ester synthesis.</p>
+
+<p><strong>The reframe:</strong> in supercritical CO<sub>2</sub> (scCO<sub>2</sub>), water activity drops to a<sub>w</sub> &lt; 0.1, flipping the equilibrium to <em>synthesis</em>. Published results on whiskey-relevant esters: (1) <strong>Isoamyl acetate</strong> via Novozym 435 in scCO<sub>2</sub> at 10 MPa, 60&deg;C: <strong>100% conversion</strong> in a continuous packed-bed reactor<span class="cite" data-ref="121"><sup>[121]</sup></span>. (2) <strong>Butyl butyrate</strong> via Novozym 435 in scCO<sub>2</sub>: <strong>80% conversion in 1 hour</strong> at 45&ndash;50&deg;C, Ping-Pong Bi-Bi kinetics fully characterized<span class="cite" data-ref="122"><sup>[122]</sup></span>. These are not model compounds&mdash;isoamyl acetate (banana/pear) and butyl butyrate (pineapple) are among the most important whiskey maturation esters.</p>
+
+<p><strong>Process architecture:</strong> The concept is a two-stage scCO<sub>2</sub> reactor. <em>Stage 1:</em> supercritical extraction of oak chips (&sect;3.11) at 150 bar/45&deg;C, pulling vanillin, eugenol, and oak lactones while skipping harsh tannins. <em>Stage 2:</em> pass the CO<sub>2</sub>-dissolved extract through a Novozym 435 packed bed with acetic acid + isoamyl alcohol feed. The low a<sub>w</sub> environment drives ester synthesis at near-quantitative yield. Depressurize to recover the ester-enriched aromatic concentrate, then dose into the spirit.</p>
+
+<p><strong>Why this matters:</strong> CALB in scCO<sub>2</sub> has three decisive advantages over Fischer chemistry: (1) Regioselectivity&mdash;lipases produce specific esters (isoamyl acetate, ethyl hexanoate) rather than the Fischer equilibrium mixture dominated by ethyl acetate. (2) No water problem&mdash;scCO<sub>2</sub> provides inherently low a<sub>w</sub>. (3) No acid/base catalyst residue. The enzyme is immobilized and stays in the reactor; the product is pure ester in CO<sub>2</sub>. Novozym 435 retains activity for &gt;1,000 hours in scCO<sub>2</sub><span class="cite" data-ref="121"><sup>[121]</sup></span>.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> &mdash; CALB esterification in scCO<sub>2</sub> is mature industrial chemistry (biofuel, flavor, fragrance)<span class="cite" data-ref="121"><sup>[121]</sup></span><span class="cite" data-ref="122"><sup>[122]</sup></span>. Application to a two-stage extraction+esterification protocol for spirits is novel but each step is independently validated. The key limitation is equipment cost: a tabletop scCO<sub>2</sub> system capable of enzymatic reaction (~150 bar, 60&deg;C, packed bed) is $800&ndash;2,000. <strong>Home testability: 2/5</strong> (requires supercritical equipment; but tabletop extractors for essential oils exist in the $800 range and could be modified with a packed-bed cartridge).
+</div>
+
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
@@ -1605,6 +1619,7 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Mol sieve + zeolite reactor (&sect;4.18)</td><td>Breaks K<sub>eq</sub></td><td><span class="verdict promising">Published</span></td><td>$50&ndash;100</td><td>ESTER</td></tr>
 <tr><td>Pulsed electrolysis rAP (&sect;4.19)</td><td>Selectivity control</td><td><span class="verdict promising">Published</span></td><td>$30&ndash;80</td><td>OXIDATION</td></tr>
 <tr><td>LAB biocycle fermentation (&sect;4.20)</td><td>3 g/L ethyl lactate</td><td><span class="verdict promising">Published</span></td><td>$20&ndash;40</td><td>ESTER</td></tr>
+<tr><td>Lipase in scCO<sub>2</sub> (&sect;1.14)</td><td>100% (specific esters)</td><td><span class="verdict promising">Published</span></td><td>$800+</td><td>ESTER</td></tr>
 </tbody>
 </table>
 </div>
@@ -1889,6 +1904,8 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r118">Nutting JE, et al. (2021) &ldquo;Electrochemical Selectivity via Rapid Alternating Polarity.&rdquo; <em>J Am Chem Soc</em> 143:16681&ndash;16696. <a href="https://doi.org/10.1021/jacs.1c09103">DOI</a> (Baran group, Scripps. rAP at 2.5&ndash;20 Hz: kinetic selectivity impossible with DC. Only fastest reactions complete per half-cycle. Self-cleaning via polarity reversal. Doubled effective electrode area.)</li>
   <li id="r119">Brix AC, et al. (2024) &ldquo;Pulsed electrolysis of Kraft lignin for selective vanillin production.&rdquo; <em>ChemElectroChem</em> e202300853. <a href="https://doi.org/10.1002/celc.202300853">DOI</a> (Ni-Fe/Ni foam, 1.36/1.60 V rAP, 1s/15s duty. Vanillin selectivity improved vs. DC by preventing over-oxidation during rest phase. Product desorption window during cathodic half-cycle.)</li>
   <li id="r120">Chen Q, et al. (2019) &ldquo;Biocycle Fermentation Based on Lactic Acid Bacteria and Yeast for the Production of Natural Ethyl Lactate.&rdquo; <em>ACS Omega</em> 4:14908&ndash;14916. <a href="https://doi.org/10.1021/acsomega.9b01700">DOI</a> (Sequential LAB+yeast: 3.05 g/L ethyl lactate, 2.3&times; mixed culture. GRAS organisms. ldhA &rarr; pct &rarr; AAT pathway. AAT is rate-limiting.)</li>
+  <li id="r121">Romero MD, et al. (2005) &ldquo;Enzymatic synthesis of isoamyl acetate with immobilized <em>Candida antarctica</em> lipase in supercritical carbon dioxide.&rdquo; <em>J Supercrit Fluids</em> 33:77&ndash;84. <a href="https://doi.org/10.1016/j.supflu.2004.05.004">DOI</a> (Novozym 435 in scCO<sub>2</sub>: 100% conversion isoamyl acetate in continuous packed-bed. 10 MPa, 60&deg;C. Rate significantly higher in scCO<sub>2</sub> than n-hexane. Enzyme stable &gt;1000 h.)</li>
+  <li id="r122">Habulin M, Knez &Zcaron;. (2001) &ldquo;Activity and stability of lipases from different sources in supercritical carbon dioxide and near-critical propane.&rdquo; <em>J Chem Technol Biotechnol</em> 76:1260&ndash;1266. <a href="https://doi.org/10.1002/jctb.714">DOI</a> (Butyl butyrate via Novozym 435 in scCO<sub>2</sub>: 80% conversion in 1 hour, 45&ndash;50&deg;C. Ping-Pong Bi-Bi kinetics. Low a<sub>w</sub> drives esterification over hydrolysis.)</li>
 </ol>
 
 
@@ -2510,6 +2527,16 @@ var refs = {
     source: "Chen et al. (2019), ACS Omega 4:14908\u201314916",
     excerpt: "Sequential LAB+yeast biocycle fermentation: 3.05 g/L ethyl lactate (2.3\u00D7 mixed culture). Pathway: ldhA (pyruvate\u2192lactate) \u2192 pct (lactate\u2192lactyl-CoA) \u2192 AAT (lactyl-CoA+EtOH\u2192ethyl lactate). AAT is rate-limiting. GRAS organisms throughout. Ethyl lactate is a signature bourbon maturity marker.",
     url: "#r120"
+  },
+  121: {
+    source: "Romero et al. (2005), J Supercrit Fluids 33:77\u201384",
+    excerpt: "Novozym 435 (CALB) in scCO\u2082: 100% conversion of isoamyl acetate in continuous packed-bed reactor at 10 MPa, 60\u00B0C. Rate significantly higher in scCO\u2082 than n-hexane solvent. Enzyme stable >1000 h. Low water activity (a_w < 0.1) flips CALB from hydrolysis to ester synthesis mode.",
+    url: "#r121"
+  },
+  122: {
+    source: "Habulin & Knez (2001), J Chem Technol Biotechnol 76:1260",
+    excerpt: "Butyl butyrate synthesis via Novozym 435 in scCO\u2082: 80% conversion in 1 hour at 45\u201350\u00B0C. Ping-Pong Bi-Bi kinetics fully characterized. Lipase regioselectivity produces specific flavor esters (not Fischer equilibrium mixture). CO\u2082 acts as tunable solvent and water activity controller.",
+    url: "#r122"
   }
 };
 
