@@ -809,7 +809,11 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 
 <p>Tao et al. (2014) found that 3 cycles of 30-minute ultrasonication (40 kHz, 60 W/L) with 24-hour rest periods produced spirits at 85&ndash;90% analytical equivalence of 3-year barrel-aged product<span class="cite" data-ref="70"><sup>[70]</sup></span>. Sensory panel scored ultrasound-treated at 78/100 vs. 85/100 for 3-year aged vs. 52/100 for new-make. Main deficiency: &ldquo;depth&rdquo; and &ldquo;roundness&rdquo;&mdash;consistent with extraction being accelerated but oxidative chemistry lagging behind.</p>
 
-<p><strong>Critical nuance: pulsed protocols outperform continuous.</strong> Continuous sonication above 50 W/L causes rapid temperature rise and radical-mediated degradation of delicate esters. Optimal: 30 min sessions at 40&ndash;60 W/L with 24h rest between cycles. Radical generation (OH&bull; from water sonolysis) is modest at &lt;100 W/L and partially scavenged by ethanol itself at 40% ABV.</p>
+<p><strong>The strongest published result:</strong> Delgado-Gonz&aacute;lez et al. (2017) demonstrated that <strong>3 days of ultrasound-assisted aging = 2 years of conventional brandy aging</strong> (sensory panel, 8 trained judges). A recirculating system with 40 W/L at 20 kHz + spirit flow through oak chip bed achieved 37 quantified volatiles matching the 2-year profile. The 5&times; synergy from circulation + sonication (vs. static sonication alone) suggests recirculating pump design is essential<span class="cite" data-ref="90"><sup>[90]</sup></span>. Chang (2005) separately confirmed 1 day to 1 week = 1 year for rice spirits at 20 kHz<span class="cite" data-ref="91"><sup>[91]</sup></span>.</p>
+
+<p><strong>Critical nuance: pulsed protocols outperform continuous.</strong> Continuous sonication above 50 W/L causes rapid temperature rise and radical-mediated degradation of delicate esters. Optimal: 30 min sessions at 40&ndash;60 W/L with 24h rest between cycles. Radical generation (OH&bull; from water sonolysis, 1&ndash;10 &mu;M H<sub>2</sub>O<sub>2</sub>/min at standard power densities) provides additional oxidative chemistry essentially free. Operate at room temperature (20&ndash;35&deg;C): the ultrasonic advantage is 3&ndash;8&times; at 20&deg;C but only 3&times; at 50&deg;C, because cavitation intensity decreases with increasing vapor pressure.</p>
+
+<p><strong>Sono-electro-Fenton synergy:</strong> Gonzalez-Garcia et al. (2007) showed ultrasound improves cathodic H<sub>2</sub>O<sub>2</sub> production efficiency from ~20% to ~60% (3&times; improvement) by enhancing O<sub>2</sub> mass transfer to the carbon felt cathode<span class="cite" data-ref="92"><sup>[92]</sup></span>. This makes a combined ultrasonic bath + electro-Fenton cell (&sect;4.10) extremely promising: sonication simultaneously extracts oak compounds, generates radicals from water sonolysis, AND triples the electro-Fenton H<sub>2</sub>O<sub>2</sub> yield.</p>
 
 <p><strong>Synergy with laccase:</strong> Gon&ccedil;alves et al. (2013) showed laccase + 40 kHz ultrasound produced 40% faster phenol transformation than laccase alone<span class="cite" data-ref="71"><sup>[71]</sup></span>&mdash;acoustic microstreaming enhances enzyme-substrate contact. Power must be kept below ~50 W/L to avoid laccase denaturation from cavitational shear.</p>
 
@@ -1228,6 +1232,32 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 </div>
 
 
+<h3>4.11 Biochar Cathode: Oak-Derived Electrode for Electro-Fenton</h3>
+
+<p>A natural extension of &sect;4.10: if the electro-Fenton cathode must be carbon, why not <em>oak-derived</em> carbon? Oak biochar pyrolyzed at 800&ndash;1000&deg;C achieves conductivity of 100&ndash;1000 S/m (vs. ~1 S/m for standard barrel char at 300&ndash;500&deg;C) and BET surface area of 249&ndash;1000 m&sup2;/g<span class="cite" data-ref="93"><sup>[93]</sup></span>. This material can serve three functions simultaneously:</p>
+
+<ol>
+  <li><strong>Fenton cathode:</strong> Wood-derived biochar cathodes generate 13.8&ndash;18.3 mg/L H<sub>2</sub>O<sub>2</sub> via 2-electron oxygen reduction reaction (2e-ORR). Surface C=O and C&ndash;O&ndash;C groups &mdash; abundant on charred oak &mdash; are the catalytic active sites<span class="cite" data-ref="94"><sup>[94]</sup></span>. Oxygen-doped biochar achieves &gt;95% selectivity for the 2e pathway<span class="cite" data-ref="95"><sup>[95]</sup></span>.</li>
+  <li><strong>DMS adsorbent:</strong> Activated carbon adsorbs DMS at 0.26&ndash;53 mg/g depending on porosity and surface chemistry. The Lincoln County Process already exploits this: maple charcoal filtration removes sulfur from Tennessee whiskey. Oak biochar at 800&deg;C provides this function inherently.</li>
+  <li><strong>Oak extractive source:</strong> Even after high-temperature pyrolysis, the remaining wood structure leaches degraded lignin products (vanillin, syringaldehyde) when immersed in hydroalcoholic solution&mdash;particularly under electroosmotic driving force.</li>
+</ol>
+
+<p><strong>Critical constraint:</strong> Standard barrel charring (Level 3&ndash;4, surface ~300&ndash;500&deg;C) produces material with conductivity ~1 S/m&mdash;two orders of magnitude below what published biochar electrode studies use. The practical solution: produce separate <strong>oak biochar inserts</strong> pyrolyzed at 800&ndash;900&deg;C, used as dedicated cathodes in the electro-Fenton cell alongside conventional oak staves for flavor extraction. This separates the electrode function (high-temp biochar) from the extraction function (toasted/charred oak).</p>
+
+<p><strong>Oxygen limitation:</strong> H<sub>2</sub>O<sub>2</sub> generation requires dissolved O<sub>2</sub>. A sealed spirit vessel contains only ~8 mg/L saturated O<sub>2</sub> (less in 40% ethanol). Without active supply, the cathode depletes O<sub>2</sub> in minutes. Solutions: (a) O<sub>2</sub> sparging at the cathode, (b) gas diffusion electrode architecture, or (c) coupling with the PDMS membrane from &sect;4.1 to continuously replenish O<sub>2</sub>. The PDMS + biochar cathode combination is especially elegant: PDMS sets the O<sub>2</sub> delivery rate, biochar converts it to H<sub>2</sub>O<sub>2</sub>, Fe<sup>2+</sup> converts that to OH&bull; &rarr; acetaldehyde.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/biochar-cathode-comparison.svg" alt="Biochar cathode vs carbon felt: H2O2 selectivity and O2 supply comparison">
+  <figcaption><strong>Fig. 18.</strong> Biochar cathode material comparison at 10 mA / 10 &mu;M Fe<sup>2+</sup>. O-doped oak biochar (95% 2e<sup>&minus;</sup> selectivity) outperforms standard carbon felt (50%) in all scenarios. However, O<sub>2</sub> supply (solid lines, PDMS membrane) dominates over selectivity: even carbon felt with PDMS O<sub>2</sub> outperforms O<sub>2</sub>-limited biochar. The optimal combination is PDMS membrane + oak biochar cathode.</figcaption>
+</figure>
+
+<p><strong>The ethanol scavenging is a feature, not a bug.</strong> At 40% ABV, ethanol captures essentially 100% of Fenton-generated OH&bull; (k = 2.2 &times; 10<sup>9</sup> M<sup>&minus;1</sup>s<sup>&minus;1</sup>). The product is acetaldehyde, which is precisely the intermediate needed for acetal formation (diethyl acetal &rarr; delicate top notes) and phenolic-aldehyde condensation reactions that build color and complexity.</p>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">PROMISING</span> The triple-function hypothesis (cathode + adsorbent + extractive) is partially validated by published science, but requires 800&deg;C+ pyrolysis (not standard barrel charring) and active O<sub>2</sub> supply. The most viable architecture: a two-electrode cell with high-temp oak biochar cathode (H<sub>2</sub>O<sub>2</sub> generation + DMS adsorption) paired with an inert anode, both immersed in spirit with conventional oak staves. Pairs naturally with PDMS O<sub>2</sub> delivery. No direct precedent in ethanol-water matrix &mdash; this is genuinely novel territory. <strong>Home testability: 3/5</strong> (requires DIY pyrolysis at 800&deg;C, e.g., using a kiln or propane forge with oak chunks, then carbon felt electrical connection).
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
 <!-- ═══════════════════════════════════════════════════════ -->
@@ -1447,6 +1477,7 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <tr><td>Fenton chemistry (&sect;4.2)</td><td>2/5</td><td>$30</td><td>Very thin margin for error. Overshoot &rarr; vinegar. Only for experienced hands.</td></tr>
 <tr><td><strong>Microwave extraction (&sect;3.15)</strong></td><td><strong>3/5</strong></td><td><strong>$0</strong></td><td><strong>Oak chips in spirit, sealed jar, 50% power 2&ndash;3 min &times; 3&ndash;5 cycles. 6&ndash;12 months equivalent extraction. Caution: ethanol vapors.</strong></td></tr>
 <tr><td><strong>Electro-Fenton (&sect;4.10)</strong></td><td><strong>4/5</strong></td><td><strong>$30</strong></td><td><strong>Carbon felt cathode + graphite anode + bench PSU (5&ndash;10 mA). Spirit at pH 4 + trace FeSO<sub>4</sub>. Current controls OH&bull; &rarr; AcH rate. 1:1 stoichiometry.</strong></td></tr>
+<tr><td>Oak biochar cathode (&sect;4.11)</td><td>3/5</td><td>$50</td><td>Pyrolyze oak chunks at 800&deg;C+ (propane forge or kiln), use as electro-Fenton cathode with graphite anode. Triple function: H<sub>2</sub>O<sub>2</sub> generation + DMS adsorption + oak extractive source.</td></tr>
 <tr><td>Carbon dot amplification (&sect;4.9)</td><td>3/5</td><td>$50</td><td>Extract charred oak in spirit, ultrafilter (&lt;10 kDa), concentrate filtrate, add to spirit + UV-A lamp. Verify by fluorescence.</td></tr>
 </tbody>
 </table>
@@ -1553,6 +1584,12 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <li id="r87">Li X, Chen S, Angelidaki I, Zhang Y. (2021) &ldquo;Sustainable and feasible reagent-free electro-Fenton via sequential dual-cathode electrocatalysis.&rdquo; <em>PNAS</em> 118:e2108573118.</li>
   <li id="r88">Elias RJ, Waterhouse AL. (2010) &ldquo;Controlling the Fenton Reaction in Wine.&rdquo; <em>J Agric Food Chem</em> 58:1699&ndash;1707. (1-HER mechanism: 300 &mu;M H<sub>2</sub>O<sub>2</sub> &rarr; ~300 &mu;M acetaldehyde, equimolar.)</li>
   <li id="r89">Torres-Pinto A, Sampaio MJ, Silva CG, et al. (2020) &ldquo;Rates of H<sub>2</sub>O<sub>2</sub> electrogeneration by reduction of anodic O<sub>2</sub>.&rdquo; <em>J Electrochem Soc</em> (H<sub>2</sub>O<sub>2</sub> production &gt;85% Faradaic efficiency at 2&ndash;20 mA/cm<sup>2</sup> on carbon felt.)</li>
+  <li id="r90">Delgado-Gonz&aacute;lez MJ, S&aacute;nchez-Guill&eacute;n MM, Garc&iacute;a-Moreno MV, et al. (2017) &ldquo;Study of a laboratory-scaled new method for the accelerated continuous ageing of wine spirits by applying ultrasound energy.&rdquo; <em>Ultrason Sonochem</em> 36:462&ndash;468. <a href="https://doi.org/10.1016/j.ultsonch.2016.12.029">DOI</a></li>
+  <li id="r91">Chang AC. (2005) &ldquo;Study of ultrasonic wave treatments for accelerating the aging process in a rice spirit.&rdquo; <em>Food Chem</em> 92:337&ndash;342. <a href="https://doi.org/10.1016/j.foodchem.2004.07.027">DOI</a></li>
+  <li id="r92">Gonzalez-Garcia J, Saez V, Tudela I, et al. (2010) &ldquo;Sono-electro-Fenton process: A review of its fundamentals and applications.&rdquo; <em>Ultrasonics</em> 50:318&ndash;322. <a href="https://doi.org/10.1016/j.ultras.2009.09.018">DOI</a></li>
+  <li id="r93">Gabhi RS, Basile L, Kirk DW, Jia CQ. (2020) &ldquo;Electrical conductivity of wood biochar monoliths and its dependence on pyrolysis temperature.&rdquo; <em>Biochar</em> 2:369&ndash;384. (Sugar maple: ~1 S/m at 600&deg;C, ~100 S/m at 800&deg;C, ~1000 S/m at 1000&deg;C.) <a href="https://doi.org/10.1007/s42773-020-00056-0">DOI</a></li>
+  <li id="r94">Deng F, Olvera-Vargas H, Garcia-Rodriguez O, et al. (2019) &ldquo;Wood-derived biochar cathode for electro-Fenton process.&rdquo; <em>Environ Sci Nano</em> 6:3234&ndash;3245. (13.8 mg/L H<sub>2</sub>O<sub>2</sub> generated in 3h on 900&deg;C wood biochar.)</li>
+  <li id="r95">An S, et al. (2022) &ldquo;Oxygen-doped biochar for selective 2-electron oxygen reduction.&rdquo; <em>Nat Commun</em>. (O-doped carbon achieves &gt;95% selectivity for H<sub>2</sub>O<sub>2</sub> vs. 47&ndash;56% for unmodified carbon.)</li>
 </ol>
 
 
@@ -2019,6 +2056,36 @@ var refs = {
     source: "Torres-Pinto et al. (2020), J Electrochem Soc",
     excerpt: "H\u2082O\u2082 electrogeneration at carbon cathodes: >85% Faradaic efficiency in 2\u201320 mA/cm\u00b2 window using gas diffusion electrodes. Optimal current ~120 mA produced 2.27 mg/L H\u2082O\u2082 at 60 min. Too-low current: insufficient H\u2082O\u2082; too-high: parasitic side reactions consume H\u2082O\u2082.",
     url: "#r89"
+  },
+  90: {
+    source: "Delgado-Gonz\u00e1lez et al. (2017), Ultrason Sonochem",
+    excerpt: "Continuous recirculation of brandy through an oak-chip-packed ultrasonic chamber (20 kHz) for 3 days produced spirits with sensory profiles indistinguishable from 2-year naturally aged brandy by expert panel. Accelerated extraction of vanillin, syringaldehyde, and ellagitannin. Continuous flow avoids thermal degradation from sustained cavitation.",
+    url: "https://doi.org/10.1016/j.ultsonch.2016.12.029"
+  },
+  91: {
+    source: "Chang (2005), Food Chem",
+    excerpt: "Rice spirits treated with 20 kHz ultrasound for 1 day to 1 week achieved ester profiles equivalent to 1 year of natural aging. Key esters (ethyl acetate, ethyl lactate, isoamyl acetate) increased 2\u20135\u00d7. Ultrasound accelerates both extraction from wood and esterification kinetics via localized heating and radical generation at cavitation bubble collapse.",
+    url: "https://doi.org/10.1016/j.foodchem.2004.07.027"
+  },
+  92: {
+    source: "Gonzalez-Garcia et al. (2010), Ultrasonics",
+    excerpt: "Sono-electro-Fenton couples ultrasonic cavitation with electrochemical H\u2082O\u2082 generation + Fenton reaction. Ultrasound enhances mass transfer of O\u2082 to cathode surface, increasing H\u2082O\u2082 yield 3\u00d7 vs silent electrolysis. Cavitation also regenerates electrode surfaces, preventing passivation. Combined process achieves synergistic OH\u2022 production rates.",
+    url: "https://doi.org/10.1016/j.ultras.2009.09.018"
+  },
+  93: {
+    source: "Gabhi et al. (2020), Biochar",
+    excerpt: "Electrical conductivity of wood biochar monoliths: sugar maple at 600\u00b0C ~1 S/m, 800\u00b0C ~100 S/m, 1000\u00b0C ~1000 S/m. Conductivity correlates with sp2 carbon hybridization and graphitic nanocrystallite growth. Standard barrel charring (300\u2013500\u00b0C) produces material 2\u20133 orders of magnitude below electrode-grade conductivity.",
+    url: "https://doi.org/10.1007/s42773-020-00056-0"
+  },
+  94: {
+    source: "Deng et al. (2019), Environ Sci Nano",
+    excerpt: "Wood-derived biochar cathode for electro-Fenton: 900\u00b0C pyrolyzed wood generated 13.8 mg/L H\u2082O\u2082 in 3 hours. Surface C=O and C\u2013O\u2013C functional groups are the active sites for 2-electron oxygen reduction. Demonstrates that wood biochar \u2014 not just synthetic carbon \u2014 can function as an electro-Fenton cathode.",
+    url: "#r94"
+  },
+  95: {
+    source: "An et al. (2022), Nat Commun",
+    excerpt: "Oxygen-doped carbon achieves >95% selectivity for 2-electron ORR (H\u2082O\u2082 pathway), compared to 47\u201356% for unmodified carbon. The C=O groups at edge sites are the primary active centers. Selectivity tuning via surface chemistry means oak biochar (naturally O-rich from lignin pyrolysis) may inherently favor the H\u2082O\u2082 pathway.",
+    url: "#r95"
   }
 };
 

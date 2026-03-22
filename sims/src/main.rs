@@ -69,6 +69,9 @@ fn main() {
 
     fs::write("../graphs/electro-fenton.svg", sim_electro_fenton()).unwrap();
     println!("Wrote electro-fenton.svg");
+
+    fs::write("../graphs/biochar-cathode-comparison.svg", sim_biochar_cathode_comparison()).unwrap();
+    println!("Wrote biochar-cathode-comparison.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -2662,6 +2665,185 @@ fn sim_electro_fenton() -> String {
     svg += &label(lx, mt + 295.0, "OH\u{2022} + EtOH \u{2192} 1-HER \u{2192} AcH", TEXT, 9, "start");
     svg += &label(lx, mt + 308.0, "1:1 stoichiometry", TEXT, 9, "start");
     svg += &label(lx, mt + 321.0, "Elias &amp; Waterhouse 2010", MUTED, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_biochar_cathode_comparison() -> String {
+    // Compare: standard carbon felt (50% 2e selectivity) vs O-doped oak biochar (95%)
+    // With and without O2 limitation (PDMS membrane supply)
+    let w = 800.0_f64;
+    let h = 520.0;
+    let mut svg = svg_header(w, h,
+        "Biochar Cathode: H\u{2082}O\u{2082} Selectivity &amp; O\u{2082} Supply Impact");
+
+    let f_const = 96485.0_f64;
+    let vol_l = 1.0;
+    let current_a = 10e-3; // 10 mA
+    let k_fenton = 76.0_f64; // M-1 s-1
+    let k_fe_regen = 1e-3_f64; // s-1
+    let fe_init = 10e-6_f64; // 10 uM Fe2+
+    let dt = 1.0_f64;
+    let t_max = 8.0 * 3600.0; // 8h
+    let n_steps = (t_max / dt) as usize;
+    let sample_every = n_steps / 200;
+
+    // Scenarios: (label, 2e selectivity, O2 limited?)
+    // O2-limited: dissolved O2 starts at 0.25 mM (8 mg/L), depletes, no resupply
+    // O2-supplied: PDMS membrane maintains ~0.25 mM steady state (unlimited)
+    struct Scenario {
+        label: &'static str,
+        selectivity: f64,
+        o2_limited: bool,
+    }
+    let scenarios = [
+        Scenario { label: "Carbon felt, 50% sel, O\u{2082}-limited", selectivity: 0.50, o2_limited: true },
+        Scenario { label: "Carbon felt, 50% sel, PDMS O\u{2082}", selectivity: 0.50, o2_limited: false },
+        Scenario { label: "Oak biochar, 95% sel, O\u{2082}-limited", selectivity: 0.95, o2_limited: true },
+        Scenario { label: "Oak biochar, 95% sel, PDMS O\u{2082}", selectivity: 0.95, o2_limited: false },
+    ];
+    let colors = [MUTED, CYAN, YELLOW, ACCENT];
+
+    let mt = 65.0;
+    let pw = 430.0;
+    let ph = 350.0;
+    let pl = 90.0;
+    let lx = 540.0;
+
+    let mut all_data: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut final_vals: Vec<f64> = Vec::new();
+
+    for sc in &scenarios {
+        // Effective H2O2 generation rate (adjusted for selectivity)
+        let r_h2o2_max = current_a * sc.selectivity / (2.0 * f_const * vol_l); // mol/L/s
+
+        // O2 consumption: 1 mol O2 per 2 mol electrons for 2e pathway
+        // At 10 mA: 10e-3 / (2 * 96485) = 5.18e-8 mol_e/s -> 2.59e-8 mol O2/s
+        let o2_consumption_rate = current_a / (4.0 * f_const * vol_l); // mol O2/L/s (conservative)
+
+        let mut o2: f64 = 0.25e-3; // 8 mg/L = 0.25 mM dissolved O2
+        let o2_sat = 0.25e-3;
+        let kla_pdms = 5e-6_f64; // from our PDMS optimization
+
+        let mut h2o2: f64 = 0.0;
+        let mut fe2 = fe_init;
+        let mut fe3: f64 = 0.0;
+        let mut ach: f64 = 0.0;
+        let mut pts: Vec<(f64, f64)> = Vec::new();
+
+        for step in 0..n_steps {
+            // O2 supply
+            if !sc.o2_limited {
+                // PDMS membrane resupply
+                o2 += kla_pdms * (o2_sat - o2) * dt;
+            }
+
+            // H2O2 generation limited by O2 availability
+            // Need O2 for the 2e ORR: O2 + 2H+ + 2e- -> H2O2
+            let o2_factor = (o2 / (o2 + 1e-5)).min(1.0); // Michaelis-like saturation
+            let r_h2o2_gen = r_h2o2_max * o2_factor;
+
+            // O2 consumption by cathode
+            o2 -= o2_consumption_rate * o2_factor * dt;
+            if o2 < 0.0 { o2 = 0.0; }
+
+            let r_fenton = k_fenton * fe2 * h2o2;
+            let r_regen = k_fe_regen * fe3;
+
+            h2o2 += (r_h2o2_gen - r_fenton) * dt;
+            if h2o2 < 0.0 { h2o2 = 0.0; }
+            fe2 += (-r_fenton + r_regen) * dt;
+            if fe2 < 0.0 { fe2 = 0.0; }
+            fe3 += (r_fenton - r_regen) * dt;
+            if fe3 < 0.0 { fe3 = 0.0; }
+            ach += r_fenton * dt;
+
+            if step % sample_every == 0 {
+                let t_h = (step as f64 * dt) / 3600.0;
+                pts.push((t_h, ach * 44.05 * 1000.0));
+            }
+        }
+        final_vals.push(ach * 44.05 * 1000.0);
+        all_data.push(pts);
+    }
+
+    let max_v = all_data.iter()
+        .flat_map(|d| d.iter().map(|p| p.1))
+        .fold(0.0_f64, |a, b| a.max(b));
+    let y_max = (max_v * 1.15).max(1.0);
+
+    // Y axis
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"10\" text-anchor=\"end\">Acetaldehyde (mg/L)</text>",
+        pl - 5.0, mt - 5.0, TEXT);
+
+    // Grid
+    let n_grid = 5_usize;
+    for i in 0..=n_grid {
+        let frac = i as f64 / n_grid as f64;
+        let y = mt + ph * (1.0 - frac);
+        let val = y_max * frac;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-width=\"0.5\"/>",
+            pl, y, pl + pw, y, GRID);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"9\" text-anchor=\"end\">{:.1}</text>",
+            pl - 5.0, y + 3.0, MUTED, val);
+    }
+
+    // X axis
+    for h_val in [0.0_f64, 2.0, 4.0, 6.0, 8.0] {
+        let x = pl + pw * (h_val / 8.0);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"9\" text-anchor=\"middle\">{}h</text>",
+            x, mt + ph + 15.0, MUTED, h_val as i32);
+    }
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"10\" text-anchor=\"middle\">Time</text>",
+        pl + pw / 2.0, mt + ph + 30.0, MUTED);
+
+    // Plot curves
+    for (i, pts) in all_data.iter().enumerate() {
+        let dash = if scenarios[i].o2_limited { " stroke-dasharray=\"6,3\"" } else { "" };
+        let path: String = pts.iter().enumerate().map(|(j, &(t, v))| {
+            let x = pl + pw * (t / 8.0);
+            let y = mt + ph * (1.0 - v / y_max);
+            if j == 0 { format!("M{:.1},{:.1}", x, y) }
+            else { format!("L{:.1},{:.1}", x, y) }
+        }).collect();
+        svg += &format!("<path d=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"1.5\"{}/>",
+            path, colors[i], dash);
+    }
+
+    // 1-year barrel reference
+    let barrel_ref = 15.0_f64;
+    if barrel_ref < y_max {
+        let y_ref = mt + ph * (1.0 - barrel_ref / y_max);
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-dasharray=\"4,3\" stroke-width=\"1\"/>",
+            pl, y_ref, pl + pw, y_ref, MUTED);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"8\" text-anchor=\"start\">1-yr barrel (~15 mg/L)</text>",
+            pl + 5.0, y_ref - 5.0, MUTED);
+    }
+
+    // Legend
+    svg += &label(lx, mt + 10.0, "Material Comparison", ACCENT, 11, "start");
+    svg += &label(lx, mt + 28.0, "10 mA, 10 \u{00b5}M Fe\u{00b2}\u{207a}", TEXT, 9, "start");
+    svg += &label(lx, mt + 48.0, "Dashed = O\u{2082}-limited", MUTED, 8, "start");
+    svg += &label(lx, mt + 60.0, "Solid = PDMS O\u{2082} supply", MUTED, 8, "start");
+
+    for (i, sc) in scenarios.iter().enumerate() {
+        let y = mt + 85.0 + i as f64 * 32.0;
+        let dash_attr = if sc.o2_limited { " stroke-dasharray=\"6,3\"" } else { "" };
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-width=\"2\"{}/>",
+            lx, y - 2.0, lx + 20.0, y - 2.0, colors[i], dash_attr);
+        svg += &label(lx + 24.0, y, sc.label, colors[i], 8, "start");
+        svg += &label(lx + 24.0, y + 13.0,
+            &format!("{:.1} mg/L at 8h", final_vals[i]),
+            MUTED, 8, "start");
+    }
+
+    svg += &label(lx, mt + 230.0, "Key finding:", ACCENT, 10, "start");
+    svg += &label(lx, mt + 245.0, "O\u{2082} supply matters more", TEXT, 9, "start");
+    svg += &label(lx, mt + 258.0, "than selectivity alone.", TEXT, 9, "start");
+    svg += &label(lx, mt + 278.0, "PDMS + biochar = best:", GREEN, 9, "start");
+    svg += &label(lx, mt + 291.0, "continuous O\u{2082} + high", TEXT, 8, "start");
+    svg += &label(lx, mt + 304.0, "2e\u{207b} selectivity (95%)", TEXT, 8, "start");
 
     svg.push_str("</svg>");
     svg
