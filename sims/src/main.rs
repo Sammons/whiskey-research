@@ -81,6 +81,9 @@ fn main() {
 
     fs::write("../graphs/integrated-protocol.svg", sim_integrated_protocol()).unwrap();
     println!("Wrote integrated-protocol.svg");
+
+    fs::write("../graphs/maillard-strecker.svg", sim_maillard_strecker()).unwrap();
+    println!("Wrote maillard-strecker.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -3526,6 +3529,224 @@ fn sim_integrated_protocol() -> String {
     svg += &label(lx, mt + 380.0, "Protocol time:", GREEN, 10, "start");
     svg += &label(lx, mt + 395.0, "8 weeks", GREEN, 10, "start");
     svg += &label(lx, mt + 412.0, "Equiv: 5\u{2013}10 years", MUTED, 9, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+fn sim_maillard_strecker() -> String {
+    // Maillard reaction + Strecker degradation in spirits
+    // Xylose + amino acids -> furfural, HMF, Strecker aldehydes, melanoidins
+    // Temperature dependence: Ea ~ 80-120 kJ/mol (Martins & Van Boekel 2005)
+    let w = 800.0_f64;
+    let h = 520.0;
+    let mut svg = svg_header(w, h,
+        "Maillard &amp; Strecker Degradation: Temperature-Driven Flavor Cascade");
+
+    // Arrhenius: k = A * exp(-Ea/(R*T))
+    let r_gas = 8.314_f64;
+    let ea_maillard = 100_000.0_f64; // J/mol (furfural/HMF formation)
+    let ea_strecker = 80_000.0_f64; // J/mol (Strecker aldehydes)
+    let ea_melanoidin = 120_000.0_f64; // J/mol (browning polymerization)
+
+    // Reference rates at 60C (333K)
+    let k_maillard_ref = 2e-7_f64; // s-1 (pseudo-first-order in xylose)
+    let k_strecker_ref = 5e-7_f64; // s-1 (faster than Maillard)
+    let k_melanoidin_ref = 1e-8_f64; // s-1 (slow polymerization)
+    let t_ref = 333.15_f64; // K
+
+    // Scenarios: different temperature regimes over 4 weeks
+    struct Scenario {
+        label: &'static str,
+        temp_fn: fn(f64) -> f64, // time(s) -> temp(K)
+    }
+
+    fn temp_ambient(_t: f64) -> f64 { 293.15 } // 20C constant
+    fn temp_barrel(t: f64) -> f64 {
+        // Annual cycle approximation, scaled to 28 days
+        let phase = (t / (28.0 * 86400.0)) * std::f64::consts::TAU;
+        293.15 + 10.0 * phase.sin() // 10-30C seasonal
+    }
+    fn temp_cycling(t: f64) -> f64 {
+        // Daily cycling: 4h at 60C, 20h at 25C
+        let day_frac = (t % 86400.0) / 86400.0;
+        if day_frac < 4.0/24.0 { 333.15 } else { 298.15 }
+    }
+    fn temp_constant_60(_t: f64) -> f64 { 333.15 } // 60C constant (reference)
+
+    let scenarios: [Scenario; 4] = [
+        Scenario { label: "20\u{00b0}C (ambient)", temp_fn: temp_ambient },
+        Scenario { label: "Barrel (10\u{2013}30\u{00b0}C cycle)", temp_fn: temp_barrel },
+        Scenario { label: "Daily cycle (60/25\u{00b0}C)", temp_fn: temp_cycling },
+        Scenario { label: "60\u{00b0}C constant", temp_fn: temp_constant_60 },
+    ];
+    let colors = [MUTED, CYAN, ACCENT, GREEN];
+
+    let dt = 600.0_f64; // 10 min
+    let t_max = 28.0 * 86400.0; // 4 weeks
+    let n_steps = (t_max / dt) as usize;
+    let sample_every = n_steps / 300;
+
+    let xylose_init = 0.3_f64; // g/L (supplemented)
+    let glycine_init = 0.08_f64; // g/L
+
+    let mt = 65.0;
+    let pw = 430.0;
+    let ph = 350.0;
+    let pl = 90.0;
+    let lx = 540.0;
+
+    // Track furfural + HMF combined (Maillard products)
+    let mut all_furfural: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut all_strecker: Vec<Vec<(f64, f64)>> = Vec::new();
+    let mut final_furf: Vec<f64> = Vec::new();
+    let mut final_strecker: Vec<f64> = Vec::new();
+
+    for sc in &scenarios {
+        let mut xylose = xylose_init;
+        let mut glycine = glycine_init;
+        let mut furfural: f64 = 0.0; // mg/L
+        let mut strecker_ald: f64 = 0.0; // mg/L (methional + phenylacetaldehyde + etc)
+        let mut _melanoidin: f64 = 0.0; // arbitrary color units
+
+        let mut furf_pts: Vec<(f64, f64)> = Vec::new();
+        let mut strk_pts: Vec<(f64, f64)> = Vec::new();
+
+        for step in 0..n_steps {
+            let t_s = step as f64 * dt;
+            let temp = (sc.temp_fn)(t_s);
+
+            // Arrhenius rate scaling
+            let k_mail = k_maillard_ref * ((ea_maillard / r_gas) * (1.0/t_ref - 1.0/temp)).exp();
+            let k_strk = k_strecker_ref * ((ea_strecker / r_gas) * (1.0/t_ref - 1.0/temp)).exp();
+            let k_melan = k_melanoidin_ref * ((ea_melanoidin / r_gas) * (1.0/t_ref - 1.0/temp)).exp();
+
+            // Maillard: xylose + glycine -> intermediates -> furfural/HMF
+            let r_maillard = k_mail * xylose * glycine;
+            xylose -= r_maillard * dt;
+            glycine -= r_maillard * dt * 0.5; // glycine is partially regenerated
+            furfural += r_maillard * dt * 96.0 * 1000.0; // MW furfural = 96, convert to mg/L
+
+            // Strecker: dicarbonyl + amino acid -> Strecker aldehyde + CO2
+            // dicarbonyl comes from Maillard intermediates (proportional to furfural level)
+            let dicarbonyl_proxy = furfural / 1000.0; // approximate
+            let r_strecker = k_strk * dicarbonyl_proxy * glycine;
+            glycine -= r_strecker * dt * 0.3;
+            strecker_ald += r_strecker * dt * 100.0 * 1000.0; // typical MW ~100
+
+            // Melanoidin (color) from polymerization of Maillard intermediates
+            _melanoidin += k_melan * furfural / 1000.0 * dt;
+
+            if xylose < 0.0 { xylose = 0.0; }
+            if glycine < 0.0 { glycine = 0.0; }
+
+            if step % sample_every == 0 {
+                let t_d = t_s / 86400.0;
+                furf_pts.push((t_d, furfural));
+                strk_pts.push((t_d, strecker_ald));
+            }
+        }
+        final_furf.push(furfural);
+        final_strecker.push(strecker_ald);
+        all_furfural.push(furf_pts);
+        all_strecker.push(strk_pts);
+    }
+
+    let max_furf = all_furfural.iter()
+        .flat_map(|d| d.iter().map(|p| p.1))
+        .fold(0.01_f64, |a, b| a.max(b));
+    let y_max = max_furf * 1.15;
+
+    // Y axis
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"10\" text-anchor=\"end\">Furfural+HMF (mg/L)</text>",
+        pl - 5.0, mt - 5.0, TEXT);
+
+    for i in 0..=5 {
+        let frac = i as f64 / 5.0;
+        let y = mt + ph * (1.0 - frac);
+        let val = y_max * frac;
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-width=\"0.5\"/>",
+            pl, y, pl + pw, y, GRID);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"8\" text-anchor=\"end\">{:.1}</text>",
+            pl - 5.0, y + 3.0, MUTED, val);
+    }
+
+    // X axis
+    for d in [0, 7, 14, 21, 28] {
+        let x = pl + pw * (d as f64 / 28.0);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"9\" text-anchor=\"middle\">{}d</text>",
+            x, mt + ph + 15.0, MUTED, d);
+    }
+
+    // Barrel reference: ~1-5 mg/L furfural after 5 years
+    let barrel_5yr = 3.0_f64;
+    if barrel_5yr < y_max {
+        let y_ref = mt + ph * (1.0 - barrel_5yr / y_max);
+        svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{}\" stroke-dasharray=\"4,3\" stroke-width=\"0.8\"/>",
+            pl, y_ref, pl + pw, y_ref, MUTED);
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{}\" font-size=\"7\">5-yr barrel (~3 mg/L)</text>",
+            pl + 3.0, y_ref - 4.0, MUTED);
+    }
+
+    // Plot furfural curves (solid)
+    for (i, pts) in all_furfural.iter().enumerate() {
+        let path: String = pts.iter().enumerate().map(|(j, &(t, v))| {
+            let x = pl + pw * (t / 28.0);
+            let y = mt + ph * (1.0 - v / y_max);
+            if j == 0 { format!("M{:.1},{:.1}", x, y) }
+            else { format!("L{:.1},{:.1}", x, y) }
+        }).collect();
+        svg += &format!("<path d=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"1.5\"/>",
+            path, colors[i]);
+    }
+
+    // Plot Strecker curves (dashed, normalized to same scale)
+    let max_strk = all_strecker.iter()
+        .flat_map(|d| d.iter().map(|p| p.1))
+        .fold(0.01_f64, |a, b| a.max(b));
+    for (i, pts) in all_strecker.iter().enumerate() {
+        let path: String = pts.iter().enumerate().map(|(j, &(t, v))| {
+            let x = pl + pw * (t / 28.0);
+            let norm = v / max_strk * max_furf; // normalize to furfural scale
+            let y = mt + ph * (1.0 - norm / y_max);
+            if j == 0 { format!("M{:.1},{:.1}", x, y) }
+            else { format!("L{:.1},{:.1}", x, y) }
+        }).collect();
+        svg += &format!("<path d=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"1.0\" stroke-dasharray=\"5,3\"/>",
+            path, colors[i]);
+    }
+
+    // Legend
+    svg += &label(lx, mt + 10.0, "Maillard Kinetics", ACCENT, 11, "start");
+    svg += &label(lx, mt + 28.0, "Solid = furfural+HMF", TEXT, 8, "start");
+    svg += &label(lx, mt + 41.0, "Dashed = Strecker ald.", TEXT, 8, "start");
+
+    for (i, sc) in scenarios.iter().enumerate() {
+        let y = mt + 60.0 + i as f64 * 38.0;
+        svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"14\" height=\"3\" fill=\"{}\"/>",
+            lx, y - 2.0, colors[i]);
+        svg += &label(lx + 18.0, y, sc.label, colors[i], 8, "start");
+        svg += &label(lx + 18.0, y + 13.0,
+            &format!("Furf: {:.2} mg/L", final_furf[i]),
+            MUTED, 7, "start");
+        svg += &label(lx + 18.0, y + 24.0,
+            &format!("Strk: {:.3} mg/L", final_strecker[i]),
+            MUTED, 7, "start");
+    }
+
+    svg += &label(lx, mt + 220.0, "Ea (kJ/mol):", ACCENT, 9, "start");
+    svg += &label(lx, mt + 235.0, "Maillard: 100", TEXT, 8, "start");
+    svg += &label(lx, mt + 248.0, "Strecker: 80", TEXT, 8, "start");
+    svg += &label(lx, mt + 261.0, "Melanoidin: 120", TEXT, 8, "start");
+
+    svg += &label(lx, mt + 285.0, "Key insight:", GREEN, 10, "start");
+    svg += &label(lx, mt + 300.0, "Daily 60\u{00b0}C cycling", TEXT, 9, "start");
+    svg += &label(lx, mt + 313.0, "= years of barrel", TEXT, 9, "start");
+    svg += &label(lx, mt + 326.0, "Maillard chemistry", TEXT, 9, "start");
+
+    svg += &label(lx, mt + 350.0, "Supplements:", CYAN, 9, "start");
+    svg += &label(lx, mt + 365.0, "Xylose: 0.3 g/L", TEXT, 8, "start");
+    svg += &label(lx, mt + 378.0, "Glycine: 0.08 g/L", TEXT, 8, "start");
 
     svg.push_str("</svg>");
     svg
