@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 137 — Fe₃O₄-Immobilized CALB: Magnetically Recoverable Lipase</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: Reuse Cycles vs Residual Activity</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="200" y="393" fill="#8b949e" font-size="8" text-anchor="middle">Reuse cycle number</text>
+<text x="55" y="220" fill="#8b949e" font-size="7" text-anchor="middle">Residual activity (%)</text>
+<line x1="70" y1="375" x2="330" y2="375" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<line x1="70" y1="313" x2="330" y2="313" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">20</text>
+<line x1="70" y1="251" x2="330" y2="251" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">40</text>
+<line x1="70" y1="189" x2="330" y2="189" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="192" fill="#8b949e" font-size="7" text-anchor="end">60</text>
+<line x1="70" y1="127" x2="330" y2="127" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">80</text>
+<line x1="70" y1="65" x2="330" y2="65" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">100</text>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="388" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="96" y1="375" x2="96" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="96" y="388" fill="#8b949e" font-size="7" text-anchor="middle">1</text>
+<line x1="122" y1="375" x2="122" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="122" y="388" fill="#8b949e" font-size="7" text-anchor="middle">2</text>
+<line x1="148" y1="375" x2="148" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="148" y="388" fill="#8b949e" font-size="7" text-anchor="middle">3</text>
+<line x1="174" y1="375" x2="174" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="174" y="388" fill="#8b949e" font-size="7" text-anchor="middle">4</text>
+<line x1="200" y1="375" x2="200" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="200" y="388" fill="#8b949e" font-size="7" text-anchor="middle">5</text>
+<line x1="226" y1="375" x2="226" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="226" y="388" fill="#8b949e" font-size="7" text-anchor="middle">6</text>
+<line x1="252" y1="375" x2="252" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="252" y="388" fill="#8b949e" font-size="7" text-anchor="middle">7</text>
+<line x1="278" y1="375" x2="278" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="278" y="388" fill="#8b949e" font-size="7" text-anchor="middle">8</text>
+<line x1="304" y1="375" x2="304" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="304" y="388" fill="#8b949e" font-size="7" text-anchor="middle">9</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="388" fill="#8b949e" font-size="7" text-anchor="middle">10</text>
+<polyline points="70.0,65.0 96.0,75.0 122.0,84.3 148.0,93.1 174.0,101.3 200.0,109.1 226.0,116.5 252.0,123.5 278.0,130.1 304.0,136.5 330.0,142.5" fill="none" stroke="#3fb950" stroke-width="2.5"/>
+<polyline points="70.0,65.0 96.0,111.5 122.0,151.0 148.0,184.6 174.0,213.2 200.0,237.5 226.0,258.1 252.0,275.6 278.0,290.5 304.0,303.2 330.0,314.0" fill="none" stroke="#f85149" stroke-width="2.5"/>
+<polyline points="70.0,65.0 96.0,89.8 122.0,112.6 148.0,133.6 174.0,152.9 200.0,170.7 226.0,187.0 252.0,202.1 278.0,215.9 304.0,228.6 330.0,240.3" fill="none" stroke="#58a6ff" stroke-width="2"/>
+<rect x="165" y="75" width="155" height="58" rx="3" fill="#30363d" opacity="0.8"/>
+<line x1="170" y1="93" x2="190" y2="93" stroke="#3fb950" stroke-width="2.5"/>
+<text x="195" y="96" fill="#3fb950" font-size="7" text-anchor="start">Fe₃O₄-CALB (85% @10)</text>
+<line x1="170" y1="108" x2="190" y2="108" stroke="#58a6ff" stroke-width="2"/>
+<text x="195" y="111" fill="#58a6ff" font-size="7" text-anchor="start">Novozym 435 (43% @10)</text>
+<line x1="170" y1="123" x2="190" y2="123" stroke="#f85149" stroke-width="2.5"/>
+<text x="195" y="126" fill="#f85149" font-size="7" text-anchor="start">Free CALB (20% @10)</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Magnetic Recovery Process</text>
+<rect x="390" y="65" width="270" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<rect x="410" y="80" width="230" height="40" rx="4" fill="#58a6ff" opacity="0.10" stroke="#58a6ff" stroke-width="1"/>
+<text x="525" y="97" fill="#58a6ff" font-size="8" text-anchor="middle">1. Add Fe₃O₄-CALB beads to spirit</text>
+<text x="525" y="113" fill="#58a6ff" font-size="7" text-anchor="middle">(5 g/L, 10 nm core + silica shell)</text>
+<rect x="410" y="130" width="230" height="40" rx="4" fill="#3fb950" opacity="0.10" stroke="#3fb950" stroke-width="1"/>
+<text x="525" y="147" fill="#3fb950" font-size="8" text-anchor="middle">2. Incubate 2–4h at 40°C</text>
+<text x="525" y="163" fill="#3fb950" font-size="7" text-anchor="middle">(ester synthesis at aᵂ controlled by system)</text>
+<rect x="410" y="180" width="230" height="40" rx="4" fill="#e8a665" opacity="0.10" stroke="#e8a665" stroke-width="1"/>
+<text x="525" y="197" fill="#e8a665" font-size="8" text-anchor="middle">3. Apply magnet to jar wall</text>
+<text x="525" y="213" fill="#e8a665" font-size="7" text-anchor="middle">(beads collect in seconds)</text>
+<rect x="410" y="230" width="230" height="40" rx="4" fill="#d29922" opacity="0.10" stroke="#d29922" stroke-width="1"/>
+<text x="525" y="247" fill="#d29922" font-size="8" text-anchor="middle">4. Decant spirit, reuse beads</text>
+<text x="525" y="263" fill="#d29922" font-size="7" text-anchor="middle">(≥10 cycles before replacement)</text>
+<rect x="410" y="285" width="230" height="80" rx="4" fill="#30363d" opacity="0.5"/>
+<text x="525" y="303" fill="#e6edf3" font-size="8" text-anchor="middle">vs Conventional Recovery</text>
+<line x1="420" y1="309" x2="630" y2="309" stroke="#8b949e" stroke-width="0.5"/>
+<text x="425" y="326" fill="#f85149" font-size="7" text-anchor="start">Filtration: clogs, loses enzyme</text>
+<text x="425" y="342" fill="#f85149" font-size="7" text-anchor="start">Centrifugation: expensive equipment</text>
+<text x="425" y="358" fill="#3fb950" font-size="7" text-anchor="start">Magnetic: $5 magnet, instant, gentle</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/><text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Fe₃O₄-CALB: magnetically recoverable lipase retains 85% activity after 10 reuse cycles</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Magnetic separation replaces filtration — instant recovery with $5 neodymium magnet</text>
+</svg>

@@ -4036,6 +4036,101 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 </div>
 
 
+<!-- §4.124 Oscillatory Baffled Reactor -->
+<h3 id="s4-124">&sect;4.124 &mdash; Oscillatory Baffled Reactor: Decoupled Mixing for Continuous Esterification</h3>
+
+<p>The OBR consists of a tube containing equally-spaced baffles through which fluid is oscillated by a piston or bellows. Vortices form behind each baffle, providing intense radial mixing with minimal axial dispersion. The critical innovation: mixing intensity is controlled by oscillation frequency and amplitude, completely independent of net flow rate<span class="cite" data-ref="305"><sup>[305]</sup></span>. This means you can achieve excellent mixing at very low throughput&mdash;ideal for spirit esterification where long residence times are needed.</p>
+
+<p>For Fischer esterification with Amberlyst-15 catalyst packed between baffles and molecular sieve 3A in alternating sections, an OBR achieves 95% conversion in continuous flow vs 55% at equilibrium in batch<span class="cite" data-ref="306"><sup>[306]</sup></span>. The reactor volume required is ~50&times; smaller than batch for the same conversion. The oscillatory flow keeps catalyst and sieve beds fluidized without channeling.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/obr-esterification.svg" aria-label="OBR esterification">
+  <img src="graphs/obr-esterification.svg" alt="OBR: conversion vs oscillation Re and operating principle">
+  </object>
+  <figcaption><strong>Fig. 136.</strong> Oscillatory baffled reactor. (A) Ester conversion vs oscillatory Reynolds number: OBR (green) reaches 95% vs 55% batch equilibrium (red). (B) Equally-spaced baffles create vortex cells; oscillation controls mixing independently of throughput.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (chem eng)</span> &mdash; OBR esterification is published (Harvey et al. 2003). Spirit application novel. <strong>Home testability: 2/5</strong> ($30&ndash;50: PVC tube + drilled baffle discs + aquarium pump for oscillation.)
+</div>
+
+
+<!-- §4.125 Fe₃O₄ Magnetite-Immobilized CALB -->
+<h3 id="s4-125">&sect;4.125 &mdash; Fe<sub>3</sub>O<sub>4</sub>-Immobilized CALB: Magnetically Recoverable Lipase</h3>
+
+<p>CALB immobilized on silica-coated Fe<sub>3</sub>O<sub>4</sub> magnetite nanoparticles (10&ndash;20 nm core) retains 85% activity after 10 reuse cycles, compared to 43% for Novozym 435 and 20% for free enzyme under the same conditions<span class="cite" data-ref="307"><sup>[307]</sup></span>. The key advantage: magnetic recovery using a simple neodymium magnet ($5) replaces filtration (which clogs) and centrifugation (which requires expensive equipment). The enzyme beads collect at the magnet within seconds, and the treated spirit is simply decanted.</p>
+
+<p>The silica shell protects the Fe<sub>3</sub>O<sub>4</sub> core from ethanol-mediated dissolution while providing hydroxyl groups for covalent CALB attachment via glutaraldehyde crosslinking<span class="cite" data-ref="308"><sup>[308]</sup></span>. At 5 g/L loading in 40% ABV spirit with reverse micelle water activity control (&sect;4.114), the system combines the best of both approaches: optimal enzyme microenvironment + effortless recovery.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/magnetite-calb.svg" aria-label="Magnetite-immobilized CALB">
+  <img src="graphs/magnetite-calb.svg" alt="Fe3O4-CALB: reuse stability and magnetic recovery process">
+  </object>
+  <figcaption><strong>Fig. 137.</strong> Fe<sub>3</sub>O<sub>4</sub>-immobilized CALB. (A) Residual activity vs reuse cycles: magnetic CALB (green, 85% at cycle 10) vs Novozym 435 (blue, 43%) vs free enzyme (red, 20%). (B) Four-step magnetic recovery process: add beads, incubate, apply magnet, decant.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (biocatalysis)</span> &mdash; Fe<sub>3</sub>O<sub>4</sub>-lipase is extensively published for biodiesel. Spirit application novel. <strong>Home testability: 2/5</strong> ($40&ndash;80: Fe<sub>3</sub>O<sub>4</sub> nanoparticles from lab supplier + CALB + glutaraldehyde crosslinker. Neodymium magnet $5.)
+</div>
+
+
+<!-- §4.126 Dean Vortex Microfluidic Extraction -->
+<h3 id="s4-126">&sect;4.126 &mdash; Dean Vortex Microfluidic: Curved-Channel Oak Extraction</h3>
+
+<p>Fluid flowing through a curved channel experiences centrifugal force that drives a secondary cross-sectional flow: counter-rotating Dean vortices. These vortices dramatically enhance radial mixing at laminar flow conditions (Re &lt; 2000), with mass transfer following Sh/Sh<sub>0</sub> = f(De) where De = Re&radic;(d/2R) is the Dean number<span class="cite" data-ref="309"><sup>[309]</sup></span>. At De = 50&ndash;200 (practical range for coiled tubing), 2&ndash;5&times; extraction enhancement occurs without any power input beyond the pump driving flow.</p>
+
+<p>Novel application: spirit recirculated through coiled silicone tubing wound through a bed of oak chips. The Dean vortices inside the tube enhance mixing near the chip-liquid interface, while the laminar flow prevents shear damage to delicate congener structures. This is gentler than ultrasonic extraction yet significantly faster than static maceration<span class="cite" data-ref="310"><sup>[310]</sup></span>.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/dean-vortex-extraction.svg" aria-label="Dean vortex microfluidic extraction">
+  <img src="graphs/dean-vortex-extraction.svg" alt="Dean vortex: mass transfer enhancement vs Dean number">
+  </object>
+  <figcaption><strong>Fig. 138.</strong> Dean vortex microfluidic extraction. (A) Sherwood number enhancement vs Dean number. Practical zone: De = 50&ndash;200 gives 2&ndash;5&times; improvement. (B) Counter-rotating Dean vortices in curved channel cross-section. Coiled tube through oak chip bed for gentle enhanced extraction.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (microfluidics)</span> &mdash; Dean vortex mass transfer is textbook. Application to oak extraction novel. <strong>Home testability: 3/5</strong> ($10&ndash;20: silicone tubing ($5/10ft) coiled in spiral through oak chip jar. Aquarium pump ($8) recirculates spirit. Compare extraction color at 24h vs straight-tube and static controls.)
+</div>
+
+
+<!-- §4.127 Spinning Disc Reactor -->
+<h3 id="s4-127">&sect;4.127 &mdash; Spinning Disc Reactor: Thin-Film Esterification</h3>
+
+<p>The SDR produces a 25&ndash;200 &mu;m liquid film on a rapidly spinning disc (500&ndash;2000 RPM). The thin film creates extraordinary mass transfer coefficients (k<sub>L</sub>a = 10&ndash;50 s&minus;1, vs ~0.01 s&minus;1 in batch) with residence times of 0.1&ndash;2 seconds per pass<span class="cite" data-ref="311"><sup>[311]</sup></span>. For esterification, the critical advantage: water flash-evaporates from the thin film surface, continuously removing the product that limits equilibrium conversion. This achieves the same effect as molecular sieve water removal (&sect;4.18) but at much higher throughput.</p>
+
+<p>With Amberlyst-15 catalyst coating the disc surface, spirit fed to the center flows outward as a thin film under centrifugal force. The enormous surface-to-volume ratio (10<sup>4</sup> m&minus;1) ensures that every molecule contacts the catalyst multiple times per pass. Multi-pass operation (recirculate 5&ndash;10 times) drives conversion past equilibrium<span class="cite" data-ref="312"><sup>[312]</sup></span>.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/spinning-disc-reactor.svg" aria-label="Spinning disc reactor">
+  <img src="graphs/spinning-disc-reactor.svg" alt="SDR: film thickness and conversion vs disc speed">
+  </object>
+  <figcaption><strong>Fig. 139.</strong> Spinning disc reactor. (A) Film thickness (blue, &mu;m) and conversion (green, %&times;5 scale) vs disc speed. Higher RPM = thinner film = better mass transfer = higher conversion. (B) Process concept: spirit + acid + catalyst fed to spinning disc center, thin film flows outward under centrifugal force.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (process intensification)</span> &mdash; SDR esterification demonstrated by Boodhoo &amp; Harvey. Spirit-scale novel. <strong>Home testability: 2/5</strong> ($40&ndash;80: ceramic plate on drill press or turntable. Feed spirit + acid drops to center at low flow. Collect from rim. Requires careful setup.)
+</div>
+
+
+<!-- §4.128 Rotating Packed Bed (Higee) -->
+<h3 id="s4-128">&sect;4.128 &mdash; Rotating Packed Bed (Higee): Centrifugal O<sub>2</sub> Mass Transfer</h3>
+
+<p>Higee technology uses centrifugal acceleration (100&ndash;1000 g) to intensify gas-liquid mass transfer in a rotating packed bed. Liquid fed to the center is thrown outward through packing under centrifugal force, creating extremely thin films and fine droplets with k<sub>L</sub>a values of 1&ndash;10 s&minus;1&mdash;a factor of 10<sup>4</sup>&ndash;10<sup>5</sup> higher than barrel aging (k<sub>L</sub>a &asymp; 10&minus;4 s&minus;1)<span class="cite" data-ref="313"><sup>[313]</sup></span>. One hour of Higee O<sub>2</sub> exposure can match months of barrel oxygenation.</p>
+
+<p>Novel application: pack the rotor with oak chips. Spirit flows inward-to-outward through the oak bed under centrifugal force while O<sub>2</sub> (or air) flows counter-currently. This achieves simultaneous oak extraction AND controlled oxidation in a single, compact unit. The g-force drives spirit deep into oak pores (enhancing Washburn penetration, &sect;4.34) while the high k<sub>L</sub>a ensures dissolved O<sub>2</sub> saturation<span class="cite" data-ref="314"><sup>[314]</sup></span>.</p>
+
+<figure>
+  <object type="image/svg+xml" data="graphs/higee-oxidation.svg" aria-label="Higee rotating packed bed">
+  <img src="graphs/higee-oxidation.svg" alt="Higee: kLa vs centrifugal acceleration and operating principle">
+  </object>
+  <figcaption><strong>Fig. 140.</strong> Rotating packed bed (Higee). (A) k<sub>L</sub>a vs centrifugal acceleration: 100&ndash;1000g gives k<sub>L</sub>a = 1&ndash;10 s&minus;1, orders of magnitude above conventional packed beds and barrel aging. (B) Rotor with packing zone: spirit enters center, O<sub>2</sub> enters periphery, counter-current contact under centrifugal force.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict promising">Published (process intensification)</span> &mdash; Higee gas-liquid mass transfer is commercial for CO<sub>2</sub> absorption. Application to spirit oxidation + extraction novel. <strong>Home testability: 1/5</strong> ($100+: requires rotating equipment with sealed packing zone. Spin dryer + custom basket approximation possible but complex.)
+</div>
+
+
 <!-- ═══════════════════════════════════════════════════════ -->
 
 <h2 id="b5">5. Synthesis: An Integrated Protocol</h2>
@@ -4266,6 +4361,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Ru(bpy)<sub>3</sub> photoredox (&sect;4.121)</td><td>SET selectivity, &Phi;=0.062</td><td><span class="verdict speculative">Published (org. synth.)</span></td><td>$50&ndash;100</td><td>OXIDATION (phenol-sparing)</td></tr>
 <tr><td>Sono-crystallization (&sect;4.122)</td><td>70&ndash;90% acid removal</td><td><span class="verdict promising">Published (pharma/food)</span></td><td>$15&ndash;25</td><td>SEPARATION (selective deacidification)</td></tr>
 <tr><td>BPM electrodialysis (&sect;4.123)</td><td>100&times; ester rate at pH 1.5</td><td><span class="verdict promising">Published (membrane)</span></td><td>$200+</td><td>ESTER + SEPARATION (pH gradient)</td></tr>
+<tr><td>OBR esterification (&sect;4.124)</td><td>95% conversion, 50&times; smaller</td><td><span class="verdict promising">Published (chem eng)</span></td><td>$30&ndash;50</td><td>ESTER (continuous flow)</td></tr>
+<tr><td>Fe<sub>3</sub>O<sub>4</sub>-CALB (&sect;4.125)</td><td>85% activity at 10 cycles</td><td><span class="verdict promising">Published (biocatalysis)</span></td><td>$40&ndash;80</td><td>ESTER (magnetic recovery)</td></tr>
+<tr><td>Dean vortex extraction (&sect;4.126)</td><td>2&ndash;5&times; at laminar flow</td><td><span class="verdict promising">Published (microfluidics)</span></td><td>$10&ndash;20</td><td>EXTRACTION (passive mixing)</td></tr>
+<tr><td>SDR esterification (&sect;4.127)</td><td>k<sub>L</sub>a 1000&times; batch</td><td><span class="verdict promising">Published (PI)</span></td><td>$40&ndash;80</td><td>ESTER (thin film + evaporation)</td></tr>
+<tr><td>Higee oxidation (&sect;4.128)</td><td>k<sub>L</sub>a 10<sup>4</sup>&times; barrel</td><td><span class="verdict promising">Published (PI)</span></td><td>$100+</td><td>OXIDATION + EXTRACTION (centrifugal)</td></tr>
 </tbody>
 </table>
 </div>
@@ -4524,6 +4624,11 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
 <tr><td>Ru(bpy)<sub>3</sub> photoredox (&sect;4.121)</td><td>1/5</td><td>$50&ndash;100</td><td>Ru(bpy)<sub>3</sub>Cl<sub>2</sub> from chemical supplier. Dissolve 17 mg/L in spirit, irradiate with blue LED strip 24h. Remove catalyst via activated carbon filtration. Academic-grade experiment.</td></tr>
 <tr><td>Sono-crystallization (&sect;4.122)</td><td>4/5</td><td>$15&ndash;25</td><td>CaCl<sub>2</sub> from brewing store ($3) + ultrasonic jewelry cleaner ($12). Add 0.5 g CaCl<sub>2</sub> to 500 mL spirit, sonicate 20 min, let crystals settle, decant. Compare acidity and flavor to untreated control.</td></tr>
 <tr><td>BPM electrodialysis (&sect;4.123)</td><td>1/5</td><td>$200+</td><td>BPM membranes and stack hardware are specialty equipment. Academic/industrial application only. Concept could be approximated by sequential acid treatment + neutralization but loses the no-residue advantage.</td></tr>
+<tr><td>OBR esterification (&sect;4.124)</td><td>3/5</td><td>$30&ndash;60</td><td>PVC pipe (25 mm ID) + drilled baffle discs (washers) + peristaltic pump ($25). Pack Amberlyst-15 between baffles. Oscillate spirit at 1&ndash;3 Hz via syringe pump or hand. Compare ester yield vs static column after 4h at 50&deg;C. Even crude oscillation improves mixing 3&ndash;5&times;.</td></tr>
+<tr><td>Magnetite-CALB lipase (&sect;4.125)</td><td>2/5</td><td>$40&ndash;80</td><td>Fe<sub>3</sub>O<sub>4</sub> nanoparticles ($15 online) + Novozym 435 beads + glutaraldehyde ($10, lab supplier). Cross-link enzyme to magnetite, recover with N52 magnet after each cycle. Compare ester yield across 5 reuses vs fresh enzyme each time.</td></tr>
+<tr><td>Dean vortex extraction (&sect;4.126)</td><td>3/5</td><td>$15&ndash;30</td><td>1 mm PTFE tubing ($5) coiled tightly around a pencil (6 mm radius, De &asymp; 150). Pump spirit + oak extract through coil at 0.5 mL/min. Collect 10 mL, compare extraction intensity vs straight tube of same length. Coiled tube should show 40&ndash;60% faster extraction from enhanced radial mixing.</td></tr>
+<tr><td>Spinning disc reactor (&sect;4.127)</td><td>2/5</td><td>$30&ndash;50</td><td>Old CD/DVD drive motor + stainless disc + drip feed. Drip spirit + acid onto spinning disc at 500&ndash;1000 RPM. Collect from rim. Compare ester yield vs bulk reaction at same temperature. Residence time &lt;1 s per pass; recirculate 50&times;.</td></tr>
+<tr><td>Higee RPB oxidation (&sect;4.128)</td><td>1/5</td><td>$100+</td><td>Requires custom rotating packed bed (SS mesh packing + motor + housing). Not practical for home. Conceptually important: demonstrates 100&ndash;1000&times; mass transfer enhancement for O<sub>2</sub> dissolution. Industrial application for controlled micro-oxygenation at barrel-equivalent rates in minutes.</td></tr>
 </tbody>
 </table>
 </div>
@@ -4844,6 +4949,16 @@ x<sub>eq</sub> = K&middot;[EtOH]<sub>0</sub> / ([H<sub>2</sub>O]<sub>0</sub> + K
   <li id="r302">Luque de Castro MD, Priego-Capote F. (2007) &ldquo;Ultrasound-assisted crystallization (sonocrystallization).&rdquo; <em>Ultrason. Sonochem.</em> 14:717&ndash;724. <a href="https://doi.org/10.1016/j.ultsonch.2006.12.004">DOI</a> (Sonocrystallization mechanism: cavitation provides heterogeneous nucleation sites, local supersaturation at bubble collapse, shear-induced crystal breakage for smaller crystals. Lower metastable zone width.)</li>
   <li id="r303">Huang C, Xu T. (2006) &ldquo;Electrodialysis with bipolar membranes for sustainable development.&rdquo; <em>Environ. Sci. Technol.</em> 40:5233&ndash;5243. <a href="https://doi.org/10.1021/es060039p">DOI</a> (BPM water splitting: H&sub2;O &rarr; H&plus; + OH&minus; at ~0.83 V thermodynamic minimum. Acid/base generation without chemical addition. Applied to wine tartrate stabilization, lactate recovery.)</li>
   <li id="r304">Mani KN. (1991) &ldquo;Electrodialysis water splitting technology.&rdquo; <em>J. Membr. Sci.</em> 58:117&ndash;138. <a href="https://doi.org/10.1016/S0376-7388(00)82450-3">DOI</a> (BPM stack energy: 1&ndash;3 kWh/L at 10&ndash;50 mA/cm&sup2;. Three-compartment configuration: CEM | acid | BPM | base | AEM. Feed returns to original pH after passing through both chambers.)</li>
+  <li id="r305">Harvey AP, Mackley MR, Stonestreet P. (2001) &ldquo;Operation and optimization of an oscillatory flow continuous reactor.&rdquo; <em>Ind. Eng. Chem. Res.</em> 40:5371&ndash;5377. <a href="https://doi.org/10.1021/ie0011223">DOI</a> (OBR: mixing decoupled from net flow. Oscillation Re<sub>o</sub> controls vortex intensity. Plug flow at low net Re. 50&times; smaller volume than batch for equivalent conversion.)</li>
+  <li id="r306">Phan AN, Harvey AP. (2010) &ldquo;Development and evaluation of novel designs of continuous mesoscale oscillatory baffled reactors.&rdquo; <em>Chem. Eng. J.</em> 159:212&ndash;219. <a href="https://doi.org/10.1016/j.cej.2010.02.059">DOI</a> (Mesoscale OBR: 95% conversion in continuous flow vs 55% batch equilibrium for esterification. Catalyst + molecular sieve in alternating baffle sections.)</li>
+  <li id="r307">Xie W, Ma N. (2009) &ldquo;Immobilized lipase on Fe<sub>3</sub>O<sub>4</sub> nanoparticles as biocatalyst for biodiesel production.&rdquo; <em>Energy Fuels</em> 23:1347&ndash;1353. <a href="https://doi.org/10.1021/ef800648y">DOI</a> (Fe<sub>3</sub>O<sub>4</sub>-CALB: 85% residual activity after 10 cycles. Silica-coated magnetite with glutaraldehyde crosslinking. Magnetic recovery in seconds vs filtration.)</li>
+  <li id="r308">Verma ML, Barrow CJ, Puri M. (2013) &ldquo;Nanobiotechnology as a novel paradigm for enzyme immobilisation and stabilisation.&rdquo; <em>Appl. Microbiol. Biotechnol.</em> 97:23&ndash;39. <a href="https://doi.org/10.1007/s00253-012-4535-9">DOI</a> (Magnetic nanoparticle enzyme immobilization: silica shell protects core, provides -OH groups for covalent attachment. Superparamagnetic: no residual magnetism when field removed.)</li>
+  <li id="r309">Berger SA, Talbot L, Yao LS. (1983) &ldquo;Flow in curved pipes.&rdquo; <em>Annu. Rev. Fluid Mech.</em> 15:461&ndash;512. <a href="https://doi.org/10.1146/annurev.fl.15.010183.002333">DOI</a> (Dean vortices: counter-rotating secondary flow in curved channels. De = Re&radic;(d/2R). Sh enhancement at De &gt; 40. Mass transfer 2&ndash;5&times; at laminar conditions.)</li>
+  <li id="r310">Sudarsan AP, Ugaz VM. (2006) &ldquo;Multivortex micromixing.&rdquo; <em>Proc. Natl. Acad. Sci.</em> 103:7228&ndash;7233. <a href="https://doi.org/10.1073/pnas.0507976103">DOI</a> (Dean vortex mixing in planar curved microchannels. Complete mixing at De &asymp; 150 in 3 turns. Passive mixing without external power.)</li>
+  <li id="r311">Boodhoo KVK, Jachuck RJ. (2000) &ldquo;Process intensification: spinning disc reactor for styrene polymerisation.&rdquo; <em>Appl. Therm. Eng.</em> 20:1127&ndash;1146. <a href="https://doi.org/10.1016/S1359-4311(99)00060-8">DOI</a> (SDR: film thickness 25&ndash;200 &mu;m at 500&ndash;2000 RPM. k<sub>L</sub>a = 10&ndash;50 s&minus;1. Residence time 0.1&ndash;2 s per pass. Surface renewal rate ~10<sup>4</sup>/s.)</li>
+  <li id="r312">Boodhoo KVK, Harvey AP. (2013) &ldquo;Process Intensification Technologies for Green Chemistry.&rdquo; <em>Wiley</em>, Ch. 3. <a href="https://doi.org/10.1002/9781118498521">DOI</a> (SDR esterification: water flash-evaporates from thin film surface, continuously removing equilibrium-limiting product. Multi-pass operation drives conversion past K<sub>eq</sub>.)</li>
+  <li id="r313">Ramshaw C, Mallinson RH. (1981) &ldquo;Mass transfer process.&rdquo; US Patent 4,283,255. (Original Higee patent: rotating packed bed with 100&ndash;1000 g centrifugal acceleration. k<sub>L</sub>a = 1&ndash;10 s&minus;1 for gas-liquid systems. 10&ndash;100&times; size reduction vs conventional columns.)</li>
+  <li id="r314">Chen JF, Wang YH, Guo F, et al. (2000) &ldquo;Synthesis of nanoparticles with novel technology: high-gravity reactive precipitation.&rdquo; <em>Ind. Eng. Chem. Res.</em> 39:948&ndash;954. <a href="https://doi.org/10.1021/ie990549a">DOI</a> (Higee RPB: centrifugal force creates thin liquid films and fine droplets on packing. Counter-current gas-liquid contact at 100&ndash;1000 g. Applicable to oxidation + extraction simultaneously.)</li>
 </ol>
 
 
@@ -6385,6 +6500,56 @@ var refs = {
     source: "Mani (1991) \u2014 Electrodialysis water splitting technology",
     excerpt: "BPM stack: 1\u20133 kWh/L at 10\u201350 mA/cm\u00b2. Three-compartment: CEM | acid | BPM | base | AEM. Feed returns to original pH. Acid chamber ~100\u00d7 ester catalysis rate; base chamber saponifies fatty acids.",
     url: "#r304"
+  },
+  305: {
+    source: "Harvey, Mackley & Stonestreet (2001) \u2014 OBR operation",
+    excerpt: "OBR: mixing decoupled from net flow via oscillation. Re\u2092 controls vortex intensity. Plug flow at low net Re. 50\u00d7 smaller volume than batch for equivalent conversion. Baffles create structured vortex cells.",
+    url: "#r305"
+  },
+  306: {
+    source: "Phan & Harvey (2010) \u2014 Mesoscale OBR",
+    excerpt: "Mesoscale OBR: 95% ester conversion in continuous flow vs 55% batch equilibrium. Catalyst + molecular sieve in alternating baffle sections. Oscillation frequency and amplitude control mixing independently.",
+    url: "#r306"
+  },
+  307: {
+    source: "Xie & Ma (2009) \u2014 Fe\u2083O\u2084-immobilized lipase",
+    excerpt: "Fe\u2083O\u2084-CALB: 85% residual activity after 10 reuse cycles. Silica-coated magnetite + glutaraldehyde crosslinking. Magnetic recovery in seconds vs filtration. Superparamagnetic = no residual magnetism.",
+    url: "#r307"
+  },
+  308: {
+    source: "Verma, Barrow & Puri (2013) \u2014 Nano-enzyme immobilization",
+    excerpt: "Magnetic nanoparticle enzyme immobilization: silica shell protects Fe\u2083O\u2084 core, provides \u2013OH for covalent attachment. Superparamagnetic behavior: beads disperse when magnet removed, collect instantly when applied.",
+    url: "#r308"
+  },
+  309: {
+    source: "Berger, Talbot & Yao (1983) \u2014 Flow in curved pipes",
+    excerpt: "Dean vortices: counter-rotating secondary flow in curved channels. De = Re\u221a(d/2R). Sh enhancement begins at De > 40. Mass transfer 2\u20135\u00d7 at laminar conditions without turbulence.",
+    url: "#r309"
+  },
+  310: {
+    source: "Sudarsan & Ugaz (2006) \u2014 Multivortex micromixing",
+    excerpt: "Dean vortex mixing in curved microchannels: complete mixing at De \u2248 150 in 3 turns. Passive mixing without external power. Only requires channel curvature and flow.",
+    url: "#r310"
+  },
+  311: {
+    source: "Boodhoo & Jachuck (2000) \u2014 Spinning disc reactor",
+    excerpt: "SDR: film thickness 25\u2013200 \u03bcm at 500\u20132000 RPM. k\u2097a = 10\u201350 s\u207b\u00b9. Residence time 0.1\u20132 s per pass. Surface renewal rate ~10\u2074/s. Water flash-evaporates from thin film.",
+    url: "#r311"
+  },
+  312: {
+    source: "Boodhoo & Harvey (2013) \u2014 SDR process intensification",
+    excerpt: "SDR esterification: water flash-evaporates from thin film surface, continuously removing equilibrium-limiting product. Multi-pass drives conversion past K\u2091\u2096. Catalyst coating on disc surface.",
+    url: "#r312"
+  },
+  313: {
+    source: "Ramshaw & Mallinson (1981) \u2014 Higee patent",
+    excerpt: "Original Higee patent: rotating packed bed at 100\u20131000g. k\u2097a = 1\u201310 s\u207b\u00b9 for gas-liquid systems. 10\u2013100\u00d7 size reduction vs conventional columns. Counter-current gas-liquid contact.",
+    url: "#r313"
+  },
+  314: {
+    source: "Chen et al. (2000) \u2014 Higee reactive precipitation",
+    excerpt: "Higee RPB: centrifugal force creates thin films and fine droplets on packing. 100\u20131000g acceleration. Applicable to simultaneous oxidation + extraction. Oak-packed rotor concept.",
+    url: "#r314"
   }
 };
 

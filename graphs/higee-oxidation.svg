@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" style="background:#161b22;font-family:Georgia,serif">
+<rect width="700" height="480" fill="#161b22"/>
+<text x="350" y="25" fill="#e8a665" font-size="14" text-anchor="middle" font-weight="bold">Fig 140 — Rotating Packed Bed (Higee): Centrifugal O₂ Mass Transfer</text>
+<text x="200" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">A: kₗa vs Centrifugal Acceleration</text>
+<rect x="70" y="65" width="260" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<text x="200" y="393" fill="#8b949e" font-size="8" text-anchor="middle">Centrifugal acceleration (g)</text>
+<text x="55" y="220" fill="#8b949e" font-size="7" text-anchor="middle">kₗa (s⁻¹)</text>
+<line x1="70" y1="375" x2="330" y2="375" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="378" fill="#8b949e" font-size="7" text-anchor="end">0</text>
+<line x1="70" y1="313" x2="330" y2="313" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="316" fill="#8b949e" font-size="7" text-anchor="end">2</text>
+<line x1="70" y1="251" x2="330" y2="251" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="254" fill="#8b949e" font-size="7" text-anchor="end">4</text>
+<line x1="70" y1="189" x2="330" y2="189" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="192" fill="#8b949e" font-size="7" text-anchor="end">6</text>
+<line x1="70" y1="127" x2="330" y2="127" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="130" fill="#8b949e" font-size="7" text-anchor="end">8</text>
+<line x1="70" y1="65" x2="330" y2="65" stroke="#30363d" stroke-width="0.3"/>
+<text x="65" y="68" fill="#8b949e" font-size="7" text-anchor="end">10</text>
+<line x1="70" y1="375" x2="70" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="70" y="388" fill="#8b949e" font-size="7" text-anchor="middle">0</text>
+<line x1="122" y1="375" x2="122" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="122" y="388" fill="#8b949e" font-size="7" text-anchor="middle">200</text>
+<line x1="174" y1="375" x2="174" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="174" y="388" fill="#8b949e" font-size="7" text-anchor="middle">400</text>
+<line x1="226" y1="375" x2="226" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="226" y="388" fill="#8b949e" font-size="7" text-anchor="middle">600</text>
+<line x1="278" y1="375" x2="278" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="278" y="388" fill="#8b949e" font-size="7" text-anchor="middle">800</text>
+<line x1="330" y1="375" x2="330" y2="379" stroke="#8b949e" stroke-width="0.5"/>
+<text x="330" y="388" fill="#8b949e" font-size="7" text-anchor="middle">1000</text>
+<polyline points="72.6,371.3 75.2,369.4 77.8,367.8 80.4,366.5 83.0,365.3 85.6,364.2 88.2,363.1 90.8,362.1 93.4,361.2 96.0,360.3 98.6,359.4 101.2,358.6 103.8,357.7 106.4,357.0 109.0,356.2 111.6,355.5 114.2,354.7 116.8,354.0 119.4,353.3 122.0,352.7 124.6,352.0 127.2,351.3 129.8,350.7 132.4,350.1 135.0,349.5 137.6,348.9 140.2,348.3 142.8,347.7 145.4,347.1 148.0,346.5 150.6,345.9 153.2,345.4 155.8,344.8 158.4,344.3 161.0,343.7 163.6,343.2 166.2,342.7 168.8,342.2 171.4,341.6 174.0,341.1 176.6,340.6 179.2,340.1 181.8,339.6 184.4,339.1 187.0,338.7 189.6,338.2 192.2,337.7 194.8,337.2 197.4,336.8 200.0,336.3 202.6,335.8 205.2,335.4 207.8,334.9 210.4,334.5 213.0,334.0 215.6,333.6 218.2,333.1 220.8,332.7 223.4,332.2 226.0,331.8 228.6,331.4 231.2,331.0 233.8,330.5 236.4,330.1 239.0,329.7 241.6,329.3 244.2,328.9 246.8,328.4 249.4,328.0 252.0,327.6 254.6,327.2 257.2,326.8 259.8,326.4 262.4,326.0 265.0,325.6 267.6,325.2 270.2,324.8 272.8,324.4 275.4,324.1 278.0,323.7 280.6,323.3 283.2,322.9 285.8,322.5 288.4,322.1 291.0,321.8 293.6,321.4 296.2,321.0 298.8,320.7 301.4,320.3 304.0,319.9 306.6,319.5 309.2,319.2 311.8,318.8 314.4,318.5 317.0,318.1 319.6,317.7 322.2,317.4 324.8,317.0 327.4,316.7 330.0,316.3" fill="none" stroke="#3fb950" stroke-width="2.5"/>
+<line x1="70" y1="374.38" x2="330" y2="374.38" stroke="#f85149" stroke-width="1"/>
+<text x="75" y="369.38" fill="#f85149" font-size="7" text-anchor="start">Conventional packed bed</text>
+<text x="75" y="385" fill="#8b949e" font-size="7" text-anchor="start">Barrel: kₗa ≈ 10⁻⁴ s⁻¹</text>
+<text x="525" y="57" fill="#e6edf3" font-size="10" text-anchor="middle">B: Higee Operating Principle</text>
+<rect x="390" y="65" width="270" height="310" fill="none" stroke="#8b949e" stroke-width="1"/>
+<circle cx="525" cy="185" r="70" fill="none" stroke="#e8a665" stroke-width="1.5"/>
+<circle cx="525" cy="185" r="35" fill="#58a6ff" opacity="0.08" stroke="#58a6ff" stroke-width="1"/>
+<text x="525" y="180" fill="#58a6ff" font-size="7" text-anchor="middle">Packing</text>
+<text x="525" y="193" fill="#58a6ff" font-size="7" text-anchor="middle">zone</text>
+<text x="525" y="120" fill="#3fb950" font-size="7" text-anchor="middle">Spirit in (center)</text>
+<text x="525" y="265" fill="#e8a665" font-size="7" text-anchor="middle">O₂ in (periphery)</text>
+<text x="420" y="185" fill="#8b949e" font-size="14" text-anchor="middle">↻</text>
+<text x="420" y="205" fill="#8b949e" font-size="7" text-anchor="middle">Rotate</text>
+<rect x="410" y="285" width="230" height="100" rx="4" fill="#30363d" opacity="0.5"/>
+<text x="525" y="303" fill="#e6edf3" font-size="8" text-anchor="middle">Spirit Application</text>
+<line x1="420" y1="309" x2="630" y2="309" stroke="#8b949e" stroke-width="0.5"/>
+<text x="425" y="326" fill="#3fb950" font-size="7" text-anchor="start">• kₗa 100–1000× barrel aging</text>
+<text x="425" y="342" fill="#e8a665" font-size="7" text-anchor="start">• Pack with oak chips = extract + oxidize</text>
+<text x="425" y="358" fill="#58a6ff" font-size="7" text-anchor="start">• 1 hour Higee ≈ months barrel O₂</text>
+<text x="425" y="374" fill="#3fb950" font-size="7" text-anchor="start">• Controllable: RPM sets g-force</text>
+<rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/><text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Higee: 100–1000g centrifugal force gives kₗa = 1–10 s⁻¹ (10⁴–10⁵× barrel)</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Oak-packed rotor: simultaneous O₂ mass transfer + extraction in single unit</text>
+</svg>

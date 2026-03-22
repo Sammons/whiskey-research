@@ -224,6 +224,11 @@ fn main() {
     fs::write("../graphs/ru-photoredox-ester.svg", sim_ru_photoredox_ester()).unwrap();
     fs::write("../graphs/sono-crystallization-acid.svg", sim_sono_crystallization_acid()).unwrap();
     fs::write("../graphs/bipolar-membrane-ph.svg", sim_bipolar_membrane_ph()).unwrap();
+    fs::write("../graphs/obr-esterification.svg", sim_obr_esterification()).unwrap();
+    fs::write("../graphs/magnetite-calb.svg", sim_magnetite_calb()).unwrap();
+    fs::write("../graphs/dean-vortex-extraction.svg", sim_dean_vortex_extraction()).unwrap();
+    fs::write("../graphs/spinning-disc-reactor.svg", sim_spinning_disc_reactor()).unwrap();
+    fs::write("../graphs/higee-oxidation.svg", sim_higee_oxidation()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -19875,5 +19880,267 @@ fn sim_bipolar_membrane_ph() -> String {
 
     svg.push_str("</svg>");
     svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 136: Oscillatory Baffled Reactor (OBR)
+// ═══════════════════════════════════════════════════════════════
+fn sim_obr_esterification() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig 136 \u{2014} Oscillatory Baffled Reactor: Decoupled Mixing for Esterification");
+    let ax = 70.0; let ay = 65.0; let aw = 260.0; let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Conversion vs Oscillation Reynolds Number", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &label(200.0, 393.0, "Re\u{2092} = 2\u{03c0}f\u{2022}x\u{2080}\u{2022}\u{03c1}\u{2022}D/\u{03bc}", MUTED, 8, "middle");
+    svg += &label(55.0, 220.0, "Ester conversion (%)", MUTED, 7, "middle");
+    for i in 0..=5 { let y = ay + ah - (i as f64 / 5.0) * ah; svg += &hline(ax, ax + aw, y, GRID, "0.3"); svg += &label(ax - 5.0, y + 3.0, &format!("{}", i * 20), MUTED, 7, "end"); }
+    for i in 0..=5 { let x = ax + (i as f64 / 5.0) * aw; svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", ay + ah, ay + ah + 4.0); svg += &label(x, ay + ah + 13.0, &format!("{}", i * 200), MUTED, 7, "middle"); }
+    let sx = |v: f64| -> f64 { ax + (v / 1000.0) * aw };
+    let sy = |v: f64| -> f64 { ay + ah - (v / 100.0) * ah };
+    let mut obr_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=100 { let re = i as f64 * 10.0; let conv = 95.0 * (1.0 - E.powf(-0.005 * re)); obr_pts.push((re, conv)); }
+    svg += &polyline_svg(&obr_pts, GREEN, "2.5", &sx, &sy);
+    let mut batch_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=100 { let re = i as f64 * 10.0; let conv = 55.0 * (1.0 - E.powf(-0.003 * re)); batch_pts.push((re, conv)); }
+    svg += &polyline_svg(&batch_pts, RED, "2.5", &sx, &sy);
+    svg += &hline(ax, ax + aw, sy(55.0), RED, "1");
+    svg += &label(ax + aw + 3.0, sy(55.0) + 3.0, "Batch eq.", RED, 6, "start");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"130\" height=\"38\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n", ax + 10.0, ay + 10.0);
+    svg += &hline(ax + 15.0, ax + 35.0, ay + 25.0, GREEN, "2.5"); svg += &label(ax + 40.0, ay + 28.0, "OBR continuous", GREEN, 7, "start");
+    svg += &hline(ax + 15.0, ax + 35.0, ay + 40.0, RED, "2.5"); svg += &label(ax + 40.0, ay + 43.0, "Batch reactor", RED, 7, "start");
+    let bx = 390.0; let by = 65.0; let bw = 270.0; let bh = 310.0;
+    svg += &label(525.0, 57.0, "B: OBR Operating Principle", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    for i in 0..6 { let bx_pos = bx + 30.0 + i as f64 * 40.0; svg += &format!("<rect x=\"{bx_pos}\" y=\"{}\" width=\"5\" height=\"100\" rx=\"1\" fill=\"{ACCENT}\" opacity=\"0.5\"/>\n", by + 30.0); }
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"100\" rx=\"4\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1.5\"/>\n", bx + 20.0, by + 30.0);
+    svg += &label(bx + 135.0, by + 25.0, "Tube with equally-spaced baffles", ACCENT, 7, "middle");
+    for i in 0..5 { let cx = bx + 52.0 + i as f64 * 40.0; let cy = by + 80.0; svg += &format!("<ellipse cx=\"{cx}\" cy=\"{cy}\" rx=\"14\" ry=\"10\" fill=\"none\" stroke=\"{BLUE}\" stroke-width=\"1\" opacity=\"0.6\"/>\n"); }
+    svg += &label(bx + 135.0, by + 100.0, "Vortices form behind each baffle", BLUE, 7, "middle");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"130\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 155.0);
+    svg += &label(bx + 135.0, by + 173.0, "Key Advantages", TEXT, 8, "middle");
+    svg += &hline(bx + 30.0, bx + 240.0, by + 180.0, MUTED, "0.5");
+    svg += &label(bx + 35.0, by + 197.0, "\u{2022} Mixing \u{2260} flow rate (independent)", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 213.0, "\u{2022} Plug flow at low Re (no channeling)", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 229.0, "\u{2022} Oscillation: 0.5\u{2013}10 Hz, 1\u{2013}30 mm", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 245.0, "\u{2022} 50\u{00d7} smaller than batch for same", BLUE, 7, "start");
+    svg += &label(bx + 35.0, by + 261.0, "   conversion (process intensification)", BLUE, 7, "start");
+    svg += &label(bx + 35.0, by + 277.0, "\u{2022} Continuous: catalyst + mol. sieve", ACCENT, 7, "start");
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0, "OBR decouples mixing from net flow: oscillation controls vortex intensity independently", ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0, "95% conversion in continuous flow vs 55% batch \u{2014} 50\u{00d7} smaller reactor volume", GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 137: Fe₃O₄ Magnetite-Immobilized CALB
+// ═══════════════════════════════════════════════════════════════
+fn sim_magnetite_calb() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig 137 \u{2014} Fe\u{2083}O\u{2084}-Immobilized CALB: Magnetically Recoverable Lipase");
+    let ax = 70.0; let ay = 65.0; let aw = 260.0; let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Reuse Cycles vs Residual Activity", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &label(200.0, 393.0, "Reuse cycle number", MUTED, 8, "middle");
+    svg += &label(55.0, 220.0, "Residual activity (%)", MUTED, 7, "middle");
+    for i in 0..=5 { let y = ay + ah - (i as f64 / 5.0) * ah; svg += &hline(ax, ax + aw, y, GRID, "0.3"); svg += &label(ax - 5.0, y + 3.0, &format!("{}", i * 20), MUTED, 7, "end"); }
+    for i in 0..=10 { let x = ax + (i as f64 / 10.0) * aw; svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", ay + ah, ay + ah + 4.0); svg += &label(x, ay + ah + 13.0, &format!("{}", i), MUTED, 7, "middle"); }
+    let sx = |v: f64| -> f64 { ax + (v / 10.0) * aw };
+    let sy = |v: f64| -> f64 { ay + ah - (v / 100.0) * ah };
+    // Fe3O4-CALB: retains 85% after 10 cycles
+    let mut mag_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=10 { let c = i as f64; let act = 100.0 * 0.98_f64.powf(c) * (0.87 + 0.13 * E.powf(-0.1 * c)); mag_pts.push((c, act)); }
+    svg += &polyline_svg(&mag_pts, GREEN, "2.5", &sx, &sy);
+    // Free CALB: loses activity faster
+    let mut free_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=10 { let c = i as f64; let act = 100.0 * 0.85_f64.powf(c); free_pts.push((c, act)); }
+    svg += &polyline_svg(&free_pts, RED, "2.5", &sx, &sy);
+    // Novozym 435 (commercial immobilized): intermediate
+    let mut nov_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=10 { let c = i as f64; let act = 100.0 * 0.92_f64.powf(c); nov_pts.push((c, act)); }
+    svg += &polyline_svg(&nov_pts, BLUE, "2", &sx, &sy);
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"155\" height=\"58\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n", ax + aw - 165.0, ay + 10.0);
+    svg += &hline(ax + aw - 160.0, ax + aw - 140.0, ay + 28.0, GREEN, "2.5"); svg += &label(ax + aw - 135.0, ay + 31.0, "Fe\u{2083}O\u{2084}-CALB (85% @10)", GREEN, 7, "start");
+    svg += &hline(ax + aw - 160.0, ax + aw - 140.0, ay + 43.0, BLUE, "2"); svg += &label(ax + aw - 135.0, ay + 46.0, "Novozym 435 (43% @10)", BLUE, 7, "start");
+    svg += &hline(ax + aw - 160.0, ax + aw - 140.0, ay + 58.0, RED, "2.5"); svg += &label(ax + aw - 135.0, ay + 61.0, "Free CALB (20% @10)", RED, 7, "start");
+    let bx = 390.0; let by = 65.0; let bw = 270.0; let bh = 310.0;
+    svg += &label(525.0, 57.0, "B: Magnetic Recovery Process", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"40\" rx=\"4\" fill=\"{BLUE}\" opacity=\"0.10\" stroke=\"{BLUE}\" stroke-width=\"1\"/>\n", bx + 20.0, by + 15.0);
+    svg += &label(bx + 135.0, by + 32.0, "1. Add Fe\u{2083}O\u{2084}-CALB beads to spirit", BLUE, 8, "middle");
+    svg += &label(bx + 135.0, by + 48.0, "(5 g/L, 10 nm core + silica shell)", BLUE, 7, "middle");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"40\" rx=\"4\" fill=\"{GREEN}\" opacity=\"0.10\" stroke=\"{GREEN}\" stroke-width=\"1\"/>\n", bx + 20.0, by + 65.0);
+    svg += &label(bx + 135.0, by + 82.0, "2. Incubate 2\u{2013}4h at 40\u{00b0}C", GREEN, 8, "middle");
+    svg += &label(bx + 135.0, by + 98.0, "(ester synthesis at a\u{1d42} controlled by system)", GREEN, 7, "middle");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"40\" rx=\"4\" fill=\"{ACCENT}\" opacity=\"0.10\" stroke=\"{ACCENT}\" stroke-width=\"1\"/>\n", bx + 20.0, by + 115.0);
+    svg += &label(bx + 135.0, by + 132.0, "3. Apply magnet to jar wall", ACCENT, 8, "middle");
+    svg += &label(bx + 135.0, by + 148.0, "(beads collect in seconds)", ACCENT, 7, "middle");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"40\" rx=\"4\" fill=\"{YELLOW}\" opacity=\"0.10\" stroke=\"{YELLOW}\" stroke-width=\"1\"/>\n", bx + 20.0, by + 165.0);
+    svg += &label(bx + 135.0, by + 182.0, "4. Decant spirit, reuse beads", YELLOW, 8, "middle");
+    svg += &label(bx + 135.0, by + 198.0, "(\u{2265}10 cycles before replacement)", YELLOW, 7, "middle");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"80\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 220.0);
+    svg += &label(bx + 135.0, by + 238.0, "vs Conventional Recovery", TEXT, 8, "middle");
+    svg += &hline(bx + 30.0, bx + 240.0, by + 244.0, MUTED, "0.5");
+    svg += &label(bx + 35.0, by + 261.0, "Filtration: clogs, loses enzyme", RED, 7, "start");
+    svg += &label(bx + 35.0, by + 277.0, "Centrifugation: expensive equipment", RED, 7, "start");
+    svg += &label(bx + 35.0, by + 293.0, "Magnetic: $5 magnet, instant, gentle", GREEN, 7, "start");
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0, "Fe\u{2083}O\u{2084}-CALB: magnetically recoverable lipase retains 85% activity after 10 reuse cycles", ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0, "Magnetic separation replaces filtration \u{2014} instant recovery with $5 neodymium magnet", GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 138: Dean Vortex Microfluidic Extraction
+// ═══════════════════════════════════════════════════════════════
+fn sim_dean_vortex_extraction() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig 138 \u{2014} Dean Vortex Microfluidic: Curved-Channel Oak Extraction");
+    let ax = 70.0; let ay = 65.0; let aw = 260.0; let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Mass Transfer Enhancement vs Dean Number", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &label(200.0, 393.0, "Dean number (De)", MUTED, 8, "middle");
+    svg += &label(55.0, 220.0, "Sh/Sh\u{2080} enhancement", MUTED, 7, "middle");
+    for i in 0..=5 { let y = ay + ah - (i as f64 / 5.0) * ah; svg += &hline(ax, ax + aw, y, GRID, "0.3"); svg += &label(ax - 5.0, y + 3.0, &format!("{}", i * 2), MUTED, 7, "end"); }
+    for i in 0..=5 { let x = ax + (i as f64 / 5.0) * aw; svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", ay + ah, ay + ah + 4.0); svg += &label(x, ay + ah + 13.0, &format!("{}", i * 100), MUTED, 7, "middle"); }
+    let sx = |v: f64| -> f64 { ax + (v / 500.0) * aw };
+    let sy = |v: f64| -> f64 { ay + ah - (v / 10.0) * ah };
+    // Sh enhancement: Sh/Sh0 = 1 + 0.033 * De^0.5 for De > 40
+    let mut dean_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 0..=500 { let de = i as f64; let enh = if de < 40.0 { 1.0 + 0.005 * de } else { 1.0 + 0.4 * (de / 100.0).powf(0.75) }; dean_pts.push((de, enh.min(10.0))); }
+    svg += &polyline_svg(&dean_pts, GREEN, "2.5", &sx, &sy);
+    // Straight channel baseline
+    svg += &hline(ax, ax + aw, sy(1.0), RED, "1");
+    svg += &label(ax + aw + 3.0, sy(1.0) + 3.0, "Straight", RED, 6, "start");
+    // Practical zone
+    svg += &format!("<rect x=\"{}\" y=\"{ay}\" width=\"{}\" height=\"{ah}\" fill=\"{ACCENT}\" opacity=\"0.06\"/>\n", sx(50.0), sx(200.0) - sx(50.0));
+    svg += &label(sx(125.0), ay + 15.0, "Practical zone", ACCENT, 7, "middle");
+    let bx = 390.0; let by = 65.0; let bw = 270.0; let bh = 310.0;
+    svg += &label(525.0, 57.0, "B: Dean Vortex Flow Structure", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    // Curved channel schematic
+    svg += &format!("<path d=\"M {} {} Q {} {} {} {}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"2\"/>\n", bx + 40.0, by + 180.0, bx + 135.0, by + 30.0, bx + 230.0, by + 180.0);
+    svg += &format!("<path d=\"M {} {} Q {} {} {} {}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"2\"/>\n", bx + 60.0, by + 180.0, bx + 135.0, by + 60.0, bx + 210.0, by + 180.0);
+    svg += &label(bx + 135.0, by + 25.0, "Curved channel", MUTED, 7, "middle");
+    // Dean vortex arrows
+    svg += &label(bx + 100.0, by + 110.0, "\u{21ba}", BLUE, 14, "middle");
+    svg += &label(bx + 170.0, by + 110.0, "\u{21bb}", BLUE, 14, "middle");
+    svg += &label(bx + 135.0, by + 140.0, "Counter-rotating", BLUE, 7, "middle");
+    svg += &label(bx + 135.0, by + 155.0, "Dean vortices", BLUE, 7, "middle");
+    // Application concept
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"100\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 200.0);
+    svg += &label(bx + 135.0, by + 218.0, "Spirit Application", TEXT, 8, "middle");
+    svg += &hline(bx + 30.0, bx + 240.0, by + 225.0, MUTED, "0.5");
+    svg += &label(bx + 35.0, by + 242.0, "\u{2022} Coiled tube through oak chip bed", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 258.0, "\u{2022} De = Re\u{2022}\u{221a}(d/2R) \u{2248} 50\u{2013}200", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 274.0, "\u{2022} 2\u{2013}5\u{00d7} extraction at low flow", ACCENT, 7, "start");
+    svg += &label(bx + 35.0, by + 290.0, "\u{2022} Laminar = gentle, no shear damage", BLUE, 7, "start");
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0, "Dean vortices in curved channels: 2\u{2013}5\u{00d7} mass transfer enhancement at laminar flow", ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0, "Coiled tube through oak bed = enhanced extraction without turbulent shear or power input", GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 139: Spinning Disc Reactor (SDR)
+// ═══════════════════════════════════════════════════════════════
+fn sim_spinning_disc_reactor() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig 139 \u{2014} Spinning Disc Reactor: Thin-Film Esterification");
+    let ax = 70.0; let ay = 65.0; let aw = 260.0; let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: Film Thickness + Conversion vs Disc Speed", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &label(200.0, 393.0, "Disc speed (RPM)", MUTED, 8, "middle");
+    svg += &label(55.0, 175.0, "Film thickness (\u{03bc}m)", MUTED, 7, "middle");
+    svg += &label(55.0, 260.0, "/ Conversion (%)", MUTED, 7, "middle");
+    for i in 0..=5 { let y = ay + ah - (i as f64 / 5.0) * ah; svg += &hline(ax, ax + aw, y, GRID, "0.3"); }
+    // Left axis: film thickness 0-500 um
+    for i in 0..=5 { let y = ay + ah - (i as f64 / 5.0) * ah; svg += &label(ax - 5.0, y + 3.0, &format!("{}", i * 100), MUTED, 7, "end"); }
+    for i in 0..=5 { let x = ax + (i as f64 / 5.0) * aw; svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", ay + ah, ay + ah + 4.0); svg += &label(x, ay + ah + 13.0, &format!("{}", i * 400), MUTED, 7, "middle"); }
+    let sx = |v: f64| -> f64 { ax + (v / 2000.0) * aw };
+    let sy_thick = |v: f64| -> f64 { ay + ah - (v / 500.0) * ah };
+    // Film thickness: h ~ (3*Q*nu / (2*pi*omega^2*r^3))^(1/3), simplified
+    let mut thick_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 1..=200 { let rpm = i as f64 * 10.0; let omega = rpm * 2.0 * std::f64::consts::PI / 60.0; let thick = 500.0 / (1.0 + 0.01 * omega.powi(2)).powf(0.33); thick_pts.push((rpm, thick)); }
+    svg += &polyline_svg(&thick_pts, BLUE, "2.5", &sx, &sy_thick);
+    // Conversion increases with thinner film (same scale, 0-500 mapped to 0-100%)
+    let mut conv_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 1..=200 { let rpm = i as f64 * 10.0; let omega = rpm * 2.0 * std::f64::consts::PI / 60.0; let conv = 95.0 * (1.0 - E.powf(-0.005 * omega)); conv_pts.push((rpm, conv * 5.0)); } // scale to 500 axis
+    svg += &polyline_svg(&conv_pts, GREEN, "2.5", &sx, &sy_thick);
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"155\" height=\"38\" rx=\"3\" fill=\"{GRID}\" opacity=\"0.8\"/>\n", ax + aw - 165.0, ay + 10.0);
+    svg += &hline(ax + aw - 160.0, ax + aw - 140.0, ay + 25.0, BLUE, "2.5"); svg += &label(ax + aw - 135.0, ay + 28.0, "Film thickness (\u{03bc}m)", BLUE, 7, "start");
+    svg += &hline(ax + aw - 160.0, ax + aw - 140.0, ay + 40.0, GREEN, "2.5"); svg += &label(ax + aw - 135.0, ay + 43.0, "Conversion (% \u{00d7} 5)", GREEN, 7, "start");
+    let bx = 390.0; let by = 65.0; let bw = 270.0; let bh = 310.0;
+    svg += &label(525.0, 57.0, "B: SDR Process Concept", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    // Disc schematic
+    svg += &format!("<ellipse cx=\"{}\" cy=\"{}\" rx=\"90\" ry=\"25\" fill=\"{ACCENT}\" opacity=\"0.12\" stroke=\"{ACCENT}\" stroke-width=\"1.5\"/>\n", bx + 135.0, by + 90.0);
+    svg += &label(bx + 135.0, by + 75.0, "Spinning disc (500\u{2013}2000 RPM)", ACCENT, 8, "middle");
+    svg += &label(bx + 135.0, by + 95.0, "Thin film: 25\u{2013}200 \u{03bc}m", BLUE, 7, "middle");
+    svg += &label(bx + 135.0, by + 45.0, "\u{2193} Feed: spirit + acid + catalyst", GREEN, 7, "middle");
+    svg += &label(bx + 50.0, by + 115.0, "Centrifugal", MUTED, 7, "middle");
+    svg += &label(bx + 50.0, by + 128.0, "force \u{2192}", MUTED, 7, "middle");
+    svg += &label(bx + 220.0, by + 115.0, "\u{2190} Intense", MUTED, 7, "middle");
+    svg += &label(bx + 220.0, by + 128.0, "mixing", MUTED, 7, "middle");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"130\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 155.0);
+    svg += &label(bx + 135.0, by + 173.0, "Key Parameters", TEXT, 8, "middle");
+    svg += &hline(bx + 30.0, bx + 240.0, by + 180.0, MUTED, "0.5");
+    svg += &label(bx + 35.0, by + 197.0, "Residence time: 0.1\u{2013}2 seconds", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 213.0, "k\u{2097}a: 10\u{2013}50 s\u{207b}\u{00b9} (vs 0.01 batch)", BLUE, 7, "start");
+    svg += &label(bx + 35.0, by + 229.0, "Surface renewal: ~10\u{2074}/s", ACCENT, 7, "start");
+    svg += &label(bx + 35.0, by + 245.0, "Water flash evaporates from film", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 261.0, "\u{2192} shifts ester equilibrium forward", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 277.0, "Combine with Amberlyst-15 on disc", ACCENT, 7, "start");
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0, "SDR: 25\u{2013}200 \u{03bc}m thin film at 500\u{2013}2000 RPM, k\u{2097}a = 10\u{2013}50 s\u{207b}\u{00b9} (1000\u{00d7} batch)", ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0, "Water flash-evaporates from thin film \u{2192} shifts ester equilibrium past K\u{2091}\u{2096} limit", GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 140: Rotating Packed Bed (Higee) for Spirit Oxidation
+// ═══════════════════════════════════════════════════════════════
+fn sim_higee_oxidation() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig 140 \u{2014} Rotating Packed Bed (Higee): Centrifugal O\u{2082} Mass Transfer");
+    let ax = 70.0; let ay = 65.0; let aw = 260.0; let ah = 310.0;
+    svg += &label(200.0, 57.0, "A: k\u{2097}a vs Centrifugal Acceleration", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{ax}\" y=\"{ay}\" width=\"{aw}\" height=\"{ah}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &label(200.0, 393.0, "Centrifugal acceleration (g)", MUTED, 8, "middle");
+    svg += &label(55.0, 220.0, "k\u{2097}a (s\u{207b}\u{00b9})", MUTED, 7, "middle");
+    for i in 0..=5 { let y = ay + ah - (i as f64 / 5.0) * ah; svg += &hline(ax, ax + aw, y, GRID, "0.3"); svg += &label(ax - 5.0, y + 3.0, &format!("{}", i * 2), MUTED, 7, "end"); }
+    for i in 0..=5 { let x = ax + (i as f64 / 5.0) * aw; svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", ay + ah, ay + ah + 4.0); svg += &label(x, ay + ah + 13.0, &format!("{}", i * 200), MUTED, 7, "middle"); }
+    let sx = |v: f64| -> f64 { ax + (v / 1000.0) * aw };
+    let sy = |v: f64| -> f64 { ay + ah - (v / 10.0) * ah };
+    // Higee: kLa ~ 0.005 * g^0.6
+    let mut higee_pts: Vec<(f64, f64)> = Vec::new();
+    for i in 1..=100 { let g = i as f64 * 10.0; let kla = 0.03 * g.powf(0.6); higee_pts.push((g, kla.min(10.0))); }
+    svg += &polyline_svg(&higee_pts, GREEN, "2.5", &sx, &sy);
+    // Conventional packed bed baseline: kLa ~ 0.02 s^-1
+    svg += &hline(ax, ax + aw, sy(0.02), RED, "1");
+    svg += &label(ax + 5.0, sy(0.02) - 5.0, "Conventional packed bed", RED, 7, "start");
+    // Barrel aging baseline: kLa ~ 0.0001 s^-1
+    svg += &label(ax + 5.0, sy(0.0) + 10.0, "Barrel: k\u{2097}a \u{2248} 10\u{207b}\u{2074} s\u{207b}\u{00b9}", MUTED, 7, "start");
+    let bx = 390.0; let by = 65.0; let bw = 270.0; let bh = 310.0;
+    svg += &label(525.0, 57.0, "B: Higee Operating Principle", TEXT, 10, "middle");
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"70\" fill=\"none\" stroke=\"{ACCENT}\" stroke-width=\"1.5\"/>\n", bx + 135.0, by + 120.0);
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"35\" fill=\"{BLUE}\" opacity=\"0.08\" stroke=\"{BLUE}\" stroke-width=\"1\"/>\n", bx + 135.0, by + 120.0);
+    svg += &label(bx + 135.0, by + 115.0, "Packing", BLUE, 7, "middle");
+    svg += &label(bx + 135.0, by + 128.0, "zone", BLUE, 7, "middle");
+    svg += &label(bx + 135.0, by + 55.0, "Spirit in (center)", GREEN, 7, "middle");
+    svg += &label(bx + 135.0, by + 200.0, "O\u{2082} in (periphery)", ACCENT, 7, "middle");
+    svg += &label(bx + 30.0, by + 120.0, "\u{21bb}", MUTED, 14, "middle");
+    svg += &label(bx + 30.0, by + 140.0, "Rotate", MUTED, 7, "middle");
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"230\" height=\"100\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.5\"/>\n", bx + 20.0, by + 220.0);
+    svg += &label(bx + 135.0, by + 238.0, "Spirit Application", TEXT, 8, "middle");
+    svg += &hline(bx + 30.0, bx + 240.0, by + 244.0, MUTED, "0.5");
+    svg += &label(bx + 35.0, by + 261.0, "\u{2022} k\u{2097}a 100\u{2013}1000\u{00d7} barrel aging", GREEN, 7, "start");
+    svg += &label(bx + 35.0, by + 277.0, "\u{2022} Pack with oak chips = extract + oxidize", ACCENT, 7, "start");
+    svg += &label(bx + 35.0, by + 293.0, "\u{2022} 1 hour Higee \u{2248} months barrel O\u{2082}", BLUE, 7, "start");
+    svg += &label(bx + 35.0, by + 309.0, "\u{2022} Controllable: RPM sets g-force", GREEN, 7, "start");
+    svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
+    svg += &label(350.0, h - 32.0, "Higee: 100\u{2013}1000g centrifugal force gives k\u{2097}a = 1\u{2013}10 s\u{207b}\u{00b9} (10\u{2074}\u{2013}10\u{2075}\u{00d7} barrel)", ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0, "Oak-packed rotor: simultaneous O\u{2082} mass transfer + extraction in single unit", GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
 }
 
