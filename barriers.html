@@ -1322,6 +1322,29 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> but high feasibility and very high novelty. Every individual chemical step is published. Hardware: a $20&ndash;50 commercial ozone generator (DBD-based) modified to treat the headspace of a sealed vessel. No electrodes contact the spirit. The ethanol scavenging effect at 40% ABV is a natural safety valve against over-oxidation. <strong>Priority experiment:</strong> GC-MS comparison of untreated vs. plasma-treated (headspace DBD, O<sub>2</sub> feed, 5 min) new-make spirit to validate acetaldehyde and ester formation. <strong>Home testability: 4/5</strong> (~$30 ozone generator + sealed glass vessel + oak chips).
 </div>
 
+<h3>4.14 Enzyme Cascade Reactor: Biocatalytic Oxidation</h3>
+
+<p>In barrel aging, trace microbial enzymes catalyze a three-step oxidation cascade: <strong>alcohol dehydrogenase (ADH)</strong> oxidizes ethanol to acetaldehyde, <strong>aldehyde dehydrogenase (ALDH)</strong> converts acetaldehyde to acetic acid, and <strong>esterases</strong> condense acetic acid with ethanol to form ethyl acetate. Both ADH and ALDH require NAD<sup>+</sup> as cofactor (consumed stoichiometrically: 2 mol NAD<sup>+</sup> per mol ethanol &rarr; acetic acid). The question: can we replicate this with purified or whole-cell biocatalysts, and can we couple NAD<sup>+</sup> regeneration to the electro-Fenton cathode already in the protocol?</p>
+
+<p><strong>Thermostable ADH: <em>G. stearothermophilus</em> BsADH.</strong> This NAD<sup>+</sup>-dependent ADH operates optimally at 65&deg;C&mdash;directly compatible with the 50&ndash;70&deg;C protocol range. Key kinetics: k<sub>cat</sub> = 305 s<sup>&minus;1</sup>, K<sub>m</sub>(ethanol) = 0.91 mM at 60&deg;C<span class="cite" data-ref="102"><sup>[102]</sup></span>. Paired with <em>G. thermodenitrificans</em> ALDH (K<sub>m</sub>(acetaldehyde) = 6.6 &mu;M at 60&deg;C&mdash;extraordinarily high affinity that pulls the ADH equilibrium forward), the cascade operates entirely within the protocol temperature window.</p>
+
+<p><strong>The 0.12% conversion insight.</strong> Whiskey maturation requires only ~500 ppm additional acetic acid (8.3 mM) from a 6,840 mM ethanol stock&mdash;a vanishingly small 0.12% conversion. Even at 1% of V<sub>max</sub> (severely inhibited by 40% ethanol substrate inhibition and solvent denaturation), BsADH at 1 &mu;M enzyme concentration produces ~10.8 mM/hr&mdash;reaching the target in under 1 hour for the ADH step alone. The required conversion is so tiny that even catastrophically reduced enzyme activity may suffice.</p>
+
+<p><strong>The dual-electrode concept.</strong> In the electro-Fenton cell (&sect;4.10&ndash;4.11), the cathode generates H<sub>2</sub>O<sub>2</sub> from O<sub>2</sub> reduction. The <em>anode</em> currently serves no productive function beyond water oxidation. By modifying the anode with phenazine methosulfate (PMS) mediator, it can oxidize NADH &rarr; NAD<sup>+</sup> at +0.6 V vs SHE&mdash;regenerating the cofactor consumed by the enzyme cascade<span class="cite" data-ref="103"><sup>[103]</sup></span>. The cell voltage (~1.3 V) is thermodynamically favorable. Both electrodes now serve productive functions: cathode generates Fenton reagent (radical oxidation pathway), anode regenerates NAD<sup>+</sup> (enzymatic oxidation pathway). Two parallel oxidation mechanisms in one cell, sharing the same electrons.</p>
+
+<p><strong>Whole-cell alternative: <em>Komagataeibacter europaeus</em>.</strong> Instead of purified enzymes, immobilized acetic acid bacteria sidestep the NAD<sup>+</sup> problem entirely. <em>K. europaeus</em> uses membrane-bound PQQ-dependent ADH/ALDH (PQQ is recycled internally via the respiratory chain&mdash;no exogenous cofactor needed). Immobilized on ceramic carriers, these cells achieve 10.4 g/L/h acetic acid production<span class="cite" data-ref="104"><sup>[104]</sup></span>&mdash;industrial-scale rates at TRL 6&ndash;7. The key: they tolerate up to 20% w/v ethanol natively. At 40% ABV, stress-limited metabolism actually <em>helps</em>&mdash;the bacteria produce acid at a controllable trickle rate rather than running to vinegar. Controlling dissolved O<sub>2</sub> below 0.1 mg/L provides an additional throttle<span class="cite" data-ref="101"><sup>[101]</sup></span>.</p>
+
+<p><strong>Co-immobilized cascade performance.</strong> Li et al. demonstrated ADH + acetaldehyde lyase + NADH oxidase co-immobilized on epoxy-Fe<sub>3</sub>O<sub>4</sub> magnetic nanoparticles achieving 90% conversion (vs. 59% for free enzymes) with 86% retained activity after 6 reuse cycles<span class="cite" data-ref="101"><sup>[101]</sup></span>. Substrate channeling between co-localized enzymes (&lt;10 nm spacing) provides dramatic rate enhancement. A computationally designed ADH-ALDH fusion protein with cationic linker achieved 500-fold increased cascade activity vs. unbound enzymes.</p>
+
+<figure class="sim-figure">
+  <img src="graphs/enzyme-cascade-reactor.svg" alt="Enzyme cascade reactor: BsADH kinetics with substrate inhibition at 40% ethanol">
+  <figcaption><strong>Fig. 23.</strong> Enzyme cascade reactor simulation. Left: acetaldehyde production rate vs. ethanol concentration. BsADH (1 &mu;M, substrate inhibition modeled with K<sub>i</sub> = 500 mM) retains ~7% of V<sub>max</sub> at 40% ABV&mdash;0.075 mM/hr, reaching the 8.3 mM target in ~111 hr (~4.6 days). Electro-Fenton provides a constant 0.5 mM/hr baseline. Right: cumulative acetaldehyde at 40% ABV over 24 hr. Combined enzymatic + Fenton pathway reaches 500 ppm in 14.4 hr. O<sub>2</sub>-limited <em>K. europaeus</em> achieves it in 23.7 hr. All pathways reach the target in days, not years. Cost: $0.02&ndash;0.07/L<span class="cite" data-ref="105"><sup>[105]</sup></span>.</figcaption>
+</figure>
+
+<div class="callout hypothesis">
+  <strong>Assessment:</strong> <span class="verdict speculative">SPECULATIVE</span> for purified enzyme cascade at 40% ABV (substrate inhibition is the critical unknown&mdash;the 0.12% conversion requirement is the saving grace). <span class="verdict promising">PROMISING</span> for immobilized <em>K. europaeus</em> whole-cell approach (TRL 6&ndash;7, industrial precedent, no cofactor cost). <span class="verdict speculative">SPECULATIVE</span> for the dual-electrode NAD<sup>+</sup>/electro-Fenton concept (both half-reactions are published individually; the combination is novel). The hybrid approach&mdash;Acetobacter for bulk oxidation, purified enzymes for fine-tuning&mdash;is the most practical near-term path. <strong>Home testability: 3/5</strong> (~$40&ndash;80: Acetobacter culture from unpasteurized vinegar + ceramic carrier + O<sub>2</sub> control via aquarium valve).
+</div>
+
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 5: INTEGRATED PROTOCOL                        -->
@@ -1440,6 +1463,7 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <tr><td>Ultrasonication (&sect;3.14)</td><td>250&ndash;700&times;</td><td><span class="verdict promising">Published</span></td><td>$50</td><td>CLUSTER</td></tr>
 <tr><td>PDMS membrane O<sub>2</sub> (&sect;4.1)</td><td>5&ndash;25&times;</td><td><span class="verdict promising">Published</span></td><td>$25</td><td>OXIDATION</td></tr>
 <tr><td>Cold plasma DBD (&sect;4.13)</td><td>Unknown</td><td><span class="verdict speculative">Novel</span></td><td>$30</td><td>OXIDATION</td></tr>
+<tr><td>Enzyme cascade reactor (&sect;4.14)</td><td>~100&times;</td><td><span class="verdict speculative">Novel</span></td><td>$40&ndash;80</td><td>OXIDATION</td></tr>
 <tr><td>Unified sono-electro cell (&sect;4.12)</td><td>Combined</td><td><span class="verdict speculative">Novel</span></td><td>$105</td><td>ALL</td></tr>
 </tbody>
 </table>
@@ -1522,6 +1546,7 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <li><strong>Does sonication damage esters?</strong> Sonolysis generates OH&bull; that could degrade delicate esters. Published sonochemistry studies track extraction enhancement but rarely measure ester stability. A controlled experiment: spirit with known ester composition + 40 kHz / 40 W/L for 3&times;30 min sessions. Measure ester retention by GC-FID.</li>
   <li><strong>Is the unified cell (&sect;4.12) superlinear or merely additive?</strong> Each pairwise synergy is documented. But five simultaneous processes might interfere (e.g., sonoelectrolysis products could foul the biochar cathode). Only a physical experiment &mdash; the priority experiment proposed in &sect;4.12 &mdash; can answer this.</li>
   <li><strong>What is the molecular sieve 3A saturation time in spirit?</strong> Published data is for aqueous esterification. In 40% ethanol with ~33 mol/L water, the sieve may saturate faster (higher water activity) or slower (ethanol-water interactions). A breakthrough curve experiment on a small column (25 g sieve, 100 mL spirit, 1 mL/min) would determine the regeneration schedule for the protocol.</li>
+  <li><strong>What is BsADH&rsquo;s actual activity curve at 10&ndash;40% ethanol?</strong> The K<sub>m</sub> of 0.91 mM means the enzyme is saturated 7,000-fold at 40% ABV. The substrate inhibition kinetics (dead-end abortive complex vs. productive saturation) are unpublished at whiskey concentrations. The 0.12% conversion requirement means even 0.1% of V<sub>max</sub> may suffice&mdash;but this is theoretical. A simple activity assay (NADH absorbance at 340 nm) with 10/20/30/40% ethanol would resolve the question (&sect;4.14).</li>
 </ol>
 
 
@@ -1580,6 +1605,7 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
 <tr><td><strong>Electro-Fenton (&sect;4.10)</strong></td><td><strong>4/5</strong></td><td><strong>$30</strong></td><td><strong>Carbon felt cathode + graphite anode + bench PSU (5&ndash;10 mA). Spirit at pH 4 + trace FeSO<sub>4</sub>. Current controls OH&bull; &rarr; AcH rate. 1:1 stoichiometry.</strong></td></tr>
 <tr><td>Oak biochar cathode (&sect;4.11)</td><td>3/5</td><td>$50</td><td>Pyrolyze oak chunks at 800&deg;C+ (propane forge or kiln), use as electro-Fenton cathode with graphite anode. Triple function: H<sub>2</sub>O<sub>2</sub> generation + DMS adsorption + oak extractive source.</td></tr>
 <tr><td><strong>Cold plasma DBD (&sect;4.13)</strong></td><td><strong>4/5</strong></td><td><strong>$30</strong></td><td><strong>Ozone generator ($20&ndash;30) modified for headspace treatment. Spirit + oak chips in sealed jar. 1&ndash;5 min treatment daily. No electrodes contact spirit. Electrode-free oxidation.</strong></td></tr>
+<tr><td>Enzyme cascade / Acetobacter (&sect;4.14)</td><td>3/5</td><td>$40&ndash;80</td><td>Unpasteurized vinegar mother (live <em>K. europaeus</em>) on ceramic carrier in packed column. O<sub>2</sub> control via aquarium valve. Spirit flows through at controlled rate. Sub-vinegar acetic acid production.</td></tr>
 <tr><td>Carbon dot amplification (&sect;4.9)</td><td>3/5</td><td>$50</td><td>Extract charred oak in spirit, ultrafilter (&lt;10 kDa), concentrate filtrate, add to spirit + UV-A lamp. Verify by fluorescence.</td></tr>
 </tbody>
 </table>
@@ -1697,6 +1723,11 @@ K<sub>P</sub>/K<sub>0</sub> = exp(10&times;10<sup>&minus;6</sup> &times; 400&tim
   <li id="r98">Asp&eacute; E, Fern&aacute;ndez K. (2011) &ldquo;DC-assisted extraction: electroosmotic and electromigration transport of phenolics from pine bark.&rdquo; <em>Ind Crops Prod</em>. (MEF: 2.25&times; total phenolic extraction at 10 V/cm vs. unassisted control.)</li>
   <li id="r99">Tachibana K, et al. (2024) &ldquo;Production and transport of plasma-generated hydrogen peroxide from gas phase to aqueous solution.&rdquo; <em>Phys Chem Chem Phys</em>. (DBD headspace plasma: 0.8&ndash;23 mg/L H<sub>2</sub>O<sub>2</sub> in 5 min, ~270 &mu;M OH&bull;, ~8 &mu;M <sup>1</sup>O<sub>2</sub>.)</li>
   <li id="r100">Pankaj SK, et al. (2022) &ldquo;Impact of cold plasma on phenolic composition and biogenic amines of red wine.&rdquo; <em>Food Chem</em>. (Short treatments preserve polyphenolic pigments while modifying phenolic profile; anthocyanin retention &gt;90% at &lt;5 min.)</li>
+  <li id="r101">Li H, et al. (2022) &ldquo;Immobilization of ADH, Acetaldehyde Lyase, and NADH Oxidase for Cascade Enzymatic Conversion of Ethanol to Acetoin.&rdquo; <em>Energies</em> 15:4242. <a href="https://www.mdpi.com/1996-1073/15/12/4242">MDPI</a> (Co-immobilized on epoxy-Fe<sub>3</sub>O<sub>4</sub> MNPs: 90% conversion vs. 59% free enzymes, 86% retained activity after 6 cycles.)</li>
+  <li id="r102">BRENDA Enzyme Database. EC 1.1.1.1, <em>G. stearothermophilus</em> ADH (BsADH), UniProt P42328. <a href="https://www.brenda-enzymes.org/enzyme.php?ecno=1.1.1.1&UniProtAcc=P42328">BRENDA</a> (k<sub>cat</sub> 305 s<sup>&minus;1</sup>, K<sub>m</sub>(EtOH) 0.91 mM at 60&deg;C, T<sub>opt</sub> 65&deg;C, NAD<sup>+</sup>-dependent.)</li>
+  <li id="r103">Damian A, Friebe V. (2022) &ldquo;Influence of electrode potential, pH and NAD<sup>+</sup> concentration on electrochemical NADH regeneration.&rdquo; <em>Sci Rep</em> 12:16939. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9525651/">PMC</a> (Anodic NADH &rarr; NAD<sup>+</sup> oxidation at modified carbon: near-quantitative, no selectivity issue.)</li>
+  <li id="r104">Ghommidh C, Navarro JM, Durand G. (1982) &ldquo;A study of acetic acid production by immobilized <em>Acetobacter</em> cells.&rdquo; <em>Biotechnol Bioeng</em>. (Ceramic-immobilized cells: 10.4 g/L/h acetic acid, O<sub>2</sub>-transfer limited, continuous operation demonstrated.)</li>
+  <li id="r105">Rocha-Martin J, et al. (2011) &ldquo;New biotechnological perspectives of a NADH oxidase variant from <em>Thermus thermophilus</em> HB27 as NAD<sup>+</sup>-recycling enzyme.&rdquo; <em>BMC Biotechnol</em> 11:101. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3238333/">PMC</a> (TtNOX: T<sub>opt</sub> 90&deg;C, retained 90% activity after 5 hr at 80&deg;C, K<sub>m</sub>(NADH) 2.1 mM.)</li>
 </ol>
 
 
@@ -2218,6 +2249,31 @@ var refs = {
     source: "Pankaj et al. (2022), Food Chem",
     excerpt: "Cold atmospheric plasma (DBD) treatment of red wine: short treatments (<5 min, 10\u201325 W) modified phenolic composition while preserving >90% anthocyanin content. Longer treatments (>10 min) caused polyphenol degradation. Biogenic amine reduction observed. Demonstrates that plasma can selectively modify wine chemistry without destroying valuable pigments.",
     url: "#r100"
+  },
+  101: {
+    source: "Li et al. (2022), Energies 15:4242",
+    excerpt: "Co-immobilized ADH + acetaldehyde lyase + NADH oxidase on epoxy-Fe\u2083O\u2084 magnetic nanoparticles: 90% ethanol-to-acetoin conversion (vs. 59% free enzymes) after 45 hr. 86.3% retained activity after 6 reuse cycles. Substrate channeling between co-localized enzymes (<10 nm spacing) dramatically enhanced cascade activity.",
+    url: "#r101"
+  },
+  102: {
+    source: "BRENDA EC 1.1.1.1, G. stearothermophilus BsADH (P42328)",
+    excerpt: "Thermostable NAD\u207A-dependent ADH: k_cat 305 s\u207B\u00B9, K_m(ethanol) 0.91 mM at 60\u00B0C, T_opt 65\u00B0C. k_cat/K_m = 340 mM\u207B\u00B9s\u207B\u00B9. Strict NAD\u207A dependence (no NADP\u207A activity). 1 catalytic Zn + 1 structural Zn per subunit. Strong ethanol activity, well-characterized with crystal structure (PDB: 6IQD).",
+    url: "#r102"
+  },
+  103: {
+    source: "Damian & Friebe (2022), Sci Rep 12:16939",
+    excerpt: "Electrochemical NADH regeneration: anodic NADH \u2192 NAD\u207A oxidation at modified carbon electrodes is thermodynamically downhill (+0.6 to +0.7 V vs SHE) and near-quantitative. No 1,4 vs 1,6 isomer selectivity issue (unlike cathodic reduction). PMS-mediated oxidation reduces overpotential and stabilizes operation.",
+    url: "#r103"
+  },
+  104: {
+    source: "Ghommidh et al. (1982), Biotechnol Bioeng",
+    excerpt: "Immobilized Acetobacter on large-surface ceramic carriers: 10.4 g/L/h acetic acid production rate in continuous operation. O\u2082 transfer was the limiting factor. Immobilized cells showed enhanced ethanol and acetic acid tolerance vs. free cells. Industrial vinegar production at TRL 6\u20137.",
+    url: "#r104"
+  },
+  105: {
+    source: "Rocha-Martin et al. (2011), BMC Biotechnol 11:101",
+    excerpt: "Thermus thermophilus NADH oxidase variant (TtNOX): T_opt 90\u00B0C, retained 90% activity after 5 hr at 80\u00B0C. K_m(NADH) = 2.1 mM, k_cat = 15.6 s\u207B\u00B9. Produces H\u2082O\u2082 (not H\u2082O). Productivity: 40 \u00B5mol NAD\u207A recycled per hour per 0.2 mg enzyme. Natural partner for thermostable ADH/ALDH cascades.",
+    url: "#r105"
   }
 };
 

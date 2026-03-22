@@ -84,6 +84,9 @@ fn main() {
 
     fs::write("../graphs/maillard-strecker.svg", sim_maillard_strecker()).unwrap();
     println!("Wrote maillard-strecker.svg");
+
+    fs::write("../graphs/enzyme-cascade-reactor.svg", sim_enzyme_cascade_reactor()).unwrap();
+    println!("Wrote enzyme-cascade-reactor.svg");
 }
 
 fn svg_header(w: f64, h: f64, title: &str) -> String {
@@ -3747,6 +3750,285 @@ fn sim_maillard_strecker() -> String {
     svg += &label(lx, mt + 350.0, "Supplements:", CYAN, 9, "start");
     svg += &label(lx, mt + 365.0, "Xylose: 0.3 g/L", TEXT, 8, "start");
     svg += &label(lx, mt + 378.0, "Glycine: 0.08 g/L", TEXT, 8, "start");
+
+    svg.push_str("</svg>");
+    svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Simulation 23: Enzyme Cascade Reactor — BsADH kinetics with
+// substrate inhibition, Fenton comparison, NAD+ cycling
+// ═══════════════════════════════════════════════════════════════
+fn sim_enzyme_cascade_reactor() -> String {
+    // --- Panel layout ---
+    let pw = 370.0_f64; // panel width
+    let ph = 300.0_f64; // panel height
+    let gap = 30.0;
+    let w = pw * 2.0 + gap + 40.0; // total width
+    let h = ph + 80.0;
+    let mt = 45.0; // margin top
+    let mb = 25.0;
+    let ml1 = 55.0; // left margin panel 1
+    let ml2 = ml1 + pw + gap; // left margin panel 2
+
+    let mut svg = svg_header(w, h, "Enzyme Cascade Reactor: Enzymatic vs. Fenton Oxidation");
+
+    // ===== LEFT PANEL: AcH production at varying ethanol % =====
+    // Model BsADH with substrate inhibition (uncompetitive dead-end complex)
+    // v = Vmax * [S] / (Km + [S] + [S]^2/Ki)
+    // BsADH: Vmax = 305 s-1, Km = 0.91 mM, Ki estimated ~500 mM (dead-end)
+    let vmax = 305.0_f64; // s-1
+    let km = 0.91_f64; // mM
+    let ki = 500.0_f64; // mM substrate inhibition constant
+    let enzyme_conc = 0.001_f64; // mM = 1 uM
+
+    // Ethanol concentrations: 0-7000 mM (0-40% ABV)
+    let n_pts = 200;
+    let eth_max = 7000.0_f64;
+
+    // Enzymatic rate curve
+    let mut enzyme_pts: Vec<(f64, f64)> = Vec::new();
+    // Also compute Fenton rate (approximately constant with [ethanol] since OH* is non-selective)
+    let fenton_rate = 0.5_f64; // mM/hr (typical electro-Fenton AcH production)
+
+    for i in 0..=n_pts {
+        let s = eth_max * i as f64 / n_pts as f64;
+        let v = if s < 0.001 { 0.0 } else {
+            vmax * s / (km + s + s * s / ki) * enzyme_conc // mM/s
+        };
+        let v_hr = v * 3.6; // mM/hr
+        enzyme_pts.push((s, v_hr));
+    }
+
+    // Find peak enzymatic rate
+    let peak = enzyme_pts.iter().cloned()
+        .max_by(|a, b| a.1.partial_cmp(&b.1).unwrap()).unwrap();
+
+    // Also compute rates at specific ethanol %
+    let checkpoints = [(1.0, 171.3), (5.0, 856.5), (10.0, 1713.0),
+                       (20.0, 3426.0), (40.0, 6852.0)]; // (% ABV, mM)
+
+    println!("=== Enzyme Cascade Reactor ===");
+    println!("  BsADH Vmax={vmax} s-1, Km={km} mM, Ki={ki} mM");
+    println!("  Enzyme conc: {enzyme_conc} mM (1 uM)");
+    println!("  Peak rate: {:.2} mM/hr at {:.0} mM ethanol", peak.1, peak.0);
+    for (pct, mm) in &checkpoints {
+        let v = vmax * mm / (km + mm + mm * mm / ki) * enzyme_conc * 3.6;
+        let t_target = 8.3 / v; // hours to reach 8.3 mM AcH
+        println!("  At {pct}% ABV ({mm:.0} mM): rate = {v:.3} mM/hr, target in {t_target:.1} hr");
+    }
+
+    // y-axis: rate in mM/hr (0 to max enzymatic rate * 1.2)
+    let y_max = (peak.1 * 1.3).max(fenton_rate * 2.0);
+    let x_max = eth_max;
+
+    let sx1 = |x: f64| -> f64 { ml1 + (x / x_max) * (pw - 15.0) };
+    let sy1 = |y: f64| -> f64 { mt + ph - (y / y_max) * (ph - 10.0) };
+
+    // Panel 1 axes
+    svg += &hline(ml1, ml1 + pw - 15.0, mt + ph, MUTED, "1");
+    svg += &vline(ml1, mt, mt + ph, MUTED, "1");
+
+    // Grid lines
+    for i in 1..=5 {
+        let y = y_max * i as f64 / 5.0;
+        let yp = sy1(y);
+        svg += &hline(ml1, ml1 + pw - 15.0, yp, GRID, "0.5");
+        svg += &label(ml1 - 3.0, yp + 3.0, &format!("{:.1}", y), MUTED, 8, "end");
+    }
+    for i in 1..=7 {
+        let x = 1000.0 * i as f64;
+        let xp = sx1(x);
+        svg += &vline(xp, mt, mt + ph, GRID, "0.5");
+        svg += &label(xp, mt + ph + 12.0, &format!("{:.0}", x), MUTED, 8, "middle");
+    }
+
+    // Labels
+    svg += &label(ml1 + (pw - 15.0) / 2.0, mt + ph + 24.0, "Ethanol (mM)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml1 - 38.0, mt + ph / 2.0, ml1 - 38.0, mt + ph / 2.0, "Rate (mM/hr)");
+    svg += &label(ml1 + (pw - 15.0) / 2.0, mt - 5.0, "Acetaldehyde Production Rate", ACCENT, 11, "middle");
+
+    // Enzymatic rate curve
+    svg += &polyline_svg(&enzyme_pts, GREEN, "2.5", &sx1, &sy1);
+
+    // Fenton rate line (horizontal)
+    let fenton_pts: Vec<(f64, f64)> = (0..=n_pts)
+        .map(|i| (eth_max * i as f64 / n_pts as f64, fenton_rate))
+        .collect();
+    svg += &polyline_svg(&fenton_pts, RED, "2", &sx1, &sy1);
+
+    // Target line at 8.3 mM (as needed rate for 1-hr delivery)
+    let target_rate = 8.3_f64; // mM/hr to hit target in 1 hr
+    if target_rate < y_max {
+        svg += &hline(ml1, ml1 + pw - 15.0, sy1(target_rate), YELLOW, "1");
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{YELLOW}\" font-size=\"8\" text-anchor=\"start\" opacity=\"0.8\">target: 8.3 mM/hr (= 500 ppm in 1 hr)</text>\n",
+            ml1 + 5.0, sy1(target_rate) - 4.0);
+    }
+
+    // 40% ABV marker
+    let abv40 = 6852.0;
+    svg += &vline(sx1(abv40), mt, mt + ph, ACCENT, "1");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{ACCENT}\" font-size=\"8\" text-anchor=\"middle\" opacity=\"0.8\">40% ABV</text>\n",
+        sx1(abv40), mt + ph - 5.0);
+
+    // Rate at 40% ABV annotation
+    let rate_40 = vmax * abv40 / (km + abv40 + abv40 * abv40 / ki) * enzyme_conc * 3.6;
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"4\" fill=\"{GREEN}\" stroke=\"{BG}\" stroke-width=\"1\"/>\n",
+        sx1(abv40), sy1(rate_40));
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{GREEN}\" font-size=\"8\" text-anchor=\"end\">{:.2} mM/hr</text>\n",
+        sx1(abv40) - 8.0, sy1(rate_40) - 6.0, rate_40);
+
+    // Peak annotation
+    svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"3\" fill=\"{GREEN}\" stroke=\"{BG}\" stroke-width=\"1\"/>\n",
+        sx1(peak.0), sy1(peak.1));
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{MUTED}\" font-size=\"7\" text-anchor=\"middle\">peak: {:.0} mM</text>\n",
+        sx1(peak.0), sy1(peak.1) - 8.0, peak.0);
+
+    // Legend
+    let ly = mt + 15.0;
+    svg += &hline(ml1 + 10.0, ml1 + 30.0, ly, GREEN, "2.5");
+    svg += &label(ml1 + 33.0, ly + 3.5, "BsADH (1 uM, substrate inhib.)", TEXT, 8, "start");
+    svg += &hline(ml1 + 10.0, ml1 + 30.0, ly + 14.0, RED, "2");
+    svg += &label(ml1 + 33.0, ly + 17.5, "Electro-Fenton OH radical", TEXT, 8, "start");
+    svg += &hline(ml1 + 10.0, ml1 + 30.0, ly + 28.0, YELLOW, "1");
+    svg += &label(ml1 + 33.0, ly + 31.5, "Target rate (500 ppm/hr)", TEXT, 8, "start");
+
+    // ===== RIGHT PANEL: Cumulative AcH + NAD+ cycling over time =====
+    // At 40% ABV, simulate enzymatic + Fenton cumulative production over 24 hr
+    let t_max = 24.0_f64; // hours
+    let dt = 0.01_f64;
+    let steps = (t_max / dt) as usize;
+
+    // Enzymatic: rate_40 mM/hr (with NAD+ recycling)
+    // Fenton: fenton_rate mM/hr
+    // Combined: both pathways simultaneously
+    // Acetobacter: 10.4 g/L/h = 173 mM/hr at vinegar scale, but throttled to 0.5 mM/hr at sub-vinegar O2
+    let acetobacter_rate = 0.35_f64; // mM/hr (O2-limited, sub-vinegar)
+
+    let mut enz_ach: Vec<(f64, f64)> = Vec::new();
+    let mut fent_ach: Vec<(f64, f64)> = Vec::new();
+    let mut comb_ach: Vec<(f64, f64)> = Vec::new();
+    let mut aceto_ach: Vec<(f64, f64)> = Vec::new();
+
+    let target_ach = 8.3_f64; // mM target
+    let sample_every_t = 10;
+
+    let mut e_cum = 0.0_f64;
+    let mut f_cum = 0.0_f64;
+    let mut c_cum = 0.0_f64;
+    let mut a_cum = 0.0_f64;
+
+    for i in 0..=steps {
+        let t = i as f64 * dt;
+        if i % sample_every_t == 0 {
+            enz_ach.push((t, e_cum.min(target_ach * 2.5)));
+            fent_ach.push((t, f_cum.min(target_ach * 2.5)));
+            comb_ach.push((t, c_cum.min(target_ach * 2.5)));
+            aceto_ach.push((t, a_cum.min(target_ach * 2.5)));
+        }
+        e_cum += rate_40 * dt;
+        f_cum += fenton_rate * dt;
+        c_cum += (rate_40 + fenton_rate) * dt;
+        a_cum += acetobacter_rate * dt;
+    }
+
+    let y2_max = target_ach * 2.5;
+    let sx2 = |x: f64| -> f64 { ml2 + (x / t_max) * (pw - 15.0) };
+    let sy2 = |y: f64| -> f64 { mt + ph - (y / y2_max) * (ph - 10.0) };
+
+    // Panel 2 axes
+    svg += &hline(ml2, ml2 + pw - 15.0, mt + ph, MUTED, "1");
+    svg += &vline(ml2, mt, mt + ph, MUTED, "1");
+
+    // Grid
+    for i in 1..=4 {
+        let y = y2_max * i as f64 / 4.0;
+        let yp = sy2(y);
+        svg += &hline(ml2, ml2 + pw - 15.0, yp, GRID, "0.5");
+        svg += &label(ml2 - 3.0, yp + 3.0, &format!("{:.0}", y), MUTED, 8, "end");
+    }
+    for i in 1..=6 {
+        let x = 4.0 * i as f64;
+        let xp = sx2(x);
+        svg += &vline(xp, mt, mt + ph, GRID, "0.5");
+        svg += &label(xp, mt + ph + 12.0, &format!("{:.0}h", x), MUTED, 8, "middle");
+    }
+
+    // Labels
+    svg += &label(ml2 + (pw - 15.0) / 2.0, mt + ph + 24.0, "Time (hours)", TEXT, 10, "middle");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{TEXT}\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90,{},{})\">{}</text>\n",
+        ml2 - 38.0, mt + ph / 2.0, ml2 - 38.0, mt + ph / 2.0, "Cumulative AcH (mM)");
+    svg += &label(ml2 + (pw - 15.0) / 2.0, mt - 5.0, "Cumulative AcH at 40% ABV", ACCENT, 11, "middle");
+
+    // Target line
+    svg += &hline(ml2, ml2 + pw - 15.0, sy2(target_ach), YELLOW, "1");
+    svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{YELLOW}\" font-size=\"8\" text-anchor=\"end\" opacity=\"0.8\">target: 8.3 mM (500 ppm)</text>\n",
+        ml2 + pw - 18.0, sy2(target_ach) - 4.0);
+
+    // Plot curves
+    svg += &polyline_svg(&fent_ach, RED, "2", &sx2, &sy2);
+    svg += &polyline_svg(&aceto_ach, PURPLE, "2", &sx2, &sy2);
+    svg += &polyline_svg(&enz_ach, GREEN, "2", &sx2, &sy2);
+    svg += &polyline_svg(&comb_ach, CYAN, "2.5", &sx2, &sy2);
+
+    // Legend
+    let ly2 = mt + 15.0;
+    svg += &hline(ml2 + 10.0, ml2 + 30.0, ly2, GREEN, "2");
+    svg += &label(ml2 + 33.0, ly2 + 3.5, "BsADH enzymatic", TEXT, 8, "start");
+    svg += &hline(ml2 + 10.0, ml2 + 30.0, ly2 + 14.0, RED, "2");
+    svg += &label(ml2 + 33.0, ly2 + 17.5, "Electro-Fenton only", TEXT, 8, "start");
+    svg += &hline(ml2 + 10.0, ml2 + 30.0, ly2 + 28.0, PURPLE, "2");
+    svg += &label(ml2 + 33.0, ly2 + 31.5, "Acetobacter (O2-limited)", TEXT, 8, "start");
+    svg += &hline(ml2 + 10.0, ml2 + 30.0, ly2 + 42.0, CYAN, "2.5");
+    svg += &label(ml2 + 33.0, ly2 + 45.5, "Combined (enzyme + Fenton)", TEXT, 8, "start");
+
+    // Time-to-target annotations
+    let t_enz = target_ach / rate_40;
+    let t_fent = target_ach / fenton_rate;
+    let t_comb = target_ach / (rate_40 + fenton_rate);
+    let t_aceto = target_ach / acetobacter_rate;
+
+    println!("  Time to 500 ppm AcH target:");
+    println!("    BsADH enzymatic: {t_enz:.1} hr");
+    println!("    Electro-Fenton: {t_fent:.1} hr");
+    println!("    Acetobacter (O2-limited): {t_aceto:.1} hr");
+    println!("    Combined: {t_comb:.1} hr");
+
+    // Annotate crossing points
+    if t_enz < t_max {
+        svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"3\" fill=\"{GREEN}\" stroke=\"{BG}\" stroke-width=\"1\"/>\n",
+            sx2(t_enz), sy2(target_ach));
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{GREEN}\" font-size=\"7\" text-anchor=\"start\">{:.1}h</text>\n",
+            sx2(t_enz) + 5.0, sy2(target_ach) + 3.0, t_enz);
+    }
+    if t_fent < t_max {
+        svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"3\" fill=\"{RED}\" stroke=\"{BG}\" stroke-width=\"1\"/>\n",
+            sx2(t_fent), sy2(target_ach));
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{RED}\" font-size=\"7\" text-anchor=\"start\">{:.1}h</text>\n",
+            sx2(t_fent) + 5.0, sy2(target_ach) - 8.0, t_fent);
+    }
+    if t_comb < t_max {
+        svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"3\" fill=\"{CYAN}\" stroke=\"{BG}\" stroke-width=\"1\"/>\n",
+            sx2(t_comb), sy2(target_ach));
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{CYAN}\" font-size=\"7\" text-anchor=\"end\">{:.1}h</text>\n",
+            sx2(t_comb) - 5.0, sy2(target_ach) + 12.0, t_comb);
+    }
+    if t_aceto < t_max {
+        svg += &format!("<circle cx=\"{}\" cy=\"{}\" r=\"3\" fill=\"{PURPLE}\" stroke=\"{BG}\" stroke-width=\"1\"/>\n",
+            sx2(t_aceto), sy2(target_ach));
+        svg += &format!("<text x=\"{}\" y=\"{}\" fill=\"{PURPLE}\" font-size=\"7\" text-anchor=\"start\">{:.1}h</text>\n",
+            sx2(t_aceto) + 5.0, sy2(target_ach) + 12.0, t_aceto);
+    }
+
+    // Key numbers box (bottom-right of panel 2)
+    let bx = ml2 + pw - 170.0;
+    let by = mt + ph - 65.0;
+    svg += &format!("<rect x=\"{}\" y=\"{}\" width=\"160\" height=\"58\" rx=\"4\" fill=\"{}\" opacity=\"0.7\"/>\n", bx, by, GRID);
+    svg += &label(bx + 5.0, by + 13.0, "At 40% ABV:", ACCENT, 9, "start");
+    svg += &label(bx + 5.0, by + 26.0, &format!("BsADH rate: {:.2} mM/hr", rate_40), GREEN, 8, "start");
+    svg += &label(bx + 5.0, by + 38.0, &format!("Conversion needed: 0.12%"), TEXT, 8, "start");
+    svg += &label(bx + 5.0, by + 50.0, &format!("Cost: $0.02-0.07/L"), YELLOW, 8, "start");
 
     svg.push_str("</svg>");
     svg
