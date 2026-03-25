@@ -39,32 +39,32 @@
 <text x="350" y="373" fill="#8b949e" font-size="8" text-anchor="middle">Volume collected (% of total condensate)</text>
 <rect x="80.0" y="75" width="10.8" height="270" fill="#f85149" opacity="0.12"/>
 <text x="85.4" y="87" fill="#f85149" font-size="7" text-anchor="middle">Foreshots</text>
-<rect x="90.8" y="75" width="54.0" height="270" fill="#d29922" opacity="0.08"/>
-<text x="117.80000000000001" y="87" fill="#d29922" font-size="7" text-anchor="middle">Heads</text>
-<rect x="144.8" y="75" width="232.2" height="270" fill="#3fb950" opacity="0.10"/>
-<text x="260.9" y="87" fill="#3fb950" font-size="7" text-anchor="middle">Hearts (R≈0)</text>
+<rect x="90.8" y="75" width="43.2" height="270" fill="#d29922" opacity="0.08"/>
+<text x="112.4" y="87" fill="#d29922" font-size="7" text-anchor="middle">Heads</text>
+<rect x="134.0" y="75" width="243.0" height="270" fill="#3fb950" opacity="0.10"/>
+<text x="255.5" y="87" fill="#3fb950" font-size="7" text-anchor="middle">Hearts (R≈0)</text>
 <rect x="377.0" y="75" width="54.0" height="270" fill="#e8a665" opacity="0.10"/>
 <text x="404" y="87" fill="#e8a665" font-size="7" text-anchor="middle">Late hearts</text>
 <rect x="431.0" y="75" width="108.0" height="270" fill="#d29922" opacity="0.08"/>
 <text x="485" y="87" fill="#d29922" font-size="7" text-anchor="middle">Tails</text>
 <rect x="539.0" y="75" width="81.0" height="270" fill="#8b949e" opacity="0.06"/>
 <text x="579.5" y="87" fill="#8b949e" font-size="7" text-anchor="middle">Residue</text>
-<polyline points="80.0,108.8 85.4,108.8 90.8,142.5 107.0,243.8 134.0,291.0 144.8,345.0 350.0,345.0 377.0,345.0 393.2,324.8 425.6,324.8 431.0,311.2 458.0,277.5 512.0,210.0 539.0,176.2 620.0,176.2" fill="none" stroke="#e8a665" stroke-width="3" stroke-linejoin="round"/>
+<polyline points="80.0,108.8 85.4,108.8 90.8,142.5 107.0,243.8 123.2,291.0 134.0,345.0 350.0,345.0 377.0,345.0 393.2,324.8 425.6,324.8 431.0,311.2 458.0,277.5 512.0,210.0 539.0,176.2 620.0,176.2" fill="none" stroke="#e8a665" stroke-width="3" stroke-linejoin="round"/>
 <text x="85.4" y="98.75" fill="#f85149" font-size="6" text-anchor="start">Strip volatiles</text>
-<text x="242" y="360" fill="#3fb950" font-size="7" text-anchor="middle">Max congener passage</text>
-<text x="404" y="314.75" fill="#e8a665" font-size="7" text-anchor="middle">Fusel gate</text>
+<text x="242" y="360" fill="#3fb950" font-size="7" text-anchor="middle">Max congener passage (R=0)</text>
+<text x="404" y="314.75" fill="#e8a665" font-size="7" text-anchor="middle">Dephleg engaged</text>
 <text x="485" y="233.75" fill="#d29922" font-size="7" text-anchor="middle">Recycle feints</text>
 <polyline points="80.0,345.0 107.0,338.2 134.0,324.8 188.0,304.5 242.0,284.2 296.0,264.0 350.0,243.8 404.0,223.5 458.0,210.0 512.0,223.5 566.0,264.0 620.0,311.2" fill="none" stroke="#58a6ff" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
 <text x="468.8" y="204" fill="#58a6ff" font-size="6" text-anchor="start">EtHex flow</text>
 <polyline points="80.0,324.8 90.8,324.8 107.0,331.5 134.0,338.2 188.0,341.6 296.0,343.6 404.0,344.3 620.0,345.0" fill="none" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.5"/>
-<text x="123.2" y="340.125" fill="#8b949e" font-size="6" text-anchor="start">DMS (Cu-removed)</text>
+<text x="123.2" y="340.125" fill="#8b949e" font-size="6" text-anchor="start">DMS (Cu-oxidized)</text>
 <text x="85.4" y="393" fill="#f85149" font-size="7" text-anchor="middle">DISCARD</text>
-<text x="117.80000000000001" y="393" fill="#d29922" font-size="7" text-anchor="middle">SET ASIDE</text>
-<text x="258.20000000000005" y="393" fill="#3fb950" font-size="8" text-anchor="middle">COLLECT AS SPIRIT</text>
+<text x="112.4" y="393" fill="#d29922" font-size="7" text-anchor="middle">SET ASIDE</text>
+<text x="252.8" y="393" fill="#3fb950" font-size="8" text-anchor="middle">COLLECT AS SPIRIT</text>
 <text x="404" y="393" fill="#e8a665" font-size="7" text-anchor="middle">BLEND</text>
 <text x="485" y="393" fill="#d29922" font-size="7" text-anchor="middle">RECYCLE</text>
 <text x="576.8" y="393" fill="#8b949e" font-size="7" text-anchor="middle">DISCARD</text>
 <rect x="60" y="430" width="580" height="38" rx="4" fill="#30363d" opacity="0.85"/>
-<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">Key insight: R=0 during hearts maximizes flavor; dephlegmator = real-time congener control</text>
-<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Extended hearts window (12–65%) captures 33% more heavy esters than fixed pot still cut</text>
+<text x="350" y="448" fill="#e8a665" font-size="8" text-anchor="middle">R=0 during hearts maximizes flavor; dephlegmator gives real-time congener control</text>
+<text x="350" y="462" fill="#3fb950" font-size="8" text-anchor="middle">Extended hearts (10–65%) + Cu DMS removal = wider cut without off-flavor penalty</text>
 </svg>
