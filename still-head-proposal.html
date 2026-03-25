@@ -49,7 +49,7 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <p class="subtitle">Congener Recovery Optimized Design for a 10-Gallon Custom Pot Still</p>
 
 <div class="callout key">
-<strong>Design goal:</strong> Maximize recovery of desirable flavor congeners (esters, furfural) while chemically eliminating sulfur compounds (DMS, H<sub>2</sub>S) through a copper-packed reactive column. The CRO-10 extends the usable hearts cut from ~40% to ~55% of total condensate by removing DMS via CuO-mediated oxidation, capturing ~43% more ethyl hexanoate than a standard pot still. Honest trade-off: fusel recovery also increases ~41%, manageable via dephlegmator control during late hearts.
+<strong>Design goal:</strong> Maximize recovery of light fruity esters (ethyl acetate +39%, isoamyl acetate +32%) while chemically eliminating sulfur compounds (DMS, H<sub>2</sub>S) through a copper-packed reactive column. The CRO-10 extends the usable hearts cut from ~40% to ~55% of total condensate by removing DMS via CuO-mediated oxidation. <strong>Honest trade-off:</strong> the packed column that removes DMS also creates passive reflux that strips heavy body congeners (ethyl octanoate ~0%, furfural &minus;6% vs pot still). Fusel recovery increases +27%. See &sect;6.3 for a simpler alternative (Cu mesh in pot) that preserves heavy congeners.
 </div>
 
 <div class="callout warn">
@@ -86,7 +86,7 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <p>Every still designer faces the same fundamental tension:</p>
 <ul>
 <li><strong>Pot stills</strong> produce flavorful but &ldquo;dirty&rdquo; spirit. Minimal separation means esters, aldehydes, and higher alcohols all carry into the distillate&mdash;along with dimethyl sulfide (DMS, cooked-corn off-flavor). An all-copper pot provides some DMS removal (~55%) through CuO-catalyzed oxidation, but the hearts DMS can still exceed the ~25 ppb sensory threshold.</li>
-<li><strong>Column stills</strong> produce clean but characterless spirit. With 6+ theoretical plates and high reflux, columns rectify away virtually all congeners. A 6-plate column recovers only 0.5% of ethyl hexanoate (apple) vs 23% for a pot still&mdash;flavor is sacrificed for purity.</li>
+<li><strong>Column stills</strong> produce clean but characterless spirit. With 6+ theoretical plates and high reflux, columns rectify away virtually all congeners. A 6-plate column recovers only 0.5% of ethyl hexanoate (apple) vs 23% for a pot still&mdash;flavor is sacrificed for purity. Even a packed column at R=0 still strips heavy congeners via passive reflux from heat loss through the column wall.</li>
 </ul>
 
 <h3>1.2 The CRO Solution: Decouple Separation from Sulfur Removal</h3>
@@ -114,13 +114,13 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <h3>2.1 Congener Recovery Comparison</h3>
 <p>The Rayleigh batch distillation model predicts the fraction of each congener that appears in the hearts cut. For component <em>i</em> with relative volatility &alpha;<sub>rel</sub> = K<sub>i</sub>/K<sub>ethanol</sub> and effective plates N<sub>eff</sub>:</p>
 <p style="text-align:center; color:var(--accent);">Recovery<sub>i</sub> = (1 &minus; f<sub>1</sub>)<sup>E<sub>i</sub></sup> &minus; (1 &minus; f<sub>2</sub>)<sup>E<sub>i</sub></sup> &nbsp;&nbsp;where&nbsp; E<sub>i</sub> = &alpha;<sub>rel</sub><sup>N<sub>eff</sub></sup></p>
-<p>The CRO-10 advantage comes from <em>extending the hearts window</em> (10&ndash;65% vs the pot still&rsquo;s typical 15&ndash;55%). With copper removing DMS, the wider cut safely captures more of every congener. The honest trade-off: isoamyl alcohol (fusel) recovery also increases (~41% more than pot still), but this is manageable by briefly engaging the dephlegmator during late hearts, or by keeping late hearts as a separate fraction for blending.</p>
+<p>The CRO-10 extends the hearts window (10&ndash;65% vs the pot still&rsquo;s typical 15&ndash;55%). With copper removing DMS, the wider cut captures more light esters. <strong>However,</strong> the packed column creates ~0.3 additional effective stages from passive reflux (heat loss through uninsulated Cu wall), which selectively condenses heavy congeners on ring surfaces. Compounds with bp &gt;&gt; 100&deg;C (like 2-phenylethanol at 219&deg;C or ethyl octanoate at 207&deg;C) are present in vapor only at trace levels via Raoult&rsquo;s law partitioning; each ring surface provides a condensation opportunity that preferentially strips them. The net result: CRO gains +30&ndash;40% for light esters (&alpha;&gt;0.7) but is neutral or harmful for heavy body compounds (&alpha;&lt;0.3). Fusel recovery increases ~27%. Insulating the column would reduce passive reflux and improve heavy congener passage.</p>
 
 <figure>
 <object type="image/svg+xml" data="graphs/still-congener-comparison.svg" aria-label="Congener recovery comparison across three still types">
 <img src="graphs/still-congener-comparison.svg" alt="Congener recovery bar chart">
 </object>
-<figcaption><strong>Fig S1.</strong> Hearts cut congener recovery computed from the Rayleigh equation at runtime. Left: desirable flavor congeners (higher = better). Right: off-flavor compounds (lower = better). DMS values show effective recovery after copper removal (pot still 55% Cu, CRO 85% PFR model). All values are computed, not hardcoded.</figcaption>
+<figcaption><strong>Fig S1.</strong> Hearts cut congener recovery computed from the Rayleigh equation at runtime. CRO uses N<sub>eff</sub>=1.3 (accounting for passive reflux from uninsulated packed column). Left: desirable flavor congeners (higher = better). Right: off-flavor compounds (lower = better). DMS values show effective recovery after copper removal. Note: CRO gains diminish for heavy congeners (&alpha;&lt;0.3) due to passive reflux.</figcaption>
 </figure>
 
 <h3>2.2 The Six-Phase Reflux Protocol</h3>
@@ -252,6 +252,7 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <li><strong>Dephlegmator coil:</strong> Wind 10&rsquo; of 1/4&Prime; Cu refrigeration tubing into a coil of ~3.5&Prime; diameter (5 wraps). This will sit inside the top 6&Prime; of the 18&Prime; column section, above the packing. Drill two 1/4&Prime; holes through the column wall for water in/out. Thread coil ends through the holes and solder them in place.</li>
 <li><strong>Solder TC ferrule</strong> to the bottom of the 18&Prime; section. Solder the 4&Prime;&rarr;2&Prime; reducer to the top.</li>
 <li><strong>Insert mesh screen</strong> at bottom of packed section (held by TC ferrule lip). Pour in 3/8&Prime; Cu Raschig rings to 12&Prime; depth (the coil sits above). Place second mesh screen on top of rings below the coil. Shake gently to settle.</li>
+<li><strong>Insulate the column:</strong> Wrap the vapor rise and packed sections in 1&Prime; ceramic fiber or fiberglass pipe insulation. This reduces passive reflux from heat loss, improving heavy congener passage during hearts (R=0). Leave the dephlegmator section uninsulated so it can radiate when engaged. This single step significantly changes the flavor profile of the spirit.</li>
 <li><strong>Verify:</strong> Assemble vapor rise + packed/dephleg section with TC clamps. Check alignment. Blow through to verify airflow.</li>
 </ol>
 
@@ -341,31 +342,79 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <!-- ═══════════════════════════════════════════════════════ -->
 <h2 id="performance">6. Expected Performance</h2>
 
-<h3>6.1 Congener Targets (Rayleigh Model)</h3>
-<p>All values computed from the Rayleigh batch distillation equation with literature &alpha;<sub>rel</sub> values:</p>
+<h3>6.1 Congener Targets (Rayleigh Model, corrected for passive reflux)</h3>
+
+<div class="callout warn">
+<strong>Critical nuance &mdash; passive reflux in packed columns:</strong> Even with the dephlegmator off (R=0), the 12&Prime; of copper packing creates <em>passive reflux</em>: heat loss through the uninsulated column wall (~140 W at &Delta;T=58&deg;C) condenses vapor on ring surfaces. Heavy congeners (low &alpha;, high boiling point) are preferentially condensed&mdash;a 2-phenylethanol molecule (bp 219&deg;C) will condense on a ring at 80&deg;C even though trace amounts exist in the vapor via Raoult&rsquo;s law partitioning.
+<br><br>
+This passive reflux adds ~0.3 effective theoretical stages to the CRO during &ldquo;R=0&rdquo; hearts collection (N<sub>eff</sub> &asymp; 1.3 vs 1.0 for a simple pot still). Light esters (&alpha; &gt; 0.7) still benefit from the wider cut. <strong>Heavy esters and body compounds (&alpha; &lt; 0.3) see minimal benefit or slight loss compared to a pot still.</strong> Insulating the column would reduce this effect.
+</div>
+
+<p>All values computed from the Rayleigh equation. CRO uses N<sub>eff</sub>=1.3 (accounting for passive reflux from uninsulated packed column):</p>
 <table>
-<tr><th>Compound</th><th>&alpha;<sub>rel</sub></th><th>Pot Still (15&ndash;55%)</th><th>CRO-10 (10&ndash;65%)</th><th>Change</th></tr>
-<tr><td>Ethyl acetate (fruity)</td><td>1.40</td><td>47.0%</td><td>63.3%</td><td style="color:var(--green)">+35%</td></tr>
-<tr><td>Isoamyl acetate (banana)</td><td>0.75</td><td>33.6%</td><td>46.9%</td><td style="color:var(--green)">+40%</td></tr>
-<tr><td>Ethyl hexanoate (apple)</td><td>0.45</td><td>23.1%</td><td>33.0%</td><td style="color:var(--green)">+43%</td></tr>
-<tr><td>Ethyl octanoate (apricot)</td><td>0.25</td><td>14.1%</td><td>20.5%</td><td style="color:var(--green)">+45%</td></tr>
-<tr><td>Furfural (almond/bread)</td><td>0.20</td><td>11.6%</td><td>16.9%</td><td style="color:var(--green)">+46%</td></tr>
-<tr><td>Isoamyl alcohol (fusel)</td><td>0.60</td><td>28.8%</td><td>40.6%</td><td style="color:var(--yellow)">+41% (wider cut trade-off)</td></tr>
-<tr><td>DMS after Cu removal</td><td>2.40</td><td>~24% <em>(55% Cu)</em></td><td>~13% <em>(~82% Cu, range 60&ndash;93%)</em></td><td style="color:var(--green)">&minus;47%</td></tr>
+<tr><th>Compound</th><th>&alpha;<sub>rel</sub></th><th>Pot Still (15&ndash;55%, N=1)</th><th>CRO-10 (10&ndash;65%, N=1.3)</th><th>Change</th></tr>
+<tr><td>Ethyl acetate (fruity)</td><td>1.40</td><td>47.0%</td><td>65.3%</td><td style="color:var(--green)">+39%</td></tr>
+<tr><td>Isoamyl acetate (banana)</td><td>0.75</td><td>33.6%</td><td>44.4%</td><td style="color:var(--green)">+32%</td></tr>
+<tr><td>Ethyl hexanoate (apple)</td><td>0.45</td><td>23.1%</td><td>27.4%</td><td style="color:var(--green)">+19%</td></tr>
+<tr><td>Ethyl octanoate (apricot)</td><td>0.25</td><td>14.1%</td><td>14.2%</td><td style="color:var(--yellow)">~0% (passive reflux offsets wider cut)</td></tr>
+<tr><td>Furfural (almond/bread)</td><td>0.20</td><td>11.6%</td><td>10.9%</td><td style="color:var(--red)">&minus;6% (passive reflux strips more than wider cut gains)</td></tr>
+<tr><td>Isoamyl alcohol (fusel)</td><td>0.60</td><td>28.8%</td><td>36.5%</td><td style="color:var(--yellow)">+27% (wider cut trade-off)</td></tr>
+<tr><td>DMS after Cu removal</td><td>2.40</td><td>~24% <em>(55% Cu)</em></td><td>~12% <em>(~82% Cu, range 60&ndash;93%)</em></td><td style="color:var(--green)">&minus;48%</td></tr>
 </table>
-<p><em>The CRO captures more of everything&mdash;including fusels&mdash;because the hearts window is 55% vs 40% of total output. The critical advantage is DMS: pot still hearts at ~30 ppb can exceed the 25 ppb sensory threshold, while CRO hearts at ~12 ppb (range 5&ndash;22 ppb) are likely below. All values are central estimates from models with significant uncertainty; experimental validation is needed.</em></p>
+
+<div class="callout key">
+<strong>Honest assessment:</strong> The CRO improves light fruity esters (+30&ndash;40%) and DMS removal (&minus;48%), but is <strong>neutral or harmful for heavy congeners</strong> (ethyl octanoate, furfural, 2-phenylethanol). The packed column that removes DMS also strips body-building compounds via passive reflux. This is the same fundamental tradeoff that makes tall stills lighter than squat stills. Insulating the column section would reduce the effect. An alternative approach&mdash;copper mesh in the pot headspace&mdash;provides DMS removal without this penalty (see &sect;6.4).
+</div>
 
 <h3>6.2 Throughput</h3>
+
+<p><strong>Yield mass balance:</strong> 10 gal wash &times; 10% ABV = 1.0 gal pure ethanol. At 65% hearts ABV, the theoretical maximum is 1.0/0.65 = <strong>1.54 gal</strong>. In practice, losses to stillage (~10%), foreshots (discarded), and tails (recycled) reduce hearts yield to 55&ndash;75% of input ethanol.</p>
+
+<table>
+<tr><th>Scenario</th><th>Charge</th><th>Hearts Yield</th><th>Notes</th></tr>
+<tr><td>Single-pass stripping+cut</td><td>10 gal wash (10% ABV)</td><td>0.8&ndash;1.2 gal at 55&ndash;65% ABV</td><td>Generous hearts cut. Single pass through CRO gives lower ABV than spirit run.</td></tr>
+<tr><td>Two-pass (strip then spirit)</td><td>Strip: 10 gal wash &rarr; ~2 gal low wines (~45%)<br>Spirit: low wines charge</td><td>0.6&ndash;0.9 gal at 65&ndash;72% ABV</td><td>Two-pass gives higher ABV but some ethanol lost in each pass.</td></tr>
+<tr><td>Spirit run from accumulated low wines</td><td>8&ndash;9 gal low wines (25&ndash;45% ABV, from 3&ndash;4 strips)</td><td>1.5&ndash;2.5 gal at 65&ndash;72% ABV</td><td>Standard whisky process. Largest batch.</td></tr>
+</table>
+
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Charge volume</td><td>8&ndash;9 gal low wines (25% ABV) or 10 gal wash (10% ABV)</td></tr>
-<tr><td>Hearts yield</td><td>1.0&ndash;1.5 L at 65&ndash;72% ABV (spirit run from low wines)</td></tr>
 <tr><td>Run time</td><td>3&ndash;4 hours (startup to shutdown)</td></tr>
 <tr><td>Heat input</td><td>2&ndash;3.5 kW (3 kW recommended for ~82% DMS removal; 2 kW gives ~93%)</td></tr>
 <tr><td>Energy per run</td><td>8&ndash;16 kWh (propane or electric)</td></tr>
 </table>
 
-<h3>6.3 Integration with Accelerated Maturation</h3>
+<h3>6.3 Alternative: Copper Mesh in Pot (No Column)</h3>
+
+<div class="callout">
+<strong>For flavor-forward spirits:</strong> If preserving heavy body congeners (ethyl octanoate, furfural, 2-phenylethanol) is the priority, consider an alternative approach: <strong>copper mesh packed in the pot headspace</strong> instead of a packed column.
+</div>
+
+<p>Copper mesh (1&ndash;2 reams of Cu scrubber pads) placed above the liquid surface in the pot headspace provides CuO surface area for DMS oxidation. Vapor contacts the mesh en route to the lyne arm. Key advantages:</p>
+<ul>
+<li><strong>No passive reflux penalty:</strong> The mesh sits in the hot headspace at full boiling temperature, not in a tall column with heat loss. Heavy congeners pass through with minimal selective condensation.</li>
+<li><strong>DMS removal:</strong> Estimated 30&ndash;50% DMS removal from the mesh alone (in addition to 30&ndash;40% from the copper still body). Combined: ~50&ndash;70% total DMS removal. Not as high as the CRO column (~82%), but enough to keep DMS below or near the 25 ppb threshold for many washes.</li>
+<li><strong>Simplicity and cost:</strong> $10&ndash;20 in copper mesh vs $500&ndash;800 for the full CRO column. No tri-clamp fittings, no dephlegmator plumbing.</li>
+<li><strong>Full heavy congener preservation:</strong> 2-phenylethanol, ethyl octanoate, and other body compounds pass through the headspace mesh without the stripping that occurs in a packed column.</li>
+</ul>
+
+<p><strong>When to choose the CRO column over mesh:</strong></p>
+<ul>
+<li>Your wash has high DMS (&gt;80 ppb) and you need the extra removal capacity</li>
+<li>You want foreshot stripping capability (dephlegmator at high R during foreshots)</li>
+<li>You prioritize light fruity esters (ethyl acetate, isoamyl acetate) over body/depth</li>
+<li>You plan to age the spirit (barrel aging adds back body compounds that the column strips)</li>
+</ul>
+
+<p><strong>When mesh-in-pot is better:</strong></p>
+<ul>
+<li>You want maximum flavor complexity and body in new-make spirit</li>
+<li>Your wash DMS is moderate (&lt;60 ppb) and 50&ndash;70% removal is adequate</li>
+<li>You make white spirits (unaged) where body compounds matter</li>
+<li>You prefer a simpler, lower-cost build</li>
+</ul>
+
+<h3>6.4 Integration with Accelerated Maturation</h3>
 <p>The CRO-10 produces new-make spirit optimized for the accelerated aging techniques in <a href="barriers.html">barriers.html</a>:</p>
 <ul>
 <li>Less sulfur to manage during aging (DMS well below threshold from day one)</li>

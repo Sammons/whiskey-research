@@ -20196,8 +20196,14 @@ fn sim_still_congener_bars() -> String {
     let off_alphas = [0.60_f64, 2.40_f64]; // IAmOH (fusel), DMS (sulfur)
 
     // Still configurations: (f1, f2, N_eff)
-    let pot = (0.15, 0.55, 1.0_f64);   // classic pot still
-    let cro = (0.10, 0.65, 1.0_f64);   // CRO: wider cut, R≈0 during hearts
+    // N_eff for CRO at R=0: NOT 1.0. The 12" packed column creates passive reflux
+    // from heat loss (~140 W at ΔT=58°C through uninsulated 4" Cu wall) which
+    // selectively condenses heavy congeners. This adds ~0.3 effective stages.
+    // Compounds with low α (heavy esters, bp >> 100°C) see even higher effective N
+    // because they preferentially condense on any cool ring surface.
+    // Insulating the column would reduce this to ~1.0-1.1. Uninsulated: ~1.3.
+    let pot = (0.15, 0.55, 1.0_f64);   // classic pot still (body + lyne arm)
+    let cro = (0.10, 0.65, 1.3_f64);   // CRO: wider cut, R≈0 but ~0.3 passive reflux stages
     let col = (0.15, 0.55, 6.0_f64);   // 6-plate column at R≈3
 
     // Compute desirable recoveries (%)
@@ -20321,7 +20327,7 @@ fn sim_still_congener_bars() -> String {
     }
 
     svg += &label(350.0, h - 72.0,
-        "R = (1\u{2212}f\u{2081})\u{1d49} \u{2212} (1\u{2212}f\u{2082})\u{1d49}, E=\u{03b1}^N_eff | *DMS: pot 55% Cu, CRO 85% Cu (PFR)",
+        "R = (1\u{2212}f\u{2081})\u{1d49} \u{2212} (1\u{2212}f\u{2082})\u{1d49}, E=\u{03b1}^N | CRO N=1.3 (passive reflux) | *DMS: pot 55% Cu, CRO ~82% Cu",
         MUTED, 6, "middle");
 
     // Footer
