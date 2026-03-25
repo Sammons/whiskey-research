@@ -49,11 +49,22 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <p class="subtitle">Congener Recovery Optimized Design for a 10-Gallon Custom Pot Still</p>
 
 <div class="callout key">
-<strong>Design goal:</strong> Maximize recovery of desirable flavor congeners (esters, furfural) while chemically eliminating sulfur compounds (DMS, H<sub>2</sub>S) through a copper-packed reactive column. The CRO-10 extends the usable hearts cut from ~40% to ~55% of total condensate by removing DMS via CuO-catalyzed oxidation, capturing ~43% more ethyl hexanoate than a standard pot still. Honest trade-off: fusel recovery also increases ~41%, manageable via dephlegmator control during late hearts.
+<strong>Design goal:</strong> Maximize recovery of desirable flavor congeners (esters, furfural) while chemically eliminating sulfur compounds (DMS, H<sub>2</sub>S) through a copper-packed reactive column. The CRO-10 extends the usable hearts cut from ~40% to ~55% of total condensate by removing DMS via CuO-mediated oxidation, capturing ~43% more ethyl hexanoate than a standard pot still. Honest trade-off: fusel recovery also increases ~41%, manageable via dephlegmator control during late hearts.
 </div>
 
 <div class="callout warn">
-<strong>Safety &amp; Legal:</strong> This still produces flammable ethanol vapor. A pressure relief valve (PRV) on the pot lid is <strong>mandatory</strong>. Operate outdoors or in a well-ventilated area with a 2A:10B:C fire extinguisher accessible. No open flames near the vapor path. In the United States, a Federal Distilled Spirits Permit (DSP) is required under 27 CFR &sect;19. Check local regulations before construction or operation.
+<strong>Safety &amp; Legal &mdash; READ BEFORE BUILDING</strong>
+<ul>
+<li><strong>Overpressure:</strong> A pressure relief valve (PRV) on the pot lid is <strong>mandatory</strong>. A sealed still without relief is a pipe bomb if the condenser blocks or a joint fails. Test PRV before every run.</li>
+<li><strong>Fire/explosion:</strong> Ethanol vapor is heavier than air (density 1.6&times; air) and highly flammable. The lower explosive limit (LEL) is 3.3% by volume. Vapors pool at floor level. Operate outdoors or with forced ventilation. Keep a 2A:10B:C fire extinguisher within arm&rsquo;s reach. Never leave an operating still unattended.</li>
+<li><strong>No open flames near the vapor path:</strong> If using propane for the pot, the burner must be shielded from the condenser outlet. A propane leak near ethanol vapor is a catastrophic ignition risk. Electric heating eliminates this hazard and is strongly recommended.</li>
+<li><strong>Carbon monoxide (CO):</strong> Propane burners produce CO. In enclosed or poorly ventilated spaces, CO buildup can be lethal without warning. Use a CO detector. Electric heat is inherently safer.</li>
+<li><strong>Methanol:</strong> All fermented washes contain trace methanol. Foreshots (first 50&ndash;100 mL) concentrate methanol and must be <strong>discarded, never consumed</strong>. Methanol is toxic: 10 mL can cause blindness, 30 mL can be fatal. Label foreshot containers clearly.</li>
+<li><strong>Burns and scalds:</strong> All copper and stainless surfaces above the pot reach 80&ndash;100&deg;C during operation. Wear heat-resistant gloves when adjusting TC clamps or the needle valve. Hot condensate can cause severe scalds.</li>
+<li><strong>Electrical safety (if using electric heat):</strong> Use a GFCI-protected circuit. Ensure the heating element is rated for wet/outdoor use. Never operate electrical equipment near standing water or spilled condensate.</li>
+<li><strong>Emergency procedure:</strong> If a leak develops during a run: (1) shut off heat, (2) do NOT attempt to disconnect the still while hot, (3) ventilate the area, (4) let the system cool before disassembly. If fire occurs: use the extinguisher, then evacuate.</li>
+<li><strong>Legal:</strong> In the United States, a Federal Distilled Spirits Permit (DSP) is required under 27 CFR &sect;19. Many other countries also require permits. Check local regulations before construction or operation.</li>
+</ul>
 </div>
 
 <nav class="toc">
@@ -81,7 +92,7 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <h3>1.2 The CRO Solution: Decouple Separation from Sulfur Removal</h3>
 <p>The CRO-10 resolves this tradeoff by recognizing that sulfur removal and congener separation are <em>different physical processes</em>:</p>
 <ul>
-<li><strong>Sulfur removal is chemical:</strong> CuO on the packing surface catalyzes the oxidation of DMS (dimethyl sulfide, (CH<sub>3</sub>)<sub>2</sub>S) to DMSO (dimethyl sulfoxide, (CH<sub>3</sub>)<sub>2</sub>SO). DMSO is water-soluble and non-volatile, so it drains back down the column in the reflux liquid. This is a catalytic process&mdash;it requires copper <em>surface area</em>, not theoretical plates. Separately, H<sub>2</sub>S reacts stoichiometrically with copper: Cu + H<sub>2</sub>S &rarr; CuS + H<sub>2</sub> (an irreversible reaction that consumes copper over time).</li>
+<li><strong>Sulfur removal is chemical:</strong> CuO on the packing surface mediates the oxidation of DMS (dimethyl sulfide, (CH<sub>3</sub>)<sub>2</sub>S) to DMSO (dimethyl sulfoxide, (CH<sub>3</sub>)<sub>2</sub>SO). DMSO is water-soluble and non-volatile, so it drains back down the column in the reflux liquid. <strong>Important nuance:</strong> this reaction is stoichiometric in CuO within a single run&mdash;the copper oxide is consumed as it oxidizes DMS. Between runs, air exposure re-oxidizes the copper surface (Cu/Cu<sub>2</sub>O &rarr; CuO), regenerating the reactive sites. The process requires copper <em>surface area</em>, not theoretical plates. Separately, H<sub>2</sub>S reacts irreversibly with copper: Cu + H<sub>2</sub>S &rarr; CuS + H<sub>2</sub>&uarr; (this consumes copper permanently and is not regenerated by air).</li>
 <li><strong>Congener separation is physical:</strong> Ester recovery depends on reflux ratio, plate count, and cut decisions. A <em>variable dephlegmator</em> (water-cooled coil inside the column) allows real-time tuning: high reflux during foreshots to strip volatiles, zero reflux during hearts to maximize ester passage.</li>
 </ul>
 <p>By packing the column with copper Raschig rings, we get both functions in a single unit: chemical DMS removal at all reflux settings, and physical separation only when the dephlegmator coil is actively cooled.</p>
@@ -89,9 +100,9 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <h3>1.3 Key Design Decisions</h3>
 <table>
 <tr><th>Decision</th><th>Choice</th><th>Rationale</th></tr>
-<tr><td>Column diameter</td><td>4&Prime; (102 mm)</td><td>Superficial vapor velocity ~18 cm/s at 3 kW&mdash;safely below the ~28 cm/s flooding limit for 3/8&Prime; Raschig rings. A 3&Prime; column would flood at moderate heat inputs (&gt;3 kW).</td></tr>
-<tr><td>Packed height</td><td>12&Prime; (305 mm)</td><td>With HETP 80&ndash;120 mm for 3/8&Prime; Raschig rings (Perry&rsquo;s, Kister), this gives 2.5&ndash;3.8 theoretical plates&mdash;enough for foreshot separation without stripping heavy esters at R=0.</td></tr>
-<tr><td>Packing type</td><td>3/8&Prime; Cu C122 Raschig rings</td><td>Maximum copper surface area: ~11,000 cm&sup2; total (a<sub>s</sub> &asymp; 440 m&sup2;/m&sup3;). Easy to remove and clean. C122 (DHP) is the alloy used in copper DWV pipe.</td></tr>
+<tr><td>Column diameter</td><td>4&Prime; nom. (99 mm ID)</td><td>DWV pipe has 3.9&Prime; (99 mm) ID, giving 77 cm&sup2; cross-section. Vapor velocity ~20 cm/s at 3 kW, estimated 55&ndash;80% of flooding (flooding 25&ndash;35 cm/s depending on ring void fraction). A 3&Prime; column would flood at moderate heat inputs (&gt;2 kW).</td></tr>
+<tr><td>Packed height</td><td>12&Prime; (305 mm)</td><td>With HETP 100&ndash;200 mm for 3/8&Prime; Cu Raschig rings in a 4&Prime; column (wall effects add 30&ndash;50% penalty at d<sub>col</sub>/d<sub>pack</sub>&asymp;10, per Kister 1992), this gives 1.5&ndash;3 theoretical plates&mdash;adequate for foreshot separation at high reflux, deliberately minimal during hearts (R=0).</td></tr>
+<tr><td>Packing type</td><td>3/8&Prime; Cu C122 Raschig rings</td><td>High copper surface area: ~16,000 cm&sup2; total (a<sub>s</sub> &asymp; 700 m&sup2;/m&sup3;, Perry&rsquo;s &sect;14 for 10 mm rings). Easy to remove and clean. C122 (DHP) is the alloy used in copper DWV pipe.</td></tr>
 <tr><td>Dephlegmator</td><td>1/4&Prime; Cu coil inside column</td><td>5 wraps of 1/4&Prime; refrigeration tubing inside a 6&Prime; section above the packing. Much simpler to fabricate than a concentric-pipe jacket design.</td></tr>
 <tr><td>Lyne arm angle</td><td>10&deg; downslope</td><td>Minimizes passive reflux. All reflux is controlled via the dephlegmator. Downward slope ensures condensate flows toward the condenser, not back into the column.</td></tr>
 <tr><td>Reflux control</td><td>Needle valve on dephlegmator coolant</td><td>Continuously variable reflux from R&asymp;0 (bypass) to R&asymp;4 (high reflux). The distiller adjusts in real time based on temperature and taste.</td></tr>
@@ -112,7 +123,7 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <figcaption><strong>Fig S1.</strong> Hearts cut congener recovery computed from the Rayleigh equation at runtime. Left: desirable flavor congeners (higher = better). Right: off-flavor compounds (lower = better). DMS values show effective recovery after copper removal (pot still 55% Cu, CRO 85% PFR model). All values are computed, not hardcoded.</figcaption>
 </figure>
 
-<h3>2.2 The Five-Phase Reflux Protocol</h3>
+<h3>2.2 The Six-Phase Reflux Protocol</h3>
 <p>The dephlegmator is not set once and forgotten&mdash;it is the primary instrument of flavor engineering. The distiller adjusts coolant flow through five distinct phases:</p>
 
 <figure>
@@ -132,31 +143,35 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 </table>
 
 <h3>2.3 Copper DMS Removal: PFR Model</h3>
-<p>DMS removal in the packed copper column follows a plug-flow reactor (PFR) model for CuO-catalyzed oxidation:</p>
-<p style="text-align:center; color:var(--accent);">removal = 1 &minus; exp(&minus;&eta; &middot; k<sub>s</sub> &middot; a<sub>s</sub> &middot; L / v<sub>s</sub>)</p>
-<p>where k<sub>s</sub> = 0.63 cm/s (surface rate constant, calibrated from pot still literature), &eta; = 0.40 (utilization factor accounting for inactive CuO, channeling, and depletion over a run), a<sub>s</sub> = 4.4 cm&sup2;/cm&sup3; (specific surface area for 3/8&Prime; Raschig rings, Perry&rsquo;s Table 14-15), L = packed bed length (cm), and v<sub>s</sub> = superficial vapor velocity (cm/s).</p>
+<p>DMS removal in the packed copper column follows a plug-flow reactor (PFR) model for CuO-mediated oxidation:</p>
+<p style="text-align:center; color:var(--accent);">removal = 1 &minus; exp(&minus;k<sub>eff</sub> &middot; a<sub>s</sub> &middot; L / v<sub>s</sub>)</p>
+<p>where k<sub>eff</sub> = 0.16 cm/s is a lumped effective rate constant (encompassing surface reaction rate, CuO utilization fraction, and flow channeling; calibrated from pot still Cu removal data, ~55%, reported in Piggott 2003), a<sub>s</sub> &asymp; 7.0 cm&sup2;/cm&sup3; (specific surface area for 3/8&Prime; Raschig rings, &asymp;700 m&sup2;/m&sup3;, Perry&rsquo;s &sect;14), L = packed bed length (cm), and v<sub>s</sub> = superficial vapor velocity (cm/s).</p>
 
-<p>At 3 kW heat input (v<sub>s</sub> &asymp; 18 cm/s through the 4&Prime; column), the 12&Prime; packed bed achieves ~85% DMS removal. Lowering heat to 2 kW (v<sub>s</sub> &asymp; 12 cm/s) increases removal to ~94%. <strong>Practical guidance: run slower for cleaner spirit.</strong></p>
+<div class="callout">
+<strong>Model uncertainty:</strong> k<sub>eff</sub> is calibrated from a single empirical data point (pot still DMS removal) and extrapolated to a packed column with very different geometry. Uncertainty is large: k<sub>eff</sub> &isin; [0.08, 0.24] cm/s (&plusmn;50%). All DMS removal numbers below should be read as central estimates with a range of roughly &plusmn;15 percentage points.
+</div>
+
+<p>At 3 kW heat input (v<sub>s</sub> &asymp; 20 cm/s through the 99 mm ID column), the 12&Prime; packed bed achieves ~82% DMS removal (range: 60&ndash;93%). Lowering heat to 2 kW (v<sub>s</sub> &asymp; 13 cm/s) increases removal to ~93% (range: 73&ndash;98%). <strong>Practical guidance: run slower for cleaner spirit.</strong></p>
 
 <figure>
 <object type="image/svg+xml" data="graphs/still-copper-dms.svg" aria-label="Copper surface area vs DMS removal">
 <img src="graphs/still-copper-dms.svg" alt="PFR DMS removal curve and spirit comparison">
 </object>
-<figcaption><strong>Fig S3.</strong> (A) PFR model DMS removal vs packed height at three heat inputs. The design point (12&Prime;, 3 kW) gives ~85% removal. (B) Resulting DMS in hearts spirit: pot still ~30 ppb (above 25 ppb threshold), CRO ~10 ppb (safely below). All values computed from Rayleigh + PFR models at runtime.</figcaption>
+<figcaption><strong>Fig S3.</strong> (A) PFR model DMS removal vs packed height at three heat inputs. The design point (12&Prime;, 3 kW) gives ~82% removal (range: 60&ndash;93% given k<sub>eff</sub> uncertainty). (B) Resulting DMS in hearts spirit: pot still ~30 ppb (above 25 ppb threshold), CRO ~12 ppb (likely below). All values computed from Rayleigh + PFR models at runtime.</figcaption>
 </figure>
 
 <h3>2.4 Vapor Dynamics</h3>
 <p>Key calculations confirming the design operates within safe limits:</p>
 <table>
 <tr><th>Parameter</th><th>Value</th><th>Status</th></tr>
-<tr><td>Column cross-section</td><td>81.7 cm&sup2; (4&Prime; ID, 102 mm)</td><td>&mdash;</td></tr>
+<tr><td>Column cross-section</td><td>77 cm&sup2; (4&Prime; DWV, 99 mm ID)</td><td>&mdash;</td></tr>
 <tr><td>Vapor generation at 3 kW</td><td>~1,500 cm&sup3;/s (L<sub>mix</sub> &asymp; 1,900 kJ/kg)</td><td>During hearts (pot at ~25% ABV)</td></tr>
-<tr><td>Superficial velocity at 3 kW</td><td>~18 cm/s</td><td style="color:var(--green)">64% of flooding velocity</td></tr>
-<tr><td>Flooding velocity (3/8&Prime; Raschig, 4&Prime; col)</td><td>~28 cm/s at low reflux</td><td>Perry&rsquo;s GPDC correlation, F<sub>p</sub>&asymp;580 m<sup>&minus;1</sup></td></tr>
-<tr><td>HETP (3/8&Prime; Cu Raschig, 4&Prime; column)</td><td>80&ndash;120 mm</td><td>Perry&rsquo;s &sect;14; Kister (1992) for d<sub>col</sub>/d<sub>pack</sub>&asymp;10.7</td></tr>
-<tr><td>Theoretical plates (12&Prime; packed)</td><td>2.5&ndash;3.8</td><td style="color:var(--green)">Foreshot separation without ester stripping</td></tr>
-<tr><td>DMS removal (PFR model)</td><td>85% at 3 kW, 94% at 2 kW</td><td style="color:var(--green)">CuO + DMS &rarr; DMSO</td></tr>
-<tr><td>Cu surface area</td><td>~11,000 cm&sup2;</td><td>a<sub>s</sub>=440 m&sup2;/m&sup3; &times; 2,490 cm&sup3; bed</td></tr>
+<tr><td>Superficial velocity at 3 kW</td><td>~20 cm/s</td><td style="color:var(--green)">55&ndash;80% of flooding velocity</td></tr>
+<tr><td>Flooding velocity (3/8&Prime; Raschig, 4&Prime; col)</td><td>~25&ndash;35 cm/s at low reflux</td><td>Perry&rsquo;s GPDC, F<sub>p</sub>&asymp;580 ft<sup>&minus;1</sup> (ceramic ref.); Cu rings have higher void fraction &rarr; lower F<sub>p</sub></td></tr>
+<tr><td>HETP (3/8&Prime; Cu Raschig, 4&Prime; column)</td><td>100&ndash;200 mm</td><td>Perry&rsquo;s &sect;14; Kister (1992) wall-effect correction for d<sub>col</sub>/d<sub>pack</sub>&asymp;10</td></tr>
+<tr><td>Theoretical plates (12&Prime; packed)</td><td>1.5&ndash;3.0</td><td style="color:var(--green)">Adequate for foreshot separation; deliberately minimal during hearts (R=0)</td></tr>
+<tr><td>DMS removal (PFR model)</td><td>~82% at 3 kW (range: 60&ndash;93%); ~93% at 2 kW</td><td style="color:var(--green)">CuO-mediated: DMS &rarr; DMSO (stoich. per run)</td></tr>
+<tr><td>Cu surface area</td><td>~16,000 cm&sup2;</td><td>a<sub>s</sub>&asymp;700 m&sup2;/m&sup3; &times; 2,350 cm&sup3; bed (3/8&Prime; rings, Perry&rsquo;s &sect;14)</td></tr>
 <tr><td>Heat duty</td><td>2&ndash;4 kW (3 kW recommended)</td><td>Standard propane burner or electric element</td></tr>
 </table>
 
@@ -174,8 +189,8 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <table>
 <tr><th>Component</th><th>Material</th><th>OD / ID</th><th>Length / Height</th><th>Notes</th></tr>
 <tr><td>Pot</td><td>304 SS</td><td>14&Prime; dia</td><td>12&Prime; tall</td><td>10-gallon stock pot. Drill 4&Prime; hole in lid, install TC bulkhead ferrule with bolts + food-grade silicone gasket.</td></tr>
-<tr><td>Vapor rise</td><td>C122 Cu DWV</td><td>4&Prime; OD / 3.9&Prime; ID</td><td>12&Prime;</td><td>Empty section for initial copper contact and vapor development.</td></tr>
-<tr><td>Packed section</td><td>C122 Cu DWV</td><td>4&Prime; OD / 3.9&Prime; ID</td><td>12&Prime;</td><td>Filled with 3/8&Prime; Cu Raschig rings (~4 L). SS mesh screens top and bottom.</td></tr>
+<tr><td>Vapor rise</td><td>C122 Cu DWV</td><td>4&Prime; OD / 3.9&Prime; (99 mm) ID</td><td>12&Prime;</td><td>Empty section for initial copper contact and vapor development. Cross-section: 77 cm&sup2;.</td></tr>
+<tr><td>Packed section</td><td>C122 Cu DWV</td><td>4&Prime; OD / 3.9&Prime; (99 mm) ID</td><td>12&Prime;</td><td>Filled with 3/8&Prime; Cu Raschig rings (~4 L, a<sub>s</sub>&asymp;700 m&sup2;/m&sup3;). SS mesh screens top and bottom.</td></tr>
 <tr><td>Dephlegmator</td><td>1/4&Prime; Cu refrig. tube</td><td>&mdash;</td><td>6&Prime; section</td><td>Cu coil (~5 wraps) inside column above packing. Water in/out via 1/4&Prime; tube stubs soldered through column wall.</td></tr>
 <tr><td>Reducer</td><td>C122 Cu</td><td>4&Prime; &rarr; 2&Prime;</td><td>2&Prime;</td><td>Concentric reducer at column top, soldered.</td></tr>
 <tr><td>Lyne arm</td><td>C122 Cu DWV</td><td>2&Prime; OD</td><td>18&Prime;</td><td>10&deg; downward slope. 2&Prime; TC at column end.</td></tr>
@@ -205,7 +220,7 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <tr><td>Lead-free silver solder (Ag 5%) + flux</td><td>1 kit</td><td>$15&ndash;25</td></tr>
 <tr><td><strong>Estimated total</strong></td><td></td><td><strong>$500&ndash;800</strong></td></tr>
 </table>
-<p><em>Note: 4&Prime; Cu DWV pipe is sold in 10&rsquo; lengths ($350&ndash;500). You will have significant excess for future projects or spares. Prices as of early 2026, US retail.</em></p>
+<p><em>Note: 4&Prime; Cu DWV pipe is sold in 10&rsquo; lengths ($350&ndash;500). You will have significant excess for future projects or spares. If purchasing full-length pipe rather than cut-to-order, realistic total cost is $700&ndash;1,200. Prices as of early 2026, US retail.</em></p>
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <h2 id="build">4. Build Instructions</h2>
@@ -289,11 +304,11 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <li>Charge pot with 8&ndash;9 gallons of low wines (~25% ABV) or wash (~10% ABV).</li>
 <li>Assemble column, ensure all TC clamps are tight. Verify PRV is in place.</li>
 <li>Start condenser water flow first (cold water through condenser jacket).</li>
-<li>Apply heat at 2&ndash;3 kW. Bring pot to a slow boil over 30&ndash;45 minutes. <strong>Do not exceed 4 kW</strong> or the column may flood (vapor velocity exceeds packing capacity).</li>
+<li>Apply heat at 2&ndash;3 kW. Bring pot to a slow boil over 30&ndash;45 minutes. <strong>Do not exceed 3.5 kW</strong>&mdash;at 4 kW the column operates at 70&ndash;100% of flooding capacity, risking unstable operation. Stay at 3 kW or below for the best DMS removal and operating margin.</li>
 <li>When vapor reaches the thermocouple (temperature rises above ambient), you are ready to begin the protocol.</li>
 </ol>
 
-<h3>5.2 Five-Phase Reflux Protocol</h3>
+<h3>5.2 Six-Phase Reflux Protocol</h3>
 <table class="phase-table">
 <tr><th>Phase</th><th>Thermocouple</th><th>Dephlegmator Action</th><th>Distillate Handling</th></tr>
 <tr><td style="color:var(--red)">1. Foreshots</td><td>Rising rapidly toward 78&deg;C</td><td>Maximum cooling: open needle valve fully, cold water flows through dephlegmator coil.</td><td>Collect first 50&ndash;100 mL. Smell: nail polish remover / solvent = foreshots. DISCARD.</td></tr>
@@ -336,9 +351,9 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <tr><td>Ethyl octanoate (apricot)</td><td>0.25</td><td>14.1%</td><td>20.5%</td><td style="color:var(--green)">+45%</td></tr>
 <tr><td>Furfural (almond/bread)</td><td>0.20</td><td>11.6%</td><td>16.9%</td><td style="color:var(--green)">+46%</td></tr>
 <tr><td>Isoamyl alcohol (fusel)</td><td>0.60</td><td>28.8%</td><td>40.6%</td><td style="color:var(--yellow)">+41% (wider cut trade-off)</td></tr>
-<tr><td>DMS after Cu removal</td><td>2.40</td><td>23.8% <em>(55% Cu)</em></td><td>10.6% <em>(85% Cu)</em></td><td style="color:var(--green)">&minus;55%</td></tr>
+<tr><td>DMS after Cu removal</td><td>2.40</td><td>~24% <em>(55% Cu)</em></td><td>~13% <em>(~82% Cu, range 60&ndash;93%)</em></td><td style="color:var(--green)">&minus;47%</td></tr>
 </table>
-<p><em>The CRO captures more of everything&mdash;including fusels&mdash;because the hearts window is 55% vs 40% of total output. The critical advantage is DMS: pot still hearts at ~30 ppb can exceed the 25 ppb sensory threshold, while CRO hearts at ~10 ppb are safely below.</em></p>
+<p><em>The CRO captures more of everything&mdash;including fusels&mdash;because the hearts window is 55% vs 40% of total output. The critical advantage is DMS: pot still hearts at ~30 ppb can exceed the 25 ppb sensory threshold, while CRO hearts at ~12 ppb (range 5&ndash;22 ppb) are likely below. All values are central estimates from models with significant uncertainty; experimental validation is needed.</em></p>
 
 <h3>6.2 Throughput</h3>
 <table>
@@ -346,7 +361,7 @@ code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px;
 <tr><td>Charge volume</td><td>8&ndash;9 gal low wines (25% ABV) or 10 gal wash (10% ABV)</td></tr>
 <tr><td>Hearts yield</td><td>1.0&ndash;1.5 L at 65&ndash;72% ABV (spirit run from low wines)</td></tr>
 <tr><td>Run time</td><td>3&ndash;4 hours (startup to shutdown)</td></tr>
-<tr><td>Heat input</td><td>2&ndash;4 kW (3 kW recommended for 85% DMS removal)</td></tr>
+<tr><td>Heat input</td><td>2&ndash;3.5 kW (3 kW recommended for ~82% DMS removal; 2 kW gives ~93%)</td></tr>
 <tr><td>Energy per run</td><td>8&ndash;16 kWh (propane or electric)</td></tr>
 </table>
 

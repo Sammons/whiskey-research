@@ -20164,16 +20164,19 @@ fn rayleigh_recovery(alpha: f64, n_eff: f64, f1: f64, f2: f64) -> f64 {
     (1.0 - f1).powf(e) - (1.0 - f2).powf(e)
 }
 
-/// PFR model: CuO catalytic oxidation of DMS → DMSO (water-soluble, non-volatile)
-/// removal = 1 − exp(−η·k_s·a_s·L/v_s)
-/// k_s = 0.63 cm/s (surface rate constant, calibrated from pot still lit.)
-/// η = 0.40 (utilization: inactive CuO, channeling, depletion over run)
-/// a_s = specific surface area of packing (cm²/cm³)
-/// Ref: Piggott (2003); Harrison et al., JAFC 2011 (Cu-DMS mechanism)
+/// PFR model: CuO-mediated oxidation of DMS → DMSO (water-soluble, non-volatile)
+/// removal = 1 − exp(−k_eff · a_s · L / v_s)
+/// k_eff = 0.16 cm/s — lumped effective rate constant (encompasses surface reaction
+///   rate, CuO utilization fraction, and channeling). Calibrated from pot still Cu
+///   removal data (~55% DMS removal). Uncertainty ≈ ±50%: k_eff ∈ [0.08, 0.24] cm/s.
+/// a_s = specific surface area of packing (cm²/cm³); ≈7.0 for 3/8" Cu Raschig rings
+/// NB: CuO is consumed during a run (stoichiometric in oxidant within a single run).
+///     Regenerated between runs by air exposure (Cu₂O/Cu → CuO). Not truly catalytic
+///     in steady-state; "CuO-mediated" is more accurate.
+/// Ref: Harrison et al., J. Inst. Brewing 117:106 (2011); Piggott (2003)
 fn pfr_dms_removal(a_s: f64, packed_cm: f64, v_s: f64) -> f64 {
-    let k_s = 0.63_f64;
-    let eta = 0.40_f64;
-    1.0 - (-eta * k_s * a_s * packed_cm / v_s).exp()
+    let k_eff = 0.16_f64; // cm/s (lumped: η·k_s, calibrated from pot still data)
+    1.0 - (-k_eff * a_s * packed_cm / v_s).exp()
 }
 
 fn sim_still_congener_bars() -> String {
@@ -20190,8 +20193,7 @@ fn sim_still_congener_bars() -> String {
         ("EtOct",    0.25),  // ethyl octanoate (apricot)
         ("Furfural", 0.20),  // furfural (almond/bread)
     ];
-    let off_names = ["IAmOH", "DMS"];
-    let off_alphas = [0.60_f64, 2.40_f64]; // fusel, sulfur
+    let off_alphas = [0.60_f64, 2.40_f64]; // IAmOH (fusel), DMS (sulfur)
 
     // Still configurations: (f1, f2, N_eff)
     let pot = (0.15, 0.55, 1.0_f64);   // classic pot still
@@ -20215,8 +20217,11 @@ fn sim_still_congener_bars() -> String {
         .map(|a| rayleigh_recovery(*a, col.2, col.0, col.1) * 100.0).collect();
 
     // DMS copper correction
+    // Column cross-section: 4" DWV has 3.9" (99mm) ID → 77 cm² → v_s ≈ 20 cm/s at 3 kW
     let pot_cu_removal = 0.55;  // empirical for all-Cu pot still (Piggott 2003)
-    let cro_cu_removal = pfr_dms_removal(4.4, 30.5, 18.0); // PFR: 4" col, 12" pack, 3 kW
+    let a_s_rings = 7.0_f64;   // cm²/cm³ (≈700 m²/m³ for 3/8" Raschig rings, Perry's §14)
+    let v_s_design = 20.0_f64; // cm/s at 3 kW through 77 cm² cross-section
+    let cro_cu_removal = pfr_dms_removal(a_s_rings, 30.5, v_s_design);
     // DMS index = 1
     let dms_pot = off_pot[1] * (1.0 - pot_cu_removal);
     let dms_cro = off_cro[1] * (1.0 - cro_cu_removal);
@@ -20234,7 +20239,7 @@ fn sim_still_congener_bars() -> String {
         off_pot[1], off_cro[1], off_col[1]);
     svg += &format!("     DMS after Cu: pot={:.1}% (55%Cu) CRO={:.1}% ({:.0}%Cu) col={:.1}%\n",
         dms_pot, dms_cro, cro_cu_removal*100.0, dms_col);
-    svg += &format!("     PFR params: k_s=0.63 eta=0.40 a_s=4.4 L=30.5cm v_s=18cm/s\n-->\n");
+    svg += &format!("     PFR params: k_eff=0.16 a_s=7.0 L=30.5cm v_s=20cm/s (3kW, 77cm² col)\n-->\n");
 
     // ── Panel A: Desirable congeners ──
     svg += &label(200.0, 57.0, "A: Desirable Congener Recovery (%)", TEXT, 10, "middle");
@@ -20272,7 +20277,7 @@ fn sim_still_congener_bars() -> String {
                       fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
     let max_r = 45.0;
     let syr = |v: f64| ry + rh * (1.0 - v / max_r);
-    for p in [0, 10, 20, 30, 40] {
+    for p in [0, 10, 20, 30, 40, 45] {
         svg += &hline(rx, rx + rw, syr(p as f64), GRID, "0.3");
         svg += &label(rx - 4.0, syr(p as f64) + 3.0, &format!("{}", p), MUTED, 6, "end");
     }
@@ -20328,7 +20333,7 @@ fn sim_still_congener_bars() -> String {
             ethex_gain, (off_cro[0] / off_pot[0] - 1.0) * 100.0),
         ACCENT, 8, "middle");
     svg += &label(350.0, h - 18.0,
-        &format!("DMS after Cu: pot {:.0} ppb \u{2265} threshold vs CRO {:.0} ppb (wash=50 ppb, threshold=25 ppb)",
+        &format!("DMS after Cu: pot ~{:.0} ppb \u{2265} threshold vs CRO ~{:.0} ppb (wash=50 ppb, threshold=25 ppb)",
             50.0 * off_pot[1] / 100.0 / (pot.1 - pot.0) * (1.0 - pot_cu_removal),
             50.0 * off_cro[1] / 100.0 / (cro.1 - cro.0) * (1.0 - cro_cu_removal)),
         GREEN, 7, "middle");
@@ -20338,7 +20343,7 @@ fn sim_still_congener_bars() -> String {
 fn sim_still_reflux_protocol() -> String {
     let w = 700.0_f64; let h = 480.0_f64;
     let mut svg = svg_header(w, h,
-        "Fig S2 \u{2014} CRO-10 Five-Phase Reflux Operating Protocol");
+        "Fig S2 \u{2014} CRO-10 Six-Phase Reflux Operating Protocol");
 
     svg += &label(350.0, 57.0, "Dephlegmator reflux ratio vs distillation progress", TEXT, 10, "middle");
 
@@ -20478,12 +20483,13 @@ fn sim_still_copper_dms() -> String {
     svg += &label(px + pw / 2.0, py + ph_a + 28.0, "Packed height (inches)", MUTED, 8, "middle");
     svg += &label(px - 25.0, py + ph_a / 2.0, "Removal", MUTED, 7, "middle");
 
-    // PFR curves at 3 vapor velocities (a_s = 4.4 cm²/cm³ for 3/8" Cu Raschig)
-    let a_s = 4.4_f64;
+    // PFR curves at 3 vapor velocities (a_s ≈ 7.0 cm²/cm³ for 3/8" Cu Raschig, Perry's §14)
+    // Column cross-section: 4" DWV pipe, 3.9" (99mm) ID → 77 cm²
+    let a_s = 7.0_f64;
     let velocities: Vec<(f64, &str, &str, &str)> = vec![
-        (12.0, "2 kW (12 cm/s)", GREEN, "2.5"),
-        (18.0, "3 kW (18 cm/s)", ACCENT, "2.5"),
-        (24.0, "4 kW (24 cm/s)", RED, "2"),
+        (13.0, "2 kW (13 cm/s)", GREEN, "2.5"),
+        (20.0, "3 kW (20 cm/s)", ACCENT, "2.5"),
+        (26.0, "4 kW (26 cm/s)", RED, "2"),
     ];
     for (v_s, vlabel, color, sw) in &velocities {
         let mut pts = Vec::new();
@@ -20500,8 +20506,8 @@ fn sim_still_copper_dms() -> String {
         svg += &label(px + pw + 5.0, sy(end_r) + 3.0, vlabel, color, 6, "start");
     }
 
-    // Design point marker (12", 18 cm/s)
-    let design_r = pfr_dms_removal(a_s, 12.0 * 2.54, 18.0) * 100.0;
+    // Design point marker (12", 20 cm/s at 3 kW)
+    let design_r = pfr_dms_removal(a_s, 12.0 * 2.54, 20.0) * 100.0;
     svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{ACCENT}\" \
         stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n", sx(12.0), sy(design_r));
     svg += &label(sx(12.0) + 8.0, sy(design_r) - 8.0,
@@ -20528,12 +20534,16 @@ fn sim_still_copper_dms() -> String {
     // Calculate DMS in spirit (ppb)
     // Wash DMS: 50 ppb typical for malt
     let wash_dms = 50.0_f64;
-    let pot_raw = rayleigh_recovery(2.40, 1.0, 0.15, 0.55);
-    let cro_raw = rayleigh_recovery(2.40, 1.0, 0.10, 0.65);
+    let pot_f = (0.15_f64, 0.55_f64);  // pot still hearts cut
+    let cro_f = (0.10_f64, 0.65_f64);  // CRO hearts cut
+    let pot_raw = rayleigh_recovery(2.40, 1.0, pot_f.0, pot_f.1);
+    let cro_raw = rayleigh_recovery(2.40, 1.0, cro_f.0, cro_f.1);
+    let pot_cu = 0.55_f64;  // empirical pot still Cu removal (Piggott 2003)
+    let v_s_3kw = 20.0_f64; // cm/s at 3 kW, 77 cm² column
 
-    // Concentration in hearts = wash × recovery / cut_fraction
-    let pot_dms_ppb = wash_dms * pot_raw / (0.55 - 0.15) * (1.0 - 0.55);
-    let cro_dms_ppb = wash_dms * cro_raw / (0.65 - 0.10) * (1.0 - pfr_dms_removal(a_s, 30.5, 18.0));
+    // Concentration in hearts = wash × recovery / cut_fraction × (1 − Cu_removal)
+    let pot_dms_ppb = wash_dms * pot_raw / (pot_f.1 - pot_f.0) * (1.0 - pot_cu);
+    let cro_dms_ppb = wash_dms * cro_raw / (cro_f.1 - cro_f.0) * (1.0 - pfr_dms_removal(a_s, 30.5, v_s_3kw));
     let col_dms_ppb = 0.5_f64; // ~0 from Rayleigh, use 0.5 for visibility
 
     let max_dms = 40.0;
@@ -20572,19 +20582,19 @@ fn sim_still_copper_dms() -> String {
 
     // Embed ppb verification
     svg += &format!("<!-- DMS ppb (wash=50ppb):\n     pot={:.1}ppb (raw_recov={:.3}, Cu=55%)\n\
-        CRO={:.1}ppb (raw_recov={:.3}, Cu={:.1}%)\n     col~0 -->\n",
+        CRO={:.1}ppb (raw_recov={:.3}, Cu={:.1}% PFR, k_eff=0.16 a_s=7.0 v_s=20)\n     col~0 -->\n",
         pot_dms_ppb, pot_raw, cro_dms_ppb, cro_raw,
-        pfr_dms_removal(a_s, 30.5, 18.0) * 100.0);
+        pfr_dms_removal(a_s, 30.5, v_s_3kw) * 100.0);
 
     // Footer
     svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"38\" rx=\"4\" \
         fill=\"{GRID}\" opacity=\"0.85\"/>\n", y = h - 50.0);
     svg += &label(350.0, h - 32.0,
-        &format!("4\" Cu column, 12\" packed 3/8\" Raschig (a_s=440 m\u{00b2}/m\u{00b3}): {:.0}% DMS removal at 3 kW",
+        &format!("4\" Cu col (99mm ID), 12\" packed 3/8\" Raschig (a_s\u{2248}700 m\u{00b2}/m\u{00b3}): ~{:.0}% DMS removal at 3 kW",
             design_r),
         ACCENT, 8, "middle");
     svg += &label(350.0, h - 18.0,
-        &format!("PFR: CuO + DMS \u{2192} DMSO (soluble) | Pot {:.0} ppb vs CRO {:.0} ppb in hearts",
+        &format!("CuO-mediated: DMS \u{2192} DMSO (soluble, stoich. per run) | Pot ~{:.0} ppb vs CRO ~{:.0} ppb",
             pot_dms_ppb, cro_dms_ppb),
         GREEN, 8, "middle");
     svg.push_str("</svg>"); svg
@@ -20866,14 +20876,14 @@ fn sim_still_head_blueprint() -> String {
     svg += &label(bom_x + 130.0, spec_y + 18.0, "Key Specifications", ACCENT, 10, "middle");
     svg += &hline(bom_x + 10.0, bom_x + 250.0, spec_y + 26.0, MUTED, "0.5");
 
-    let design_removal = pfr_dms_removal(4.4, 30.5, 18.0) * 100.0;
+    let design_removal = pfr_dms_removal(7.0, 30.5, 20.0) * 100.0;
     let specs: Vec<(&str, String)> = vec![
-        ("Column ID:",     "4\" (102 mm) C122 Cu DWV".to_string()),
+        ("Column ID:",     "4\" nom. (99 mm ID) C122 Cu DWV".to_string()),
         ("Packing:",       "3/8\" Cu Raschig, 12\" bed".to_string()),
-        ("HETP:",          "80\u{2013}120 mm (2.5\u{2013}3.8 plates)".to_string()),
-        ("Cu surface:",    format!("~11,000 cm\u{00b2} (a_s=440 m\u{00b2}/m\u{00b3})")),
-        ("DMS removal:",   format!("~{:.0}% at 3 kW (PFR model)", design_removal)),
-        ("Vapor velocity:","~18 cm/s at 3 kW (flood ~28)".to_string()),
+        ("HETP:",          "100\u{2013}200 mm (1.5\u{2013}3 plates)".to_string()),
+        ("Cu surface:",    format!("~16,000 cm\u{00b2} (a_s\u{2248}700 m\u{00b2}/m\u{00b3})")),
+        ("DMS removal:",   format!("~{:.0}% at 3 kW (60\u{2013}93% range)", design_removal)),
+        ("Vapor velocity:","~20 cm/s at 3 kW (flood 25\u{2013}35)".to_string()),
         ("Dephlegmator:",  "1/4\" Cu coil, 6\" section".to_string()),
         ("Lyne arm:",      "2\" Cu, 18\", 10\u{00b0} down".to_string()),
         ("Heat input:",    "2\u{2013}4 kW (3 kW nominal)".to_string()),
