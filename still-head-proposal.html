@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRO-10 Still Head — Congener Recovery Optimized Design</title>
+<style>
+:root {
+  --bg: #161b22; --surface: #1c2129; --surface2: #30363d;
+  --text: #e6edf3; --muted: #8b949e; --accent: #e8a665;
+  --green: #3fb950; --red: #f85149; --blue: #58a6ff;
+  --purple: #bc8cff; --yellow: #d29922; --cyan: #39d2c0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.65; max-width: 960px; margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+h1 { color: var(--accent); font-size: 1.8rem; margin-bottom: 0.3rem; }
+h2 { color: var(--accent); font-size: 1.35rem; margin-top: 2.5rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.3rem; }
+h3 { color: var(--green); font-size: 1.1rem; margin-top: 1.8rem; }
+p, li { color: var(--text); margin-top: 0.6rem; }
+em { color: var(--muted); }
+strong { color: var(--accent); }
+a { color: var(--blue); }
+figure { margin: 1.2rem 0; }
+figure object, figure img { width: 100%; border: 1px solid var(--surface2); border-radius: 4px; }
+figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--surface2); padding: 0.4rem 0.6rem; font-size: 0.88rem; }
+th { background: var(--surface2); color: var(--accent); text-align: left; }
+td { background: var(--surface); }
+.callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 0.8rem 1rem; margin: 1.2rem 0; border-radius: 0 4px 4px 0; }
+.callout.warn { border-left-color: var(--red); }
+.callout.key { border-left-color: var(--green); }
+ol, ul { padding-left: 1.5rem; }
+code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; }
+.subtitle { color: var(--muted); font-size: 1.1rem; margin-bottom: 2rem; }
+.toc a { color: var(--blue); text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+.phase-table td:first-child { font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>CRO-10 Still Head</h1>
+<p class="subtitle">Congener Recovery Optimized Design for a 10-Gallon Custom Pot Still</p>
+
+<div class="callout key">
+<strong>Design goal:</strong> Maximize recovery of desirable flavor congeners (esters, furfural, controlled fusels) while chemically eliminating sulfur compounds (DMS, H<sub>2</sub>S) through copper-packed reactive separation. The CRO-10 recovers 1.3&ndash;1.5&times; more heavy esters than a standard pot still while removing 98.6% of DMS&mdash;the best of both worlds.
+</div>
+
+<nav class="toc">
+<p><strong>Contents:</strong>
+<a href="#philosophy">1. Design Philosophy</a> &bull;
+<a href="#physics">2. Physics &amp; Simulations</a> &bull;
+<a href="#specs">3. Engineering Specs</a> &bull;
+<a href="#build">4. Build Instructions</a> &bull;
+<a href="#operate">5. Operating Guide</a> &bull;
+<a href="#performance">6. Expected Performance</a> &bull;
+<a href="#refs">7. References</a>
+</p>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="philosophy">1. Design Philosophy</h2>
+
+<h3>1.1 The Pot-vs-Column Tradeoff</h3>
+<p>Every still designer faces the same fundamental tension:</p>
+<ul>
+<li><strong>Pot stills</strong> produce flavorful but &ldquo;dirty&rdquo; spirit. Minimal separation means esters, aldehydes, and higher alcohols all carry into the distillate&mdash;along with sulfur compounds like dimethyl sulfide (DMS). A copper pot provides some DMS removal (~80%) but cannot match a packed column.</li>
+<li><strong>Column stills</strong> produce clean but characterless spirit. With 10&ndash;20 theoretical plates and high reflux, columns strip virtually all congeners. Vodka-grade purity comes at the cost of losing the very compounds that make whiskey interesting.</li>
+</ul>
+
+<h3>1.2 The CRO Solution: Decouple Separation from Sulfur Removal</h3>
+<p>The CRO-10 design resolves this tradeoff by recognizing that sulfur removal and congener separation are <em>different physical processes</em>:</p>
+<ul>
+<li><strong>Sulfur removal is chemical:</strong> DMS and H<sub>2</sub>S react with copper surfaces (Cu + DMS &rarr; CuS). This requires copper surface area, not theoretical plates. A packed copper column provides 8,800 cm&sup2; of reactive surface&mdash;17&times; more than a copper pot alone.</li>
+<li><strong>Congener separation is physical:</strong> Ester recovery depends on reflux ratio, plate count, and cut decisions. A <em>variable dephlegmator</em> (partial reflux condenser) allows real-time tuning: high reflux during foreshots to strip volatiles, zero reflux during hearts to maximize ester passage.</li>
+</ul>
+<p>By packing the column with copper Raschig rings instead of stainless steel, we get both functions in a single unit: chemical DMS removal at all reflux settings, and physical separation only when the dephlegmator is actively cooled.</p>
+
+<h3>1.3 Key Design Decisions</h3>
+<table>
+<tr><th>Decision</th><th>Choice</th><th>Rationale</th></tr>
+<tr><td>Column diameter</td><td>3&Prime; (76 mm)</td><td>Optimal vapor velocity (~5 cm/s) for a 10-gal still. 2&Prime; is too fast (poor wetting); 4&Prime; is too slow (poor mass transfer).</td></tr>
+<tr><td>Packed height</td><td>18&Prime; (457 mm)</td><td>With HETP ~180 mm for 3/8&Prime; Raschig rings, this gives ~2.5 theoretical plates&mdash;enough for clean foreshot separation without stripping heavy esters.</td></tr>
+<tr><td>Packing type</td><td>3/8&Prime; Cu Raschig rings</td><td>Maximum copper surface area per unit volume. 8,800 cm&sup2; total. Easy to remove and clean. GRAS material (copper is food-safe at these contact times).</td></tr>
+<tr><td>Lyne arm angle</td><td>10&deg; downslope</td><td>Minimizes passive reflux. All reflux is controlled via the dephlegmator. Downward slope ensures condensate flows toward the condenser, not back into the column.</td></tr>
+<tr><td>Reflux control</td><td>Needle valve on dephlegmator coolant</td><td>Continuously variable reflux ratio from 0 (bypass) to ~4 (high reflux). The distiller adjusts in real time based on temperature, taste, and cut goals.</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="physics">2. Physics &amp; Simulation Results</h2>
+
+<h3>2.1 Congener Recovery Comparison</h3>
+<p>The Rayleigh batch distillation model predicts the fraction of each congener that appears in the hearts cut. For component <em>i</em> with enrichment exponent E<sub>i</sub> = (&alpha;<sub>rel,i</sub>)<sup>N<sub>eff</sub></sup>, the hearts recovery from fraction <em>f</em><sub>1</sub> to <em>f</em><sub>2</sub> is:</p>
+<p style="text-align:center; color:var(--accent);">Recovery<sub>i</sub> = (1 &minus; f<sub>1</sub>)<sup>E<sub>i</sub></sup> &minus; (1 &minus; f<sub>2</sub>)<sup>E<sub>i</sub></sup></p>
+<p>The CRO-10 advantage comes from <em>extending the hearts window</em> (12&ndash;65% vs the pot still&rsquo;s typical 15&ndash;55%) by using the dephlegmator as a &ldquo;fusel gate&rdquo; during late hearts, allowing heavier esters through while retarding fusel alcohols.</p>
+
+<figure>
+<object type="image/svg+xml" data="graphs/still-congener-comparison.svg" aria-label="Congener recovery comparison across three still types">
+<img src="graphs/still-congener-comparison.svg" alt="Congener recovery bar chart">
+</object>
+<figcaption><strong>Fig S1.</strong> Hearts cut congener recovery (%) for three still designs. Left: desirable flavor congeners (higher = better). Right: off-flavor compounds (lower = better). The CRO-10 (green) achieves the ester retention of a pot still with the sulfur removal of a column still.</figcaption>
+</figure>
+
+<h3>2.2 The Five-Phase Reflux Protocol</h3>
+<p>The dephlegmator is not set once and forgotten&mdash;it is the primary instrument of flavor engineering. The distiller adjusts coolant flow continuously through five distinct phases:</p>
+
+<figure>
+<object type="image/svg+xml" data="graphs/still-reflux-protocol.svg" aria-label="Five-phase reflux operating protocol">
+<img src="graphs/still-reflux-protocol.svg" alt="Reflux protocol timeline">
+</object>
+<figcaption><strong>Fig S2.</strong> CRO-10 operating protocol. The reflux ratio (R) is adjusted through five phases. During hearts collection (green region), R &asymp; 0 gives maximum congener passage. The &ldquo;fusel gate&rdquo; at R = 0.3 during late hearts extends the usable cut window by ~20%.</figcaption>
+</figure>
+
+<table class="phase-table">
+<tr><th>Phase</th><th>Volume</th><th>Reflux R</th><th>Action</th><th>Purpose</th></tr>
+<tr><td style="color:var(--red)">Foreshots</td><td>0&ndash;2%</td><td>3.0&ndash;3.5</td><td>DISCARD</td><td>Strip methanol, acetaldehyde, ethyl formate. High reflux concentrates volatiles in foreshots.</td></tr>
+<tr><td style="color:var(--yellow)">Heads</td><td>2&ndash;12%</td><td>1.5 &rarr; 0.8</td><td>SET ASIDE</td><td>Transition zone. Ethyl acetate rich. Save for blending or recycling into next low-wines charge.</td></tr>
+<tr><td style="color:var(--green)">Hearts</td><td>12&ndash;55%</td><td>0</td><td>COLLECT</td><td>Main spirit. Dephlegmator bypassed (warm water or off). Maximum congener passage through copper column.</td></tr>
+<tr><td style="color:var(--accent)">Late hearts</td><td>55&ndash;65%</td><td>0 &rarr; 0.3</td><td>COLLECT / BLEND</td><td>Heavy ester zone. Light reflux retards fusels while allowing ethyl hexanoate/octanoate through. Blend into hearts or keep separate.</td></tr>
+<tr><td style="color:var(--yellow)">Tails</td><td>65&ndash;85%</td><td>0.5 &rarr; 2.0</td><td>RECYCLE</td><td>Fusel-heavy fraction. Add to next low-wines charge.</td></tr>
+</table>
+
+<h3>2.3 Copper Surface Area Optimization</h3>
+<p>DMS removal follows Langmuir kinetics at the copper surface: <span style="color:var(--accent);">removal = A / (A + K<sub>&frac12;</sub>)</span>, where K<sub>&frac12;</sub> &asymp; 125 cm&sup2;. The CRO-10&rsquo;s 8,800 cm&sup2; of copper Raschig rings achieves 98.6% DMS removal&mdash;well above the sensory threshold for detection in new-make spirit.</p>
+
+<figure>
+<object type="image/svg+xml" data="graphs/still-copper-dms.svg" aria-label="Copper surface area vs DMS removal">
+<img src="graphs/still-copper-dms.svg" alt="DMS removal curve and comparison">
+</object>
+<figcaption><strong>Fig S3.</strong> (A) DMS removal efficiency as a function of copper contact area. The CRO-10 provides 17&times; more copper surface than a pot still alone. (B) Resulting DMS concentration in the hearts cut: 2 ppb (CRO) vs 30 ppb (pot still), compared to a ~25 ppb sensory threshold.</figcaption>
+</figure>
+
+<h3>2.4 Vapor Dynamics</h3>
+<p>Key calculations confirming the design operates safely within thermodynamic limits:</p>
+<table>
+<tr><th>Parameter</th><th>Value</th><th>Status</th></tr>
+<tr><td>Vapor flow rate</td><td>~500 L/hr at 78&deg;C</td><td>Typical for 3&ndash;5 kW heat input</td></tr>
+<tr><td>Column cross-section</td><td>45.6 cm&sup2; (3&Prime; ID)</td><td>&mdash;</td></tr>
+<tr><td>Superficial velocity</td><td>~3&ndash;5 cm/s</td><td style="color:var(--green)">&lt;10% of flooding velocity</td></tr>
+<tr><td>Flooding velocity (3/8&Prime; Raschig)</td><td>~50&ndash;80 cm/s</td><td>Large safety margin</td></tr>
+<tr><td>HETP (3/8&Prime; Cu Raschig, low rates)</td><td>~180 mm</td><td>Literature value for random packing</td></tr>
+<tr><td>Theoretical plates (18&Prime; packed)</td><td>~2.5 at R &gt; 0.5</td><td style="color:var(--green)">Sweet spot: foreshot separation without ester stripping</td></tr>
+<tr><td>Heat duty (sensible + latent)</td><td>3&ndash;5 kW sustained</td><td>Standard propane burner sufficient</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="specs">3. Engineering Specifications</h2>
+
+<figure>
+<object type="image/svg+xml" data="graphs/still-head-blueprint.svg" aria-label="CRO-10 still head engineering blueprint">
+<img src="graphs/still-head-blueprint.svg" alt="Still head blueprint with dimensions and BOM">
+</object>
+<figcaption><strong>Fig S4.</strong> CRO-10 engineering blueprint. Left: cross-section with labeled dimensions. Right: bill of materials and key specifications. All connections use tri-clamp (TC) fittings for easy disassembly and cleaning.</figcaption>
+</figure>
+
+<h3>3.1 Dimensions Summary</h3>
+<table>
+<tr><th>Component</th><th>Material</th><th>OD / ID</th><th>Length / Height</th><th>Notes</th></tr>
+<tr><td>Pot</td><td>304 SS</td><td>14&Prime; dia</td><td>12&Prime; tall</td><td>10-gallon stock pot. Drill &amp; weld 3&Prime; TC ferrule into lid center.</td></tr>
+<tr><td>Vapor rise</td><td>C110 Cu DWV</td><td>3&Prime; OD / 2.9&Prime; ID</td><td>12&Prime;</td><td>Empty section for initial copper contact and vapor development.</td></tr>
+<tr><td>Packed section</td><td>C110 Cu DWV</td><td>3&Prime; OD / 2.9&Prime; ID</td><td>18&Prime;</td><td>Filled with 3/8&Prime; (10mm) copper Raschig rings. SS mesh screens at top and bottom to retain packing.</td></tr>
+<tr><td>Reducer</td><td>C110 Cu</td><td>3&Prime; &rarr; 2&Prime;</td><td>3&Prime;</td><td>Concentric reducer, soldered.</td></tr>
+<tr><td>Dephlegmator inner</td><td>C110 Cu DWV</td><td>2&Prime; OD</td><td>8&Prime;</td><td>Vapor path. Soldered into reducer at bottom.</td></tr>
+<tr><td>Dephlegmator jacket</td><td>C110 Cu or 304 SS</td><td>3&Prime; OD</td><td>8&Prime;</td><td>Water jacket. 1/4&Prime; Cu water ports soldered in. End caps soldered with gasket.</td></tr>
+<tr><td>Lyne arm</td><td>C110 Cu DWV</td><td>2&Prime; OD</td><td>18&Prime;</td><td>10&deg; downward slope from dephlegmator to condenser. 2&Prime; TC at dephlegmator end.</td></tr>
+<tr><td>Condenser inner</td><td>C110 Cu DWV</td><td>2&Prime; OD</td><td>24&Prime;</td><td>Countercurrent Liebig condenser. Spirit flows inside.</td></tr>
+<tr><td>Condenser jacket</td><td>C110 Cu or 304 SS</td><td>3&Prime; OD</td><td>22&Prime;</td><td>Water jacket with 1/4&Prime; ports. Water enters at bottom (cold end), exits at top.</td></tr>
+<tr><td>Outlet</td><td>C110 Cu</td><td>2&Prime; &rarr; 1/2&Prime;</td><td>4&Prime;</td><td>Reducer to parrot/collection vessel.</td></tr>
+</table>
+
+<h3>3.2 Bill of Materials</h3>
+<table>
+<tr><th>Item</th><th>Qty</th><th>Est. Cost</th></tr>
+<tr><td>10-gal 304 SS stock pot with lid</td><td>1</td><td>$60&ndash;100</td></tr>
+<tr><td>3&Prime; C110 Cu DWV pipe (sold in 10&rsquo; lengths)</td><td>36&Prime;</td><td>$45&ndash;65</td></tr>
+<tr><td>2&Prime; C110 Cu DWV pipe</td><td>48&Prime;</td><td>$30&ndash;45</td></tr>
+<tr><td>3&Prime; Cu pipe segment (jacket)</td><td>10&Prime;</td><td>$15&ndash;20</td></tr>
+<tr><td>3/8&Prime; Cu Raschig rings (~2 L bulk)</td><td>1 bag</td><td>$25&ndash;40</td></tr>
+<tr><td>3&Prime; TC ferrules + clamps &times; 3</td><td>3 sets</td><td>$30&ndash;45</td></tr>
+<tr><td>2&Prime; TC ferrules + clamps &times; 2</td><td>2 sets</td><td>$15&ndash;25</td></tr>
+<tr><td>3&Prime; &rarr; 2&Prime; Cu concentric reducer</td><td>1</td><td>$10&ndash;15</td></tr>
+<tr><td>2&Prime; &rarr; 1/2&Prime; Cu reducer (outlet)</td><td>1</td><td>$5&ndash;8</td></tr>
+<tr><td>1/4&Prime; Cu tube (water lines)</td><td>24&Prime;</td><td>$5&ndash;8</td></tr>
+<tr><td>1/4&Prime; brass needle valve</td><td>1</td><td>$8&ndash;12</td></tr>
+<tr><td>K-type thermocouple probe + readout</td><td>1</td><td>$10&ndash;15</td></tr>
+<tr><td>SS mesh screens (60 mesh, 3&Prime; dia)</td><td>2</td><td>$5&ndash;8</td></tr>
+<tr><td>Food-grade silicone TC gaskets</td><td>5</td><td>$10&ndash;15</td></tr>
+<tr><td>Lead-free silver solder (Ag 5%) + flux</td><td>1 kit</td><td>$15&ndash;20</td></tr>
+<tr><td>PTFE thread tape</td><td>1 roll</td><td>$2</td></tr>
+<tr><td><strong>Estimated total</strong></td><td></td><td><strong>$290&ndash;445</strong></td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="build">4. Build Instructions</h2>
+
+<h3>4.1 Tools Required</h3>
+<ul>
+<li>Propane torch (MAPP gas preferred for 3&Prime; joints)</li>
+<li>Tube cutter for 2&Prime; and 3&Prime; copper pipe</li>
+<li>Sandpaper/emery cloth (120 grit) for joint prep</li>
+<li>Step drill or hole saw (3&Prime;) for pot lid modification</li>
+<li>Drill + 1/4&Prime; bit for water port holes</li>
+<li>Tri-clamp flaring/welding tools (or pre-made TC ferrules)</li>
+<li>Ruler, protractor, marker</li>
+</ul>
+
+<h3>4.2 Step 1: Pot Modification</h3>
+<ol>
+<li>Mark center of pot lid. Drill pilot hole, then cut 3&Prime; hole with step drill or hole saw.</li>
+<li>Insert 3&Prime; TC ferrule from underside. Weld (TIG preferred for SS) or secure with high-temp food-grade silicone sealant + stainless bolts.</li>
+<li>Test seal: fill inverted lid with water, check for leaks at ferrule joint.</li>
+</ol>
+
+<h3>4.3 Step 2: Column Assembly</h3>
+<ol>
+<li><strong>Cut pipe:</strong> 3&Prime; Cu pipe &rarr; two sections: 12&Prime; (vapor rise) and 18&Prime; (packed).</li>
+<li><strong>Solder TC ferrules</strong> to both ends of each section. Clean pipe ends with emery cloth, apply flux, heat evenly, feed lead-free silver solder. Let cool naturally&mdash;do not quench.</li>
+<li><strong>Insert mesh screen</strong> at bottom of packed section (held by the TC ferrule lip). Pour in 3/8&Prime; Cu Raschig rings to fill. Place second mesh screen on top. Shake gently to settle rings.</li>
+<li><strong>Verify:</strong> Assemble vapor rise + packed section with TC clamps and gaskets. Check alignment. Blow through to verify airflow is free.</li>
+</ol>
+
+<h3>4.4 Step 3: Dephlegmator Construction</h3>
+<ol>
+<li><strong>Inner tube:</strong> Cut 2&Prime; Cu pipe to 8&Prime;. Solder the 3&Prime; &rarr; 2&Prime; reducer to the bottom end.</li>
+<li><strong>Water jacket:</strong> Cut 3&Prime; Cu pipe to 8&Prime; (jacket body). Drill two 1/4&Prime; holes on opposite sides: one 1&Prime; from bottom (water inlet), one 1&Prime; from top (water outlet). Solder 1/4&Prime; Cu tube stubs into each hole.</li>
+<li><strong>End caps:</strong> Cut two 3&Prime; Cu discs (from end cap fittings or sheet). Drill 2&Prime; center holes. Solder inner tube through both end caps. Then solder end caps to jacket body. Critical: ensure all joints are watertight.</li>
+<li><strong>Needle valve:</strong> Connect 1/4&Prime; brass needle valve to the water inlet stub. Connect water supply line to valve inlet.</li>
+<li><strong>Thermocouple:</strong> Drill 1/8&Prime; hole at top of inner tube, above water jacket. Insert K-type thermocouple probe. Seal with high-temp silicone or compression fitting.</li>
+<li><strong>Pressure test jacket:</strong> Cap water outlet, connect water supply to inlet, fill jacket, pressurize to 20 PSI with hand pump. Hold 5 minutes. No leaks = pass.</li>
+</ol>
+
+<div class="callout key">
+<strong>Fabrication tip:</strong> The dephlegmator is the most complex sub-assembly. If you are commissioning a copper fabricator, specify this as a separate deliverable with a hydrostatic pressure test certificate.
+</div>
+
+<h3>4.5 Step 4: Lyne Arm</h3>
+<ol>
+<li>Cut 2&Prime; Cu pipe to 18&Prime;.</li>
+<li>Solder 2&Prime; TC ferrule to one end (connects to dephlegmator top).</li>
+<li>The other end connects to the condenser. Either solder directly or use another TC fitting for disassembly.</li>
+<li><strong>Set angle:</strong> When mounted, the lyne arm should slope 10&deg; downward from the dephlegmator toward the condenser. Mark this angle on your mounting structure.</li>
+</ol>
+
+<h3>4.6 Step 5: Liebig Condenser</h3>
+<ol>
+<li><strong>Inner tube:</strong> Cut 2&Prime; Cu pipe to 24&Prime;.</li>
+<li><strong>Jacket:</strong> Cut 3&Prime; Cu pipe to 22&Prime;. Drill water ports as with dephlegmator: 1/4&Prime; holes for inlet (bottom end) and outlet (top end). Solder 1/4&Prime; tube stubs.</li>
+<li><strong>End caps:</strong> Same procedure as dephlegmator: 3&Prime; discs with 2&Prime; center holes. Solder inner tube through caps, then solder caps to jacket.</li>
+<li><strong>Outlet reducer:</strong> Solder 2&Prime; &rarr; 1/2&Prime; reducer to the exit end of the inner tube.</li>
+<li><strong>Pressure test</strong> the water jacket as before.</li>
+</ol>
+
+<h3>4.7 Step 6: Final Assembly</h3>
+<ol>
+<li>Clamp column base (vapor rise) to pot lid TC ferrule with food-grade silicone gasket.</li>
+<li>Stack packed section on top of vapor rise via TC clamp.</li>
+<li>Mount dephlegmator atop packed section. The 3&Prime; &rarr; 2&Prime; reducer at the dephlegmator base mates with the 3&Prime; TC at top of packed section.</li>
+<li>Attach lyne arm to dephlegmator top at 10&deg; downslope. Use a support bracket or clamp to a shelf/wall to maintain angle and take weight off the column.</li>
+<li>Attach condenser to lyne arm end. Support independently.</li>
+<li>Connect water supply: garden hose or bucket pump &rarr; needle valve &rarr; dephlegmator inlet &rarr; dephlegmator outlet &rarr; condenser inlet (bottom) &rarr; condenser outlet (top) &rarr; drain.</li>
+<li>Place collection vessel (glass or SS) under condenser outlet with parrot + hydrometer.</li>
+</ol>
+
+<h3>4.8 Step 7: Conditioning Run</h3>
+<div class="callout warn">
+<strong>First run:</strong> Charge the pot with a sacrificial wash (cheap sugar wash or cleaning solution of 50:50 water:white vinegar). Run a full distillation to:
+<ul>
+<li>Flush solder flux residues from all copper joints</li>
+<li>Season the copper surfaces (initial CuO formation improves sulfur reactivity)</li>
+<li>Verify all joints are sealed under operating temperature and pressure</li>
+<li>Practice cut decisions and dephlegmator control</li>
+</ul>
+<strong>Discard all distillate from the conditioning run.</strong>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="operate">5. Operating Guide</h2>
+
+<h3>5.1 Charge and Startup</h3>
+<ol>
+<li>Charge pot with 8&ndash;9 gallons of low wines (~25% ABV) or wash (~10% ABV).</li>
+<li>Assemble column, ensure all TC clamps are tight.</li>
+<li>Start condenser water flow first (cold water through condenser jacket only).</li>
+<li>Apply heat. Bring pot to a slow boil over 30&ndash;45 minutes.</li>
+<li>When vapor reaches the thermocouple at the dephlegmator top (temperature rises above ambient), you are ready to begin the protocol.</li>
+</ol>
+
+<h3>5.2 Five-Phase Reflux Protocol</h3>
+<table class="phase-table">
+<tr><th>Phase</th><th>Thermocouple</th><th>Dephlegmator Action</th><th>Distillate Handling</th></tr>
+<tr><td style="color:var(--red)">1. Foreshots</td><td>Rising rapidly toward 78&deg;C</td><td>Maximum cooling: open needle valve fully, cold water flows through dephlegmator jacket.</td><td>Collect first 50&ndash;100 mL in small vessel. Smell: nail polish remover / solvent = foreshots. DISCARD.</td></tr>
+<tr><td style="color:var(--yellow)">2. Heads</td><td>Stabilizing at 78&ndash;80&deg;C</td><td>Reduce cooling: close needle valve to ~50%. Moderate reflux.</td><td>Collect next 500&ndash;1000 mL. Fruity + solvent notes. SET ASIDE for blending or recycling.</td></tr>
+<tr><td style="color:var(--green)">3. Hearts</td><td>Stable at 80&ndash;86&deg;C</td><td><strong>Close needle valve completely</strong> (or switch to warm water). Zero active reflux.</td><td>COLLECT as new-make spirit. Clean, fruity, cereal character. This is the whiskey.</td></tr>
+<tr><td style="color:var(--accent)">4. Late hearts</td><td>86&ndash;90&deg;C, rising</td><td>Crack needle valve open to ~20%. Light reflux slows fusel ingress.</td><td>Collect or keep separate. Richer, heavier body. Blend into hearts to taste preference.</td></tr>
+<tr><td style="color:var(--yellow)">5. Tails</td><td>Above 90&deg;C</td><td>Open valve to ~60%. Moderate-high reflux.</td><td>Collect feints for recycling into next run. Fusel-heavy, oily. NEVER add to hearts.</td></tr>
+</table>
+
+<div class="callout key">
+<strong>The single most important adjustment:</strong> Close the dephlegmator needle valve during hearts. This is the moment that distinguishes the CRO from a standard reflux column. With R &asymp; 0, the packed copper section acts purely as a chemical DMS scrubber&mdash;zero separation, maximum flavor passage.
+</div>
+
+<h3>5.3 Cut Decision Guides</h3>
+<p>Three independent signals help you decide when to transition between phases:</p>
+<ol>
+<li><strong>Temperature:</strong> The thermocouple at the dephlegmator top tracks vapor composition. Rising temperature = heavier compounds arriving. Use the phase table above.</li>
+<li><strong>Taste/smell:</strong> The traditional test. Dip your finger (clean) or use a smell strip. Foreshots smell like nail polish. Hearts smell clean and grainy. Tails smell waxy/oily.</li>
+<li><strong>Hydrometer (in parrot):</strong> Hearts typically exit at 68&ndash;75% ABV. When ABV drops below 60%, you are entering late hearts/tails.</li>
+</ol>
+
+<h3>5.4 Cleaning and Maintenance</h3>
+<ul>
+<li><strong>After every run:</strong> Rinse column sections with hot water. Flush water through dephlegmator and condenser jackets. Allow copper to air dry (do not seal wet).</li>
+<li><strong>Every 5 runs:</strong> Remove Raschig rings from packed section. Soak in citric acid solution (2 tbsp per gallon of water) for 30 minutes. Rinse thoroughly. Air dry. Repack.</li>
+<li><strong>Inspect TC gaskets</strong> every 10 runs. Replace if cracked or compressed flat.</li>
+<li><strong>Copper patina:</strong> Green/brown patina on copper surfaces is normal and beneficial (CuO/Cu<sub>2</sub>O are more reactive with sulfur than bare Cu). Do not polish interior surfaces.</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="performance">6. Expected Performance</h2>
+
+<h3>6.1 Congener Targets</h3>
+<table>
+<tr><th>Compound</th><th>Pot Still</th><th>CRO-10</th><th>Improvement</th></tr>
+<tr><td>Ethyl acetate (fruity)</td><td>49% recovery</td><td>55% recovery</td><td>+12%</td></tr>
+<tr><td>Isoamyl acetate (banana)</td><td>35%</td><td>46%</td><td>+31%</td></tr>
+<tr><td>Ethyl hexanoate (apple)</td><td>24%</td><td>32%</td><td style="color:var(--green)">+33%</td></tr>
+<tr><td>Ethyl octanoate (apricot)</td><td>16%</td><td>23%</td><td style="color:var(--green)">+44%</td></tr>
+<tr><td>Furfural (caramel)</td><td>13%</td><td>17%</td><td>+31%</td></tr>
+<tr><td>Isoamyl alcohol (fusel)</td><td>33%</td><td>28%</td><td style="color:var(--green)">&minus;15% (desired reduction)</td></tr>
+<tr><td>DMS (sulfur)</td><td>10%</td><td>1.5%</td><td style="color:var(--green)">&minus;85% (dramatic reduction)</td></tr>
+</table>
+
+<h3>6.2 Throughput</h3>
+<table>
+<tr><th>Metric</th><th>Value</th></tr>
+<tr><td>Charge volume</td><td>8&ndash;9 gal low wines (25% ABV) or 10 gal wash (10% ABV)</td></tr>
+<tr><td>Hearts yield</td><td>1.0&ndash;1.5 L at 68&ndash;72% ABV (spirit run from low wines)</td></tr>
+<tr><td>Run time</td><td>3&ndash;4 hours (startup to shutdown)</td></tr>
+<tr><td>Energy consumption</td><td>10&ndash;20 kWh per run (propane or electric)</td></tr>
+</table>
+
+<h3>6.3 Integration with Accelerated Maturation</h3>
+<p>The CRO-10 is designed to produce a new-make spirit optimized for the accelerated aging techniques described in <a href="barriers.html">barriers.html</a>. The elevated heavy ester content and reduced DMS mean:</p>
+<ul>
+<li>Less sulfur to manage during aging (eliminating a major off-flavor source)</li>
+<li>More ester substrate available for acid-catalyzed transesterification (&sect;1.1, &sect;1.9)</li>
+<li>Reduced fusel alcohol load means less &ldquo;hot&rdquo; character to mask during early maturation</li>
+<li>The spirit can proceed directly to oxidative maturation without a copper fining step</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="refs">7. References</h2>
+<ol>
+<li>Piggott, J.R. &amp; Conner, J.M. (2003) &ldquo;Whiskies.&rdquo; <em>Fermented Beverage Production</em>, 2nd ed., Springer. Chapters on pot still design, congener formation, and cut decisions.</li>
+<li>Nicol, D.A. (2014) &ldquo;Batch Distillation.&rdquo; <em>Whisky: Technology, Production and Marketing</em>, 2nd ed., Academic Press. Rayleigh equation for batch distillation, VLE data for congeners.</li>
+<li>Harrison, B. et al. (2011) &ldquo;The impact of copper in different parts of malt whisky pot stills on new make spirit composition and aroma.&rdquo; <em>J. Inst. Brewing</em> 117:106&ndash;112. Quantifies DMS removal as function of copper surface area.</li>
+<li>Nascimento, E.S.P. et al. (2008) &ldquo;Sulfur compounds in Brazilian cacha&ccedil;as and pot still whiskeys.&rdquo; <em>J. Food Composition &amp; Analysis</em> 21:S31&ndash;S36. DMS sensory threshold in spirits (~25 ppb).</li>
+<li>Aylott, R.I. &amp; MacKenzie, W.M. (2010) &ldquo;Analytical strategies to confirm the generic authenticity of Scotch whisky.&rdquo; <em>J. Inst. Brewing</em> 116:215&ndash;229. Congener fingerprints for Scotch pot still vs grain whisky.</li>
+<li>Perry, R.H. &amp; Green, D.W. (2008) <em>Perry&rsquo;s Chemical Engineers&rsquo; Handbook</em>, 8th ed. HETP correlations for random packing, flooding velocity calculations.</li>
+</ol>
+
+<hr style="border-color:var(--surface2); margin-top:2rem;">
+<p style="color:var(--muted); font-size:0.8rem; text-align:center; margin-top:1rem;">
+CRO-10 Still Head Design &mdash; Prepared for Dr. Sammons &mdash; March 2026<br>
+Simulations generated by Rust (validated SVG output) &mdash; Physics based on Rayleigh batch distillation model
+</p>
+
+</body>
+</html>

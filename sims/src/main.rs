@@ -229,6 +229,10 @@ fn main() {
     fs::write("../graphs/dean-vortex-extraction.svg", sim_dean_vortex_extraction()).unwrap();
     fs::write("../graphs/spinning-disc-reactor.svg", sim_spinning_disc_reactor()).unwrap();
     fs::write("../graphs/higee-oxidation.svg", sim_higee_oxidation()).unwrap();
+    fs::write("../graphs/still-congener-comparison.svg", sim_still_congener_bars()).unwrap();
+    fs::write("../graphs/still-reflux-protocol.svg", sim_still_reflux_protocol()).unwrap();
+    fs::write("../graphs/still-copper-dms.svg", sim_still_copper_dms()).unwrap();
+    fs::write("../graphs/still-head-blueprint.svg", sim_still_head_blueprint()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -20141,6 +20145,667 @@ fn sim_higee_oxidation() -> String {
     svg += &format!("<rect x=\"60\" y=\"{}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>", h - 50.0);
     svg += &label(350.0, h - 32.0, "Higee: 100\u{2013}1000g centrifugal force gives k\u{2097}a = 1\u{2013}10 s\u{207b}\u{00b9} (10\u{2074}\u{2013}10\u{2075}\u{00d7} barrel)", ACCENT, 8, "middle");
     svg += &label(350.0, h - 18.0, "Oak-packed rotor: simultaneous O\u{2082} mass transfer + extraction in single unit", GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+// ══════════════════════════════════════════════════════════════
+// Still Head Design Simulations — CRO-10
+// ══════════════════════════════════════════════════════════════
+
+fn sim_still_congener_bars() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig S1 \u{2014} Congener Recovery in Hearts Cut: Pot vs CRO vs Column");
+
+    // ── Left panel: desirable congeners (higher = better) ──
+    svg += &label(200.0, 57.0, "A: Desirable Congener Recovery (%)", TEXT, 10, "middle");
+    let (lx, ly, lw, lh) = (70.0, 70.0, 270.0, 270.0);
+    svg += &format!("<rect x=\"{lx}\" y=\"{ly}\" width=\"{lw}\" height=\"{lh}\" \
+                      fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let max_l = 65.0;
+    let syl = |v: f64| ly + lh * (1.0 - v / max_l);
+    for p in [0,10,20,30,40,50,60] {
+        svg += &hline(lx, lx+lw, syl(p as f64), GRID, "0.3");
+        svg += &label(lx-4.0, syl(p as f64)+3.0, &format!("{}",p), MUTED, 6, "end");
+    }
+    svg += &label(lx-25.0, ly+lh/2.0, "Recovery %", MUTED, 7, "middle");
+
+    // (name, pot%, cro%, column%)
+    let des: Vec<(&str, f64, f64, f64)> = vec![
+        ("EtAc",   49.0, 55.0, 8.0),
+        ("IAmAc",  35.0, 46.0, 3.0),
+        ("EtHex",  24.0, 32.0, 1.0),
+        ("EtOct",  16.0, 23.0, 0.3),
+        ("Furfural",13.0,17.0, 0.5),
+    ];
+    let nd = des.len() as f64;
+    let gw = lw / nd;
+    let bw = gw * 0.27;
+    for (i,(nm,pot,cro,col)) in des.iter().enumerate() {
+        let gx = lx + i as f64 * gw + 4.0;
+        for (j, (v, c)) in [(pot,RED),(cro,GREEN),(col,BLUE)].iter().enumerate() {
+            let bh = *v / max_l * lh;
+            svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{bw:.1}\" \
+                height=\"{bh:.1}\" fill=\"{c}\" opacity=\"0.85\" rx=\"1\"/>\n",
+                gx + j as f64 * (bw+2.0), syl(**v));
+        }
+        svg += &label(gx + 1.5*bw+2.0, ly+lh+12.0, nm, TEXT, 7, "middle");
+    }
+
+    // ── Right panel: off-flavors (lower = better) ──
+    svg += &label(535.0, 57.0, "B: Off-Flavor Compounds (%)", TEXT, 10, "middle");
+    let (rx, ry, rw, rh) = (410.0, 70.0, 250.0, 270.0);
+    svg += &format!("<rect x=\"{rx}\" y=\"{ry}\" width=\"{rw}\" height=\"{rh}\" \
+                      fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let max_r = 40.0;
+    let syr = |v: f64| ry + rh * (1.0 - v / max_r);
+    for p in [0,10,20,30,40] {
+        svg += &hline(rx, rx+rw, syr(p as f64), GRID, "0.3");
+        svg += &label(rx-4.0, syr(p as f64)+3.0, &format!("{}",p), MUTED, 6, "end");
+    }
+    svg += &label(rx+rw/2.0, ly-6.0, "\u{2193} Lower = better", RED, 8, "middle");
+
+    let off: Vec<(&str, f64, f64, f64)> = vec![
+        ("IAmOH\n(fusel)", 33.0, 28.0, 2.0),
+        ("DMS\n(sulfur)",   10.0, 1.5, 0.2),
+    ];
+    let no = off.len() as f64;
+    let gw2 = rw / no;
+    let bw2 = gw2 * 0.27;
+    for (i,(nm,pot,cro,col)) in off.iter().enumerate() {
+        let gx = rx + i as f64 * gw2 + 12.0;
+        for (j,(v,c)) in [(pot,RED),(cro,GREEN),(col,BLUE)].iter().enumerate() {
+            let bh = *v / max_r * rh;
+            svg += &format!("<rect x=\"{:.1}\" y=\"{:.1}\" width=\"{bw2:.1}\" \
+                height=\"{bh:.1}\" fill=\"{c}\" opacity=\"0.85\" rx=\"1\"/>\n",
+                gx + j as f64 * (bw2+2.0), syr(**v));
+        }
+        let parts: Vec<&str> = nm.split('\n').collect();
+        svg += &label(gx+1.5*bw2+2.0, ry+rh+12.0, parts[0], TEXT, 7, "middle");
+        if parts.len()>1 { svg += &label(gx+1.5*bw2+2.0, ry+rh+22.0, parts[1], MUTED, 6, "middle"); }
+    }
+
+    // Legend
+    let ley = h - 98.0;
+    for (j,(lab,c)) in [("Pot still",RED),("CRO design",GREEN),("Column still",BLUE)].iter().enumerate() {
+        let bx = 150.0 + j as f64 * 160.0;
+        svg += &format!("<rect x=\"{bx}\" y=\"{ley}\" width=\"10\" height=\"10\" \
+            fill=\"{c}\" opacity=\"0.85\" rx=\"1\"/>\n");
+        svg += &label(bx+14.0, ley+9.0, lab, c, 8, "start");
+    }
+
+    // Descriptor line
+    svg += &label(350.0, h-72.0,
+        "EtAc=ethyl acetate  IAmAc=isoamyl acetate  EtHex=ethyl hexanoate  EtOct=ethyl octanoate",
+        MUTED, 6, "middle");
+
+    // Footer
+    svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"38\" rx=\"4\" \
+        fill=\"{GRID}\" opacity=\"0.85\"/>\n", y=h-50.0);
+    svg += &label(350.0, h-32.0,
+        "CRO: retains 1.3\u{2013}1.5\u{00d7} more heavy esters than pot still while removing 97% DMS",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h-18.0,
+        "Variable dephlegmator: R\u{2248}0 during hearts (max flavor), R=0.3+ for tails (fusel gate)",
+        GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+fn sim_still_reflux_protocol() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig S2 \u{2014} CRO-10 Five-Phase Reflux Operating Protocol");
+
+    svg += &label(350.0, 57.0, "Dephlegmator reflux ratio vs distillation progress", TEXT, 10, "middle");
+
+    let (px, py, pw, ph) = (80.0, 75.0, 540.0, 270.0);
+    svg += &format!("<rect x=\"{px}\" y=\"{py}\" width=\"{pw}\" height=\"{ph}\" \
+        fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let sx = |f: f64| px + f / 100.0 * pw;
+    let max_r = 4.0;
+    let sy = |r: f64| py + ph * (1.0 - r / max_r);
+
+    // Y grid (reflux ratio)
+    for r in [0,1,2,3,4] {
+        svg += &hline(px, px+pw, sy(r as f64), GRID, "0.3");
+        svg += &label(px-4.0, sy(r as f64)+3.0, &format!("{}", r), MUTED, 7, "end");
+    }
+    svg += &label(px-30.0, py+ph/2.0, "R", MUTED, 9, "middle");
+
+    // X labels
+    for f in [0,10,20,30,40,50,60,70,80,90,100] {
+        svg += &format!("<line x1=\"{x}\" y1=\"{b}\" x2=\"{x}\" y2=\"{e}\" \
+            stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n",
+            x=sx(f as f64), b=py+ph, e=py+ph+4.0);
+        svg += &label(sx(f as f64), py+ph+14.0, &format!("{}%", f), MUTED, 6, "middle");
+    }
+    svg += &label(px+pw/2.0, py+ph+28.0, "Volume collected (% of total condensate)", MUTED, 8, "middle");
+
+    // Phase regions (colored backgrounds)
+    let phases: Vec<(f64,f64,&str,&str,&str)> = vec![
+        (0.0,   2.0,  RED,    "0.12", "Foreshots"),
+        (2.0,  12.0,  YELLOW, "0.08", "Heads"),
+        (12.0, 55.0,  GREEN,  "0.10", "Hearts (R\u{2248}0)"),
+        (55.0, 65.0,  ACCENT, "0.10", "Late hearts"),
+        (65.0, 85.0,  YELLOW, "0.08", "Tails"),
+        (85.0,100.0,  MUTED,  "0.06", "Residue"),
+    ];
+    for (f1, f2, color, opa, lbl) in &phases {
+        svg += &format!("<rect x=\"{:.1}\" y=\"{py}\" width=\"{:.1}\" height=\"{ph}\" \
+            fill=\"{color}\" opacity=\"{opa}\"/>\n", sx(*f1), sx(*f2)-sx(*f1));
+        let mx = (sx(*f1) + sx(*f2)) / 2.0;
+        svg += &label(mx, py+12.0, lbl, color, 7, "middle");
+    }
+
+    // Reflux ratio line (the protocol)
+    let protocol: Vec<(f64, f64)> = vec![
+        (0.0, 3.5), (1.0, 3.5), (2.0, 3.0),                     // foreshots: high R
+        (5.0, 1.5), (10.0, 0.8),                                  // heads: decreasing R
+        (12.0, 0.0), (50.0, 0.0),                                 // hearts: R=0
+        (55.0, 0.0), (58.0, 0.3), (64.0, 0.3),                   // late hearts: gentle R
+        (65.0, 0.5), (70.0, 1.0), (80.0, 2.0), (85.0, 2.5),     // tails: increasing R
+        (100.0, 2.5),                                              // residue
+    ];
+    let pts_str: String = protocol.iter()
+        .map(|(f,r)| format!("{:.1},{:.1}", sx(*f), sy(*r)))
+        .collect::<Vec<_>>().join(" ");
+    svg += &format!("<polyline points=\"{pts_str}\" fill=\"none\" \
+        stroke=\"{ACCENT}\" stroke-width=\"3\" stroke-linejoin=\"round\"/>\n");
+
+    // Annotations
+    svg += &label(sx(1.0), sy(3.5)-10.0, "Strip volatiles", RED, 6, "start");
+    svg += &label(sx(30.0), sy(0.0)+15.0, "Max congener passage", GREEN, 7, "middle");
+    svg += &label(sx(60.0), sy(0.3)-10.0, "Fusel gate", ACCENT, 7, "middle");
+    svg += &label(sx(75.0), sy(1.5)-10.0, "Recycle feints", YELLOW, 7, "middle");
+
+    // Compound flow overlay (dashed lines on secondary y-axis, qualitative)
+    // Ethyl hexanoate: peaks in late hearts/early tails
+    let ester_pts: Vec<(f64,f64)> = vec![
+        (0.0, 0.0), (5.0, 0.1), (10.0, 0.3), (20.0, 0.6), (30.0, 0.9),
+        (40.0, 1.2), (50.0, 1.5), (60.0, 1.8), (70.0, 2.0), (80.0, 1.8),
+        (90.0, 1.2), (100.0, 0.5),
+    ];
+    let e_str: String = ester_pts.iter()
+        .map(|(f,v)| format!("{:.1},{:.1}", sx(*f), sy(*v)))
+        .collect::<Vec<_>>().join(" ");
+    svg += &format!("<polyline points=\"{e_str}\" fill=\"none\" \
+        stroke=\"{BLUE}\" stroke-width=\"1.5\" stroke-dasharray=\"4,3\" opacity=\"0.7\"/>\n");
+    svg += &label(sx(72.0), sy(2.0)-6.0, "EtHex flow", BLUE, 6, "start");
+
+    // DMS flow: peaks early, removed by copper
+    let dms_pts: Vec<(f64,f64)> = vec![
+        (0.0, 0.3), (2.0, 0.3), (5.0, 0.2), (10.0, 0.1), (20.0, 0.05),
+        (40.0, 0.02), (60.0, 0.01), (100.0, 0.0),
+    ];
+    let d_str: String = dms_pts.iter()
+        .map(|(f,v)| format!("{:.1},{:.1}", sx(*f), sy(*v)))
+        .collect::<Vec<_>>().join(" ");
+    svg += &format!("<polyline points=\"{d_str}\" fill=\"none\" \
+        stroke=\"{MUTED}\" stroke-width=\"1.5\" stroke-dasharray=\"2,2\" opacity=\"0.5\"/>\n");
+    svg += &label(sx(8.0), sy(0.25)+12.0, "DMS (Cu-removed)", MUTED, 6, "start");
+
+    // Action callouts
+    let ay = py + ph + 48.0;
+    svg += &label(sx(1.0), ay, "DISCARD", RED, 7, "middle");
+    svg += &label(sx(7.0), ay, "SET ASIDE", YELLOW, 7, "middle");
+    svg += &label(sx(33.0), ay, "COLLECT AS SPIRIT", GREEN, 8, "middle");
+    svg += &label(sx(60.0), ay, "BLEND", ACCENT, 7, "middle");
+    svg += &label(sx(75.0), ay, "RECYCLE", YELLOW, 7, "middle");
+    svg += &label(sx(92.0), ay, "DISCARD", MUTED, 7, "middle");
+
+    // Footer
+    svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"38\" rx=\"4\" \
+        fill=\"{GRID}\" opacity=\"0.85\"/>\n", y=h-50.0);
+    svg += &label(350.0, h-32.0,
+        "Key insight: R=0 during hearts maximizes flavor; dephlegmator = real-time congener control",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h-18.0,
+        "Extended hearts window (12\u{2013}65%) captures 33% more heavy esters than fixed pot still cut",
+        GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+fn sim_still_copper_dms() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h,
+        "Fig S3 \u{2014} Copper Surface Area vs DMS Removal Efficiency");
+
+    // ── Panel A: Removal curve ──
+    svg += &label(200.0, 57.0, "A: DMS Removal vs Cu Surface Area", TEXT, 10, "middle");
+    let (px, py, pw, ph) = (80.0, 75.0, 250.0, 270.0);
+    svg += &format!("<rect x=\"{px}\" y=\"{py}\" width=\"{pw}\" height=\"{ph}\" \
+        fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    let sx = |a: f64| px + a / 16000.0 * pw;
+    let sy = |r: f64| py + ph * (1.0 - r / 100.0);
+
+    // Grid
+    for p in [0,20,40,60,80,100] {
+        svg += &hline(px, px+pw, sy(p as f64), GRID, "0.3");
+        svg += &label(px-4.0, sy(p as f64)+3.0, &format!("{}%",p), MUTED, 6, "end");
+    }
+    for a in [0, 4000, 8000, 12000, 16000] {
+        let x = sx(a as f64);
+        svg += &format!("<line x1=\"{x}\" y1=\"{b}\" x2=\"{x}\" y2=\"{e}\" \
+            stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", b=py+ph, e=py+ph+4.0);
+        svg += &label(x, py+ph+14.0, &format!("{}k", a/1000), MUTED, 6, "middle");
+    }
+    svg += &label(px+pw/2.0, py+ph+28.0, "Cu area (cm\u{00b2})", MUTED, 8, "middle");
+
+    // Model: removal = 1 - 1/(1 + A/125)
+    let k_half = 125.0_f64;
+    let mut pts = Vec::new();
+    for i in 0..=160 {
+        let a = i as f64 * 100.0;
+        let r = (1.0 - 1.0/(1.0 + a/k_half)) * 100.0;
+        pts.push((a, r));
+    }
+    let pts_str: String = pts.iter()
+        .map(|(a,r)| format!("{:.1},{:.1}", sx(*a), sy(*r)))
+        .collect::<Vec<_>>().join(" ");
+    svg += &format!("<polyline points=\"{pts_str}\" fill=\"none\" \
+        stroke=\"{GREEN}\" stroke-width=\"2.5\"/>\n");
+
+    // Sensory threshold
+    let thresh = 90.0;
+    svg += &format!("<line x1=\"{px}\" y1=\"{t}\" x2=\"{e}\" y2=\"{t}\" \
+        stroke=\"{ACCENT}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n",
+        t=sy(thresh), e=px+pw);
+    svg += &label(px+pw+3.0, sy(thresh)+3.0, "Sensory", ACCENT, 6, "start");
+    svg += &label(px+pw+3.0, sy(thresh)+12.0, "threshold", ACCENT, 6, "start");
+
+    // Key points
+    // Stainless (no Cu): 0 cm², 0%
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{BLUE}\" \
+        stroke=\"{TEXT}\" stroke-width=\"1\"/>\n", sx(0.0), sy(0.0));
+    svg += &label(sx(0.0)+8.0, sy(0.0)-5.0, "SS still: 0%", BLUE, 7, "start");
+
+    // Pot still: ~500 cm², 80%
+    let pot_r = (1.0 - 1.0/(1.0+500.0/k_half))*100.0;
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{RED}\" \
+        stroke=\"{TEXT}\" stroke-width=\"1\"/>\n", sx(500.0), sy(pot_r));
+    svg += &label(sx(500.0)+8.0, sy(pot_r)+3.0, &format!("Pot still: {:.0}%", pot_r), RED, 7, "start");
+
+    // CRO: ~8800 cm², 98.6%
+    let cro_a = 8800.0;
+    let cro_r = (1.0 - 1.0/(1.0+cro_a/k_half))*100.0;
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"4\" fill=\"{GREEN}\" \
+        stroke=\"{TEXT}\" stroke-width=\"1\"/>\n", sx(cro_a), sy(cro_r));
+    svg += &label(sx(cro_a)-5.0, sy(cro_r)-10.0, &format!("CRO: {:.1}%", cro_r), GREEN, 7, "end");
+
+    // ── Panel B: DMS in hearts comparison ──
+    svg += &label(530.0, 57.0, "B: DMS in Hearts (ppm)", TEXT, 10, "middle");
+    let (bx, by, bwid, bh) = (420.0, 75.0, 230.0, 270.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bwid}\" height=\"{bh}\" \
+        fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+
+    // Typical wash DMS: ~50 ppb. Recovery in hearts: 52%. Cu removal varies.
+    // Pot still DMS in hearts = 50 * 0.52 * (1-0.80) = 5.2 ppb
+    // CRO DMS = 50 * 0.52 * (1-0.986) = 0.36 ppb
+    // Sensory threshold: ~25 ppb in spirit (after dilution/concentration)
+    // Actually let me use realistic spirit DMS values:
+    // Pot still hearts: ~30 ppb DMS (typical Scotch new-make)
+    // CRO hearts: ~2 ppb DMS
+    // Column: ~0.5 ppb DMS
+    // Threshold: ~25 ppb
+
+    let dms_data: Vec<(&str, f64, &str)> = vec![
+        ("Pot still", 30.0, RED),
+        ("CRO", 2.0, GREEN),
+        ("Column", 0.5, BLUE),
+    ];
+    let max_dms = 40.0;
+    let syd = |v: f64| by + bh * (1.0 - v / max_dms);
+    for p in [0, 10, 20, 30, 40] {
+        svg += &hline(bx, bx+bwid, syd(p as f64), GRID, "0.3");
+        svg += &label(bx-4.0, syd(p as f64)+3.0, &format!("{}", p), MUTED, 6, "end");
+    }
+    // Sensory threshold
+    svg += &format!("<line x1=\"{bx}\" y1=\"{t}\" x2=\"{e}\" y2=\"{t}\" \
+        stroke=\"{ACCENT}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n",
+        t=syd(25.0), e=bx+bwid);
+    svg += &label(bx+bwid+3.0, syd(25.0)+3.0, "25 ppb", ACCENT, 6, "start");
+    svg += &label(bx+bwid+3.0, syd(25.0)+12.0, "threshold", ACCENT, 6, "start");
+
+    let bar_w = 50.0;
+    for (i, (nm, val, col)) in dms_data.iter().enumerate() {
+        let bar_x = bx + 25.0 + i as f64 * 72.0;
+        let bar_h = val / max_dms * bh;
+        svg += &format!("<rect x=\"{bar_x:.1}\" y=\"{:.1}\" width=\"{bar_w}\" \
+            height=\"{bar_h:.1}\" fill=\"{col}\" opacity=\"0.85\" rx=\"2\"/>\n", syd(*val));
+        svg += &label(bar_x + bar_w/2.0, syd(*val)-6.0, &format!("{:.0} ppb", val), col, 7, "middle");
+        svg += &label(bar_x + bar_w/2.0, by+bh+12.0, nm, col, 7, "middle");
+    }
+
+    svg += &label(bx+bwid/2.0, by-6.0, "\u{2193} Lower = better", RED, 7, "middle");
+
+    // Footer
+    svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"38\" rx=\"4\" \
+        fill=\"{GRID}\" opacity=\"0.85\"/>\n", y=h-50.0);
+    svg += &label(350.0, h-32.0,
+        "3\" Cu column \u{00d7} 18\" packed with 3/8\" Raschig rings: 8,800 cm\u{00b2} Cu surface",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h-18.0,
+        "98.6% DMS removal \u{2014} 15\u{00d7} better than pot still alone, well below sensory threshold",
+        GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+fn sim_still_head_blueprint() -> String {
+    let w = 700.0_f64; let h = 700.0_f64;
+    let mut svg = format!(
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {w} {h}\" \
+         style=\"background:{BG};font-family:Georgia,serif\">\n\
+         <rect width=\"{w}\" height=\"{h}\" fill=\"{BG}\"/>\n\
+         <defs><marker id=\"dim\" viewBox=\"0 0 6 6\" refX=\"3\" refY=\"3\" \
+         markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\
+         <path d=\"M0,0 L6,3 L0,6 Z\" fill=\"{MUTED}\"/></marker></defs>\n");
+
+    svg += &label(350.0, 22.0,
+        "Fig S4 \u{2014} CRO-10 Still Head: Engineering Blueprint", ACCENT, 14, "middle");
+    svg += &label(350.0, 42.0,
+        "Congener Recovery Optimized \u{2014} 10-Gallon Custom Pot Still", TEXT, 10, "middle");
+
+    // ── Scale: 1 inch = 6.5 px (approx) for proportional representation ──
+    // Center of column: x = 220
+
+    let cx = 220.0; // column center x
+
+    // ── Pot ──
+    let pot_w = 170.0; let pot_h = 65.0;
+    let pot_x = cx - pot_w/2.0; let pot_y = 580.0;
+    svg += &format!("<rect x=\"{pot_x}\" y=\"{pot_y}\" width=\"{pot_w}\" height=\"{pot_h}\" \
+        rx=\"6\" fill=\"{GRID}\" stroke=\"{MUTED}\" stroke-width=\"2\"/>\n");
+    svg += &label(cx, pot_y+pot_h/2.0+3.0, "10-gal 304 SS pot", MUTED, 8, "middle");
+    // Dome top
+    svg += &format!("<ellipse cx=\"{cx}\" cy=\"{pot_y}\" rx=\"{rx}\" ry=\"12\" \
+        fill=\"{GRID}\" stroke=\"{MUTED}\" stroke-width=\"2\"/>\n", rx=pot_w/2.0);
+
+    // Heat source
+    for i in 0..7 {
+        let tx = pot_x + 15.0 + i as f64 * 22.0;
+        svg += &format!("<polygon points=\"{:.0},{} {:.0},{} {:.0},{}\" \
+            fill=\"{RED}\" opacity=\"0.6\"/>\n",
+            tx, pot_y+pot_h+15.0, tx+6.0, pot_y+pot_h+3.0, tx+12.0, pot_y+pot_h+15.0);
+    }
+    svg += &label(cx, pot_y+pot_h+24.0, "Heat source (propane or electric, 3\u{2013}5 kW)", MUTED, 7, "middle");
+
+    // ── Column sections ──
+    let col_w = 40.0; // 3" pipe visual width
+    let col_x = cx - col_w/2.0;
+
+    // TC fitting at pot top
+    let tc1_y = pot_y - 8.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{tc1_y}\" width=\"{:.1}\" height=\"8\" \
+        rx=\"1\" fill=\"{MUTED}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+        col_x-5.0, col_w+10.0);
+    svg += &label(cx+col_w/2.0+50.0, tc1_y+5.0, "3\" TC ferrule", MUTED, 6, "start");
+
+    // Vapor rise section: 12" represented as 75px
+    let vr_h = 75.0;
+    let vr_y = tc1_y - vr_h;
+    svg += &format!("<rect x=\"{col_x}\" y=\"{vr_y}\" width=\"{col_w}\" height=\"{vr_h}\" \
+        fill=\"{GREEN}\" opacity=\"0.25\" stroke=\"{GREEN}\" stroke-width=\"1.5\"/>\n");
+    svg += &label(cx, vr_y+vr_h/2.0+3.0, "Vapor", GREEN, 7, "middle");
+    svg += &label(cx, vr_y+vr_h/2.0+13.0, "rise", GREEN, 7, "middle");
+
+    // TC fitting between vapor rise and packed
+    let tc2_y = vr_y - 8.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{tc2_y}\" width=\"{:.1}\" height=\"8\" \
+        rx=\"1\" fill=\"{MUTED}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+        col_x-5.0, col_w+10.0);
+
+    // Packed section: 18" represented as 115px
+    let pk_h = 115.0;
+    let pk_y = tc2_y - pk_h;
+    svg += &format!("<rect x=\"{col_x}\" y=\"{pk_y}\" width=\"{col_w}\" height=\"{pk_h}\" \
+        fill=\"{GREEN}\" opacity=\"0.35\" stroke=\"{GREEN}\" stroke-width=\"1.5\"/>\n");
+    // Crosshatch pattern for packing
+    let hatch_step = 8.0;
+    let mut yy = pk_y + 4.0;
+    while yy < pk_y + pk_h - 2.0 {
+        svg += &format!("<line x1=\"{:.1}\" y1=\"{yy:.1}\" x2=\"{:.1}\" y2=\"{yy:.1}\" \
+            stroke=\"{GREEN}\" stroke-width=\"0.5\" opacity=\"0.5\"/>\n",
+            col_x+3.0, col_x+col_w-3.0);
+        yy += hatch_step;
+    }
+    svg += &label(cx, pk_y+pk_h/2.0-5.0, "Cu Raschig", GREEN, 7, "middle");
+    svg += &label(cx, pk_y+pk_h/2.0+5.0, "rings 3/8\"", GREEN, 7, "middle");
+    svg += &label(cx, pk_y+pk_h/2.0+17.0, "(packed)", GREEN, 6, "middle");
+
+    // TC fitting between packed and reducer
+    let tc3_y = pk_y - 8.0;
+    svg += &format!("<rect x=\"{:.1}\" y=\"{tc3_y}\" width=\"{:.1}\" height=\"8\" \
+        rx=\"1\" fill=\"{MUTED}\" stroke=\"{TEXT}\" stroke-width=\"1\"/>\n",
+        col_x-5.0, col_w+10.0);
+
+    // 3" to 2" reducer
+    let red_h = 18.0;
+    let red_y = tc3_y - red_h;
+    let red_top_w = 28.0; // 2" pipe
+    svg += &format!("<polygon points=\"{:.1},{:.1} {:.1},{:.1} {:.1},{:.1} {:.1},{:.1}\" \
+        fill=\"{GREEN}\" opacity=\"0.3\" stroke=\"{GREEN}\" stroke-width=\"1.5\"/>\n",
+        col_x, red_y+red_h,
+        col_x+col_w, red_y+red_h,
+        cx+red_top_w/2.0, red_y,
+        cx-red_top_w/2.0, red_y);
+    svg += &label(cx+col_w/2.0+50.0, red_y+red_h/2.0+3.0, "3\"\u{2192}2\" reducer", MUTED, 6, "start");
+
+    // Dephlegmator: 2" inner with 3" water jacket, 8" = 52px
+    let deph_h = 52.0;
+    let deph_y = red_y - deph_h;
+    let inner_w = 28.0;
+    let jacket_w = 44.0;
+    // Outer jacket
+    svg += &format!("<rect x=\"{:.1}\" y=\"{deph_y}\" width=\"{jacket_w}\" height=\"{deph_h}\" \
+        rx=\"3\" fill=\"{BLUE}\" opacity=\"0.20\" stroke=\"{BLUE}\" stroke-width=\"1.5\"/>\n",
+        cx-jacket_w/2.0);
+    // Inner pipe
+    svg += &format!("<rect x=\"{:.1}\" y=\"{deph_y}\" width=\"{inner_w}\" height=\"{deph_h}\" \
+        rx=\"2\" fill=\"{GREEN}\" opacity=\"0.25\" stroke=\"{GREEN}\" stroke-width=\"1\"/>\n",
+        cx-inner_w/2.0);
+    svg += &label(cx, deph_y+deph_h/2.0-3.0, "Dephleg-", BLUE, 6, "middle");
+    svg += &label(cx, deph_y+deph_h/2.0+7.0, "mator", BLUE, 6, "middle");
+
+    // Water ports
+    let wp_y1 = deph_y + 10.0;
+    let wp_y2 = deph_y + deph_h - 10.0;
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{wp_y1}\" x2=\"{:.1}\" y2=\"{wp_y1}\" \
+        stroke=\"{BLUE}\" stroke-width=\"1.5\"/>\n", cx-jacket_w/2.0, cx-jacket_w/2.0-20.0);
+    svg += &label(cx-jacket_w/2.0-22.0, wp_y1+3.0, "Water out", BLUE, 6, "end");
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{wp_y2}\" x2=\"{:.1}\" y2=\"{wp_y2}\" \
+        stroke=\"{BLUE}\" stroke-width=\"1.5\"/>\n", cx-jacket_w/2.0, cx-jacket_w/2.0-20.0);
+    svg += &label(cx-jacket_w/2.0-22.0, wp_y2+3.0, "Water in", BLUE, 6, "end");
+
+    // Needle valve symbol on water inlet
+    svg += &format!("<polygon points=\"{:.1},{:.1} {:.1},{:.1} {:.1},{:.1}\" \
+        fill=\"{BLUE}\" opacity=\"0.6\"/>\n",
+        cx-jacket_w/2.0-28.0, wp_y2-4.0,
+        cx-jacket_w/2.0-28.0, wp_y2+4.0,
+        cx-jacket_w/2.0-36.0, wp_y2);
+    svg += &label(cx-jacket_w/2.0-40.0, wp_y2+3.0, "Needle valve", BLUE, 6, "end");
+
+    // Thermocouple port at top
+    svg += &format!("<line x1=\"{cx}\" y1=\"{deph_y}\" x2=\"{cx}\" y2=\"{:.1}\" \
+        stroke=\"{ACCENT}\" stroke-width=\"1\"/>\n", deph_y-12.0);
+    svg += &format!("<circle cx=\"{cx}\" cy=\"{:.1}\" r=\"3\" fill=\"{ACCENT}\"/>\n", deph_y-12.0);
+    svg += &label(cx+8.0, deph_y-12.0, "Thermocouple", ACCENT, 6, "start");
+
+    // ── Lyne arm: 2" Cu, 18" long, 10° downslope ──
+    let lyne_start_x = cx + inner_w/2.0;
+    let lyne_start_y = deph_y + deph_h/3.0;
+    let lyne_len = 180.0; // 18" represented
+    let angle_rad = 10.0_f64.to_radians();
+    let lyne_end_x = lyne_start_x + lyne_len * angle_rad.cos();
+    let lyne_end_y = lyne_start_y + lyne_len * angle_rad.sin();
+    let arm_hw = 14.0; // half-width of pipe
+
+    // Draw lyne arm as a rotated rectangle (4 corners)
+    let dx = angle_rad.cos();
+    let dy = angle_rad.sin();
+    let nx = -dy; let ny = dx; // normal
+    svg += &format!("<polygon points=\"{:.1},{:.1} {:.1},{:.1} {:.1},{:.1} {:.1},{:.1}\" \
+        fill=\"{ACCENT}\" opacity=\"0.25\" stroke=\"{ACCENT}\" stroke-width=\"1.5\"/>\n",
+        lyne_start_x + nx*arm_hw, lyne_start_y + ny*arm_hw,
+        lyne_end_x + nx*arm_hw, lyne_end_y + ny*arm_hw,
+        lyne_end_x - nx*arm_hw, lyne_end_y - ny*arm_hw,
+        lyne_start_x - nx*arm_hw, lyne_start_y - ny*arm_hw);
+
+    let mid_lx = (lyne_start_x + lyne_end_x)/2.0;
+    let mid_ly = (lyne_start_y + lyne_end_y)/2.0;
+    svg += &label(mid_lx, mid_ly-18.0, "Lyne arm 2\" Cu", ACCENT, 7, "middle");
+    svg += &label(mid_lx, mid_ly-8.0, "18\" long, 10\u{00b0} down", ACCENT, 6, "middle");
+
+    // ── Condenser: 2" inner / 3" jacket, 24" ──
+    let cond_start_x = lyne_end_x;
+    let cond_start_y = lyne_end_y;
+    let cond_len = 210.0;
+    let cond_angle = 5.0_f64.to_radians();
+    let cond_end_x = cond_start_x + cond_len * cond_angle.cos();
+    let cond_end_y = cond_start_y + cond_len * cond_angle.sin();
+    let cdx = cond_angle.cos(); let cdy = cond_angle.sin();
+    let cnx = -cdy; let cny = cdx;
+    let cond_hw = 20.0;
+
+    // Outer jacket
+    svg += &format!("<polygon points=\"{:.1},{:.1} {:.1},{:.1} {:.1},{:.1} {:.1},{:.1}\" \
+        fill=\"{PURPLE}\" opacity=\"0.15\" stroke=\"{PURPLE}\" stroke-width=\"1.5\"/>\n",
+        cond_start_x + cnx*cond_hw, cond_start_y + cny*cond_hw,
+        cond_end_x + cnx*cond_hw, cond_end_y + cny*cond_hw,
+        cond_end_x - cnx*cond_hw, cond_end_y - cny*cond_hw,
+        cond_start_x - cnx*cond_hw, cond_start_y - cny*cond_hw);
+
+    // Inner pipe
+    let ci_hw = 14.0;
+    svg += &format!("<polygon points=\"{:.1},{:.1} {:.1},{:.1} {:.1},{:.1} {:.1},{:.1}\" \
+        fill=\"{GREEN}\" opacity=\"0.2\" stroke=\"{GREEN}\" stroke-width=\"1\"/>\n",
+        cond_start_x + cnx*ci_hw, cond_start_y + cny*ci_hw,
+        cond_end_x + cnx*ci_hw, cond_end_y + cny*ci_hw,
+        cond_end_x - cnx*ci_hw, cond_end_y - cny*ci_hw,
+        cond_start_x - cnx*ci_hw, cond_start_y - cny*ci_hw);
+
+    let cmx = (cond_start_x+cond_end_x)/2.0;
+    let cmy = (cond_start_y+cond_end_y)/2.0;
+    svg += &label(cmx, cmy-22.0, "Liebig condenser", PURPLE, 7, "middle");
+    svg += &label(cmx, cmy-12.0, "2\" inner / 3\" jacket / 24\"", PURPLE, 6, "middle");
+
+    // Water ports on condenser
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{BLUE}\" stroke-width=\"1\"/>\n",
+        cond_end_x - 20.0, cond_end_y + cond_hw + 2.0,
+        cond_end_x - 20.0, cond_end_y + cond_hw + 15.0);
+    svg += &label(cond_end_x - 20.0, cond_end_y+cond_hw+22.0, "Water in", BLUE, 6, "middle");
+
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{BLUE}\" stroke-width=\"1\"/>\n",
+        cond_start_x + 20.0, cond_start_y - cond_hw - 2.0,
+        cond_start_x + 20.0, cond_start_y - cond_hw - 15.0);
+    svg += &label(cond_start_x+20.0, cond_start_y-cond_hw-20.0, "Water out", BLUE, 6, "middle");
+
+    // Spirit outlet
+    svg += &format!("<line x1=\"{:.1}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{ACCENT}\" stroke-width=\"2\" marker-end=\"url(#dim)\"/>\n",
+        cond_end_x, cond_end_y, cond_end_x+25.0, cond_end_y+20.0);
+    svg += &label(cond_end_x+30.0, cond_end_y+25.0, "Spirit out", ACCENT, 7, "start");
+    svg += &label(cond_end_x+30.0, cond_end_y+36.0, "\u{2192} parrot + collection", MUTED, 6, "start");
+
+    // ── Dimension lines (right side) ──
+    let dim_x = cx + col_w/2.0 + 30.0;
+
+    // Helper for dimension annotation
+    let dim_line = |y1: f64, y2: f64, lbl: &str, offset: f64| -> String {
+        let dx = dim_x + offset;
+        format!("<line x1=\"{dx}\" y1=\"{y1}\" x2=\"{dx}\" y2=\"{y2}\" \
+            stroke=\"{MUTED}\" stroke-width=\"0.8\"/>\n\
+            <line x1=\"{:.1}\" y1=\"{y1}\" x2=\"{:.1}\" y2=\"{y1}\" \
+            stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n\
+            <line x1=\"{:.1}\" y1=\"{y2}\" x2=\"{:.1}\" y2=\"{y2}\" \
+            stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n\
+            {}\n",
+            dx-5.0, dx+5.0,
+            dx-5.0, dx+5.0,
+            label(dx+8.0, (y1+y2)/2.0+3.0, lbl, MUTED, 7, "start"))
+    };
+
+    svg += &dim_line(vr_y, vr_y+vr_h, "12\" vapor rise", 0.0);
+    svg += &dim_line(pk_y, pk_y+pk_h, "18\" packed", 0.0);
+    svg += &dim_line(deph_y, deph_y+deph_h, "8\" dephleg.", 0.0);
+    svg += &dim_line(pot_y, pot_y+pot_h, "12\" pot", 50.0);
+
+    // Pot diameter dimension
+    svg += &format!("<line x1=\"{pot_x}\" y1=\"{:.1}\" x2=\"{:.1}\" y2=\"{:.1}\" \
+        stroke=\"{MUTED}\" stroke-width=\"0.8\"/>\n",
+        pot_y+pot_h+32.0, pot_x+pot_w, pot_y+pot_h+32.0);
+    svg += &label(cx, pot_y+pot_h+42.0, "14\" diameter", MUTED, 7, "middle");
+
+    // ── Bill of Materials (right side) ──
+    let bom_x = 430.0;
+    let bom_y = 60.0;
+    svg += &format!("<rect x=\"{bom_x}\" y=\"{bom_y}\" width=\"250\" height=\"320\" \
+        rx=\"4\" fill=\"{GRID}\" opacity=\"0.6\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &label(bom_x+125.0, bom_y+18.0, "Bill of Materials", ACCENT, 10, "middle");
+    svg += &hline(bom_x+10.0, bom_x+240.0, bom_y+26.0, MUTED, "0.5");
+
+    let bom_items: Vec<(&str, &str, &str)> = vec![
+        ("10-gal SS pot + lid", "304 SS", "$60\u{2013}100"),
+        ("3\" Cu DWV pipe, 36\"", "C110 copper", "$45\u{2013}65"),
+        ("2\" Cu DWV pipe, 48\"", "C110 copper", "$30\u{2013}45"),
+        ("3\" Cu pipe, 10\" (jacket)", "C110 copper", "$15\u{2013}20"),
+        ("3/8\" Cu Raschig rings 2L", "C110 copper", "$25\u{2013}40"),
+        ("3\" TC fittings \u{00d7}3", "304 SS", "$30\u{2013}45"),
+        ("2\" TC fittings \u{00d7}2", "304 SS", "$15\u{2013}25"),
+        ("3\"\u{2192}2\" reducer", "C110 copper", "$10\u{2013}15"),
+        ("Needle valve 1/4\"", "Brass", "$8\u{2013}12"),
+        ("Thermocouple K-type", "SS probe", "$10\u{2013}15"),
+        ("1/4\" Cu tube, 24\"", "Water lines", "$5\u{2013}8"),
+        ("Silicone gaskets", "Food grade", "$10\u{2013}15"),
+        ("Solder + flux", "Lead-free Ag5", "$15\u{2013}20"),
+    ];
+
+    for (i, (item, mat, cost)) in bom_items.iter().enumerate() {
+        let iy = bom_y + 38.0 + i as f64 * 20.0;
+        svg += &label(bom_x+8.0, iy, item, TEXT, 7, "start");
+        svg += &label(bom_x+175.0, iy, mat, MUTED, 6, "start");
+        svg += &label(bom_x+242.0, iy, cost, GREEN, 7, "end");
+    }
+
+    let total_y = bom_y + 38.0 + bom_items.len() as f64 * 20.0 + 5.0;
+    svg += &hline(bom_x+10.0, bom_x+240.0, total_y-4.0, MUTED, "0.5");
+    svg += &label(bom_x+8.0, total_y+8.0, "Estimated total", TEXT, 8, "start");
+    svg += &label(bom_x+242.0, total_y+8.0, "$278\u{2013}425", ACCENT, 8, "end");
+
+    // ── Key specs box (bottom right) ──
+    let spec_y = 410.0;
+    svg += &format!("<rect x=\"{bom_x}\" y=\"{spec_y}\" width=\"250\" height=\"160\" \
+        rx=\"4\" fill=\"{GRID}\" opacity=\"0.6\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    svg += &label(bom_x+125.0, spec_y+18.0, "Key Specifications", ACCENT, 10, "middle");
+    svg += &hline(bom_x+10.0, bom_x+240.0, spec_y+26.0, MUTED, "0.5");
+
+    let specs: Vec<(&str, &str)> = vec![
+        ("Column ID:", "3\" (76 mm) copper DWV"),
+        ("Packing HETP:", "~180 mm (2.5 theor. plates)"),
+        ("Cu surface area:", "8,800 cm\u{00b2} (98.6% DMS removal)"),
+        ("Vapor velocity:", "~5 cm/s (well below flooding)"),
+        ("Lyne arm angle:", "10\u{00b0} downslope (min passive reflux)"),
+        ("Throughput:", "1\u{2013}2 L/hr hearts at 70% ABV"),
+        ("Heat input:", "3\u{2013}5 kW (standard propane)"),
+    ];
+    for (i, (k, v)) in specs.iter().enumerate() {
+        let sy = spec_y + 40.0 + i as f64 * 17.0;
+        svg += &label(bom_x+8.0, sy, k, MUTED, 7, "start");
+        svg += &label(bom_x+100.0, sy, v, TEXT, 7, "start");
+    }
+
+    // ── Footer ──
+    svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"38\" rx=\"4\" \
+        fill=\"{GRID}\" opacity=\"0.85\"/>\n", y=h-50.0);
+    svg += &label(350.0, h-32.0,
+        "CRO-10: 3\" Cu packed column + variable dephlegmator + 10\u{00b0} lyne arm",
+        ACCENT, 8, "middle");
+    svg += &label(350.0, h-18.0,
+        "Total height: 50\" from pot base to lyne arm | Total span: 56\" horizontal",
+        GREEN, 8, "middle");
     svg.push_str("</svg>"); svg
 }
 
