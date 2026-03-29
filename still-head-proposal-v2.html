@@ -303,29 +303,83 @@ document.getElementById('toggleIns').addEventListener('click', () => {
   document.getElementById('toggleIns').textContent = insVisible ? 'Hide Insulation' : 'Show Insulation';
 });
 
-// Dimension labels as sprites
-function makeLabel(text, pos, color) {
+// ============ DIMENSION ANNOTATION SYSTEM ============
+function makeLabel(text, pos, color, wide) {
   const c2 = document.createElement('canvas');
-  c2.width = 256; c2.height = 48;
+  const w = wide ? 512 : 256;
+  c2.width = w; c2.height = 56;
   const ctx = c2.getContext('2d');
-  ctx.font = '22px Georgia';
+  ctx.font = 'bold 28px Georgia';
   ctx.fillStyle = color || '#8b949e';
   ctx.textAlign = 'center';
-  ctx.fillText(text, 128, 30);
+  ctx.fillText(text, w / 2, 36);
   const tex = new THREE.CanvasTexture(c2);
   const mat = new THREE.SpriteMaterial({map: tex, transparent: true});
   const s = new THREE.Sprite(mat);
   s.position.copy(pos);
-  s.scale.set(10, 2, 1);
+  const sx = wide ? 24 : 14;
+  s.scale.set(sx, 3, 1);
   scene.add(s);
 }
-makeLabel('Pot (10 gal)', new THREE.Vector3(potR + 8, potH / 2, 0), '#e8a665');
-makeLabel('Cu Raschig packing', new THREE.Vector3(-(colOD + 10), colBase + packH / 2, 0), '#d29922');
-makeLabel('Dephlegmator', new THREE.Vector3(-(colOD + 10), colBase + packH + dephH / 2, 0), '#e8a665');
-makeLabel('Reducer', new THREE.Vector3(-(colOD + 10), colBase + packH + dephH + reducerH / 2, 0), '#e8a665');
-makeLabel('Lyne arm (10° down)', new THREE.Vector3(lyneEndX / 2, lyneStartY + 6, 0), '#e8a665');
-makeLabel('Insulation (25mm)', new THREE.Vector3(insR + 8, colBase + packH / 2 + 8, 0), '#3fb950');
+const dimMat = new THREE.LineBasicMaterial({color: 0x8b949e});
+function dimV(x, y1, y2, label, color, wide) {
+  const tw = 2.5;
+  const c = color ? new THREE.Color(color) : new THREE.Color(0x8b949e);
+  const m = new THREE.LineBasicMaterial({color: c});
+  scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(x, y1, 0), new THREE.Vector3(x, y2, 0)]), m));
+  for (const y of [y1, y2]) {
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(x-tw, y, 0), new THREE.Vector3(x+tw, y, 0)]), m));
+  }
+  makeLabel(label, new THREE.Vector3(x + (wide ? 14 : 9), (y1+y2)/2, 0), color, wide);
+}
+function dimH(y, x1, x2, label, color, below) {
+  const tw = 2.5;
+  const c = color ? new THREE.Color(color) : new THREE.Color(0x8b949e);
+  const m = new THREE.LineBasicMaterial({color: c});
+  scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(x1, y, 0), new THREE.Vector3(x2, y, 0)]), m));
+  for (const x of [x1, x2]) {
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(x, y-tw, 0), new THREE.Vector3(x, y+tw, 0)]), m));
+  }
+  const ly = below ? y - 5 : y + 4;
+  makeLabel(label, new THREE.Vector3((x1+x2)/2, ly, 0), color);
+}
+
+// ---- RIGHT SIDE: Vertical build dimensions ----
+const dr = potR + 4;         // dim line x for pot
+const dc = insR + 4;         // dim line x for column sections
+dimV(dr, 0, potH, '11" (28cm)', '#e8a665');              // Pot body height
+dimV(dr, potH, colBase, '5½" (14cm)', '#e8a665');        // Dome/neck height
+dimV(dc, colBase, colBase + packH, '12" (30.5cm)');      // Packed section
+dimV(dc, colBase + packH, colBase + packH + dephH, '6" (15.2cm)');  // Dephlegmator
+dimV(dc, colBase + packH + dephH, lyneStartY, '2" (5cm)');          // Reducer
+
+// ---- BOTTOM: Pot diameter ----
+dimH(-3, -potR, potR, '\u00D815" (38cm)', '#e8a665');    // Ø15" pot diameter
+
+// ---- COLUMN OD (at colBase height) ----
+dimH(colBase - 3, -colOD, colOD, '\u00D84" (10.2cm)');   // Column OD
+
+// ---- LEFT SIDE: Component labels ----
+makeLabel('10-gal Cu pot', new THREE.Vector3(-(potR + 8), potH / 2, 0), '#e8a665');
+makeLabel('\u00BD" Cu Raschig rings', new THREE.Vector3(-(colOD + 14), colBase + packH / 2, 0), '#d29922', true);
+makeLabel('Dephlegmator coil', new THREE.Vector3(-(colOD + 14), colBase + packH + dephH / 2, 0), '#e8a665', true);
+makeLabel('4"\u21922" reducer', new THREE.Vector3(-(colOD + 14), lyneStartY - reducerH/2, 0), '#e8a665');
+
+// ---- INSULATION ----
+makeLabel('1" fiberglass insulation', new THREE.Vector3(insR + 12, colBase + packH / 2 + 12, 0), '#3fb950', true);
+
+// ---- LYNE ARM ----
+makeLabel('18" (45cm), 2" OD, -10\u00B0', new THREE.Vector3(lyneEndX / 2 + 2, lyneStartY + 8, 0), '#e8a665', true);
+
+// ---- CONDENSER ----
 makeLabel('Condenser', new THREE.Vector3(lyneEndX, lyneEndY + 10, 0), '#8b949e');
+
+// ---- THERMOMETER ----
+makeLabel('Thermo port', new THREE.Vector3(colOD + 8, lyneStartY - 2, 0), '#8b949e');
 
 // Grid
 const grid = new THREE.GridHelper(100, 20, 0x30363d, 0x30363d);
