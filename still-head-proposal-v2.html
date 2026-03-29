@@ -94,11 +94,12 @@ on <em>every</em> desirable compound while maintaining its DMS removal advantage
 <h2>1.3 Interactive 3D Model</h2>
 <!-- ═══════════════════════════════════════════════ -->
 
-<p>Drag to orbit, scroll to zoom. Toggle insulation visibility with the button.</p>
+<p>Drag to orbit, scroll to zoom. Toggle insulation and cutaway view with the buttons.</p>
 
 <div style="position:relative; width:100%; height:520px; border:1px solid var(--surface2); border-radius:4px; overflow:hidden; background:#0d1117;">
 <canvas id="still3d" style="width:100%;height:100%;display:block;"></canvas>
 <button id="toggleIns" style="position:absolute;top:10px;right:10px;background:var(--surface2);color:var(--green);border:1px solid var(--green);padding:4px 12px;border-radius:3px;cursor:pointer;font-family:Georgia,serif;font-size:0.8rem;">Toggle Insulation</button>
+<button id="toggleCut" style="position:absolute;top:40px;right:10px;background:var(--surface2);color:var(--amber);border:1px solid var(--amber);padding:4px 12px;border-radius:3px;cursor:pointer;font-family:Georgia,serif;font-size:0.8rem;">Cutaway: ON</button>
 <div id="label3d" style="position:absolute;bottom:10px;left:10px;color:var(--muted);font-size:0.75rem;pointer-events:none;"></div>
 </div>
 
@@ -112,12 +113,14 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 const canvas = document.getElementById('still3d');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.localClippingEnabled = true;
+const cutPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); // clips front half (z>0)
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0d1117);
 const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth/canvas.clientHeight, 0.1, 400);
-camera.position.set(90, 65, 80);
+camera.position.set(60, 60, 85);
 const controls = new OrbitControls(camera, canvas);
-controls.target.set(15, 48, 0);
+controls.target.set(8, 48, 0);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 // Expose for live tuning
@@ -135,7 +138,10 @@ scene.add(dl2);
 // Materials
 const copper = new THREE.MeshStandardMaterial({color:0xe8a665, metalness:0.7, roughness:0.35});
 const copperDark = new THREE.MeshStandardMaterial({color:0xb07840, metalness:0.6, roughness:0.5});
-const insMat = new THREE.MeshStandardMaterial({color:0x3fb950, metalness:0.0, roughness:0.8, transparent:true, opacity:0.3, side:THREE.DoubleSide});
+// Cutaway materials — front half clipped to reveal internals
+const copperCut = new THREE.MeshStandardMaterial({color:0xb07840, metalness:0.6, roughness:0.5, side:THREE.DoubleSide, clippingPlanes:[cutPlane]});
+const copperDephCut = new THREE.MeshStandardMaterial({color:0xe8a665, metalness:0.7, roughness:0.35, side:THREE.DoubleSide, clippingPlanes:[cutPlane]});
+const insMat = new THREE.MeshStandardMaterial({color:0x3fb950, metalness:0.0, roughness:0.8, transparent:true, opacity:0.3, side:THREE.DoubleSide, clippingPlanes:[cutPlane]});
 const glassMat = new THREE.MeshStandardMaterial({color:0x58a6ff, metalness:0.1, roughness:0.2, transparent:true, opacity:0.15});
 const packMat = new THREE.MeshStandardMaterial({color:0xd29922, metalness:0.5, roughness:0.6});
 const steelMat = new THREE.MeshStandardMaterial({color:0x8b949e, metalness:0.8, roughness:0.3});
@@ -196,7 +202,7 @@ const colBase = potH + domeH; // top of lid dome
 
 // Packed section (outer shell)
 const packShellGeo = new THREE.CylinderGeometry(colOD, colOD, packH, 32);
-const packShell = new THREE.Mesh(packShellGeo, copperDark);
+const packShell = new THREE.Mesh(packShellGeo, copperCut);
 packShell.position.y = colBase + packH / 2;
 scene.add(packShell);
 
@@ -226,7 +232,7 @@ scene.add(screenTop);
 
 // Dephlegmator section
 const dephGeo = new THREE.CylinderGeometry(colOD, colOD, dephH, 32);
-const deph = new THREE.Mesh(dephGeo, copper);
+const deph = new THREE.Mesh(dephGeo, copperDephCut);
 deph.position.y = colBase + packH + dephH / 2;
 scene.add(deph);
 
@@ -301,6 +307,15 @@ document.getElementById('toggleIns').addEventListener('click', () => {
   insVisible = !insVisible;
   insGroup.visible = insVisible;
   document.getElementById('toggleIns').textContent = insVisible ? 'Hide Insulation' : 'Show Insulation';
+});
+
+// Toggle cutaway view
+let cutawayOn = true;
+const cutMats = [copperCut, copperDephCut, insMat]; // all clipped materials
+document.getElementById('toggleCut').addEventListener('click', () => {
+  cutawayOn = !cutawayOn;
+  cutMats.forEach(m => { m.clippingPlanes = cutawayOn ? [cutPlane] : []; });
+  document.getElementById('toggleCut').textContent = cutawayOn ? 'Cutaway: ON' : 'Cutaway: OFF';
 });
 
 // ============ DIMENSION ANNOTATION SYSTEM ============
