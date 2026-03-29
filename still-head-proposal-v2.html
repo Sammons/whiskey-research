@@ -91,6 +91,239 @@ on <em>every</em> desirable compound while maintaining its DMS removal advantage
 </div>
 
 <!-- ═══════════════════════════════════════════════ -->
+<h2>1.3 Interactive 3D Model</h2>
+<!-- ═══════════════════════════════════════════════ -->
+
+<p>Drag to orbit, scroll to zoom. Toggle insulation visibility with the button.</p>
+
+<div style="position:relative; width:100%; height:520px; border:1px solid var(--surface2); border-radius:4px; overflow:hidden; background:#0d1117;">
+<canvas id="still3d" style="width:100%;height:100%;display:block;"></canvas>
+<button id="toggleIns" style="position:absolute;top:10px;right:10px;background:var(--surface2);color:var(--green);border:1px solid var(--green);padding:4px 12px;border-radius:3px;cursor:pointer;font-family:Georgia,serif;font-size:0.8rem;">Toggle Insulation</button>
+<div id="label3d" style="position:absolute;bottom:10px;left:10px;color:var(--muted);font-size:0.75rem;pointer-events:none;"></div>
+</div>
+
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.163.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.163.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+
+const canvas = document.getElementById('still3d');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0d1117);
+const camera = new THREE.PerspectiveCamera(40, canvas.clientWidth/canvas.clientHeight, 0.1, 200);
+camera.position.set(28, 20, 35);
+const controls = new OrbitControls(camera, canvas);
+controls.target.set(0, 12, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+
+// Lighting
+scene.add(new THREE.AmbientLight(0x8b949e, 0.6));
+const dl = new THREE.DirectionalLight(0xffeedd, 1.2);
+dl.position.set(10, 20, 15);
+scene.add(dl);
+const dl2 = new THREE.DirectionalLight(0x58a6ff, 0.3);
+dl2.position.set(-10, 5, -10);
+scene.add(dl2);
+
+// Materials
+const copper = new THREE.MeshStandardMaterial({color:0xe8a665, metalness:0.7, roughness:0.35});
+const copperDark = new THREE.MeshStandardMaterial({color:0xb07840, metalness:0.6, roughness:0.5});
+const insMat = new THREE.MeshStandardMaterial({color:0x3fb950, metalness:0.0, roughness:0.8, transparent:true, opacity:0.3, side:THREE.DoubleSide});
+const glassMat = new THREE.MeshStandardMaterial({color:0x58a6ff, metalness:0.1, roughness:0.2, transparent:true, opacity:0.15});
+const packMat = new THREE.MeshStandardMaterial({color:0xd29922, metalness:0.5, roughness:0.6});
+const steelMat = new THREE.MeshStandardMaterial({color:0x8b949e, metalness:0.8, roughness:0.3});
+
+// Scale: 1 unit = 1 cm
+const potR = 13, potH = 25;
+const colOD = 5.1, colID = 4.95;
+const packH = 30.5, dephH = 15.2, reducerH = 5;
+const colTotalH = packH + dephH + reducerH;
+const insThick = 2.5, insR = colOD + insThick;
+const lyneR = 2.5, lyneL = 40;
+const lyneAngle = -10 * Math.PI / 180;
+
+// Pot body
+const potGeo = new THREE.CylinderGeometry(potR, potR, potH, 32);
+const pot = new THREE.Mesh(potGeo, copper);
+pot.position.y = potH / 2;
+scene.add(pot);
+
+// Pot lid (dome)
+const lidGeo = new THREE.SphereGeometry(potR, 32, 16, 0, Math.PI*2, 0, Math.PI/3);
+const lid = new THREE.Mesh(lidGeo, copper);
+lid.position.y = potH;
+scene.add(lid);
+
+// Column base (transition pot to column)
+const transGeo = new THREE.CylinderGeometry(colOD, potR * 0.4, 3, 32);
+const trans = new THREE.Mesh(transGeo, copper);
+trans.position.y = potH + 1.5;
+scene.add(trans);
+
+const colBase = potH + 3;
+
+// Packed section (outer shell)
+const packShellGeo = new THREE.CylinderGeometry(colOD, colOD, packH, 32);
+const packShell = new THREE.Mesh(packShellGeo, copperDark);
+packShell.position.y = colBase + packH / 2;
+scene.add(packShell);
+
+// Raschig ring visualization (rings inside column)
+const ringGeo = new THREE.TorusGeometry(0.45, 0.15, 6, 8);
+for (let i = 0; i < 80; i++) {
+  const ring = new THREE.Mesh(ringGeo, packMat);
+  ring.position.set(
+    (Math.random() - 0.5) * colID * 1.4,
+    colBase + 1.5 + Math.random() * (packH - 3),
+    (Math.random() - 0.5) * colID * 1.4
+  );
+  const d = Math.sqrt(ring.position.x**2 + ring.position.z**2);
+  if (d > colID - 0.8) continue;
+  ring.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+  scene.add(ring);
+}
+
+// Cu mesh screens (top and bottom of packing)
+const screenGeo = new THREE.CylinderGeometry(colID, colID, 0.3, 32);
+const screenBot = new THREE.Mesh(screenGeo, steelMat);
+screenBot.position.y = colBase + 0.15;
+scene.add(screenBot);
+const screenTop = new THREE.Mesh(screenGeo.clone(), steelMat);
+screenTop.position.y = colBase + packH - 0.15;
+scene.add(screenTop);
+
+// Dephlegmator section
+const dephGeo = new THREE.CylinderGeometry(colOD, colOD, dephH, 32);
+const deph = new THREE.Mesh(dephGeo, copper);
+deph.position.y = colBase + packH + dephH / 2;
+scene.add(deph);
+
+// Dephleg coil (visible copper tube spiral)
+const coilCurve = [];
+for (let t = 0; t < Math.PI * 6; t += 0.1) {
+  coilCurve.push(new THREE.Vector3(
+    Math.cos(t) * (colOD - 0.8),
+    colBase + packH + 1 + t / (Math.PI * 6) * (dephH - 2),
+    Math.sin(t) * (colOD - 0.8)
+  ));
+}
+const coilPath = new THREE.CatmullRomCurve3(coilCurve);
+const coilGeo = new THREE.TubeGeometry(coilPath, 80, 0.3, 6, false);
+const coil = new THREE.Mesh(coilGeo, packMat);
+scene.add(coil);
+
+// Reducer (4" to 2")
+const reducerGeo = new THREE.CylinderGeometry(lyneR, colOD, reducerH, 32);
+const reducer = new THREE.Mesh(reducerGeo, copper);
+reducer.position.y = colBase + packH + dephH + reducerH / 2;
+scene.add(reducer);
+
+// Thermometer port
+const thermoGeo = new THREE.CylinderGeometry(0.4, 0.4, 3, 8);
+const thermo = new THREE.Mesh(thermoGeo, steelMat);
+thermo.position.set(colOD + 1.5, colBase + packH + dephH + reducerH - 1, 0);
+thermo.rotation.z = -Math.PI / 4;
+scene.add(thermo);
+
+// Lyne arm
+const lyneStartY = colBase + packH + dephH + reducerH;
+const lyneGroup = new THREE.Group();
+const lyneGeo = new THREE.CylinderGeometry(lyneR, lyneR, lyneL, 16);
+lyneGeo.rotateZ(Math.PI / 2);
+const lyne = new THREE.Mesh(lyneGeo, copper);
+lyne.position.x = lyneL / 2;
+lyneGroup.add(lyne);
+lyneGroup.position.set(0, lyneStartY, 0);
+lyneGroup.rotation.z = lyneAngle;
+scene.add(lyneGroup);
+
+// Condenser (simple shell at end of lyne arm)
+const condGeo = new THREE.CylinderGeometry(3.5, 3.5, 12, 16);
+const cond = new THREE.Mesh(condGeo, steelMat);
+const lyneEndX = Math.cos(lyneAngle) * lyneL;
+const lyneEndY = lyneStartY + Math.sin(lyneAngle) * lyneL;
+cond.position.set(lyneEndX, lyneEndY, 0);
+scene.add(cond);
+
+// Insulation (semi-transparent sleeve)
+const insGroup = new THREE.Group();
+const insPackGeo = new THREE.CylinderGeometry(insR, insR, packH + dephH + reducerH, 32, 1, true);
+const insSleeve = new THREE.Mesh(insPackGeo, insMat);
+insSleeve.position.y = colBase + (packH + dephH + reducerH) / 2;
+insGroup.add(insSleeve);
+// Insulation end caps
+const capGeo = new THREE.RingGeometry(colOD, insR, 32);
+capGeo.rotateX(-Math.PI / 2);
+const capBot = new THREE.Mesh(capGeo, insMat);
+capBot.position.y = colBase;
+insGroup.add(capBot);
+const capTop = new THREE.Mesh(capGeo.clone(), insMat);
+capTop.rotation.x = Math.PI;
+capTop.position.y = colBase + packH + dephH + reducerH;
+insGroup.add(capTop);
+scene.add(insGroup);
+
+// Toggle insulation
+let insVisible = true;
+document.getElementById('toggleIns').addEventListener('click', () => {
+  insVisible = !insVisible;
+  insGroup.visible = insVisible;
+  document.getElementById('toggleIns').textContent = insVisible ? 'Hide Insulation' : 'Show Insulation';
+});
+
+// Dimension labels as sprites
+function makeLabel(text, pos, color) {
+  const c2 = document.createElement('canvas');
+  c2.width = 256; c2.height = 48;
+  const ctx = c2.getContext('2d');
+  ctx.font = '22px Georgia';
+  ctx.fillStyle = color || '#8b949e';
+  ctx.textAlign = 'center';
+  ctx.fillText(text, 128, 30);
+  const tex = new THREE.CanvasTexture(c2);
+  const mat = new THREE.SpriteMaterial({map: tex, transparent: true});
+  const s = new THREE.Sprite(mat);
+  s.position.copy(pos);
+  s.scale.set(10, 2, 1);
+  scene.add(s);
+}
+makeLabel('Pot (10 gal)', new THREE.Vector3(potR + 6, potH / 2, 0), '#e8a665');
+makeLabel('Cu Raschig packing', new THREE.Vector3(-(colOD + 8), colBase + packH / 2, 0), '#d29922');
+makeLabel('Dephlegmator', new THREE.Vector3(-(colOD + 8), colBase + packH + dephH / 2, 0), '#e8a665');
+makeLabel('4"→2" reducer', new THREE.Vector3(-(colOD + 8), colBase + packH + dephH + reducerH / 2, 0), '#e8a665');
+makeLabel('Lyne arm (10° down)', new THREE.Vector3(lyneEndX / 2, lyneStartY + 5, 0), '#e8a665');
+makeLabel('25mm insulation', new THREE.Vector3(insR + 6, colBase + packH / 2 + 8, 0), '#3fb950');
+makeLabel('Condenser', new THREE.Vector3(lyneEndX, lyneEndY + 8, 0), '#8b949e');
+
+// Grid
+const grid = new THREE.GridHelper(60, 20, 0x30363d, 0x30363d);
+scene.add(grid);
+
+// Resize
+function resize() {
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  if (canvas.width !== w || canvas.height !== h) {
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  resize();
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+
+<!-- ═══════════════════════════════════════════════ -->
 <h2>2. Physics Models</h2>
 <!-- ═══════════════════════════════════════════════ -->
 
