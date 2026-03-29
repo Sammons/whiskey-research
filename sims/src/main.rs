@@ -20927,31 +20927,47 @@ fn sim_still_head_blueprint() -> String {
 
 fn column_heat_loss(d_outer: f64, length: f64, t_col: f64, t_amb: f64,
                      insulation_mm: f64, k_ins: f64) -> f64 {
-    let area = std::f64::consts::PI * d_outer * length;
-    let dt = t_col - t_amb;
+    // d_outer [m], length [m], temperatures [°C], insulation [mm], k_ins [W/(m·K)]
+    // Returns heat loss in watts [W]
+    let dt = t_col - t_amb; // [K] (ΔT)
     // Churchill-Chu for still air gives h≈5.5 W/m²K; 7.0 accounts for
     // mild outdoor breeze (typical distilling environment)
-    let h_conv = 7.0;
+    let h_conv = 7.0_f64;  // [W/(m²·K)]
     let emissivity = 0.7;
-    let sigma = 5.67e-8;
-    let tc_k = t_col + 273.15;
-    let ta_k = t_amb + 273.15;
-    let h_rad = emissivity * sigma * (tc_k * tc_k + ta_k * ta_k) * (tc_k + ta_k);
+    let sigma = 5.67e-8;   // [W/(m²·K⁴)] Stefan-Boltzmann
+    let tc_k = t_col + 273.15; // [K]
+    let ta_k = t_amb + 273.15; // [K]
+    let r_inner = d_outer / 2.0; // [m]
     if insulation_mm > 0.0 {
-        let t_ins = insulation_mm / 1000.0;
-        let r_ins = t_ins / k_ins;
-        let r_ext = 1.0 / (h_conv + h_rad);
-        let u_total = 1.0 / (r_ins + r_ext);
-        u_total * area * dt
+        let t_ins = insulation_mm / 1000.0; // [m]
+        let r_outer = r_inner + t_ins;      // [m]
+        let d_ext = 2.0 * r_outer;          // [m] outer diameter with insulation
+        let area_ext = std::f64::consts::PI * d_ext * length; // [m²] external surface
+        // Estimate insulation surface temp for h_rad (single iteration)
+        // Approximate: T_surf ≈ T_amb + (T_col - T_amb) * R_ext / (R_ins + R_ext)
+        // First pass with h_rad at ambient to get surface temp estimate
+        let h_rad_amb = emissivity * sigma * (ta_k * ta_k + ta_k * ta_k) * (ta_k + ta_k);
+        let h_ext_est = h_conv + h_rad_amb;
+        let r_ins_cyl = (r_outer / r_inner).ln() / (2.0 * std::f64::consts::PI * k_ins * length);
+        let r_ext_est = 1.0 / (h_ext_est * area_ext);
+        let t_surf_k = ta_k + (tc_k - ta_k) * r_ext_est / (r_ins_cyl + r_ext_est);
+        // Second pass: h_rad at estimated surface temp
+        let h_rad_surf = emissivity * sigma * (t_surf_k * t_surf_k + ta_k * ta_k) * (t_surf_k + ta_k);
+        let h_ext = h_conv + h_rad_surf;
+        let r_ext = 1.0 / (h_ext * area_ext); // [K/W] external resistance
+        dt / (r_ins_cyl + r_ext) // [W] = [K] / [K/W]
     } else {
-        (h_conv + h_rad) * area * dt
+        let area = std::f64::consts::PI * d_outer * length; // [m²] bare pipe surface
+        let h_rad = emissivity * sigma * (tc_k * tc_k + ta_k * ta_k) * (tc_k + ta_k);
+        (h_conv + h_rad) * area * dt // [W]
     }
 }
 
 fn passive_reflux_ratio(heat_kw: f64, col_od_m: f64, t_col: f64, t_amb: f64,
                          ins_mm: f64, k_ins: f64) -> f64 {
-    let l_mix = 1900.0;
-    let m_vapor = heat_kw * 1000.0 / l_mix;
+    // Returns dimensionless reflux ratio (l_mix cancels in ratio)
+    let l_mix = 1900.0; // [J/g] latent heat, ethanol-water mix ~50% ABV
+    let m_vapor = heat_kw * 1000.0 / l_mix; // [g/s] total vapor mass flow
     let q_pack = column_heat_loss(col_od_m, 0.305, t_col, t_amb, ins_mm, k_ins);
     let q_deph = column_heat_loss(col_od_m, 0.152, t_col, t_amb, ins_mm, k_ins);
     let q_red = column_heat_loss(col_od_m * 0.7, 0.05, t_col, t_amb, ins_mm, k_ins);
@@ -20967,12 +20983,13 @@ fn compound_n_eff(alpha: f64, r_passive: f64, n_min: f64) -> f64 {
 }
 
 fn vapor_velocity(heat_kw: f64, col_id_cm: f64) -> f64 {
-    let l_mix = 1900.0;
-    let rho_vapor = 1.1e-3;
-    let m_dot = heat_kw * 1000.0 / l_mix;
-    let q_vol = m_dot / rho_vapor;
-    let area = std::f64::consts::PI / 4.0 * col_id_cm * col_id_cm;
-    q_vol / area
+    // Returns superficial vapor velocity in [cm/s] (CGS throughout)
+    let l_mix = 1900.0;        // [J/g] latent heat, ethanol-water mix ~50% ABV
+    let rho_vapor = 1.1e-3;    // [g/cm³] ≈ 1.1 kg/m³ at ~80°C, 1 atm
+    let m_dot = heat_kw * 1000.0 / l_mix; // [g/s] vapor mass flow
+    let q_vol = m_dot / rho_vapor;         // [cm³/s] volumetric flow
+    let area = std::f64::consts::PI / 4.0 * col_id_cm * col_id_cm; // [cm²]
+    q_vol / area                           // [cm/s]
 }
 
 struct Congener { name: &'static str, alpha: f64, bp_c: f64, flavor: &'static str, desirable: bool }
@@ -21097,7 +21114,7 @@ fn sim_v2_compound_transport() -> String {
             a *= 1.05;
         }
         svg += &format!("<polyline points=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"2\"/>\n", pts.join(" "), d.color);
-        svg += &label(rx + rw + 3.0, syn(compound_n_eff(0.1, r_pass, d.n_min)), d.name, d.color, 6, "start");
+        svg += &label(rx + rw - 3.0, syn(compound_n_eff(0.1, r_pass, d.n_min)), d.name, d.color, 6, "end");
     }
     let r_pass_bare = passive_reflux_ratio(heat_kw, col_od, t_col, t_amb, 0.0, k_ins);
     for c in &db {

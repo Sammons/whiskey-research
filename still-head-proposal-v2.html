@@ -86,7 +86,7 @@ Check your jurisdiction's laws before building or operating a still.
 <strong>Critical insight:</strong> An uninsulated 4" copper column loses ~114W through natural convection and radiation.
 This creates passive reflux (R&asymp;0.038) that selectively strips heavy congeners &mdash; the very compounds
 (2-phenylethanol, ethyl octanoate, furfural) that give whiskey its body and depth. <strong>25mm fiberglass insulation</strong>
-reduces heat loss to ~13W (R&asymp;0.004), making the CRO column competitive with or superior to a pot still
+reduces heat loss to ~16W (R&asymp;0.005), making the CRO column competitive with or superior to a pot still
 on <em>every</em> desirable compound while maintaining its DMS removal advantage.
 </div>
 
@@ -123,14 +123,14 @@ and is therefore stripped much more severely than a light compound with &alpha;=
 <ul>
 <li><strong>Convection:</strong> h_conv &asymp; 7 W/(m&sup2;&middot;K) for natural convection on a vertical cylinder with mild air movement (Churchill-Chu gives ~5.5 for still air; 7 accounts for outdoor breeze)<sup>[7]</sup></li>
 <li><strong>Radiation:</strong> h_rad = &epsilon;&sigma;(T<sub>col</sub>&sup2; + T<sub>amb</sub>&sup2;)(T<sub>col</sub> + T<sub>amb</sub>) with &epsilon;&asymp;0.7 for oxidized Cu</li>
-<li><strong>Insulation:</strong> Series thermal resistance R_ins = t/k, where k&asymp;0.04 W/(m&middot;K) for fiberglass</li>
+<li><strong>Insulation:</strong> Cylindrical log-mean resistance R_ins = ln(r<sub>2</sub>/r<sub>1</sub>) / (2&pi;kL), where k&asymp;0.04 W/(m&middot;K) for fiberglass. h_rad evaluated at estimated insulation surface temperature.</li>
 </ul>
 
 <p>For the CRO column (OD=102mm, packed section 305mm + dephleg 152mm + reducer 50mm):</p>
 <table>
 <tr><th>Configuration</th><th>Q_loss (W)</th><th>R_passive</th></tr>
 <tr><td>Bare copper</td><td>~114</td><td>0.038</td></tr>
-<tr><td>25mm fiberglass</td><td>~13</td><td>0.004</td></tr>
+<tr><td>25mm fiberglass</td><td>~16</td><td>0.005</td></tr>
 </table>
 
 <h3>2.4 PFR Model for CuO-Mediated DMS Removal</h3>
@@ -266,7 +266,7 @@ Bottom panel shows the full congener profile as grouped bars.</figcaption>
 
 <div class="callout warn">
 <strong>Do not build the CRO column without insulation.</strong> The uninsulated configuration loses heavy congeners
-(2-phenylethanol at 4.9% recovery vs 8.1% insulated) while offering no advantage over the insulated version.
+(2-phenylethanol at 4.9% recovery vs 8.0% insulated) while offering no advantage over the insulated version.
 The ~$25 insulation cost is the single highest-value modification in this entire design.
 </div>
 

@@ -26,7 +26,7 @@
 <text x="180" y="347" fill="#d29922" font-size="6" text-anchor="middle">CRO bare</text>
 <text x="180" y="357" fill="#8b949e" font-size="5" text-anchor="middle">Cu:84%</text>
 <rect x="215.0" y="282.3" width="50" height="52.7" fill="#3fb950" opacity="0.85" rx="2"/>
-<text x="240" y="276.3148447936315" fill="#3fb950" font-size="7" text-anchor="middle">10ppb</text>
+<text x="240" y="276.31467875637793" fill="#3fb950" font-size="7" text-anchor="middle">10ppb</text>
 <text x="240" y="347" fill="#3fb950" font-size="6" text-anchor="middle">CRO insulated</text>
 <text x="240" y="357" fill="#8b949e" font-size="5" text-anchor="middle">Cu:84%</text>
 <rect x="275.0" y="266.3" width="50" height="68.7" fill="#58a6ff" opacity="0.85" rx="2"/>
