@@ -114,10 +114,10 @@ const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0d1117);
-const camera = new THREE.PerspectiveCamera(40, canvas.clientWidth/canvas.clientHeight, 0.1, 200);
-camera.position.set(28, 20, 35);
+const camera = new THREE.PerspectiveCamera(40, canvas.clientWidth/canvas.clientHeight, 0.1, 400);
+camera.position.set(55, 50, 70);
 const controls = new OrbitControls(camera, canvas);
-controls.target.set(0, 12, 0);
+controls.target.set(10, 38, 0);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 
@@ -139,33 +139,41 @@ const packMat = new THREE.MeshStandardMaterial({color:0xd29922, metalness:0.5, r
 const steelMat = new THREE.MeshStandardMaterial({color:0x8b949e, metalness:0.8, roughness:0.3});
 
 // Scale: 1 unit = 1 cm
-const potR = 13, potH = 25;
-const colOD = 5.1, colID = 4.95;
+const potR = 19, potH = 18;       // 10-gal pot: ~15" dia, ~7" tall body
+const colOD = 5.1, colID = 4.95;  // 4" DWV copper
 const packH = 30.5, dephH = 15.2, reducerH = 5;
 const colTotalH = packH + dephH + reducerH;
 const insThick = 2.5, insR = colOD + insThick;
-const lyneR = 2.5, lyneL = 40;
+const lyneR = 2.5, lyneL = 45;
 const lyneAngle = -10 * Math.PI / 180;
 
-// Pot body
-const potGeo = new THREE.CylinderGeometry(potR, potR, potH, 32);
+// Pot body (traditional onion shape via lathe)
+const potProfile = [];
+for (let i = 0; i <= 20; i++) {
+  const t = i / 20;
+  const y = t * potH;
+  const r = potR * (1.0 - 0.15 * Math.pow(t - 0.4, 2) / 0.16); // slight belly
+  potProfile.push(new THREE.Vector2(Math.max(r, 1), y));
+}
+const potGeo = new THREE.LatheGeometry(potProfile, 32);
 const pot = new THREE.Mesh(potGeo, copper);
-pot.position.y = potH / 2;
 scene.add(pot);
 
-// Pot lid (dome)
-const lidGeo = new THREE.SphereGeometry(potR, 32, 16, 0, Math.PI*2, 0, Math.PI/3);
+// Pot lid (onion dome tapering to column width)
+const lidProfile = [];
+for (let i = 0; i <= 16; i++) {
+  const t = i / 16;
+  const angle = t * Math.PI / 2;
+  const r = potR * Math.cos(angle) * 0.95;
+  const y = potH + potR * 0.45 * Math.sin(angle);
+  lidProfile.push(new THREE.Vector2(Math.max(r, colOD), y));
+}
+lidProfile.push(new THREE.Vector2(colOD, potH + potR * 0.45));
+const lidGeo = new THREE.LatheGeometry(lidProfile, 32);
 const lid = new THREE.Mesh(lidGeo, copper);
-lid.position.y = potH;
 scene.add(lid);
 
-// Column base (transition pot to column)
-const transGeo = new THREE.CylinderGeometry(colOD, potR * 0.4, 3, 32);
-const trans = new THREE.Mesh(transGeo, copper);
-trans.position.y = potH + 1.5;
-scene.add(trans);
-
-const colBase = potH + 3;
+const colBase = potH + potR * 0.45; // top of lid dome
 
 // Packed section (outer shell)
 const packShellGeo = new THREE.CylinderGeometry(colOD, colOD, packH, 32);
@@ -292,16 +300,16 @@ function makeLabel(text, pos, color) {
   s.scale.set(10, 2, 1);
   scene.add(s);
 }
-makeLabel('Pot (10 gal)', new THREE.Vector3(potR + 6, potH / 2, 0), '#e8a665');
-makeLabel('Cu Raschig packing', new THREE.Vector3(-(colOD + 8), colBase + packH / 2, 0), '#d29922');
-makeLabel('Dephlegmator', new THREE.Vector3(-(colOD + 8), colBase + packH + dephH / 2, 0), '#e8a665');
-makeLabel('4"→2" reducer', new THREE.Vector3(-(colOD + 8), colBase + packH + dephH + reducerH / 2, 0), '#e8a665');
-makeLabel('Lyne arm (10° down)', new THREE.Vector3(lyneEndX / 2, lyneStartY + 5, 0), '#e8a665');
-makeLabel('25mm insulation', new THREE.Vector3(insR + 6, colBase + packH / 2 + 8, 0), '#3fb950');
-makeLabel('Condenser', new THREE.Vector3(lyneEndX, lyneEndY + 8, 0), '#8b949e');
+makeLabel('Pot (10 gal)', new THREE.Vector3(potR + 8, potH / 2, 0), '#e8a665');
+makeLabel('Cu Raschig packing', new THREE.Vector3(-(colOD + 10), colBase + packH / 2, 0), '#d29922');
+makeLabel('Dephlegmator', new THREE.Vector3(-(colOD + 10), colBase + packH + dephH / 2, 0), '#e8a665');
+makeLabel('Reducer', new THREE.Vector3(-(colOD + 10), colBase + packH + dephH + reducerH / 2, 0), '#e8a665');
+makeLabel('Lyne arm (10° down)', new THREE.Vector3(lyneEndX / 2, lyneStartY + 6, 0), '#e8a665');
+makeLabel('Insulation (25mm)', new THREE.Vector3(insR + 8, colBase + packH / 2 + 8, 0), '#3fb950');
+makeLabel('Condenser', new THREE.Vector3(lyneEndX, lyneEndY + 10, 0), '#8b949e');
 
 // Grid
-const grid = new THREE.GridHelper(60, 20, 0x30363d, 0x30363d);
+const grid = new THREE.GridHelper(100, 20, 0x30363d, 0x30363d);
 scene.add(grid);
 
 // Resize
