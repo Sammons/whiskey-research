@@ -233,6 +233,13 @@ fn main() {
     fs::write("../graphs/still-reflux-protocol.svg", sim_still_reflux_protocol()).unwrap();
     fs::write("../graphs/still-copper-dms.svg", sim_still_copper_dms()).unwrap();
     fs::write("../graphs/still-head-blueprint.svg", sim_still_head_blueprint()).unwrap();
+
+    // V2 Still Head simulations — compound-specific passive reflux model
+    fs::write("../graphs/v2-compound-transport.svg", sim_v2_compound_transport()).unwrap();
+    fs::write("../graphs/v2-heat-loss.svg", sim_v2_heat_loss()).unwrap();
+    fs::write("../graphs/v2-yield.svg", sim_v2_yield()).unwrap();
+    fs::write("../graphs/v2-dms-comparison.svg", sim_v2_dms_comparison()).unwrap();
+    fs::write("../graphs/v2-design-summary.svg", sim_v2_design_summary()).unwrap();
     println!("Wrote all SVGs");
 }
 
@@ -20174,8 +20181,7 @@ fn rayleigh_recovery(alpha: f64, n_eff: f64, f1: f64, f2: f64) -> f64 {
 ///     Regenerated between runs by air exposure (Cu₂O/Cu → CuO). Not truly catalytic
 ///     in steady-state; "CuO-mediated" is more accurate.
 /// Ref: Harrison et al., J. Inst. Brewing 117:106 (2011); Piggott (2003)
-fn pfr_dms_removal(a_s: f64, packed_cm: f64, v_s: f64) -> f64 {
-    let k_eff = 0.16_f64; // cm/s (lumped: η·k_s, calibrated from pot still data)
+fn pfr_dms_removal(k_eff: f64, a_s: f64, packed_cm: f64, v_s: f64) -> f64 {
     1.0 - (-k_eff * a_s * packed_cm / v_s).exp()
 }
 
@@ -20227,7 +20233,7 @@ fn sim_still_congener_bars() -> String {
     let pot_cu_removal = 0.55;  // empirical for all-Cu pot still (Piggott 2003)
     let a_s_rings = 7.0_f64;   // cm²/cm³ (≈700 m²/m³ for 3/8" Raschig rings, Perry's §14)
     let v_s_design = 20.0_f64; // cm/s at 3 kW through 77 cm² cross-section
-    let cro_cu_removal = pfr_dms_removal(a_s_rings, 30.5, v_s_design);
+    let cro_cu_removal = pfr_dms_removal(0.16, a_s_rings, 30.5, v_s_design);
     // DMS index = 1
     let dms_pot = off_pot[1] * (1.0 - pot_cu_removal);
     let dms_cro = off_cro[1] * (1.0 - cro_cu_removal);
@@ -20502,18 +20508,18 @@ fn sim_still_copper_dms() -> String {
         for i in 0..=96 {
             let inches = i as f64 * 0.25;
             let cm = inches * 2.54;
-            let removal = pfr_dms_removal(a_s, cm, *v_s) * 100.0;
+            let removal = pfr_dms_removal(0.16, a_s, cm, *v_s) * 100.0;
             pts.push(format!("{:.1},{:.1}", sx(inches), sy(removal)));
         }
         svg += &format!("<polyline points=\"{}\" fill=\"none\" \
             stroke=\"{color}\" stroke-width=\"{sw}\"/>\n", pts.join(" "));
         // Label at right edge
-        let end_r = pfr_dms_removal(a_s, 24.0 * 2.54, *v_s) * 100.0;
+        let end_r = pfr_dms_removal(0.16, a_s, 24.0 * 2.54, *v_s) * 100.0;
         svg += &label(px + pw + 5.0, sy(end_r) + 3.0, vlabel, color, 6, "start");
     }
 
     // Design point marker (12", 20 cm/s at 3 kW)
-    let design_r = pfr_dms_removal(a_s, 12.0 * 2.54, 20.0) * 100.0;
+    let design_r = pfr_dms_removal(0.16, a_s, 12.0 * 2.54, 20.0) * 100.0;
     svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{ACCENT}\" \
         stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n", sx(12.0), sy(design_r));
     svg += &label(sx(12.0) + 8.0, sy(design_r) - 8.0,
@@ -20524,9 +20530,9 @@ fn sim_still_copper_dms() -> String {
     // Embed verification
     svg += &format!("<!-- PFR verification:\n");
     for (v_s, vlbl, _, _) in &velocities {
-        let r6 = pfr_dms_removal(a_s, 6.0 * 2.54, *v_s) * 100.0;
-        let r12 = pfr_dms_removal(a_s, 12.0 * 2.54, *v_s) * 100.0;
-        let r18 = pfr_dms_removal(a_s, 18.0 * 2.54, *v_s) * 100.0;
+        let r6 = pfr_dms_removal(0.16, a_s, 6.0 * 2.54, *v_s) * 100.0;
+        let r12 = pfr_dms_removal(0.16, a_s, 12.0 * 2.54, *v_s) * 100.0;
+        let r18 = pfr_dms_removal(0.16, a_s, 18.0 * 2.54, *v_s) * 100.0;
         svg += &format!("     {}: 6\"={:.1}% 12\"={:.1}% 18\"={:.1}%\n", vlbl, r6, r12, r18);
     }
     svg += "-->\n";
@@ -20549,7 +20555,7 @@ fn sim_still_copper_dms() -> String {
 
     // Concentration in hearts = wash × recovery / cut_fraction × (1 − Cu_removal)
     let pot_dms_ppb = wash_dms * pot_raw / (pot_f.1 - pot_f.0) * (1.0 - pot_cu);
-    let cro_dms_ppb = wash_dms * cro_raw / (cro_f.1 - cro_f.0) * (1.0 - pfr_dms_removal(a_s, 30.5, v_s_3kw));
+    let cro_dms_ppb = wash_dms * cro_raw / (cro_f.1 - cro_f.0) * (1.0 - pfr_dms_removal(0.16, a_s, 30.5, v_s_3kw));
     let col_dms_ppb = 0.5_f64; // ~0 from Rayleigh, use 0.5 for visibility
 
     let max_dms = 40.0;
@@ -20590,7 +20596,7 @@ fn sim_still_copper_dms() -> String {
     svg += &format!("<!-- DMS ppb (wash=50ppb):\n     pot={:.1}ppb (raw_recov={:.3}, Cu=55%)\n\
         CRO={:.1}ppb (raw_recov={:.3}, Cu={:.1}% PFR, k_eff=0.16 a_s=7.0 v_s=20)\n     col~0 -->\n",
         pot_dms_ppb, pot_raw, cro_dms_ppb, cro_raw,
-        pfr_dms_removal(a_s, 30.5, v_s_3kw) * 100.0);
+        pfr_dms_removal(0.16, a_s, 30.5, v_s_3kw) * 100.0);
 
     // Footer
     svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"38\" rx=\"4\" \
@@ -20882,7 +20888,7 @@ fn sim_still_head_blueprint() -> String {
     svg += &label(bom_x + 130.0, spec_y + 18.0, "Key Specifications", ACCENT, 10, "middle");
     svg += &hline(bom_x + 10.0, bom_x + 250.0, spec_y + 26.0, MUTED, "0.5");
 
-    let design_removal = pfr_dms_removal(7.0, 30.5, 20.0) * 100.0;
+    let design_removal = pfr_dms_removal(0.16, 7.0, 30.5, 20.0) * 100.0;
     let specs: Vec<(&str, String)> = vec![
         ("Column ID:",     "4\" nom. (99 mm ID) C122 Cu DWV".to_string()),
         ("Packing:",       "3/8\" Cu Raschig, 12\" bed".to_string()),
@@ -20912,5 +20918,507 @@ fn sim_still_head_blueprint() -> String {
     svg += &label(350.0, h - 14.0,
         "Legal: Federal DSP required in USA (27 CFR \u{00a7}19) | Check local regulations",
         MUTED, 7, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+// ═══════════════════════════════════════════════════════════════
+// V2 Still Head Simulations — Compound-specific passive reflux
+// ═══════════════════════════════════════════════════════════════
+
+fn column_heat_loss(d_outer: f64, length: f64, t_col: f64, t_amb: f64,
+                     insulation_mm: f64, k_ins: f64) -> f64 {
+    let area = std::f64::consts::PI * d_outer * length;
+    let dt = t_col - t_amb;
+    // Churchill-Chu for still air gives h≈5.5 W/m²K; 7.0 accounts for
+    // mild outdoor breeze (typical distilling environment)
+    let h_conv = 7.0;
+    let emissivity = 0.7;
+    let sigma = 5.67e-8;
+    let tc_k = t_col + 273.15;
+    let ta_k = t_amb + 273.15;
+    let h_rad = emissivity * sigma * (tc_k * tc_k + ta_k * ta_k) * (tc_k + ta_k);
+    if insulation_mm > 0.0 {
+        let t_ins = insulation_mm / 1000.0;
+        let r_ins = t_ins / k_ins;
+        let r_ext = 1.0 / (h_conv + h_rad);
+        let u_total = 1.0 / (r_ins + r_ext);
+        u_total * area * dt
+    } else {
+        (h_conv + h_rad) * area * dt
+    }
+}
+
+fn passive_reflux_ratio(heat_kw: f64, col_od_m: f64, t_col: f64, t_amb: f64,
+                         ins_mm: f64, k_ins: f64) -> f64 {
+    let l_mix = 1900.0;
+    let m_vapor = heat_kw * 1000.0 / l_mix;
+    let q_pack = column_heat_loss(col_od_m, 0.305, t_col, t_amb, ins_mm, k_ins);
+    let q_deph = column_heat_loss(col_od_m, 0.152, t_col, t_amb, ins_mm, k_ins);
+    let q_red = column_heat_loss(col_od_m * 0.7, 0.05, t_col, t_amb, ins_mm, k_ins);
+    let q_total = q_pack + q_deph + q_red;
+    let m_reflux = q_total / l_mix;
+    m_reflux / m_vapor
+}
+
+fn compound_n_eff(alpha: f64, r_passive: f64, n_min: f64) -> f64 {
+    let r_eff = r_passive / alpha.max(0.01);
+    let n_add = n_min * r_eff / (1.0 + r_eff);
+    1.0 + n_add
+}
+
+fn vapor_velocity(heat_kw: f64, col_id_cm: f64) -> f64 {
+    let l_mix = 1900.0;
+    let rho_vapor = 1.1e-3;
+    let m_dot = heat_kw * 1000.0 / l_mix;
+    let q_vol = m_dot / rho_vapor;
+    let area = std::f64::consts::PI / 4.0 * col_id_cm * col_id_cm;
+    q_vol / area
+}
+
+struct Congener { name: &'static str, alpha: f64, bp_c: f64, flavor: &'static str, desirable: bool }
+
+fn congener_db() -> Vec<Congener> {
+    vec![
+        Congener { name: "Acetaldehyde", alpha: 6.0, bp_c: 20.0, flavor: "green apple", desirable: false },
+        Congener { name: "Methanol", alpha: 1.55, bp_c: 64.7, flavor: "toxic", desirable: false },
+        Congener { name: "EtAc", alpha: 1.40, bp_c: 77.1, flavor: "fruity/solvent", desirable: true },
+        Congener { name: "DMS", alpha: 2.40, bp_c: 37.3, flavor: "cooked corn", desirable: false },
+        Congener { name: "IAmAc", alpha: 0.75, bp_c: 142.0, flavor: "banana", desirable: true },
+        Congener { name: "IAmOH", alpha: 0.60, bp_c: 131.0, flavor: "fusel", desirable: false },
+        Congener { name: "EtHex", alpha: 0.45, bp_c: 167.0, flavor: "apple/anise", desirable: true },
+        Congener { name: "Furfural", alpha: 0.20, bp_c: 162.0, flavor: "almond/bread", desirable: true },
+        Congener { name: "EtOct", alpha: 0.25, bp_c: 207.0, flavor: "apricot", desirable: true },
+        Congener { name: "2-PhEtOH", alpha: 0.10, bp_c: 219.0, flavor: "rose/honey", desirable: true },
+        Congener { name: "EtDec", alpha: 0.12, bp_c: 243.0, flavor: "grape/waxy", desirable: true },
+    ]
+}
+
+struct StillDesign {
+    name: &'static str, color: &'static str, f1: f64, f2: f64, n_min: f64,
+    cu_mesh_removal: f64, has_column: bool, insulation_mm: f64,
+    pfr_k_eff: f64, pfr_a_s: f64, pfr_packed_cm: f64, cost_low: u32, cost_high: u32,
+}
+
+fn design_variants() -> Vec<StillDesign> {
+    vec![
+        StillDesign { name: "Pot + Cu mesh", color: RED, f1: 0.15, f2: 0.55,
+            n_min: 0.0, cu_mesh_removal: 0.45, has_column: false, insulation_mm: 0.0,
+            pfr_k_eff: 0.0, pfr_a_s: 0.0, pfr_packed_cm: 0.0, cost_low: 80, cost_high: 160 },
+        StillDesign { name: "CRO bare", color: YELLOW, f1: 0.10, f2: 0.65,
+            n_min: 1.0, cu_mesh_removal: 0.0, has_column: true, insulation_mm: 0.0,
+            pfr_k_eff: 0.16, pfr_a_s: 7.0, pfr_packed_cm: 30.5, cost_low: 500, cost_high: 800 },
+        StillDesign { name: "CRO insulated", color: GREEN, f1: 0.10, f2: 0.65,
+            n_min: 1.0, cu_mesh_removal: 0.0, has_column: true, insulation_mm: 25.0,
+            pfr_k_eff: 0.16, pfr_a_s: 7.0, pfr_packed_cm: 30.5, cost_low: 520, cost_high: 830 },
+        StillDesign { name: "6-plate (low R)", color: BLUE, f1: 0.15, f2: 0.55,
+            n_min: 3.0, cu_mesh_removal: 0.0, has_column: false, insulation_mm: 0.0,
+            pfr_k_eff: 0.0, pfr_a_s: 0.0, pfr_packed_cm: 0.0, cost_low: 300, cost_high: 600 },
+    ]
+}
+
+fn sim_v2_compound_transport() -> String {
+    let w = 700.0_f64; let h = 580.0_f64;
+    let mut svg = svg_header(w, h, "Fig V2-1 \u{2014} Compound-Specific Recovery: Passive Reflux Model");
+    let db = congener_db();
+    let designs = design_variants();
+    let (heat_kw, col_od, col_id_cm) = (3.0, 0.102, 9.9);
+    let (t_col, t_amb, k_ins) = (80.0, 22.0, 0.04);
+    let mut data: Vec<Vec<f64>> = Vec::new();
+    let mut n_effs: Vec<Vec<f64>> = Vec::new();
+    for d in &designs {
+        let r_pass = if d.has_column { passive_reflux_ratio(heat_kw, col_od, t_col, t_amb, d.insulation_mm, k_ins) } else { 0.0 };
+        let v_s = vapor_velocity(heat_kw, col_id_cm);
+        let cu_removal = if d.pfr_k_eff > 0.0 { pfr_dms_removal(d.pfr_k_eff, d.pfr_a_s, d.pfr_packed_cm, v_s) } else { d.cu_mesh_removal };
+        let mut recoveries = Vec::new();
+        let mut neffs = Vec::new();
+        for c in &db {
+            let n_eff = if d.has_column && d.n_min > 0.0 { compound_n_eff(c.alpha, r_pass, d.n_min) } else if d.n_min > 0.0 { d.n_min } else { 1.0 };
+            neffs.push(n_eff);
+            let mut recov = rayleigh_recovery(c.alpha, n_eff, d.f1, d.f2) * 100.0;
+            if c.name == "DMS" { recov *= 1.0 - cu_removal; }
+            recoveries.push(recov);
+        }
+        data.push(recoveries);
+        n_effs.push(neffs);
+    }
+    svg += "<!-- V2 compound transport:\n";
+    for (di, d) in designs.iter().enumerate() {
+        let r_pass = if d.has_column { passive_reflux_ratio(heat_kw, col_od, t_col, t_amb, d.insulation_mm, k_ins) } else { 0.0 };
+        svg += &format!("  {}: R_pass={:.4}\n", d.name, r_pass);
+        for (ci, c) in db.iter().enumerate() { svg += &format!("    {}: N={:.3} R={:.1}%\n", c.name, n_effs[di][ci], data[di][ci]); }
+    }
+    svg += "-->\n";
+    // Panel A: desirable congener grouped bars
+    svg += &label(250.0, 57.0, "A: Desirable Congener Recovery (%)", TEXT, 10, "middle");
+    let desirables: Vec<usize> = db.iter().enumerate().filter(|(_, c)| c.desirable).map(|(i, _)| i).collect();
+    let (lx, ly, lw, lh) = (60.0, 70.0, 380.0, 280.0);
+    svg += &format!("<rect x=\"{lx}\" y=\"{ly}\" width=\"{lw}\" height=\"{lh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let max_val = 70.0;
+    let sy = |v: f64| ly + lh * (1.0 - v / max_val);
+    for p in (0..=70).step_by(10) {
+        svg += &hline(lx, lx + lw, sy(p as f64), GRID, "0.3");
+        svg += &label(lx - 4.0, sy(p as f64) + 3.0, &format!("{}", p), MUTED, 6, "end");
+    }
+    let nc = desirables.len() as f64;
+    let nd = designs.len() as f64;
+    let group_w = lw / nc;
+    let bar_w = group_w / (nd + 1.0);
+    for (gi, &ci) in desirables.iter().enumerate() {
+        let gx = lx + gi as f64 * group_w;
+        for (di, d) in designs.iter().enumerate() {
+            let val = data[di][ci];
+            let bx = gx + (di as f64 + 0.5) * bar_w;
+            let bh = (val / max_val * lh).max(1.0);
+            svg += &format!("<rect x=\"{bx:.1}\" y=\"{:.1}\" width=\"{bar_w:.1}\" height=\"{bh:.1}\" fill=\"{}\" opacity=\"0.85\" rx=\"1\"/>\n", sy(val), d.color);
+        }
+        svg += &label(gx + group_w / 2.0, ly + lh + 12.0, db[ci].name, TEXT, 7, "middle");
+        svg += &label(gx + group_w / 2.0, ly + lh + 22.0, &format!("(\u{03b1}={:.2})", db[ci].alpha), MUTED, 5, "middle");
+    }
+    // Panel B: N_eff vs alpha
+    svg += &label(580.0, 57.0, "B: Effective Stages vs \u{03b1}", TEXT, 10, "middle");
+    let (rx, ry, rw, rh) = (470.0, 70.0, 210.0, 280.0);
+    svg += &format!("<rect x=\"{rx}\" y=\"{ry}\" width=\"{rw}\" height=\"{rh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let n_max = 3.0;
+    let syn = |n: f64| ry + rh * (1.0 - n / n_max);
+    let sxa = |a: f64| rx + (a.log10() + 1.2) / 2.0 * rw;
+    for n in [1.0, 1.5, 2.0, 2.5, 3.0] {
+        svg += &hline(rx, rx + rw, syn(n), GRID, "0.3");
+        svg += &label(rx - 3.0, syn(n) + 3.0, &format!("{:.1}", n), MUTED, 6, "end");
+    }
+    for d in &designs {
+        if !d.has_column || d.n_min == 0.0 { continue; }
+        let r_pass = passive_reflux_ratio(heat_kw, col_od, t_col, t_amb, d.insulation_mm, k_ins);
+        let mut pts = Vec::new();
+        let mut a = 0.06_f64;
+        while a <= 5.0 {
+            let n = compound_n_eff(a, r_pass, d.n_min);
+            let x = sxa(a);
+            if x >= rx && x <= rx + rw { pts.push(format!("{:.1},{:.1}", x, syn(n))); }
+            a *= 1.05;
+        }
+        svg += &format!("<polyline points=\"{}\" fill=\"none\" stroke=\"{}\" stroke-width=\"2\"/>\n", pts.join(" "), d.color);
+        svg += &label(rx + rw + 3.0, syn(compound_n_eff(0.1, r_pass, d.n_min)), d.name, d.color, 6, "start");
+    }
+    let r_pass_bare = passive_reflux_ratio(heat_kw, col_od, t_col, t_amb, 0.0, k_ins);
+    for c in &db {
+        if c.alpha < 0.06 || c.alpha > 5.0 { continue; }
+        let n = compound_n_eff(c.alpha, r_pass_bare, 1.0);
+        let (x, y) = (sxa(c.alpha), syn(n));
+        if x >= rx && x <= rx + rw && y >= ry && y <= ry + rh {
+            svg += &format!("<circle cx=\"{x:.1}\" cy=\"{y:.1}\" r=\"2.5\" fill=\"{YELLOW}\" opacity=\"0.8\"/>\n");
+            svg += &label(x + 4.0, y + 3.0, c.name, MUTED, 5, "start");
+        }
+    }
+    // Legend + footer
+    let ley = h - 80.0;
+    for (di, d) in designs.iter().enumerate() {
+        let bx = 80.0 + di as f64 * 160.0;
+        svg += &format!("<rect x=\"{bx}\" y=\"{ley}\" width=\"10\" height=\"10\" fill=\"{}\" opacity=\"0.85\" rx=\"1\"/>\n", d.color);
+        svg += &label(bx + 14.0, ley + 9.0, d.name, d.color, 7, "start");
+    }
+    svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"48\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", y = h - 58.0);
+    svg += &label(350.0, h - 40.0, "Passive reflux from heat loss: heavy congeners (\u{03b1}<0.3) see higher effective N", ACCENT, 8, "middle");
+    svg += &label(350.0, h - 26.0, "Insulating the column reduces passive reflux \u{2192} improves heavy congener recovery", GREEN, 8, "middle");
+    svg += &label(350.0, h - 12.0, "Model: N_eff(i) = 1 + N_min \u{00d7} (R_passive/\u{03b1}_i) / (1 + R_passive/\u{03b1}_i)", MUTED, 6, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+fn sim_v2_heat_loss() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig V2-2 \u{2014} Column Heat Loss \u{2192} Passive Reflux \u{2192} Congener Stripping");
+    let (col_od, k_ins, t_col, t_amb, heat_kw) = (0.102, 0.04, 80.0, 22.0, 3.0);
+    svg += &label(200.0, 57.0, "A: Column Heat Loss vs Insulation", TEXT, 10, "middle");
+    let (px, py, pw, ph) = (80.0, 75.0, 250.0, 260.0);
+    svg += &format!("<rect x=\"{px}\" y=\"{py}\" width=\"{pw}\" height=\"{ph}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let (max_q, max_ins) = (250.0, 50.0);
+    let sx = |ins: f64| px + ins / max_ins * pw;
+    let sy = |q: f64| py + ph * (1.0 - q / max_q);
+    for q in [0, 50, 100, 150, 200, 250] {
+        svg += &hline(px, px + pw, sy(q as f64), GRID, "0.3");
+        svg += &label(px - 4.0, sy(q as f64) + 3.0, &format!("{}W", q), MUTED, 6, "end");
+    }
+    for ins in [0, 10, 20, 30, 40, 50] {
+        let x = sx(ins as f64);
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", py + ph, py + ph + 4.0);
+        svg += &label(x, py + ph + 14.0, &format!("{}mm", ins), MUTED, 6, "middle");
+    }
+    svg += &label(px + pw / 2.0, py + ph + 28.0, "Insulation thickness", MUTED, 8, "middle");
+    let mut pts = Vec::new();
+    for i in 0..=100 {
+        let ins = i as f64 * 0.5;
+        let q = column_heat_loss(col_od, 0.305, t_col, t_amb, ins, k_ins) + column_heat_loss(col_od, 0.152, t_col, t_amb, ins, k_ins) + column_heat_loss(col_od * 0.7, 0.05, t_col, t_amb, ins, k_ins);
+        pts.push(format!("{:.1},{:.1}", sx(ins), sy(q)));
+    }
+    svg += &format!("<polyline points=\"{}\" fill=\"none\" stroke=\"{RED}\" stroke-width=\"2.5\"/>\n", pts.join(" "));
+    let q_bare = column_heat_loss(col_od, 0.305, t_col, t_amb, 0.0, k_ins) + column_heat_loss(col_od, 0.152, t_col, t_amb, 0.0, k_ins) + column_heat_loss(col_od * 0.7, 0.05, t_col, t_amb, 0.0, k_ins);
+    let q_ins = column_heat_loss(col_od, 0.305, t_col, t_amb, 25.0, k_ins) + column_heat_loss(col_od, 0.152, t_col, t_amb, 25.0, k_ins) + column_heat_loss(col_od * 0.7, 0.05, t_col, t_amb, 25.0, k_ins);
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{RED}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n", sx(0.0), sy(q_bare));
+    svg += &label(sx(0.0) + 8.0, sy(q_bare) - 5.0, &format!("Bare: {:.0}W", q_bare), RED, 7, "start");
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{GREEN}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n", sx(25.0), sy(q_ins));
+    svg += &label(sx(25.0) + 8.0, sy(q_ins) + 10.0, &format!("25mm: {:.0}W", q_ins), GREEN, 7, "start");
+    // Panel B: N_eff vs bp
+    svg += &label(540.0, 57.0, "B: N_eff vs Boiling Point", TEXT, 10, "middle");
+    let (bx, by, bw, bh) = (440.0, 75.0, 230.0, 260.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"{bw}\" height=\"{bh}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let (n_max, bp_max) = (2.5, 260.0);
+    let sxb = |bp: f64| bx + bp / bp_max * bw;
+    let syb = |n: f64| by + bh * (1.0 - n / n_max);
+    for n in [1.0, 1.5, 2.0, 2.5] {
+        svg += &hline(bx, bx + bw, syb(n), GRID, "0.3");
+        svg += &label(bx - 3.0, syb(n) + 3.0, &format!("{:.1}", n), MUTED, 6, "end");
+    }
+    svg += &label(bx + bw / 2.0, by + bh + 14.0, "Boiling point (\u{00b0}C)", MUTED, 7, "middle");
+    let r_bare = passive_reflux_ratio(heat_kw, col_od, t_col, t_amb, 0.0, k_ins);
+    let r_ins = passive_reflux_ratio(heat_kw, col_od, t_col, t_amb, 25.0, k_ins);
+    let db = congener_db();
+    for c in &db {
+        let n_bare = compound_n_eff(c.alpha, r_bare, 1.0);
+        let n_insul = compound_n_eff(c.alpha, r_ins, 1.0);
+        let x = sxb(c.bp_c);
+        if x >= bx && x <= bx + bw {
+            svg += &format!("<circle cx=\"{x:.1}\" cy=\"{:.1}\" r=\"3.5\" fill=\"{YELLOW}\" opacity=\"0.8\"/>\n", syb(n_bare));
+            svg += &format!("<circle cx=\"{x:.1}\" cy=\"{:.1}\" r=\"3.5\" fill=\"{GREEN}\" opacity=\"0.8\"/>\n", syb(n_insul));
+            svg += &label(x + 5.0, syb(n_bare) - 2.0, c.name, MUTED, 5, "start");
+        }
+    }
+    svg += &format!("<line x1=\"{bx}\" y1=\"{:.1}\" x2=\"{}\" y2=\"{:.1}\" stroke=\"{RED}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n", syb(1.0), bx + bw, syb(1.0));
+    svg += &label(bx + bw + 3.0, syb(1.0) + 3.0, "Pot still", RED, 6, "start");
+    svg += &format!("<!-- Heat loss: bare={:.0}W R={:.4}, ins={:.0}W R={:.4} -->\n", q_bare, r_bare, q_ins, r_ins);
+    svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", y = h - 50.0);
+    svg += &label(350.0, h - 32.0, &format!("Bare: {:.0}W \u{2192} R={:.3} | 25mm insulated: {:.0}W \u{2192} R={:.3}", q_bare, r_bare, q_ins, r_ins), ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0, "Higher bp = lower \u{03b1} = more passive reflux stripping. Insulation is the fix.", GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+fn sim_v2_yield() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig V2-3 \u{2014} Yield Mass Balance: Ethanol Accounting");
+    svg += &label(250.0, 57.0, "A: Ethanol Mass Balance (10 gal wash, 10% ABV)", TEXT, 10, "middle");
+    let (charge_gal, charge_abv) = (10.0, 0.10);
+    let etoh_in = charge_gal * charge_abv;
+    let strip_recovery = 0.90;
+    let strip_etoh = etoh_in * strip_recovery;
+    let (strip_abv, hearts_abv) = (0.45, 0.66);
+    let strip_vol = strip_etoh / strip_abv;
+    let stillage_etoh = etoh_in * (1.0 - strip_recovery);
+    let hearts_etoh = strip_etoh * 0.55;
+    let hearts_vol = hearts_etoh / hearts_abv;
+    let (bx, by, box_h) = (60.0, 75.0, 35.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by}\" width=\"120\" height=\"{box_h}\" rx=\"3\" fill=\"{BLUE}\" opacity=\"0.2\" stroke=\"{BLUE}\" stroke-width=\"1\"/>\n");
+    svg += &label(bx + 60.0, by + 14.0, &format!("{:.0}gal @ {:.0}%ABV", charge_gal, charge_abv * 100.0), BLUE, 7, "middle");
+    svg += &label(bx + 60.0, by + 26.0, &format!("{:.2}gal EtOH", etoh_in), BLUE, 7, "middle");
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{ACCENT}\" stroke-width=\"1.5\"/>\n", bx+120.0, by+box_h/2.0, bx+140.0, by+box_h/2.0);
+    let sx2 = bx + 145.0;
+    svg += &format!("<rect x=\"{sx2}\" y=\"{by}\" width=\"130\" height=\"{box_h}\" rx=\"3\" fill=\"{ACCENT}\" opacity=\"0.2\" stroke=\"{ACCENT}\" stroke-width=\"1\"/>\n");
+    svg += &label(sx2 + 65.0, by + 14.0, "STRIP RUN", ACCENT, 7, "middle");
+    svg += &label(sx2 + 65.0, by + 26.0, &format!("90% \u{2192} {:.1}gal LW@{:.0}%", strip_vol, strip_abv*100.0), ACCENT, 6, "middle");
+    svg += &label(sx2 + 65.0, by + box_h + 15.0, &format!("\u{2193} {:.2}gal lost", stillage_etoh), RED, 6, "middle");
+    svg += &format!("<line x1=\"{}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"{ACCENT}\" stroke-width=\"1.5\"/>\n", sx2+130.0, by+box_h/2.0, sx2+150.0, by+box_h/2.0);
+    let (sr_x, sr_w) = (sx2 + 155.0, 200.0);
+    let fracs: Vec<(&str, f64, &str)> = vec![("Foreshots", 0.03, RED), ("Heads", 0.12, YELLOW), ("HEARTS", 0.55, GREEN), ("Tails", 0.20, YELLOW), ("Stillage", 0.10, MUTED)];
+    let total_h = 200.0;
+    let mut cum_y = by;
+    for (lbl, frac, color) in &fracs {
+        let fh = frac * total_h;
+        svg += &format!("<rect x=\"{sr_x}\" y=\"{cum_y:.1}\" width=\"{sr_w}\" height=\"{fh:.1}\" fill=\"{color}\" opacity=\"0.25\" stroke=\"{color}\" stroke-width=\"1\"/>\n");
+        svg += &label(sr_x + sr_w / 2.0, cum_y + fh / 2.0 + 4.0, &format!("{} ({:.0}%)", lbl, frac * 100.0), color, 6, "middle");
+        cum_y += fh;
+    }
+    svg += &label(sr_x + sr_w / 2.0, by - 8.0, "Spirit Run: Ethanol Fractions", TEXT, 8, "middle");
+    let res_y = by + total_h + 20.0;
+    svg += &format!("<rect x=\"{sr_x}\" y=\"{res_y}\" width=\"{sr_w}\" height=\"40\" rx=\"4\" fill=\"{GREEN}\" opacity=\"0.15\" stroke=\"{GREEN}\" stroke-width=\"1.5\"/>\n");
+    svg += &label(sr_x + sr_w / 2.0, res_y + 16.0, &format!("Hearts: {:.2}gal EtOH @ ~{:.0}%ABV", hearts_etoh, hearts_abv*100.0), GREEN, 8, "middle");
+    svg += &label(sr_x + sr_w / 2.0, res_y + 30.0, &format!("= {:.2}gal spirit ({:.1}L)", hearts_vol, hearts_vol * 3.785), GREEN, 7, "middle");
+    let ty = h - 160.0;
+    svg += &label(350.0, ty, "B: Expected Yield by Scenario", TEXT, 10, "middle");
+    let scenarios: Vec<(&str, &str, &str, &str)> = vec![
+        ("Single-pass from 10gal wash", "10gal@10%", "~0.8\u{2013}1.2 gal", "55\u{2013}65%"),
+        ("Two-pass (strip+spirit)", "10gal@10%", "~0.6\u{2013}0.9 gal", "65\u{2013}72%"),
+        ("Spirit from 8gal low wines", "8gal@25\u{2013}45%", "~1.5\u{2013}2.5 gal", "65\u{2013}72%"),
+    ];
+    let col_xs = [70.0, 250.0, 400.0, 540.0];
+    let headers = ["Scenario", "Charge", "Hearts Yield", "Hearts ABV"];
+    for (i, hdr) in headers.iter().enumerate() { svg += &label(col_xs[i], ty + 18.0, hdr, ACCENT, 7, "start"); }
+    svg += &hline(70.0, 640.0, ty + 22.0, MUTED, "0.5");
+    for (i, (scen, charge, yld, abv)) in scenarios.iter().enumerate() {
+        let ry = ty + 34.0 + i as f64 * 18.0;
+        svg += &label(col_xs[0], ry, scen, TEXT, 6, "start");
+        svg += &label(col_xs[1], ry, charge, MUTED, 6, "start");
+        svg += &label(col_xs[2], ry, yld, GREEN, 7, "start");
+        svg += &label(col_xs[3], ry, abv, MUTED, 6, "start");
+    }
+    svg += &label(350.0, ty + 100.0, &format!("Mass balance: 10gal\u{00d7}10%ABV / 65% = {:.2}gal theoretical max", 10.0*0.10/0.65), ACCENT, 7, "middle");
+    svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", y = h - 50.0);
+    svg += &label(350.0, h - 32.0, "Practical yield = charge\u{00d7}ABV / hearts_ABV \u{00d7} 0.5\u{2013}0.7 (recovery)", ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0, "Wider CRO hearts cut (55% vs 40%) increases yield ~30% vs pot still", GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+fn sim_v2_dms_comparison() -> String {
+    let w = 700.0_f64; let h = 480.0_f64;
+    let mut svg = svg_header(w, h, "Fig V2-4 \u{2014} DMS Removal: Four Design Variants");
+    let (heat_kw, col_id_cm) = (3.0, 9.9);
+    let v_s = vapor_velocity(heat_kw, col_id_cm);
+    let wash_dms = 50.0;
+    let designs = design_variants();
+    let (col_od, t_col, t_amb, k_ins) = (0.102, 80.0, 22.0, 0.04);
+    svg += &label(200.0, 57.0, "A: DMS in Hearts by Design", TEXT, 10, "middle");
+    let (px, py, pw, ph) = (80.0, 75.0, 250.0, 260.0);
+    svg += &format!("<rect x=\"{px}\" y=\"{py}\" width=\"{pw}\" height=\"{ph}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    struct DmsR { name: String, color: String, cu_pct: f64, dms_ppb: f64 }
+    let mut results: Vec<DmsR> = Vec::new();
+    for d in &designs {
+        let r_pass = if d.has_column { passive_reflux_ratio(heat_kw, col_od, t_col, t_amb, d.insulation_mm, k_ins) } else { 0.0 };
+        let n_dms = if d.has_column && d.n_min > 0.0 { compound_n_eff(2.40, r_pass, d.n_min) } else if d.n_min > 0.0 { d.n_min } else { 1.0 };
+        let raw = rayleigh_recovery(2.40, n_dms, d.f1, d.f2);
+        let cu = if d.pfr_k_eff > 0.0 { pfr_dms_removal(d.pfr_k_eff, d.pfr_a_s, d.pfr_packed_cm, v_s) } else { d.cu_mesh_removal };
+        results.push(DmsR { name: d.name.to_string(), color: d.color.to_string(), cu_pct: cu*100.0, dms_ppb: wash_dms * raw / (d.f2-d.f1) * (1.0-cu) });
+    }
+    let max_dms = 50.0;
+    let sy = |v: f64| py + ph * (1.0 - v / max_dms);
+    for p in [0, 10, 20, 30, 40, 50] {
+        svg += &hline(px, px + pw, sy(p as f64), GRID, "0.3");
+        svg += &label(px - 4.0, sy(p as f64) + 3.0, &format!("{}", p), MUTED, 6, "end");
+    }
+    svg += &format!("<line x1=\"{px}\" y1=\"{:.1}\" x2=\"{}\" y2=\"{:.1}\" stroke=\"{ACCENT}\" stroke-width=\"1\" stroke-dasharray=\"4,3\"/>\n", sy(25.0), px+pw, sy(25.0));
+    svg += &label(px + pw + 3.0, sy(25.0) + 3.0, "25ppb threshold", ACCENT, 6, "start");
+    let bar_w = 50.0;
+    for (i, r) in results.iter().enumerate() {
+        let bx = px + 15.0 + i as f64 * 60.0;
+        let bh = (r.dms_ppb / max_dms * ph).max(2.0);
+        svg += &format!("<rect x=\"{bx:.1}\" y=\"{:.1}\" width=\"{bar_w}\" height=\"{bh:.1}\" fill=\"{}\" opacity=\"0.85\" rx=\"2\"/>\n", sy(r.dms_ppb), r.color);
+        svg += &label(bx + bar_w / 2.0, sy(r.dms_ppb) - 6.0, &format!("{:.0}ppb", r.dms_ppb), &r.color, 7, "middle");
+        svg += &label(bx + bar_w / 2.0, py + ph + 12.0, &r.name, &r.color, 6, "middle");
+        svg += &label(bx + bar_w / 2.0, py + ph + 22.0, &format!("Cu:{:.0}%", r.cu_pct), MUTED, 5, "middle");
+    }
+    // Panel B: PFR curves
+    svg += &label(540.0, 57.0, "B: PFR Removal vs Packed Height", TEXT, 10, "middle");
+    let (bx2, by2, bw2, bh2) = (430.0, 75.0, 240.0, 260.0);
+    svg += &format!("<rect x=\"{bx2}\" y=\"{by2}\" width=\"{bw2}\" height=\"{bh2}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let max_inch = 24.0;
+    let sxp = |i: f64| bx2 + i / max_inch * bw2;
+    let syp = |p: f64| by2 + bh2 * (1.0 - p / 100.0);
+    for p in [0, 20, 40, 60, 80, 100] {
+        svg += &hline(bx2, bx2 + bw2, syp(p as f64), GRID, "0.3");
+        svg += &label(bx2 - 4.0, syp(p as f64) + 3.0, &format!("{}%", p), MUTED, 6, "end");
+    }
+    for inch in [0, 6, 12, 18, 24] {
+        let x = sxp(inch as f64);
+        svg += &format!("<line x1=\"{x}\" y1=\"{}\" x2=\"{x}\" y2=\"{}\" stroke=\"{MUTED}\" stroke-width=\"0.5\"/>\n", by2+bh2, by2+bh2+4.0);
+        svg += &label(x, by2 + bh2 + 14.0, &format!("{}\"", inch), MUTED, 6, "middle");
+    }
+    svg += &label(bx2 + bw2 / 2.0, by2 + bh2 + 28.0, "Packed height (inches)", MUTED, 7, "middle");
+    let a_s = 7.0;
+    let mut band_top = Vec::new(); let mut band_bot = Vec::new();
+    for i in 0..=96 {
+        let (inches, cm) = (i as f64 * 0.25, i as f64 * 0.25 * 2.54);
+        band_top.push(format!("{:.1},{:.1}", sxp(inches), syp(pfr_dms_removal(0.24, a_s, cm, v_s)*100.0)));
+        band_bot.push(format!("{:.1},{:.1}", sxp(inches), syp(pfr_dms_removal(0.08, a_s, cm, v_s)*100.0)));
+    }
+    band_bot.reverse();
+    svg += &format!("<polygon points=\"{} {}\" fill=\"{GREEN}\" opacity=\"0.15\"/>\n", band_top.join(" "), band_bot.join(" "));
+    let mut pts = Vec::new();
+    for i in 0..=96 {
+        let (inches, cm) = (i as f64 * 0.25, i as f64 * 0.25 * 2.54);
+        pts.push(format!("{:.1},{:.1}", sxp(inches), syp(pfr_dms_removal(0.16, a_s, cm, v_s)*100.0)));
+    }
+    svg += &format!("<polyline points=\"{}\" fill=\"none\" stroke=\"{GREEN}\" stroke-width=\"2.5\"/>\n", pts.join(" "));
+    let dr = pfr_dms_removal(0.16, a_s, 30.5, v_s) * 100.0;
+    svg += &format!("<circle cx=\"{:.1}\" cy=\"{:.1}\" r=\"5\" fill=\"{GREEN}\" stroke=\"{TEXT}\" stroke-width=\"1.5\"/>\n", sxp(12.0), syp(dr));
+    svg += &label(sxp(12.0) + 8.0, syp(dr) - 5.0, &format!("Design: {:.0}%", dr), GREEN, 7, "start");
+    svg += &format!("<line x1=\"{bx2}\" y1=\"{:.1}\" x2=\"{}\" y2=\"{:.1}\" stroke=\"{RED}\" stroke-width=\"1.5\" stroke-dasharray=\"6,4\"/>\n", syp(45.0), bx2+bw2, syp(45.0));
+    svg += &label(bx2 + bw2 - 5.0, syp(45.0) - 6.0, "Cu mesh (~45%)", RED, 6, "end");
+    svg += &format!("<!-- v_s={:.1}cm/s, design PFR={:.1}% -->\n", v_s, dr);
+    svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"38\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", y = h - 50.0);
+    svg += &label(350.0, h - 32.0, "CuO-mediated: DMS + CuO \u{2192} DMSO (stoichiometric, regen by air)", ACCENT, 8, "middle");
+    svg += &label(350.0, h - 18.0, "Cu mesh in pot: simpler, cheaper | Column Cu: more capacity, higher removal", GREEN, 8, "middle");
+    svg.push_str("</svg>"); svg
+}
+
+fn sim_v2_design_summary() -> String {
+    let w = 700.0_f64; let h = 580.0_f64;
+    let mut svg = svg_header(w, h, "Fig V2-5 \u{2014} Design Variant Comparison: Flavor \u{00d7} Purity \u{00d7} Cost");
+    let db = congener_db();
+    let designs = design_variants();
+    let (heat_kw, col_od, col_id_cm) = (3.0, 0.102, 9.9);
+    let (t_col, t_amb, k_ins) = (80.0, 22.0, 0.04);
+    let v_s = vapor_velocity(heat_kw, col_id_cm);
+    let wash_dms = 50.0;
+    struct DM { name: String, color: String, light: f64, heavy: f64, dms: f64, fusel: f64, cost: f64 }
+    let mut metrics: Vec<DM> = Vec::new();
+    for d in &designs {
+        let r_pass = if d.has_column { passive_reflux_ratio(heat_kw, col_od, t_col, t_amb, d.insulation_mm, k_ins) } else { 0.0 };
+        let cu = if d.pfr_k_eff > 0.0 { pfr_dms_removal(d.pfr_k_eff, d.pfr_a_s, d.pfr_packed_cm, v_s) } else { d.cu_mesh_removal };
+        let (mut ls, mut ln, mut hs, mut hn, mut fu, mut dm) = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        for c in &db {
+            let ne = if d.has_column && d.n_min > 0.0 { compound_n_eff(c.alpha, r_pass, d.n_min) } else if d.n_min > 0.0 { d.n_min } else { 1.0 };
+            let r = rayleigh_recovery(c.alpha, ne, d.f1, d.f2);
+            if c.name == "DMS" { dm = wash_dms * r / (d.f2-d.f1) * (1.0-cu); }
+            else if c.name == "IAmOH" { fu = r * 100.0; }
+            else if c.desirable && c.alpha >= 0.7 { ls += r * 100.0; ln += 1.0; }
+            else if c.desirable && c.alpha < 0.3 { hs += r * 100.0; hn += 1.0; }
+        }
+        metrics.push(DM { name: d.name.to_string(), color: d.color.to_string(),
+            light: if ln > 0.0 { ls/ln } else { 0.0 }, heavy: if hn > 0.0 { hs/hn } else { 0.0 },
+            dms: dm, fusel: fu, cost: (d.cost_low + d.cost_high) as f64 / 2.0 });
+    }
+    svg += &label(350.0, 57.0, "Design Variant Scorecard", TEXT, 10, "middle");
+    let hdrs = ["", "Light esters", "Heavy esters", "DMS (ppb)", "Fusel (%)", "Cost ($)"];
+    let (col_w, row_h, tx, ty) = (105.0, 28.0, 60.0, 75.0);
+    for (i, h) in hdrs.iter().enumerate() { svg += &label(tx + i as f64 * col_w + col_w/2.0, ty + 14.0, h, ACCENT, 7, "middle"); }
+    svg += &hline(tx, tx + hdrs.len() as f64 * col_w, ty + 20.0, MUTED, "0.5");
+    for (di, m) in metrics.iter().enumerate() {
+        let ry = ty + 28.0 + di as f64 * row_h;
+        svg += &format!("<rect x=\"{tx}\" y=\"{:.1}\" width=\"{}\" height=\"{row_h}\" fill=\"{}\" opacity=\"0.08\"/>\n", ry-row_h+8.0, hdrs.len() as f64*col_w, m.color);
+        svg += &label(tx + col_w/2.0, ry, &m.name, &m.color, 7, "middle");
+        svg += &label(tx + 1.5*col_w, ry, &format!("{:.0}%", m.light), TEXT, 7, "middle");
+        svg += &label(tx + 2.5*col_w, ry, &format!("{:.0}%", m.heavy), TEXT, 7, "middle");
+        let dc = if m.dms <= 25.0 { GREEN } else { RED };
+        svg += &label(tx + 3.5*col_w, ry, &format!("{:.0}", m.dms), dc, 7, "middle");
+        svg += &label(tx + 4.5*col_w, ry, &format!("{:.0}%", m.fusel), YELLOW, 7, "middle");
+        svg += &label(tx + 5.5*col_w, ry, &format!("${:.0}", m.cost), MUTED, 7, "middle");
+    }
+    // Full congener bar chart
+    let panel_y = ty + 28.0 + metrics.len() as f64 * row_h + 40.0;
+    svg += &label(350.0, panel_y, "Full Congener Profile by Design", TEXT, 10, "middle");
+    let (bx, by2, bw, bh2) = (60.0, panel_y + 15.0, 580.0, 200.0);
+    svg += &format!("<rect x=\"{bx}\" y=\"{by2}\" width=\"{bw}\" height=\"{bh2}\" fill=\"none\" stroke=\"{MUTED}\" stroke-width=\"1\"/>\n");
+    let max_r = 70.0;
+    let sy = |v: f64| by2 + bh2 * (1.0 - v / max_r);
+    for p in [0, 20, 40, 60] {
+        svg += &hline(bx, bx + bw, sy(p as f64), GRID, "0.3");
+        svg += &label(bx - 3.0, sy(p as f64) + 3.0, &format!("{}%", p), MUTED, 6, "end");
+    }
+    let plot_c: Vec<usize> = db.iter().enumerate().filter(|(_, c)| c.desirable || c.name == "DMS" || c.name == "IAmOH").map(|(i,_)| i).collect();
+    let (nc, nd) = (plot_c.len() as f64, designs.len() as f64);
+    let (gw, barw) = (bw / nc, bw / nc / (nd + 1.0));
+    for (gi, &ci) in plot_c.iter().enumerate() {
+        let gx = bx + gi as f64 * gw;
+        for (di, d) in designs.iter().enumerate() {
+            let rp = if d.has_column { passive_reflux_ratio(heat_kw, col_od, t_col, t_amb, d.insulation_mm, k_ins) } else { 0.0 };
+            let ne = if d.has_column && d.n_min > 0.0 { compound_n_eff(db[ci].alpha, rp, d.n_min) } else if d.n_min > 0.0 { d.n_min } else { 1.0 };
+            let mut val = rayleigh_recovery(db[ci].alpha, ne, d.f1, d.f2) * 100.0;
+            if db[ci].name == "DMS" {
+                let cu = if d.pfr_k_eff > 0.0 { pfr_dms_removal(d.pfr_k_eff, d.pfr_a_s, d.pfr_packed_cm, v_s) } else { d.cu_mesh_removal };
+                val *= 1.0 - cu;
+            }
+            let bar_x = gx + (di as f64 + 0.5) * barw;
+            let bar_h = (val / max_r * bh2).max(1.0);
+            svg += &format!("<rect x=\"{bar_x:.1}\" y=\"{:.1}\" width=\"{barw:.1}\" height=\"{bar_h:.1}\" fill=\"{}\" opacity=\"0.8\" rx=\"1\"/>\n", sy(val), d.color);
+        }
+        svg += &label(gx + gw/2.0, by2 + bh2 + 12.0, db[ci].name, TEXT, 6, "middle");
+        let note = if db[ci].name == "DMS" { "(after Cu)" } else if db[ci].name == "IAmOH" { "(fusel)" } else { db[ci].flavor };
+        svg += &label(gx + gw/2.0, by2 + bh2 + 22.0, note, MUTED, 5, "middle");
+    }
+    let ley = h - 80.0;
+    for (di, d) in designs.iter().enumerate() {
+        let lx = 80.0 + di as f64 * 160.0;
+        svg += &format!("<rect x=\"{lx}\" y=\"{ley}\" width=\"10\" height=\"10\" fill=\"{}\" opacity=\"0.85\" rx=\"1\"/>\n", d.color);
+        svg += &label(lx + 14.0, ley + 9.0, d.name, d.color, 7, "start");
+    }
+    svg += &format!("<rect x=\"60\" y=\"{y}\" width=\"580\" height=\"48\" rx=\"4\" fill=\"{GRID}\" opacity=\"0.85\"/>\n", y = h - 58.0);
+    svg += &label(350.0, h - 42.0, "Pot+mesh: best body, adequate DMS | CRO insulated: best light esters + DMS", ACCENT, 8, "middle");
+    svg += &label(350.0, h - 28.0, "CRO bare: loses heavy congeners | 6-plate (low R): strips flavor", YELLOW, 7, "middle");
+    svg += &label(350.0, h - 14.0, "Model: compound-specific N_eff from heat-loss passive reflux", MUTED, 6, "middle");
     svg.push_str("</svg>"); svg
 }

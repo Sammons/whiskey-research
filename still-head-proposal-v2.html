@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRO-10 V2 — Still Head Design: Four-Variant Comparison</title>
+<style>
+:root {
+  --bg: #161b22; --surface: #1c2129; --surface2: #30363d;
+  --text: #e6edf3; --muted: #8b949e; --accent: #e8a665;
+  --green: #3fb950; --red: #f85149; --blue: #58a6ff;
+  --purple: #bc8cff; --yellow: #d29922; --cyan: #39d2c0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.65; max-width: 960px; margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+h1 { color: var(--accent); font-size: 1.8rem; margin-bottom: 0.3rem; }
+h2 { color: var(--accent); font-size: 1.35rem; margin-top: 2.5rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.3rem; }
+h3 { color: var(--green); font-size: 1.1rem; margin-top: 1.8rem; }
+p, li { color: var(--text); margin-top: 0.6rem; }
+em { color: var(--muted); }
+strong { color: var(--accent); }
+a { color: var(--blue); }
+figure { margin: 1.2rem 0; }
+figure object, figure img { width: 100%; border: 1px solid var(--surface2); border-radius: 4px; }
+figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--surface2); padding: 0.4rem 0.6rem; font-size: 0.88rem; }
+th { background: var(--surface2); color: var(--accent); text-align: left; }
+td { background: var(--surface); }
+.callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 0.8rem 1rem; margin: 1.2rem 0; border-radius: 0 4px 4px 0; }
+.callout.warn { border-left-color: var(--red); }
+.callout.key { border-left-color: var(--green); }
+ol, ul { padding-left: 1.5rem; }
+code { background: var(--surface2); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; }
+.subtitle { color: var(--muted); font-size: 1.1rem; margin-bottom: 2rem; }
+.ref { color: var(--muted); font-size: 0.82rem; }
+sup { color: var(--blue); font-size: 0.75rem; }
+</style>
+</head>
+<body>
+
+<h1>CRO-10 Still Head &mdash; V2</h1>
+<p class="subtitle">Four-Variant Design Comparison with Compound-Specific Passive Reflux Model</p>
+
+<div class="callout warn">
+<strong>LEGAL:</strong> Federal Distilled Spirits Permit (DSP) required in USA (27 CFR &sect;19).
+Check your jurisdiction's laws before building or operating a still.
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>1. Executive Summary</h2>
+<!-- ═══════════════════════════════════════════════ -->
+
+<p>This V2 design study compares <strong>four still head configurations</strong> for a 10-gallon copper pot still, evaluated against compound-specific congener transport, DMS removal, yield, and cost. The key V2 advance is a <strong>compound-specific passive reflux model</strong> that correctly accounts for heat-loss-driven reflux in packed columns &mdash; a phenomenon that disproportionately strips heavy congeners (body, depth compounds) from the distillate.</p>
+
+<h3>1.1 The Four Variants</h3>
+
+<table>
+<tr><th>Variant</th><th>Description</th><th>DMS Strategy</th><th>Est. Cost</th></tr>
+<tr><td style="color:var(--red)"><strong>Pot + Cu mesh</strong></td>
+    <td>Traditional pot still with 1.5 reams Cu mesh in body</td>
+    <td>Cu mesh in pot (~45% removal)</td>
+    <td>$80&ndash;160</td></tr>
+<tr><td style="color:var(--yellow)"><strong>CRO bare</strong></td>
+    <td>4" Cu packed column (12" Raschig), uninsulated</td>
+    <td>CuO-mediated PFR in column</td>
+    <td>$500&ndash;800</td></tr>
+<tr><td style="color:var(--green)"><strong>CRO insulated</strong></td>
+    <td>Same column + 25mm fiberglass insulation</td>
+    <td>CuO-mediated PFR in column</td>
+    <td>$520&ndash;830</td></tr>
+<tr><td style="color:var(--blue)"><strong>6-plate (low R)</strong></td>
+    <td>6-plate column at low reflux (N_eff&asymp;3)</td>
+    <td>None (DMS passes through)</td>
+    <td>$300&ndash;600</td></tr>
+</table>
+
+<h3>1.2 Key Finding: Insulation Is Essential</h3>
+
+<div class="callout key">
+<strong>Critical insight:</strong> An uninsulated 4" copper column loses ~114W through natural convection and radiation.
+This creates passive reflux (R&asymp;0.038) that selectively strips heavy congeners &mdash; the very compounds
+(2-phenylethanol, ethyl octanoate, furfural) that give whiskey its body and depth. <strong>25mm fiberglass insulation</strong>
+reduces heat loss to ~13W (R&asymp;0.004), making the CRO column competitive with or superior to a pot still
+on <em>every</em> desirable compound while maintaining its DMS removal advantage.
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>2. Physics Models</h2>
+<!-- ═══════════════════════════════════════════════ -->
+
+<h3>2.1 Rayleigh Batch Distillation</h3>
+
+<p>Recovery of compound <em>i</em> in the hearts cut [f<sub>1</sub>, f<sub>2</sub>] from the Rayleigh equation:</p>
+<p><code>Recovery_i = (1 &minus; f1)^E_i &minus; (1 &minus; f2)^E_i</code> where <code>E_i = &alpha;<sub>rel</sub><sup>N_eff</sup></code></p>
+<p>Relative volatility &alpha; = K<sub>i</sub>/K<sub>ethanol</sub> governs which compounds concentrate in the distillate (&alpha;&gt;1) versus the pot (&alpha;&lt;1).<sup>[1,2]</sup></p>
+
+<h3>2.2 Compound-Specific Passive Reflux</h3>
+
+<p>The V2 model introduces compound-dependent effective stages. In a packed column with no external reflux,
+heat loss from the column wall causes some vapor to condense on the packing surfaces. This condensate
+preferentially contains heavy compounds (low &alpha;) because they have higher dew points. The effective
+reflux ratio seen by compound <em>i</em> is:</p>
+
+<p><code>R_eff(i) = R_passive / &alpha;_i</code></p>
+<p><code>N_eff(i) = 1 + N_min &times; R_eff(i) / (1 + R_eff(i))</code></p>
+
+<p>Where <code>R_passive = Q_loss / (&Delta;H_vap &times; ṁ_vapor)</code> is the overall passive reflux ratio from heat loss,
+and <code>N_min</code> is the theoretical plates at total reflux from packing HETP.</p>
+
+<p><strong>Physical interpretation:</strong> A compound with &alpha;=0.10 (2-phenylethanol) sees an effective
+reflux ratio of R_passive/0.10 = 10&times; the average. It experiences significantly more theoretical stages
+and is therefore stripped much more severely than a light compound with &alpha;=1.40 (ethyl acetate, R_eff = R/1.4).</p>
+
+<h3>2.3 Heat Transfer Model</h3>
+
+<p>Column heat loss by combined convection and radiation from an uninsulated (or insulated) vertical cylinder:</p>
+<ul>
+<li><strong>Convection:</strong> h_conv &asymp; 7 W/(m&sup2;&middot;K) for natural convection on a vertical cylinder with mild air movement (Churchill-Chu gives ~5.5 for still air; 7 accounts for outdoor breeze)<sup>[7]</sup></li>
+<li><strong>Radiation:</strong> h_rad = &epsilon;&sigma;(T<sub>col</sub>&sup2; + T<sub>amb</sub>&sup2;)(T<sub>col</sub> + T<sub>amb</sub>) with &epsilon;&asymp;0.7 for oxidized Cu</li>
+<li><strong>Insulation:</strong> Series thermal resistance R_ins = t/k, where k&asymp;0.04 W/(m&middot;K) for fiberglass</li>
+</ul>
+
+<p>For the CRO column (OD=102mm, packed section 305mm + dephleg 152mm + reducer 50mm):</p>
+<table>
+<tr><th>Configuration</th><th>Q_loss (W)</th><th>R_passive</th></tr>
+<tr><td>Bare copper</td><td>~114</td><td>0.038</td></tr>
+<tr><td>25mm fiberglass</td><td>~13</td><td>0.004</td></tr>
+</table>
+
+<h3>2.4 PFR Model for CuO-Mediated DMS Removal</h3>
+
+<p>DMS removal by CuO on Raschig ring surfaces follows a plug-flow reactor (PFR) model:</p>
+<p><code>Removal = 1 &minus; exp(&minus;k_eff &times; a_s &times; L / v_s)</code></p>
+
+<ul>
+<li><strong>k_eff = 0.16 cm/s</strong> &mdash; lumped mass transfer coefficient (calibrated from pot still data; range 0.08&ndash;0.24)</li>
+<li><strong>a_s = 7.0 cm&sup2;/cm&sup3;</strong> &mdash; specific surface area for 3/8" Cu Raschig rings (&asymp;700 m&sup2;/m&sup3;)<sup>[3]</sup></li>
+<li><strong>L = 30.5 cm</strong> (12" packed bed)</li>
+<li><strong>v_s &asymp; 20 cm/s</strong> at 3 kW through 77 cm&sup2; cross-section</li>
+</ul>
+
+<div class="callout">
+<strong>Important:</strong> CuO + DMS &rarr; Cu + DMSO is <strong>stoichiometric</strong>, not catalytic.
+The oxide layer is consumed during each run and must be regenerated by air oxidation between runs.
+"CuO-mediated" is the correct descriptor.<sup>[4]</sup>
+</div>
+
+<h3>2.5 Congener Database</h3>
+
+<table>
+<tr><th>Compound</th><th>&alpha;_rel</th><th>BP (&deg;C)</th><th>Flavor</th><th>Desirable?</th></tr>
+<tr><td>Acetaldehyde</td><td>6.0</td><td>20</td><td>Green apple/pungent</td><td style="color:var(--red)">No</td></tr>
+<tr><td>DMS</td><td>2.4</td><td>37</td><td>Cooked corn (off)</td><td style="color:var(--red)">No</td></tr>
+<tr><td>Methanol</td><td>1.55</td><td>65</td><td>Toxic (foreshots)</td><td style="color:var(--red)">No</td></tr>
+<tr><td>Ethyl acetate</td><td>1.40</td><td>77</td><td>Fruity/solvent</td><td style="color:var(--green)">Yes</td></tr>
+<tr><td>Isoamyl acetate</td><td>0.75</td><td>142</td><td>Banana</td><td style="color:var(--green)">Yes</td></tr>
+<tr><td>Isoamyl alcohol</td><td>0.60</td><td>131</td><td>Fusel/solvent</td><td style="color:var(--red)">No</td></tr>
+<tr><td>Ethyl hexanoate</td><td>0.45</td><td>167</td><td>Apple/anise</td><td style="color:var(--green)">Yes</td></tr>
+<tr><td>Furfural</td><td>0.20</td><td>162</td><td>Almond/bread</td><td style="color:var(--green)">Yes</td></tr>
+<tr><td>Ethyl octanoate</td><td>0.25</td><td>207</td><td>Apricot/floral</td><td style="color:var(--green)">Yes</td></tr>
+<tr><td>2-Phenylethanol</td><td>0.10</td><td>219</td><td>Rose/honey (body)</td><td style="color:var(--green)">Yes</td></tr>
+<tr><td>Ethyl decanoate</td><td>0.12</td><td>243</td><td>Grape/waxy</td><td style="color:var(--green)">Yes</td></tr>
+</table>
+
+<p class="ref">[1] L&eacute;aut&eacute; (1990), Am. J. Enol. Vitic. 41:90&ndash;103. [2] Piggott (2003), <em>Whisky: Technology, Production and Marketing</em>.
+[3] Perry's Chemical Engineers' Handbook, 8th ed., Table 14-13. [4] Harrison et al. (2011), J. Inst. Brewing 117:106.</p>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>3. Simulation Results</h2>
+<!-- ═══════════════════════════════════════════════ -->
+
+<h3>3.1 Compound-Specific Recovery (Fig V2-1)</h3>
+
+<figure>
+<object data="graphs/v2-compound-transport.svg" type="image/svg+xml"></object>
+<figcaption>V2-1: Grouped bar chart of desirable congener recovery for all four variants,
+plus N_eff vs &alpha; curves showing how passive reflux creates compound-dependent
+separation. CRO insulated (green) matches or exceeds pot still on all compounds.</figcaption>
+</figure>
+
+<p>Key observations from the compound-specific model:</p>
+<ul>
+<li><strong>Pot + Cu mesh</strong> (red): Baseline recovery. Good heavy congener preservation (no column = no passive reflux penalty). Limited by narrower hearts cut (40% vs 55%).</li>
+<li><strong>CRO bare</strong> (yellow): Best on light esters (EtAc, IAmAc) due to wider cut, but loses &sim;50&ndash;65% of heavy congeners (EtOct, 2-PhEtOH, EtDec) vs pot still.</li>
+<li><strong>CRO insulated</strong> (green): Best overall profile. Wider cut captures more light esters; insulation eliminates the heavy congener penalty. Recovers 8.1% of 2-PhEtOH vs 6.1% for pot still (higher due to wider hearts cut).</li>
+<li><strong>6-plate (low R)</strong> (blue): Even at modest N_eff&asymp;3 (well below vodka-column operation), this plate column strips heavy congeners brutally &mdash; 2-PhEtOH at 0.1%, EtDec at 0.1%. Demonstrates why plate columns are unsuitable for flavor-forward whiskey regardless of reflux setting.</li>
+</ul>
+
+<h3>3.2 Heat Loss and Passive Reflux (Fig V2-2)</h3>
+
+<figure>
+<object data="graphs/v2-heat-loss.svg" type="image/svg+xml"></object>
+<figcaption>V2-2: Panel A shows how insulation thickness reduces heat loss. Panel B shows
+the compound-specific N_eff divergence &mdash; heavy compounds (low &alpha;) see significantly
+higher effective stages bare vs insulated, while light esters barely move.</figcaption>
+</figure>
+
+<h3>3.3 Yield Mass Balance (Fig V2-3)</h3>
+
+<figure>
+<object data="graphs/v2-yield.svg" type="image/svg+xml"></object>
+<figcaption>V2-3: Ethanol accounting from 10 gal wash through strip and spirit runs.
+Mass balance: 10 gal &times; 10% ABV / 65% = 1.54 gal theoretical max.
+Practical hearts yield: 0.6&ndash;1.2 gal depending on scenario.</figcaption>
+</figure>
+
+<div class="callout">
+<strong>Yield validation:</strong> The user reports 4 gal at 15% ABV yields 1&ndash;1.25 gal at 52% ABV (first pass).
+Mass balance: 4&times;0.15/0.52 = 1.15 gal &mdash; consistent with ~90% ethanol recovery and a generous hearts cut.
+For 10 gal at 10% ABV in a two-pass system, expect ~0.6&ndash;0.9 gal hearts at 65&ndash;72% ABV.
+</div>
+
+<h3>3.4 DMS Removal Comparison (Fig V2-4)</h3>
+
+<figure>
+<object data="graphs/v2-dms-comparison.svg" type="image/svg+xml"></object>
+<figcaption>V2-4: Panel A shows final DMS in hearts for each variant (from 50 ppb wash).
+Panel B shows PFR removal vs packed height with k_eff uncertainty band (0.08&ndash;0.24 cm/s).
+Cu mesh in pot (~45%) vs CRO column PFR (~80% at design point).</figcaption>
+</figure>
+
+<h3>3.5 Design Variant Summary (Fig V2-5)</h3>
+
+<figure>
+<object data="graphs/v2-design-summary.svg" type="image/svg+xml"></object>
+<figcaption>V2-5: Scorecard comparing light ester recovery, heavy ester recovery,
+DMS level, fusel oil carryover, and cost for all four variants.
+Bottom panel shows the full congener profile as grouped bars.</figcaption>
+</figure>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>4. Recommendation</h2>
+<!-- ═══════════════════════════════════════════════ -->
+
+<h3>4.1 For Flavor-Forward Whiskey: CRO Insulated</h3>
+
+<p>The <strong>CRO insulated</strong> variant is the recommended design. It achieves:</p>
+<ul>
+<li>Best-in-class DMS removal (~80% via PFR, well below 25 ppb threshold)</li>
+<li>Highest light ester recovery (wider 55% hearts cut vs 40% pot)</li>
+<li>Heavy congener preservation equal to or better than pot still (insulation eliminates passive reflux penalty)</li>
+<li>Lower fusel oil carryover than pot still</li>
+</ul>
+
+<p>The additional cost of insulation ($20&ndash;30 for fiberglass wrap) pays for itself immediately in flavor quality.</p>
+
+<h3>4.2 For Simplicity: Pot + Cu Mesh</h3>
+
+<p>If cost and simplicity are primary concerns, the traditional <strong>pot still with Cu mesh</strong> is a proven design that delivers:</p>
+<ul>
+<li>Adequate DMS removal (45% from Cu mesh surface area)</li>
+<li>Excellent heavy congener preservation (no column = no passive reflux)</li>
+<li>Lowest cost ($80&ndash;160)</li>
+<li>Simplest operation (no column management)</li>
+</ul>
+
+<p>Trade-off: narrower hearts cut means ~30% less yield and less control over light ester selection.</p>
+
+<h3>4.3 NOT Recommended: CRO Bare (Uninsulated)</h3>
+
+<div class="callout warn">
+<strong>Do not build the CRO column without insulation.</strong> The uninsulated configuration loses heavy congeners
+(2-phenylethanol at 4.9% recovery vs 8.1% insulated) while offering no advantage over the insulated version.
+The ~$25 insulation cost is the single highest-value modification in this entire design.
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>5. CRO-10 Build Specifications (Insulated Variant)</h2>
+<!-- ═══════════════════════════════════════════════ -->
+
+<h3>5.1 Key Specifications</h3>
+
+<table>
+<tr><th>Parameter</th><th>Value</th><th>Source</th></tr>
+<tr><td>Column</td><td>4" nom. C122 Cu DWV pipe (99mm ID, 102mm OD)</td><td>Standard plumbing supply</td></tr>
+<tr><td>Packing</td><td>3/8" Cu Raschig rings, 12" (305mm) bed</td><td>Copper C110 alloy</td></tr>
+<tr><td>HETP</td><td>300&ndash;500mm (~1 theoretical plate in 12" bed)</td><td>Perry's &sect;14; Kister wall-effect penalty 1.3&ndash;1.5&times; at d_col/d_pack&asymp;10</td></tr>
+<tr><td>Cu surface area</td><td>~16,000 cm&sup2; (a_s&asymp;700 m&sup2;/m&sup3;)</td><td>Perry's Table 14-13 for 3/8" Raschig</td></tr>
+<tr><td>Insulation</td><td>25mm fiberglass wrap, foil-faced</td><td>Hardware store; k&asymp;0.04 W/(m&middot;K)</td></tr>
+<tr><td>Dephlegmator</td><td>1/4" Cu coil, 6" section above packing</td><td>Passive cooling only (no water)</td></tr>
+<tr><td>Lyne arm</td><td>2" Cu, 18" length, 10&deg; downslope</td><td>Traditional Scotch-style angle</td></tr>
+<tr><td>Heat input</td><td>2&ndash;4 kW (3 kW nominal)</td><td>Electric immersion element</td></tr>
+<tr><td>Vapor velocity</td><td>~19 cm/s at 3 kW</td><td>Through 77 cm&sup2; cross-section</td></tr>
+<tr><td>Flooding limit</td><td>25&ndash;35 cm/s</td><td>F_p&asymp;580 ft<sup>&minus;1</sup> for 3/8" Raschig; Sherwood-GPDC correlation</td></tr>
+<tr><td>DMS removal</td><td>~80% (range 60&ndash;93%)</td><td>PFR model with k_eff &isin; [0.08, 0.24] cm/s</td></tr>
+</table>
+
+<h3>5.2 Bill of Materials</h3>
+
+<table>
+<tr><th>Item</th><th>Qty</th><th>Est. Cost</th></tr>
+<tr><td>4" C122 Cu DWV pipe, 24"</td><td>1</td><td>$150&ndash;250</td></tr>
+<tr><td>3/8" Cu Raschig rings</td><td>~0.6 L</td><td>$40&ndash;60</td></tr>
+<tr><td>1/4" Cu tube (dephleg coil)</td><td>4 ft</td><td>$15&ndash;25</td></tr>
+<tr><td>2" Cu pipe (lyne arm)</td><td>18"</td><td>$30&ndash;50</td></tr>
+<tr><td>4"&rarr;2" Cu reducer</td><td>1</td><td>$25&ndash;40</td></tr>
+<tr><td>Fiberglass insulation wrap, 25mm</td><td>2 ft</td><td>$15&ndash;25</td></tr>
+<tr><td>Cu mesh (support screens)</td><td>2 pcs</td><td>$10&ndash;15</td></tr>
+<tr><td>Silver solder + flux</td><td>&mdash;</td><td>$20&ndash;30</td></tr>
+<tr><td>Thermometer port + bimetal thermo</td><td>1</td><td>$15&ndash;25</td></tr>
+<tr><td><strong>Total</strong></td><td>&mdash;</td><td><strong>$320&ndash;520</strong></td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>6. Safety</h2>
+<!-- ═══════════════════════════════════════════════ -->
+
+<div class="callout warn">
+<strong>Distillation involves flammable vapors, hot surfaces, and potential pressure buildup.</strong>
+</div>
+
+<ul>
+<li><strong>PRV on pot lid:</strong> Must have pressure relief. Never seal a pot completely.</li>
+<li><strong>Ventilation:</strong> Outdoor operation only, or well-ventilated space. Ethanol vapor is heavier than air and accumulates at floor level.</li>
+<li><strong>Methanol:</strong> Discard the first 100&ndash;150 mL (foreshots). Not a significant risk at hobby scale from grain wash, but practice good habits.</li>
+<li><strong>Carbon monoxide:</strong> If using propane heat, ensure adequate ventilation. CO is colorless and odorless.</li>
+<li><strong>Burns:</strong> Column operates at 78&ndash;100&deg;C. Insulation reduces burn risk (added benefit).</li>
+<li><strong>GFCI protection:</strong> If using electric heating element, require GFCI on the circuit.</li>
+<li><strong>Fire extinguisher:</strong> Keep a 2A:10B:C rated extinguisher within arm's reach.</li>
+<li><strong>No open flame near vapor path.</strong> Ethanol flash point is 16.6&deg;C.</li>
+<li><strong>Emergency:</strong> If vapor escapes, kill heat immediately. Do not attempt to reseal under pressure.</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>7. Model Limitations and Uncertainties</h2>
+<!-- ═══════════════════════════════════════════════ -->
+
+<ul>
+<li><strong>Relative volatility (&alpha;):</strong> Values used are approximate, averaged over the hearts cut ABV range. In reality, &alpha; varies with ethanol concentration and temperature throughout the run. Cited values are from L&eacute;aut&eacute; (1990) and Piggott (2003), which are for similar conditions but not identical equipment.</li>
+<li><strong>PFR k_eff:</strong> The lumped mass transfer coefficient (0.16 cm/s) is calibrated from pot still DMS removal data, not measured on this specific packing. True values may range from 0.08 to 0.24 cm/s. The uncertainty band in Fig V2-4B reflects this.</li>
+<li><strong>Passive reflux model:</strong> The compound-specific R_eff(i) = R_passive/&alpha;_i assumes selective condensation proportional to vapor pressure. This is physically reasonable but simplified &mdash; actual condensation depends on binary interaction parameters, surface wetting, and local temperature gradients. The model should predict the <em>direction</em> and approximate <em>magnitude</em> of heavy congener stripping, but absolute numbers have &pm;30% uncertainty.</li>
+<li><strong>Heat loss:</strong> Natural convection coefficient h=7 W/(m&sup2;&middot;K) is calibrated from Churchill-Chu correlation (h&asymp;5.5 for still air on a 0.5m vertical cylinder) with an uplift for outdoor breeze. Actual value depends heavily on ambient air movement; even a 1 m/s breeze can double the coefficient.<sup>[7]</sup></li>
+<li><strong>CuO depletion:</strong> The k_eff value assumes a fully oxidized Cu surface. CuO is consumed stoichiometrically during each run (CuO + DMS &rarr; Cu + DMSO), so removal efficiency drops as the run progresses. The PFR model uses a run-average. Regeneration between runs (10 min air exposure at 60&deg;C) restores the oxide layer.</li>
+<li><strong>Fiberglass insulation:</strong> Fiberglass wrap near hot Cu surfaces should be silicone-coated or enclosed in foil tape to prevent moisture wicking and fiber degradation. A high-temperature silicone sleeve (rated &gt;200&deg;C) is the premium alternative.</li>
+<li><strong>Thermal expansion:</strong> Cu expands ~17 &micro;m/m/&deg;C. A 0.5m column cycling 22&rarr;80&deg;C grows ~0.5mm per heat cycle. Silver-soldered joints can handle this, but threaded fittings need attention. Allow for differential expansion between column and insulation.</li>
+<li><strong>R_eff model weakness:</strong> The R_eff(i) = R_passive/&alpha;_i formulation is a first-order approximation. A rigorous treatment would use the Kremser equation with compound-specific equilibrium data. The current model captures the correct qualitative behavior (heavy compounds stripped more) but absolute N_eff values may differ from reality by &pm;20%.</li>
+<li><strong>HETP:</strong> The Kister wall-effect penalty for d_col/d_pack &asymp; 10 is 1.3&ndash;1.5&times; base HETP. Base HETP for 3/8" Raschig is ~250mm (Perry's); with wall penalty, effective HETP is 325&ndash;500mm. A 12" (305mm) bed therefore provides ~0.6&ndash;1.0 theoretical plates. The model uses N_min=1.0.</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>8. References</h2>
+<!-- ═══════════════════════════════════════════════ -->
+
+<ol class="ref">
+<li>L&eacute;aut&eacute;, R. (1990). Distillation in Alambic. <em>Am. J. Enol. Vitic.</em> 41:90&ndash;103.</li>
+<li>Piggott, J. R. (2003). <em>Whisky: Technology, Production and Marketing.</em> Academic Press.</li>
+<li>Perry, R. H. &amp; Green, D. W. (2008). <em>Perry's Chemical Engineers' Handbook</em>, 8th ed. McGraw-Hill. Tables 14-13, 14-55.</li>
+<li>Harrison, B., Fagnen, O., Jack, F., Brosnan, J. (2011). The impact of copper in different parts of malt whisky pot stills on new make spirit composition and aroma. <em>J. Inst. Brewing</em> 117:106&ndash;112.</li>
+<li>Kister, H. Z. (1992). <em>Distillation Design.</em> McGraw-Hill. Chapter 8: Packed Column HETP and Efficiency.</li>
+<li>Nicol, D. (2014). Batch Distillation. In <em>Whisky: Technology, Production and Marketing</em>, 2nd ed.</li>
+<li>Incropera, F. P. &amp; DeWitt, D. P. (2011). <em>Fundamentals of Heat and Mass Transfer</em>, 7th ed. Chapters 9&ndash;10 (natural convection, radiation).</li>
+</ol>
+
+<hr style="border-color: var(--surface2); margin-top: 3rem;">
+<p class="ref" style="margin-top: 1rem;">V2 generated 2026-03-29.
+All simulation figures computed at runtime by Rust code in <code>sims/src/main.rs</code>.
+Verification data embedded as SVG comments in each figure.</p>
+
+</body>
+</html>
