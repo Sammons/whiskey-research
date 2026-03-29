@@ -221,13 +221,16 @@ for (let i = 0; i < 80; i++) {
   scene.add(ring);
 }
 
-// Cu mesh screens (top and bottom of packing)
-const screenGeo = new THREE.CylinderGeometry(colID, colID, 0.3, 32);
-const screenBot = new THREE.Mesh(screenGeo, steelMat);
-screenBot.position.y = colBase + 0.15;
+// SS mesh retaining screens (top and bottom of packing)
+// These friction-fit inside the column ID to retain the Raschig ring bed.
+// Bottom screen supports ring weight; top screen prevents ring migration into dephleg.
+const screenMat = new THREE.MeshStandardMaterial({color:0xc0c0c0, metalness:0.9, roughness:0.2, side:THREE.DoubleSide});
+const screenGeo = new THREE.CylinderGeometry(colID, colID, 0.5, 32);
+const screenBot = new THREE.Mesh(screenGeo, screenMat);
+screenBot.position.y = colBase + 0.25;
 scene.add(screenBot);
-const screenTop = new THREE.Mesh(screenGeo.clone(), steelMat);
-screenTop.position.y = colBase + packH - 0.15;
+const screenTop = new THREE.Mesh(screenGeo.clone(), screenMat);
+screenTop.position.y = colBase + packH - 0.25;
 scene.add(screenTop);
 
 // Dephlegmator section
@@ -380,7 +383,9 @@ dimH(colBase - 3, -colOD, colOD, '\u00D84" (10.2cm)');   // Column OD
 
 // ---- LEFT SIDE: Component labels ----
 makeLabel('10-gal Cu pot', new THREE.Vector3(-(potR + 8), potH / 2, 0), '#e8a665');
+makeLabel('SS mesh screen', new THREE.Vector3(-(colOD + 14), colBase + 1, 0), '#8b949e', true);
 makeLabel('\u00BD" Cu Raschig rings', new THREE.Vector3(-(colOD + 14), colBase + packH / 2, 0), '#d29922', true);
+makeLabel('SS mesh screen', new THREE.Vector3(-(colOD + 14), colBase + packH - 1, 0), '#8b949e', true);
 makeLabel('Dephlegmator coil', new THREE.Vector3(-(colOD + 14), colBase + packH + dephH / 2, 0), '#e8a665', true);
 makeLabel('4"\u21922" reducer', new THREE.Vector3(-(colOD + 14), lyneStartY - reducerH/2, 0), '#e8a665');
 
@@ -418,6 +423,22 @@ function animate() {
 }
 animate();
 </script>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h3>1.4 Build Notes: Column Packing Retention</h3>
+<!-- ═══════════════════════════════════════════════ -->
+
+<p>The &frac12;" copper Raschig rings sit between two <strong>stainless steel mesh retaining screens</strong> that friction-fit inside the 4" column ID (~4.0" / 10.2cm):</p>
+
+<ul>
+<li><strong>Bottom screen</strong> &mdash; supports the full weight of the packing bed (~1.5 kg for a 12" fill of &frac12;" Cu rings). Cut a 4" disc from #8 or #10 SS mesh (0.028&ndash;0.035" wire). Press-fit into the column base; the dome-to-column joint below provides a natural seat.</li>
+<li><strong>Top screen</strong> &mdash; prevents ring migration into the dephlegmator during vigorous boiling. Same mesh spec, friction-fit at the top of the 12" packed section. A small SS spring clip or 3 copper tabs soldered at 120&deg; intervals can prevent it from lifting under surge.</li>
+<li><strong>Mesh spec</strong> &mdash; #8&ndash;#10 SS woven mesh (1.2&ndash;2.0mm aperture). Must pass vapor freely while retaining &frac12;" rings. SS resists galvanic corrosion against the copper column. Food-grade 304 or 316 SS.</li>
+</ul>
+
+<div class="callout key">
+<strong>Assembly order:</strong> (1) Solder column to dome &rarr; (2) Press-fit bottom screen &rarr; (3) Pour Raschig rings, tapping column to settle &rarr; (4) Press-fit top screen &rarr; (5) Attach dephlegmator section above.
+</div>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Physics Models</h2>
