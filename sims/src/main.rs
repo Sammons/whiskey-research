@@ -21355,7 +21355,7 @@ fn sim_v2_design_summary() -> String {
             let r = rayleigh_recovery(c.alpha, ne, d.f1, d.f2);
             if c.name == "DMS" { dm = wash_dms * r / (d.f2-d.f1) * (1.0-cu); }
             else if c.name == "IAmOH" { fu = r * 100.0; }
-            else if c.desirable && c.alpha >= 0.7 { ls += r * 100.0; ln += 1.0; }
+            else if c.desirable && c.alpha >= 0.3 { ls += r * 100.0; ln += 1.0; }
             else if c.desirable && c.alpha < 0.3 { hs += r * 100.0; hn += 1.0; }
         }
         metrics.push(DM { name: d.name.to_string(), color: d.color.to_string(),

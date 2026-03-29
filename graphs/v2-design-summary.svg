@@ -11,28 +11,28 @@
 <line x1="60" y1="95" x2="690" y2="95" stroke="#8b949e" stroke-width="0.5"/>
 <rect x="60" y="83.0" width="630" height="28" fill="#f85149" opacity="0.08"/>
 <text x="112.5" y="103" fill="#f85149" font-size="7" text-anchor="middle">Pot + Cu mesh</text>
-<text x="217.5" y="103" fill="#e6edf3" font-size="7" text-anchor="middle">40%</text>
+<text x="217.5" y="103" fill="#e6edf3" font-size="7" text-anchor="middle">35%</text>
 <text x="322.5" y="103" fill="#e6edf3" font-size="7" text-anchor="middle">10%</text>
 <text x="427.5" y="103" fill="#f85149" font-size="7" text-anchor="middle">36</text>
 <text x="532.5" y="103" fill="#d29922" font-size="7" text-anchor="middle">29%</text>
 <text x="637.5" y="103" fill="#8b949e" font-size="7" text-anchor="middle">$120</text>
 <rect x="60" y="111.0" width="630" height="28" fill="#d29922" opacity="0.08"/>
 <text x="112.5" y="131" fill="#d29922" font-size="7" text-anchor="middle">CRO bare</text>
-<text x="217.5" y="131" fill="#e6edf3" font-size="7" text-anchor="middle">55%</text>
+<text x="217.5" y="131" fill="#e6edf3" font-size="7" text-anchor="middle">47%</text>
 <text x="322.5" y="131" fill="#e6edf3" font-size="7" text-anchor="middle">11%</text>
 <text x="427.5" y="131" fill="#3fb950" font-size="7" text-anchor="middle">10</text>
 <text x="532.5" y="131" fill="#d29922" font-size="7" text-anchor="middle">40%</text>
 <text x="637.5" y="131" fill="#8b949e" font-size="7" text-anchor="middle">$650</text>
 <rect x="60" y="139.0" width="630" height="28" fill="#3fb950" opacity="0.08"/>
 <text x="112.5" y="159" fill="#3fb950" font-size="7" text-anchor="middle">CRO insulated</text>
-<text x="217.5" y="159" fill="#e6edf3" font-size="7" text-anchor="middle">55%</text>
+<text x="217.5" y="159" fill="#e6edf3" font-size="7" text-anchor="middle">48%</text>
 <text x="322.5" y="159" fill="#e6edf3" font-size="7" text-anchor="middle">14%</text>
 <text x="427.5" y="159" fill="#3fb950" font-size="7" text-anchor="middle">10</text>
 <text x="532.5" y="159" fill="#d29922" font-size="7" text-anchor="middle">41%</text>
 <text x="637.5" y="159" fill="#8b949e" font-size="7" text-anchor="middle">$675</text>
 <rect x="60" y="167.0" width="630" height="28" fill="#58a6ff" opacity="0.08"/>
 <text x="112.5" y="187" fill="#58a6ff" font-size="7" text-anchor="middle">6-plate (low R)</text>
-<text x="217.5" y="187" fill="#e6edf3" font-size="7" text-anchor="middle">37%</text>
+<text x="217.5" y="187" fill="#e6edf3" font-size="7" text-anchor="middle">27%</text>
 <text x="322.5" y="187" fill="#e6edf3" font-size="7" text-anchor="middle">0%</text>
 <text x="427.5" y="187" fill="#3fb950" font-size="7" text-anchor="middle">13</text>
 <text x="532.5" y="187" fill="#d29922" font-size="7" text-anchor="middle">12%</text>
